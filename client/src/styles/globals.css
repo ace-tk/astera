@@ -1,0 +1,112 @@
+@import './theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Lenis drives scrolling; disable native smooth so they don't fight. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv01', 'cv11';
+    transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.16);
+    color: rgb(var(--ink));
+  }
+
+  /* A soft, precise focus ring — accessible without looking like a default. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent) / 0.55);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-10;
+  }
+
+  /* Editorial eyebrow label used above section headers. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.22em] text-muted;
+  }
+
+  /* Frosted chip used across nav, tags, badges. */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-card/70 px-3 py-1 text-sm font-medium backdrop-blur-md;
+  }
+
+  /* The signature link underline that grows on hover. */
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-500 ease-entry;
+  }
+  .link-underline:hover::after {
+    @apply scale-x-100;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Warm paper + faint grid + drifting color halos = "alive" background. */
+  .bg-canvas {
+    background-color: rgb(var(--paper));
+    background-image: radial-gradient(rgb(17 24 39 / 0.04) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent);
+    mask-image: linear-gradient(to bottom, black 60%, transparent);
+  }
+
+  /* Respect the reduced-motion promise everywhere. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

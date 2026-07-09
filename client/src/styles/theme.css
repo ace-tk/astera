@@ -1,0 +1,106 @@
+/*
+  Astera theming — every palette is a set of CSS custom properties.
+  Tailwind's color tokens read `rgb(var(--x) / <alpha-value>)`, so flipping
+  `data-theme` on <html> re-skins the whole product with zero re-render.
+  Values are space-separated RGB channels (not hex) so alpha compositing works.
+*/
+
+:root,
+[data-theme='light'] {
+  --paper: 248 247 244; /* #F8F7F4 warm paper */
+  --card: 255 255 255;
+  --ink: 17 24 39; /* #111827 */
+  --muted: 107 114 128;
+  --line: 17 24 39;
+
+  --royal: 54 93 245;
+  --coral: 255 107 107;
+  --golden: 246 196 83;
+  --emerald: 22 179 100;
+  --orange: 255 159 67;
+  --sky: 56 189 248;
+  --rose: 244 63 94;
+  --purple: 124 58 237;
+  --mint: 74 222 128;
+
+  --accent: 54 93 245; /* royal */
+  --halo-1: 255 107 107;
+  --halo-2: 246 196 83;
+  --halo-3: 54 93 245;
+}
+
+/* Aurora — soft dawn pastels, lilac signature */
+[data-theme='aurora'] {
+  --paper: 249 246 252;
+  --card: 255 255 255;
+  --ink: 34 24 51;
+  --muted: 128 116 150;
+  --line: 34 24 51;
+  --accent: 124 58 237;
+  --royal: 99 102 241;
+  --coral: 244 114 182;
+  --halo-1: 165 180 252;
+  --halo-2: 244 114 182;
+  --halo-3: 129 140 248;
+}
+
+/* Ocean — cool, clean, sky signature */
+[data-theme='ocean'] {
+  --paper: 240 247 250;
+  --card: 255 255 255;
+  --ink: 15 34 48;
+  --muted: 90 116 132;
+  --line: 15 34 48;
+  --accent: 14 116 179;
+  --royal: 14 116 179;
+  --emerald: 13 148 136;
+  --halo-1: 56 189 248;
+  --halo-2: 45 212 191;
+  --halo-3: 14 116 179;
+}
+
+/* Sunset — warm peach, coral signature */
+[data-theme='sunset'] {
+  --paper: 252 245 240;
+  --card: 255 253 251;
+  --ink: 46 26 22;
+  --muted: 146 108 96;
+  --line: 46 26 22;
+  --accent: 234 88 51;
+  --royal: 234 88 51;
+  --golden: 245 158 11;
+  --halo-1: 255 159 67;
+  --halo-2: 244 63 94;
+  --halo-3: 246 196 83;
+}
+
+/* Forest — sage & moss, emerald signature */
+[data-theme='forest'] {
+  --paper: 244 247 242;
+  --card: 255 255 255;
+  --ink: 22 34 24;
+  --muted: 96 118 100;
+  --line: 22 34 24;
+  --accent: 21 128 61;
+  --royal: 21 128 61;
+  --emerald: 22 163 74;
+  --halo-1: 74 222 128;
+  --halo-2: 132 204 22;
+  --halo-3: 21 128 61;
+}
+
+/* Royal — deep indigo, low-light editorial (the one dramatic theme) */
+[data-theme='royal'] {
+  --paper: 20 18 38;
+  --card: 33 30 58;
+  --ink: 240 238 255;
+  --muted: 158 152 196;
+  --line: 240 238 255;
+  --accent: 129 140 248;
+  --royal: 129 140 248;
+  --golden: 250 204 21;
+  --coral: 251 113 133;
+  --halo-1: 124 58 237;
+  --halo-2: 56 189 248;
+  --halo-3: 244 63 94;
+}
