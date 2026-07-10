@@ -1,25 +1,34 @@
 import { useState } from 'react'
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { LayoutGrid, UploadCloud, BarChart3, Settings2, Search, Bell, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, Bell, PanelLeftClose, PanelLeft } from 'lucide-react'
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
+import SoundToggle from '@/components/common/SoundToggle'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 
+// The command palette (mounted app-wide) listens for this event.
+const openCommandPalette = () => window.dispatchEvent(new CustomEvent('astera:command'))
+
 const NAV = [
-  { to: '/app', label: 'Overview', icon: LayoutGrid, end: true, active: 'text-royal' },
+  { to: '/app', label: 'Workspace', icon: Workflow, end: true, active: 'text-purple' },
+  { to: '/app/reports', label: 'Reports', icon: FileText, active: 'text-royal' },
   { to: '/app/upload', label: 'Upload Studio', icon: UploadCloud, active: 'text-coral' },
   { to: '/app/analytics', label: 'Analytics', icon: BarChart3, active: 'text-sky' },
-  { to: '/app/settings', label: 'Settings', icon: Settings2, active: 'text-purple' },
+  { to: '/app/settings', label: 'Settings', icon: Settings2, active: 'text-emerald' },
 ]
 
 export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const location = useLocation()
 
+  // Immersive routes fill the viewport with no padding (canvas / reader).
+  const immersive =
+    location.pathname === '/app' || location.pathname.startsWith('/app/replay')
+
   return (
-    <div className="bg-canvas flex min-h-screen">
+    <div className="bg-canvas flex h-screen overflow-hidden">
       {/* Sidebar */}
       <motion.aside
         animate={{ width: collapsed ? 84 : 264 }}
@@ -94,17 +103,18 @@ export default function DashboardLayout() {
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Topbar */}
-        <header className="sticky top-0 z-30 flex items-center gap-4 border-b border-ink/8 bg-paper/70 px-6 py-4 backdrop-blur-xl">
+        <header className="z-30 flex shrink-0 items-center gap-4 border-b border-ink/8 bg-paper/70 px-6 py-4 backdrop-blur-xl">
           <div className="flex flex-1 items-center gap-3">
-            <div className="flex h-10 w-full max-w-sm items-center gap-2 rounded-full border border-ink/8 bg-card px-4 text-sm text-muted">
+            <button
+              onClick={openCommandPalette}
+              className="flex h-10 w-full max-w-sm items-center gap-2 rounded-full border border-ink/8 bg-card px-4 text-sm text-muted transition-colors hover:border-ink/20"
+            >
               <Search className="h-4 w-4" />
-              <input
-                placeholder="Search reports, decisions, people…"
-                className="w-full bg-transparent outline-none placeholder:text-muted"
-              />
+              <span className="flex-1 text-left">Search or jump to…</span>
               <kbd className="hidden rounded-md border border-ink/10 px-1.5 text-[0.65rem] text-muted sm:block">⌘K</kbd>
-            </div>
+            </button>
           </div>
+          <SoundToggle />
           <button className="grid h-10 w-10 place-items-center rounded-full border border-ink/8 bg-card text-muted transition-colors hover:text-ink">
             <Bell className="h-4.5 w-4.5" />
           </button>
@@ -121,7 +131,10 @@ export default function DashboardLayout() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 px-6 py-8 sm:px-8 lg:px-10"
+            className={cn(
+              'min-h-0 flex-1',
+              immersive ? 'overflow-hidden' : 'overflow-y-auto px-6 py-8 sm:px-8 lg:px-10',
+            )}
           >
             <Outlet />
           </motion.div>
