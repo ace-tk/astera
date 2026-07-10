@@ -7,6 +7,7 @@ import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
 import MeshBackground from '@/components/common/MeshBackground'
 import Astra from '@/components/assistant/Astra'
+import Onboarding from '@/components/onboarding/Onboarding'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 
@@ -161,6 +162,9 @@ export default function DashboardLayout() {
 
       {/* ASTRA — the always-present intelligence assistant */}
       <Astra />
+
+      {/* First-run welcome + guided tour */}
+      <Onboarding />
     </div>
   )
 }

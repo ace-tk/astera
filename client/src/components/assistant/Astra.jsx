@@ -88,6 +88,13 @@ export default function Astra() {
     })
   }
 
+  // Let the onboarding tour (or command palette) open Astra programmatically.
+  useEffect(() => {
+    const openIt = () => { setOpen(true); play('open') }
+    window.addEventListener('astera:open', openIt)
+    return () => window.removeEventListener('astera:open', openIt)
+  }, [play])
+
   // Greet once when first opened with a report loaded.
   useEffect(() => {
     if (open && report && messages.length === 0) {
