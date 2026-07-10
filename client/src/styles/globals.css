@@ -135,6 +135,25 @@
     fill: currentColor;
   }
 
+  /* Accessibility preference overrides (driven by A11yContext). */
+  :root[data-large-text='on'] {
+    font-size: 17.5px;
+  }
+  :root[data-always-focus='on'] a:focus,
+  :root[data-always-focus='on'] button:focus,
+  :root[data-always-focus='on'] [tabindex]:focus {
+    outline: 2px solid rgb(var(--accent) / 0.7);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  :root[data-reduce-motion='on'] *,
+  :root[data-reduce-motion='on'] *::before,
+  :root[data-reduce-motion='on'] *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
   /* Respect the reduced-motion promise everywhere. */
   @media (prefers-reduced-motion: reduce) {
     *,

@@ -7,6 +7,7 @@ import WorkspaceNode from '@/components/workspace/WorkspaceNode'
 import AnimatedEdge from '@/components/workspace/AnimatedEdge'
 import NodePanel from '@/components/workspace/NodePanel'
 import MeshBackground from '@/components/common/MeshBackground'
+import InfoBadge from '@/components/interview/InfoBadge'
 import Button from '@/components/ui/Button'
 import { useReports } from '@/hooks/useReports'
 import { useSound } from '@/context/SoundContext'
@@ -136,7 +137,17 @@ function Canvas() {
           animate={{ opacity: 1, y: 0 }}
           className="pointer-events-auto max-w-md rounded-3xl border border-ink/8 bg-card/80 p-5 shadow-soft backdrop-blur-xl"
         >
-          <span className="eyebrow text-purple"><Sparkles className="h-3.5 w-3.5" /> Intelligence Workspace</span>
+          <div className="flex items-center justify-between gap-2">
+            <span className="eyebrow text-purple"><Sparkles className="h-3.5 w-3.5" /> Intelligence Workspace</span>
+            <InfoBadge
+              title="Why React Flow"
+              points={[
+                'React Flow gives pan/zoom, node measurement, and edge routing for free — we bring fully custom node & edge renderers so nothing looks default.',
+                'nodeTypes/edgeTypes are defined once (stable identities) to avoid remount churn; nodes/edges are memoized on state.',
+                'The pipeline is data-driven (constants/workspace.js), so re-running intelligence just updates node status.',
+              ]}
+            />
+          </div>
           <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight">Every meeting, as a living graph.</h1>
           <p className="mt-1.5 text-sm text-muted">Click any node to inspect what Astra understood.</p>
 

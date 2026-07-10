@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { SoundProvider } from '@/context/SoundContext'
+import { InterviewProvider } from '@/context/InterviewContext'
+import { A11yProvider } from '@/context/A11yContext'
 import App from './App'
 import './styles/globals.css'
 
@@ -16,9 +18,13 @@ createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <SoundProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <A11yProvider>
+            <InterviewProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </InterviewProvider>
+          </A11yProvider>
         </SoundProvider>
       </ThemeProvider>
     </QueryClientProvider>

@@ -8,6 +8,7 @@ import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
 import ReportCover, { wasCovered } from '@/components/report/ReportCover'
+import InfoBadge from '@/components/interview/InfoBadge'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
@@ -116,7 +117,17 @@ export default function Report() {
                 <MeetingDNA dna={report.dna} color={report.color} size={220} showLabels={false} />
               </div>
               <div>
-                <span className={cn('eyebrow', a.text)}><Fingerprint className="h-3.5 w-3.5" /> Meeting DNA</span>
+                <div className="flex items-center gap-2">
+                  <span className={cn('eyebrow', a.text)}><Fingerprint className="h-3.5 w-3.5" /> Meeting DNA</span>
+                  <InfoBadge
+                    title="Meeting DNA"
+                    points={[
+                      'Six normalized traits are plotted on radial axes as an SVG polygon — an organic "gene shape" rather than bars.',
+                      'The shape is deterministic per meeting, so each fingerprint is recognizable at a glance.',
+                      'Rendered as pure SVG with a gradient + glow filter; animates via Framer with a spring, respecting reduced-motion.',
+                    ]}
+                  />
+                </div>
                 <h2 className="mt-3 font-display text-2xl font-medium tracking-tight text-balance">
                   Every meeting has a fingerprint.
                 </h2>

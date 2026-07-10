@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X, Keyboard } from 'lucide-react'
 import { useHotkeys, MOD_LABEL } from '@/hooks/useHotkeys'
@@ -59,6 +59,13 @@ export default function ShortcutsOverlay() {
     ],
     [],
   )
+
+  // Allow other UI (Settings) to open the guide.
+  useEffect(() => {
+    const openIt = () => setOpen(true)
+    window.addEventListener('astera:shortcuts', openIt)
+    return () => window.removeEventListener('astera:shortcuts', openIt)
+  }, [])
 
   return (
     <AnimatePresence>
