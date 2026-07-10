@@ -9,6 +9,8 @@ import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
 import ReportCover, { wasCovered } from '@/components/report/ReportCover'
+import NarratedSummary from '@/components/report/NarratedSummary'
+import ReportFeedback from '@/components/report/ReportFeedback'
 import InfoBadge from '@/components/interview/InfoBadge'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
@@ -60,7 +62,15 @@ export default function Report() {
           <Button
             variant="soft"
             size="sm"
-            onClick={() => toast({ title: 'Share link copied', description: 'Anyone with the link can read this report.', variant: 'success', color: 'royal' })}
+            onClick={async () => {
+              const url = `${window.location.origin}/app/report/${report.id}`
+              try {
+                await navigator.clipboard.writeText(url)
+                toast({ title: 'Share link copied', description: 'Anyone with the link can read this report.', variant: 'success', color: 'royal' })
+              } catch {
+                toast({ title: 'Copy that link', description: url, variant: 'info', color: 'royal', duration: 6000 })
+              }
+            }}
           >
             <Share2 className="h-4 w-4" /> Share
           </Button>
@@ -88,9 +98,9 @@ export default function Report() {
       <Reveal delay={0.1} className="mt-10">
         <div className="relative overflow-hidden rounded-3xl border border-ink/8 bg-card p-8 shadow-soft">
           <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> Astera summary</span>
-          <p className="mt-4 font-display text-2xl font-medium leading-snug tracking-tight text-balance">
-            {report.headline}
-          </p>
+          <div className="mt-4">
+            <NarratedSummary text={report.headline} color={report.color} />
+          </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {report.participants.map((p) => (
               <span key={p} className="chip text-xs">{p}</span>
@@ -266,13 +276,7 @@ export default function Report() {
         </div>
       </section>
 
-      <div className="mt-16 flex items-center justify-between rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
-        <p className="text-sm text-muted">Was this report useful?</p>
-        <div className="flex gap-2">
-          <Button variant="soft" size="sm">👍 Yes</Button>
-          <Button variant="ghost" size="sm">Refine</Button>
-        </div>
-      </div>
+      <ReportFeedback reportId={report.id} />
     </article>
     </>
   )

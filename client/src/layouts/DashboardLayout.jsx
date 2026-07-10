@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, Bell, PanelLeftClose, PanelLeft, Sparkles } from 'lucide-react'
+import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, PanelLeftClose, PanelLeft, Sparkles } from 'lucide-react'
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
+import Notifications from '@/components/common/Notifications'
 import MeshBackground from '@/components/common/MeshBackground'
 import Astra from '@/components/assistant/Astra'
 import Onboarding from '@/components/onboarding/Onboarding'
@@ -140,9 +141,7 @@ export default function DashboardLayout() {
             </button>
           </div>
           <SoundToggle />
-          <button aria-label="Notifications" className="hidden h-10 w-10 place-items-center rounded-full border border-ink/8 bg-card text-muted transition-colors hover:text-ink sm:grid">
-            <Bell className="h-4.5 w-4.5" />
-          </button>
+          <Notifications />
           <ThemeSwitcher />
           <Button as={Link} to="/app/upload" size="sm" variant="accent" aria-label="New report">
             <UploadCloud className="h-4 w-4" /> <span className="hidden sm:inline">New report</span>
