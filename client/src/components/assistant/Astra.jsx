@@ -13,17 +13,20 @@ let idSeq = 0
 const nextId = () => ++idSeq
 
 /** Reveals text word-by-word for the "Astra is writing" feel. */
-function StreamingText({ text, onTick }) {
+function StreamingText({ text, onTick, onDone }) {
   const [n, setN] = useState(0)
   const words = useMemo(() => text.split(' '), [text])
   useEffect(() => {
-    if (n >= words.length) return
+    if (n >= words.length) {
+      onDone?.()
+      return
+    }
     const t = setTimeout(() => {
       setN((v) => v + 1)
       onTick?.()
     }, 26)
     return () => clearTimeout(t)
-  }, [n, words.length, onTick])
+  }, [n, words.length, onTick, onDone])
   return <span>{words.slice(0, n).join(' ')}</span>
 }
 
@@ -70,6 +73,7 @@ export default function Astra() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([])
   const [thinking, setThinking] = useState(false)
+  const [astraState, setAstraState] = useState('idle')
   const [input, setInput] = useState('')
   const scroller = useRef(null)
   const { play } = useSound()
@@ -98,9 +102,21 @@ export default function Astra() {
   // Greet once when first opened with a report loaded.
   useEffect(() => {
     if (open && report && messages.length === 0) {
+      setAstraState('writing')
       setMessages([{ id: nextId(), role: 'astra', ...GREETING(report), stream: true }])
     }
   }, [open, report, messages.length])
+
+  // On open, wake Astra to a listening state.
+  useEffect(() => {
+    if (open) setAstraState((s) => (s === 'idle' ? 'listening' : s))
+  }, [open])
+
+  // A streamed message just finished writing.
+  const onStreamDone = () => {
+    setAstraState('completed')
+    setTimeout(() => setAstraState((s) => (s === 'completed' ? 'listening' : s)), 1400)
+  }
 
   const ask = (question) => {
     if (!question.trim() || !report) return
@@ -108,15 +124,26 @@ export default function Astra() {
     setInput('')
     setMessages((m) => [...m, { id: nextId(), role: 'user', text: question }])
     setThinking(true)
+    setAstraState('thinking')
     scrollDown()
     setTimeout(() => {
       const res = answer(question, report)
       setThinking(false)
+      setAstraState('writing')
       setMessages((m) => [...m, { id: nextId(), role: 'astra', stream: true, ...res }])
       play('step')
       scrollDown()
     }, 750)
   }
+
+  const STATUS = {
+    idle: { label: 'Ready', dot: 'bg-emerald' },
+    listening: { label: 'Listening', dot: 'bg-sky' },
+    thinking: { label: 'Thinking…', dot: 'bg-purple' },
+    writing: { label: 'Writing…', dot: 'bg-golden' },
+    completed: { label: 'Ready', dot: 'bg-emerald' },
+  }
+  const status = STATUS[astraState] || STATUS.idle
 
   return (
     <>
@@ -138,7 +165,7 @@ export default function Astra() {
             <span className="pointer-events-none absolute right-16 hidden whitespace-nowrap rounded-full border border-ink/8 bg-card px-3 py-1.5 text-sm font-medium shadow-lift group-hover:block">
               Ask Astra
             </span>
-            <AstraOrb size={60} />
+            <AstraOrb size={60} state="idle" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -157,12 +184,18 @@ export default function Astra() {
             {/* header */}
             <div className="flex items-center justify-between gap-3 border-b border-ink/8 p-4">
               <div className="flex items-center gap-3">
-                <AstraOrb size={38} />
+                <AstraOrb size={38} state={astraState} />
                 <div>
                   <h3 className="font-display text-base font-semibold leading-tight tracking-tight">Astra</h3>
-                  <p className="flex items-center gap-1 text-[0.7rem] text-muted">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
-                    {report ? `Reading “${report.title}”` : 'Warming up…'}
+                  <p className="flex items-center gap-1.5 text-[0.7rem] text-muted">
+                    <motion.span
+                      key={astraState}
+                      className={cn('h-1.5 w-1.5 rounded-full', status.dot)}
+                      animate={astraState === 'thinking' || astraState === 'writing' ? { scale: [1, 1.5, 1] } : { scale: 1 }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    />
+                    <span className="font-medium text-ink/70">{status.label}</span>
+                    {report && <span className="truncate">· {report.title}</span>}
                   </p>
                 </div>
               </div>
@@ -176,9 +209,9 @@ export default function Astra() {
               {messages.map((m) =>
                 m.role === 'astra' ? (
                   <div key={m.id} className="flex gap-2.5">
-                    <AstraOrb size={26} breathing={false} className="mt-0.5" />
+                    <AstraOrb size={26} breathing={false} state="idle" className="mt-0.5" />
                     <div className="max-w-[85%] rounded-2xl rounded-tl-md border border-ink/8 bg-paper px-3.5 py-2.5 text-sm leading-relaxed">
-                      {m.stream ? <StreamingText text={m.text} onTick={scrollDown} /> : m.text}
+                      {m.stream ? <StreamingText text={m.text} onTick={scrollDown} onDone={onStreamDone} /> : m.text}
                       <Blocks msg={m} />
                     </div>
                   </div>
@@ -190,7 +223,7 @@ export default function Astra() {
               )}
               {thinking && (
                 <div className="flex gap-2.5">
-                  <AstraOrb size={26} breathing={false} className="mt-0.5" />
+                  <AstraOrb size={26} breathing={false} state="thinking" className="mt-0.5" />
                   <div className="flex items-center gap-1 rounded-2xl rounded-tl-md border border-ink/8 bg-paper px-4 py-3">
                     {[0, 1, 2].map((i) => (
                       <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-muted" animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }} transition={{ duration: 1, repeat: Infinity, delay: i * 0.16 }} />

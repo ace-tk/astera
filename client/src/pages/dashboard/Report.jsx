@@ -1,11 +1,13 @@
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
 import MeetingDNA from '@/components/dna/MeetingDNA'
 import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
+import ReportCover, { wasCovered } from '@/components/report/ReportCover'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
@@ -19,6 +21,12 @@ const RISK_STYLE = {
 export default function Report() {
   const { id } = useParams()
   const { data: report, isLoading } = useReport(id)
+  const [covered, setCovered] = useState(true)
+
+  // Reveal the cover once per report per session.
+  useEffect(() => {
+    if (report) setCovered(!wasCovered(report.id))
+  }, [report?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading || !report) {
     return (
@@ -33,6 +41,10 @@ export default function Report() {
   const a = accent(report.color)
 
   return (
+    <>
+    <AnimatePresence>
+      {covered && <ReportCover report={report} onReveal={() => setCovered(false)} />}
+    </AnimatePresence>
     <article className="mx-auto max-w-4xl">
       {/* Back + actions */}
       <div className="flex items-center justify-between">
@@ -243,5 +255,6 @@ export default function Report() {
         </div>
       </div>
     </article>
+    </>
   )
 }

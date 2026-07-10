@@ -93,7 +93,7 @@ export default function CinematicBuild({ report, onFinish, onSwitchInteractive }
       {/* Live status header */}
       <div className="sticky top-0 z-10 -mx-4 mb-8 border-b border-ink/8 bg-paper/80 px-4 py-4 backdrop-blur-xl">
         <div className="flex items-center gap-3">
-          <AstraOrb size={34} breathing={!done} />
+          <AstraOrb size={34} breathing={!done} state={done ? 'completed' : 'writing'} />
           <div className="flex-1">
             <div className="flex items-center gap-2 text-sm font-medium">
               {done ? (
