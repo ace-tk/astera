@@ -1,7 +1,9 @@
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen } from 'lucide-react'
+import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
+import MeetingDNA from '@/components/dna/MeetingDNA'
+import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
 import Reveal from '@/components/ui/Reveal'
@@ -92,6 +94,40 @@ export default function Report() {
           </Reveal>
         ))}
       </div>
+
+      {/* Meeting DNA — signature fingerprint */}
+      {report.dna && (
+        <Reveal delay={0.1} className="mt-14">
+          <div className="overflow-hidden rounded-3xl border border-ink/8 bg-card shadow-soft">
+            <div className="grid items-center gap-8 p-8 md:grid-cols-[240px_1fr]">
+              <div className="grid place-items-center">
+                <MeetingDNA dna={report.dna} color={report.color} size={220} showLabels={false} />
+              </div>
+              <div>
+                <span className={cn('eyebrow', a.text)}><Fingerprint className="h-3.5 w-3.5" /> Meeting DNA</span>
+                <h2 className="mt-3 font-display text-2xl font-medium tracking-tight text-balance">
+                  Every meeting has a fingerprint.
+                </h2>
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+                  Astera reads the shape of the conversation — how decisive it was, how much the room
+                  collaborated, the energy in it, and how confident the AI is in what it found.
+                </p>
+                <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+                  {DNA_TRAITS.map((t) => (
+                    <div key={t.key} className="flex items-center gap-2">
+                      <span className={cn('h-2 w-2 shrink-0 rounded-full', accent(t.color).bg)} />
+                      <span className="text-xs text-muted">{t.label}</span>
+                      <span className={cn('ml-auto text-sm font-semibold', accent(t.color).text)}>
+                        {t.labelKey ? report.dna[t.labelKey] : `${report.dna[t.key]}%`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      )}
 
       {/* Timeline */}
       <Reveal delay={0.1} className="mt-14">

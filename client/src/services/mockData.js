@@ -3,8 +3,9 @@
  * the server's report model so swapping to the real API is a one-line change
  * in services/reports.js. Deterministic — no random values.
  */
+import { DEMO_MEETINGS, BASE_DNA } from '@/constants/demoMeetings'
 
-export const REPORTS = [
+const BASE_REPORTS = [
   {
     id: 'q3-roadmap',
     title: 'Q3 Roadmap Alignment',
@@ -122,8 +123,15 @@ export const REPORTS = [
   },
 ]
 
+// Attach a DNA fingerprint to the three originals, then place the curated demo
+// meetings first so they lead the Reports list and the Demo Workspace gallery.
+const WITH_DNA = BASE_REPORTS.map((r) => ({ ...r, dna: BASE_DNA[r.id], category: r.category || 'Internal' }))
+
+export const REPORTS = [...DEMO_MEETINGS, ...WITH_DNA]
+
 export const getReports = () => REPORTS
 export const getReport = (id) => REPORTS.find((r) => r.id === id) || REPORTS[0]
+export const getDemoMeetings = () => REPORTS.filter((r) => r.demo)
 
 export const WORKSPACE_ANALYTICS = {
   totalReports: 38,
