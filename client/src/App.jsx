@@ -4,6 +4,9 @@ import { AnimatePresence } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 import PageLoader from '@/components/common/PageLoader'
 import ScrollToTop from '@/components/common/ScrollToTop'
+import CommandPalette from '@/components/common/CommandPalette'
+import ShortcutsOverlay from '@/components/common/ShortcutsOverlay'
+import GlobalShortcuts from '@/components/common/GlobalShortcuts'
 
 // Route-level code splitting keeps the landing bundle lean.
 const Landing = lazy(() => import('@/pages/Landing'))
@@ -21,6 +24,9 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <GlobalShortcuts />
+      <CommandPalette />
+      <ShortcutsOverlay />
       <Suspense fallback={<PageLoader />}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
