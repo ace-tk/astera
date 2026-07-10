@@ -5,6 +5,7 @@ import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, Bell, Pa
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
+import Astra from '@/components/assistant/Astra'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 
@@ -140,6 +141,9 @@ export default function DashboardLayout() {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* ASTRA — the always-present intelligence assistant */}
+      <Astra />
     </div>
   )
 }
