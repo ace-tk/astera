@@ -6,6 +6,8 @@ import { ThemeProvider } from '@/context/ThemeContext'
 import { SoundProvider } from '@/context/SoundContext'
 import { InterviewProvider } from '@/context/InterviewContext'
 import { A11yProvider } from '@/context/A11yContext'
+import { ToastProvider } from '@/context/ToastContext'
+import ErrorBoundary from '@/components/common/ErrorBoundary'
 import App from './App'
 import './styles/globals.css'
 
@@ -20,9 +22,13 @@ createRoot(document.getElementById('root')).render(
         <SoundProvider>
           <A11yProvider>
             <InterviewProvider>
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
+              <ToastProvider>
+                <BrowserRouter>
+                  <ErrorBoundary>
+                    <App />
+                  </ErrorBoundary>
+                </BrowserRouter>
+              </ToastProvider>
             </InterviewProvider>
           </A11yProvider>
         </SoundProvider>

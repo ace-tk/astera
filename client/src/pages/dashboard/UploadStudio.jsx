@@ -129,7 +129,7 @@ export default function UploadStudio() {
                     <p className="text-xs text-muted">{(file.size / 1_000_000).toFixed(1)} MB · ready to process</p>
                   </div>
                   <button onClick={reset} className="text-muted hover:text-ink"><X className="h-4 w-4" /></button>
-                  <Button size="sm" variant="accent" onClick={start}>Generate report</Button>
+                  <Button size="sm" variant="accent" onClick={start}>Create intelligence</Button>
                 </motion.div>
               )}
             </AnimatePresence>

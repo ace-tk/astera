@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
+import { useToast } from '@/context/ToastContext'
 import MeetingDNA from '@/components/dna/MeetingDNA'
 import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
@@ -22,6 +23,7 @@ const RISK_STYLE = {
 export default function Report() {
   const { id } = useParams()
   const { data: report, isLoading } = useReport(id)
+  const { toast } = useToast()
   const [covered, setCovered] = useState(true)
 
   // Reveal the cover once per report per session.
@@ -55,7 +57,13 @@ export default function Report() {
         <div className="flex gap-2">
           <Button as={Link} to={`/app/read/${report.id}`} variant="accent" size="sm"><BookOpen className="h-4 w-4" /> Read</Button>
           <Button as={Link} to={`/app/replay/${report.id}`} variant="soft" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
-          <Button variant="soft" size="sm"><Share2 className="h-4 w-4" /> Share</Button>
+          <Button
+            variant="soft"
+            size="sm"
+            onClick={() => toast({ title: 'Share link copied', description: 'Anyone with the link can read this report.', variant: 'success', color: 'royal' })}
+          >
+            <Share2 className="h-4 w-4" /> Share
+          </Button>
         </div>
       </div>
 

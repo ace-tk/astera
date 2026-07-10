@@ -1,6 +1,10 @@
+import { Link } from 'react-router-dom'
+import { UploadCloud } from 'lucide-react'
 import { useReports } from '@/hooks/useReports'
 import ReportCard from '@/components/dashboard/ReportCard'
+import EmptyState from '@/components/common/EmptyState'
 import Reveal from '@/components/ui/Reveal'
+import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 
 const SUMMARY = [
@@ -14,12 +18,26 @@ export default function Overview() {
   const { data: reports = [], isLoading } = useReports()
   const [featured, ...rest] = reports
 
+  if (!isLoading && reports.length === 0) {
+    return (
+      <div className="mx-auto grid min-h-[60vh] max-w-shell place-items-center">
+        <EmptyState
+          color="coral"
+          icon={UploadCloud}
+          title="No conversations yet."
+          description="Every great report starts with one discussion. Drop in a recording and watch Astera bring it to life."
+          action={<Button as={Link} to="/app/upload" variant="accent">Create intelligence</Button>}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="mx-auto max-w-shell">
       <Reveal>
         <p className="eyebrow">Good afternoon, Maya</p>
         <h1 className="mt-3 max-w-2xl font-display text-display-sm font-semibold leading-[1.02] tracking-tight text-balance">
-          Three conversations became clarity today.
+          Every conversation, understood.
         </h1>
       </Reveal>
 

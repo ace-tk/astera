@@ -7,6 +7,7 @@ import ScrollToTop from '@/components/common/ScrollToTop'
 import CommandPalette from '@/components/common/CommandPalette'
 import ShortcutsOverlay from '@/components/common/ShortcutsOverlay'
 import GlobalShortcuts from '@/components/common/GlobalShortcuts'
+import EasterEggs from '@/components/eggs/EasterEggs'
 import { useA11y } from '@/context/A11yContext'
 
 // Route-level code splitting keeps the landing bundle lean.
@@ -34,6 +35,7 @@ export default function App() {
       <GlobalShortcuts />
       <CommandPalette />
       <ShortcutsOverlay />
+      <EasterEggs />
       <Suspense fallback={<PageLoader />}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>

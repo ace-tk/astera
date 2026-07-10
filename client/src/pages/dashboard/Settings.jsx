@@ -9,6 +9,7 @@ import { useTheme } from '@/context/ThemeContext'
 import { useSound } from '@/context/SoundContext'
 import { useA11y } from '@/context/A11yContext'
 import { useInterview } from '@/context/InterviewContext'
+import { useToast } from '@/context/ToastContext'
 import { MOD_LABEL } from '@/hooks/useHotkeys'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
@@ -71,6 +72,7 @@ export default function Settings() {
   const { enabled: soundOn, setEnabled: setSound } = useSound()
   const a11y = useA11y()
   const interview = useInterview()
+  const { toast } = useToast()
   const [tab, setTab] = useState('appearance')
 
   return (
@@ -182,7 +184,14 @@ export default function Settings() {
               <>
                 <Card title="Interview mode" badge={<span className="rounded-full bg-purple/12 px-2 py-0.5 text-[0.65rem] font-medium text-purple">Presenter</span>}>
                   <Row title="Show engineering notes" desc="Add ⓘ badges across the app explaining the architecture and decisions.">
-                    <Toggle on={interview.enabled} onChange={interview.setEnabled} label="Interview mode" />
+                    <Toggle
+                      on={interview.enabled}
+                      onChange={(v) => {
+                        interview.setEnabled(v)
+                        toast({ title: v ? 'Interview mode on' : 'Interview mode off', description: v ? 'Look for the pulsing ⓘ across the app.' : 'Engineering notes hidden.', variant: 'magic', color: 'purple' })
+                      }}
+                      label="Interview mode"
+                    />
                   </Row>
                   <p className="mt-2 rounded-xl bg-paper p-3 text-xs text-muted">When on, look for the pulsing ⓘ on the Workspace, Reports, and Replay — each explains why it’s built the way it is.</p>
                 </Card>
