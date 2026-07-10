@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { UploadCloud, FileAudio, Check, Loader2, X } from 'lucide-react'
+import { UploadCloud, FileAudio, Check, Loader2, X, Clapperboard } from 'lucide-react'
 import { JOURNEY } from '@/constants/content'
 import { accent } from '@/utils/accent'
 import Glyph from '@/components/ui/Glyph'
@@ -199,8 +199,11 @@ export default function UploadStudio() {
               Your intelligence report is ready — 9 decisions, 3 commitments, and 2 risks, all cited back to the moment they were said.
             </p>
             <div className="mt-8 flex gap-3">
-              <Button variant="accent" onClick={() => navigate('/app/report/q3-roadmap')}>Open report</Button>
-              <Button variant="soft" onClick={reset}>Upload another</Button>
+              <Button variant="accent" onClick={() => navigate('/app/replay/q3-roadmap')}>
+                <Clapperboard className="h-4 w-4" /> Watch it build
+              </Button>
+              <Button variant="soft" onClick={() => navigate('/app/report/q3-roadmap')}>Open report</Button>
+              <Button variant="ghost" magnetic={false} onClick={reset}>Upload another</Button>
             </div>
           </motion.div>
         )}

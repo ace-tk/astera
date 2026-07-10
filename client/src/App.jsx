@@ -15,6 +15,7 @@ const Workspace = lazy(() => import('@/pages/dashboard/Workspace'))
 const Overview = lazy(() => import('@/pages/dashboard/Overview'))
 const UploadStudio = lazy(() => import('@/pages/dashboard/UploadStudio'))
 const Report = lazy(() => import('@/pages/dashboard/Report'))
+const Replay = lazy(() => import('@/pages/dashboard/Replay'))
 const Analytics = lazy(() => import('@/pages/dashboard/Analytics'))
 const Settings = lazy(() => import('@/pages/dashboard/Settings'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="reports" element={<Overview />} />
               <Route path="upload" element={<UploadStudio />} />
               <Route path="report/:id" element={<Report />} />
+              <Route path="replay/:id" element={<Replay />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<Settings />} />
             </Route>

@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Share2, Download, Sparkles, AlertTriangle, CheckCircle2, Flag } from 'lucide-react'
+import { ArrowLeft, Share2, Download, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
@@ -34,10 +34,11 @@ export default function Report() {
     <article className="mx-auto max-w-4xl">
       {/* Back + actions */}
       <div className="flex items-center justify-between">
-        <Link to="/app" className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink">
+        <Link to="/app/reports" className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink">
           <ArrowLeft className="h-4 w-4" /> All reports
         </Link>
         <div className="flex gap-2">
+          <Button as={Link} to={`/app/replay/${report.id}`} variant="accent" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
           <Button variant="soft" size="sm"><Share2 className="h-4 w-4" /> Share</Button>
           <Button variant="soft" size="sm"><Download className="h-4 w-4" /> Export</Button>
         </div>

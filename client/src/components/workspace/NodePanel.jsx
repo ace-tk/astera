@@ -260,6 +260,9 @@ export default function NodePanel({ node, report, onClose }) {
               <Button variant="accent" size="sm" className="flex-1" onClick={() => navigate(`/app/report/${report.id}`)}>
                 Open report <ArrowRight className="h-4 w-4" />
               </Button>
+              <Button variant="soft" size="sm" onClick={() => navigate(`/app/replay/${report.id}`)}>
+                Replay
+              </Button>
             </div>
           </motion.aside>
         </>
