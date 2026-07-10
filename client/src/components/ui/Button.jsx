@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
 import { useMagnetic } from '@/hooks/useMagnetic'
+import { useSound } from '@/context/SoundContext'
 import { cn } from '@/utils/cn'
 
 /**
@@ -26,10 +27,11 @@ const SIZES = {
 }
 
 const Button = forwardRef(function Button(
-  { as = 'button', variant = 'primary', size = 'md', magnetic = variant !== 'ghost', className, children, ...props },
+  { as = 'button', variant = 'primary', size = 'md', magnetic = variant !== 'ghost', sound = true, className, children, onClick, onMouseEnter, ...props },
   ref,
 ) {
   const mag = useMagnetic(magnetic ? 0.28 : 0)
+  const { play } = useSound()
   const Comp = motion[as] || motion.button
 
   return (
@@ -40,7 +42,15 @@ const Button = forwardRef(function Button(
         else if (ref) ref.current = node
       }}
       onMouseMove={magnetic ? mag.onMouseMove : undefined}
+      onMouseEnter={(e) => {
+        if (sound) play('hover')
+        onMouseEnter?.(e)
+      }}
       onMouseLeave={magnetic ? mag.onMouseLeave : undefined}
+      onClick={(e) => {
+        if (sound) play('click')
+        onClick?.(e)
+      }}
       style={magnetic ? { x: mag.springX, y: mag.springY } : undefined}
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.97 }}
