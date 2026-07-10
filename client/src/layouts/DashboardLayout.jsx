@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, Bell, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, Bell, PanelLeftClose, PanelLeft, Sparkles } from 'lucide-react'
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
@@ -23,6 +23,7 @@ const openCommandPalette = () => window.dispatchEvent(new CustomEvent('astera:co
 
 const NAV = [
   { to: '/app', label: 'Workspace', icon: Workflow, end: true, active: 'text-purple' },
+  { to: '/app/demos', label: 'Demos', icon: Sparkles, active: 'text-coral' },
   { to: '/app/reports', label: 'Reports', icon: FileText, active: 'text-royal' },
   { to: '/app/upload', label: 'Upload Studio', icon: UploadCloud, active: 'text-coral' },
   { to: '/app/analytics', label: 'Analytics', icon: BarChart3, active: 'text-sky' },

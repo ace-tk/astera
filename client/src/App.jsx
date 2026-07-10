@@ -12,6 +12,7 @@ import GlobalShortcuts from '@/components/common/GlobalShortcuts'
 const Landing = lazy(() => import('@/pages/Landing'))
 const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'))
 const Workspace = lazy(() => import('@/pages/dashboard/Workspace'))
+const DemoWorkspace = lazy(() => import('@/pages/dashboard/DemoWorkspace'))
 const Overview = lazy(() => import('@/pages/dashboard/Overview'))
 const UploadStudio = lazy(() => import('@/pages/dashboard/UploadStudio'))
 const Report = lazy(() => import('@/pages/dashboard/Report'))
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/app" element={<DashboardLayout />}>
               <Route index element={<Workspace />} />
+              <Route path="demos" element={<DemoWorkspace />} />
               <Route path="reports" element={<Overview />} />
               <Route path="upload" element={<UploadStudio />} />
               <Route path="report/:id" element={<Report />} />
