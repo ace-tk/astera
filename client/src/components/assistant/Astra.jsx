@@ -159,7 +159,7 @@ export default function Astra() {
               setOpen(true)
               play('open')
             }}
-            className="group fixed bottom-6 right-6 z-[90] flex items-center gap-3"
+            className="group fixed bottom-20 right-5 z-[90] flex items-center gap-3 lg:bottom-6 lg:right-6"
             aria-label="Open Astra assistant"
           >
             <span className="pointer-events-none absolute right-16 hidden whitespace-nowrap rounded-full border border-ink/8 bg-card px-3 py-1.5 text-sm font-medium shadow-lift group-hover:block">
@@ -179,7 +179,7 @@ export default function Astra() {
             exit={{ opacity: 0, y: 30, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 260, damping: 26 }}
             style={{ transformOrigin: 'bottom right' }}
-            className="fixed bottom-6 right-6 z-[95] flex h-[min(34rem,calc(100vh-3rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.75rem] border border-ink/10 bg-card shadow-float"
+            className="fixed bottom-20 right-4 z-[95] flex h-[min(34rem,calc(100vh-7rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-[1.75rem] border border-ink/10 bg-card shadow-float lg:bottom-6 lg:right-6 lg:h-[min(34rem,calc(100vh-3rem))]"
           >
             {/* header */}
             <div className="flex items-center justify-between gap-3 border-b border-ink/8 p-4">

@@ -43,6 +43,9 @@ export default function DashboardLayout() {
 
   return (
     <div className="bg-canvas relative flex h-screen overflow-hidden">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper">
+        Skip to content
+      </a>
       {!immersive && (
         <div className="pointer-events-none fixed inset-0 -z-10 opacity-70">
           <MeshBackground mood={ROUTE_MOOD[location.pathname] || 'reports'} dots={false} />
@@ -122,29 +125,33 @@ export default function DashboardLayout() {
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Topbar */}
-        <header className="z-30 flex shrink-0 items-center gap-4 border-b border-ink/8 bg-paper/70 px-6 py-4 backdrop-blur-xl">
+        <header className="z-30 flex shrink-0 items-center gap-3 border-b border-ink/8 bg-paper/70 px-4 py-3.5 backdrop-blur-xl sm:gap-4 sm:px-6 sm:py-4">
+          {/* mobile logo (sidebar is desktop-only) */}
+          <Link to="/app" className="lg:hidden" aria-label="Astera home"><Wordmark mono /></Link>
           <div className="flex flex-1 items-center gap-3">
             <button
               onClick={openCommandPalette}
+              aria-label="Open command palette"
               className="flex h-10 w-full max-w-sm items-center gap-2 rounded-full border border-ink/8 bg-card px-4 text-sm text-muted transition-colors hover:border-ink/20"
             >
               <Search className="h-4 w-4" />
-              <span className="flex-1 text-left">Search or jump to…</span>
+              <span className="flex-1 text-left">Search<span className="hidden sm:inline"> or jump to…</span></span>
               <kbd className="hidden rounded-md border border-ink/10 px-1.5 text-[0.65rem] text-muted sm:block">⌘K</kbd>
             </button>
           </div>
           <SoundToggle />
-          <button className="grid h-10 w-10 place-items-center rounded-full border border-ink/8 bg-card text-muted transition-colors hover:text-ink">
+          <button aria-label="Notifications" className="hidden h-10 w-10 place-items-center rounded-full border border-ink/8 bg-card text-muted transition-colors hover:text-ink sm:grid">
             <Bell className="h-4.5 w-4.5" />
           </button>
           <ThemeSwitcher />
-          <Button as={Link} to="/app/upload" size="sm" variant="accent">
-            <UploadCloud className="h-4 w-4" /> New report
+          <Button as={Link} to="/app/upload" size="sm" variant="accent" aria-label="New report">
+            <UploadCloud className="h-4 w-4" /> <span className="hidden sm:inline">New report</span>
           </Button>
         </header>
 
         <AnimatePresence mode="wait">
-          <motion.div
+          <motion.main
+            id="main-content"
             key={location.pathname}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -152,13 +159,16 @@ export default function DashboardLayout() {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               'min-h-0 flex-1',
-              immersive ? 'overflow-hidden' : 'overflow-y-auto px-6 py-8 sm:px-8 lg:px-10',
+              immersive ? 'overflow-hidden' : 'overflow-y-auto px-4 pb-28 pt-6 sm:px-8 sm:pb-8 sm:pt-8 lg:px-10',
             )}
           >
             <Outlet />
-          </motion.div>
+          </motion.main>
         </AnimatePresence>
       </div>
+
+      {/* Mobile bottom navigation */}
+      <MobileTabBar />
 
       {/* ASTRA — the always-present intelligence assistant */}
       <Astra />
@@ -166,5 +176,32 @@ export default function DashboardLayout() {
       {/* First-run welcome + guided tour */}
       <Onboarding />
     </div>
+  )
+}
+
+/** Native-feeling bottom tab bar for small screens (the sidebar is desktop-only). */
+function MobileTabBar() {
+  return (
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/8 bg-card/90 backdrop-blur-xl lg:hidden" aria-label="Primary">
+      <div className="flex items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
+        {NAV.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={({ isActive }) =>
+              cn('flex flex-1 flex-col items-center gap-1 py-2.5 text-[0.6rem] font-medium transition-colors', isActive ? 'text-ink' : 'text-muted')
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <item.icon className={cn('h-5 w-5 transition-transform', isActive && cn('scale-110', item.active))} />
+                {item.label.split(' ')[0]}
+              </>
+            )}
+          </NavLink>
+        ))}
+      </div>
+    </nav>
   )
 }
