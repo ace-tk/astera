@@ -1,0 +1,210 @@
+import { useParams, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { ArrowLeft, Share2, Download, Sparkles, AlertTriangle, CheckCircle2, Flag } from 'lucide-react'
+import { useReport } from '@/hooks/useReports'
+import { accent } from '@/utils/accent'
+import ReportTimeline from '@/components/report/ReportTimeline'
+import Reveal from '@/components/ui/Reveal'
+import Button from '@/components/ui/Button'
+import { cn } from '@/utils/cn'
+
+const RISK_STYLE = {
+  high: { text: 'text-rose', bg: 'bg-rose/10', label: 'High' },
+  medium: { text: 'text-orange', bg: 'bg-orange/10', label: 'Medium' },
+  low: { text: 'text-golden', bg: 'bg-golden/10', label: 'Low' },
+}
+
+export default function Report() {
+  const { id } = useParams()
+  const { data: report, isLoading } = useReport(id)
+
+  if (isLoading || !report) {
+    return (
+      <div className="mx-auto max-w-4xl space-y-4">
+        <div className="h-8 w-40 animate-pulse rounded-full bg-card" />
+        <div className="h-24 animate-pulse rounded-3xl bg-card" />
+        <div className="h-64 animate-pulse rounded-3xl bg-card" />
+      </div>
+    )
+  }
+
+  const a = accent(report.color)
+
+  return (
+    <article className="mx-auto max-w-4xl">
+      {/* Back + actions */}
+      <div className="flex items-center justify-between">
+        <Link to="/app" className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink">
+          <ArrowLeft className="h-4 w-4" /> All reports
+        </Link>
+        <div className="flex gap-2">
+          <Button variant="soft" size="sm"><Share2 className="h-4 w-4" /> Share</Button>
+          <Button variant="soft" size="sm"><Download className="h-4 w-4" /> Export</Button>
+        </div>
+      </div>
+
+      {/* Masthead */}
+      <Reveal className="mt-8">
+        <span className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
+          <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} /> {report.subtitle}
+        </span>
+        <h1 className="mt-5 font-display text-display-sm font-semibold leading-[1.02] tracking-tight text-balance">
+          {report.title}
+        </h1>
+        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
+          <span>{new Date(report.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+          <span>·</span>
+          <span>{report.duration} runtime</span>
+          <span>·</span>
+          <span>{report.participants.length} participants</span>
+        </div>
+      </Reveal>
+
+      {/* Lede / AI summary */}
+      <Reveal delay={0.1} className="mt-10">
+        <div className="relative overflow-hidden rounded-3xl border border-ink/8 bg-card p-8 shadow-soft">
+          <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> Astera summary</span>
+          <p className="mt-4 font-display text-2xl font-medium leading-snug tracking-tight text-balance">
+            {report.headline}
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {report.participants.map((p) => (
+              <span key={p} className="chip text-xs">{p}</span>
+            ))}
+          </div>
+        </div>
+      </Reveal>
+
+      {/* Metric strip */}
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {[
+          ['decisions', 'Decisions', 'text-royal'],
+          ['commitments', 'Commitments', 'text-golden'],
+          ['risks', 'Risks', 'text-rose'],
+          ['owners', 'Owners', 'text-purple'],
+        ].map(([k, label, c], i) => (
+          <Reveal key={k} delay={0.1 + i * 0.05}>
+            <div className="rounded-2xl border border-ink/8 bg-card p-5 text-center shadow-soft">
+              <div className={cn('font-display text-3xl font-semibold', c)}>{report.metrics[k]}</div>
+              <div className="mt-1 text-xs text-muted">{label}</div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+
+      {/* Timeline */}
+      <Reveal delay={0.1} className="mt-14">
+        <div className="rounded-3xl border border-ink/8 bg-card p-8 shadow-soft">
+          <ReportTimeline timeline={report.timeline} duration={report.duration} />
+        </div>
+      </Reveal>
+
+      {/* Decisions */}
+      <section className="mt-16">
+        <h2 className="flex items-center gap-3 font-display text-2xl font-medium tracking-tight">
+          <CheckCircle2 className="h-6 w-6 text-royal" /> Decisions
+        </h2>
+        <div className="mt-6 space-y-3">
+          {report.decisions.map((d, i) => (
+            <Reveal key={i} delay={i * 0.06}>
+              <div className="flex items-start gap-4 rounded-2xl border border-ink/8 bg-card p-5 shadow-soft">
+                <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-royal/10 font-display text-sm font-semibold text-royal">
+                  {i + 1}
+                </span>
+                <div className="flex-1">
+                  <p className="font-medium leading-snug">{d.text}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted">
+                    <span className="chip text-xs">Owner · {d.owner}</span>
+                    <span>at {d.at}</span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-1.5 w-16 overflow-hidden rounded-full bg-ink/8">
+                        <span className="block h-full rounded-full bg-royal" style={{ width: `${d.confidence * 100}%` }} />
+                      </span>
+                      {Math.round(d.confidence * 100)}% confidence
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Risks + Commitments two-up */}
+      <div className="mt-16 grid gap-8 lg:grid-cols-2">
+        <section>
+          <h2 className="flex items-center gap-3 font-display text-2xl font-medium tracking-tight">
+            <AlertTriangle className="h-6 w-6 text-rose" /> Risks
+          </h2>
+          <div className="mt-6 space-y-3">
+            {report.risks.map((r, i) => {
+              const rs = RISK_STYLE[r.level]
+              return (
+                <Reveal key={i} delay={i * 0.06}>
+                  <div className={cn('rounded-2xl border border-ink/8 bg-card p-5 shadow-soft')}>
+                    <div className="flex items-center justify-between">
+                      <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-medium', rs.bg, rs.text)}>{rs.label} risk</span>
+                      <span className="text-xs text-muted">{r.at}</span>
+                    </div>
+                    <p className="mt-3 text-sm font-medium leading-snug">{r.text}</p>
+                  </div>
+                </Reveal>
+              )
+            })}
+          </div>
+        </section>
+
+        <section>
+          <h2 className="flex items-center gap-3 font-display text-2xl font-medium tracking-tight">
+            <Flag className="h-6 w-6 text-golden" /> Commitments
+          </h2>
+          <div className="mt-6 space-y-3">
+            {report.commitments.map((c, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <div className="flex items-center gap-4 rounded-2xl border border-ink/8 bg-card p-5 shadow-soft">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-golden/15 text-golden">
+                    <Flag className="h-4 w-4" />
+                  </span>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium leading-snug">{c.text}</p>
+                    <p className="mt-1 text-xs text-muted">{c.owner} · due {c.due} · {c.at}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* Talk-time */}
+      <section className="mt-16">
+        <h2 className="font-display text-2xl font-medium tracking-tight">Who held the room</h2>
+        <div className="mt-6 space-y-3 rounded-3xl border border-ink/8 bg-card p-8 shadow-soft">
+          {report.talkTime.map((t, i) => (
+            <div key={t.name} className="flex items-center gap-4">
+              <span className="w-28 shrink-0 text-sm text-ink/80">{t.name}</span>
+              <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-ink/[0.06]">
+                <motion.span
+                  className="block h-full rounded-full bg-accent"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${t.pct}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                />
+              </div>
+              <span className="w-10 shrink-0 text-right text-sm text-muted">{t.pct}%</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="mt-16 flex items-center justify-between rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
+        <p className="text-sm text-muted">Was this report useful?</p>
+        <div className="flex gap-2">
+          <Button variant="soft" size="sm">👍 Yes</Button>
+          <Button variant="ghost" size="sm">Refine</Button>
+        </div>
+      </div>
+    </article>
+  )
+}
