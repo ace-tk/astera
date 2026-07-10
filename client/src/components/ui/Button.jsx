@@ -26,13 +26,28 @@ const SIZES = {
   lg: 'h-14 px-8 text-base gap-2.5',
 }
 
+/**
+ * Resolve the motion element for `as`. String tags map to `motion.<tag>`;
+ * components (e.g. React Router's Link) must be wrapped with motion.create and
+ * cached — indexing `motion[Component]` stringifies to an invalid tag name.
+ */
+const motionCache = new Map()
+function resolveMotion(as) {
+  if (typeof as === 'string') return motion[as] || motion.button
+  if (!motionCache.has(as)) {
+    const create = typeof motion.create === 'function' ? motion.create : motion
+    motionCache.set(as, create(as))
+  }
+  return motionCache.get(as)
+}
+
 const Button = forwardRef(function Button(
   { as = 'button', variant = 'primary', size = 'md', magnetic = variant !== 'ghost', sound = true, className, children, onClick, onMouseEnter, ...props },
   ref,
 ) {
   const mag = useMagnetic(magnetic ? 0.28 : 0)
   const { play } = useSound()
-  const Comp = motion[as] || motion.button
+  const Comp = resolveMotion(as)
 
   return (
     <Comp
