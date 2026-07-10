@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Share2, Download, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard } from 'lucide-react'
+import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
@@ -38,9 +38,9 @@ export default function Report() {
           <ArrowLeft className="h-4 w-4" /> All reports
         </Link>
         <div className="flex gap-2">
-          <Button as={Link} to={`/app/replay/${report.id}`} variant="accent" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
+          <Button as={Link} to={`/app/read/${report.id}`} variant="accent" size="sm"><BookOpen className="h-4 w-4" /> Read</Button>
+          <Button as={Link} to={`/app/replay/${report.id}`} variant="soft" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
           <Button variant="soft" size="sm"><Share2 className="h-4 w-4" /> Share</Button>
-          <Button variant="soft" size="sm"><Download className="h-4 w-4" /> Export</Button>
         </div>
       </div>
 

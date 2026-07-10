@@ -119,7 +119,7 @@ export default function CinematicBuild({ report, onFinish, onSwitchInteractive }
           {done && (
             <div className="flex gap-2">
               <Button size="sm" variant="soft" onClick={run}>Replay</Button>
-              <Button size="sm" variant="accent" onClick={() => navigate(`/app/report/${report.id}`)}>
+              <Button size="sm" variant="accent" onClick={() => navigate(`/app/read/${report.id}`)}>
                 Open reader <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
@@ -241,7 +241,7 @@ export default function CinematicBuild({ report, onFinish, onSwitchInteractive }
             <h3 className="mt-5 font-display text-2xl font-semibold tracking-tight">From conversation to clarity.</h3>
             <p className="mt-2 max-w-sm text-sm text-muted">Your report is composed. Read it in the premium reader, or scrub the meeting moment by moment.</p>
             <div className="mt-6 flex gap-3">
-              <Button variant="accent" onClick={() => navigate(`/app/report/${report.id}`)}>Open reader <ArrowRight className="h-4 w-4" /></Button>
+              <Button variant="accent" onClick={() => navigate(`/app/read/${report.id}`)}>Open reader <ArrowRight className="h-4 w-4" /></Button>
               <Button variant="soft" onClick={onSwitchInteractive}>Scrub the meeting</Button>
             </div>
           </div>

@@ -26,7 +26,9 @@ export default function DashboardLayout() {
 
   // Immersive routes fill the viewport with no padding (canvas / reader).
   const immersive =
-    location.pathname === '/app' || location.pathname.startsWith('/app/replay')
+    location.pathname === '/app' ||
+    location.pathname.startsWith('/app/replay') ||
+    location.pathname.startsWith('/app/read')
 
   return (
     <div className="bg-canvas flex h-screen overflow-hidden">
