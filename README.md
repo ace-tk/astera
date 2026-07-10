@@ -24,20 +24,26 @@ like Apple / Linear / Arc rather than a template.
 
 ## What's inside
 
+Astera isn't a dashboard with an upload button. It's a creative workspace built
+around understanding meetings, closer to Figma / Linear / Arc than an admin panel.
+
 | Area | Highlights |
 | --- | --- |
-| **Landing** | Editorial hero with a mouse-parallax report stack, a scroll-lit story beat, an animated "journey" of how it works, a Pinterest-meets-Apple bento of features, testimonials, and pricing. |
-| **Design system** | Every color is a CSS variable, so one `data-theme` swap re-skins the whole product across **6 themes** (Light, Aurora, Ocean, Sunset, Forest, Royal). Each feature owns a semantic color. |
-| **App shell** | Collapsible animated sidebar, command-style search bar, soft page transitions. |
-| **Upload Studio** | Drag-and-drop with a live, staged processing pipeline (transcript → intelligence → timeline → report → compliance → delivery). |
-| **Report** | The centerpiece — a meeting typeset as a publication: AI summary, metric strip, scrubbable timeline, decisions with confidence, risks, commitments, and talk-time. |
-| **Analytics** | Decision velocity, capture distribution, and report volume — custom-styled Recharts. |
+| **Intelligence Workspace** | The app's home — an infinite React Flow canvas of the meeting pipeline (recording → transcript → AI → timeline → speakers → decisions → risks → compliance → summary → report). Every node is fully custom with its own live mini-visual; edges animate with a traveling particle; clicking a node opens a rich floating panel; "Re-run intelligence" lights the graph up stage by stage. |
+| **AI Replay** | The report **composes itself** on screen — Astra writes the summary word by word, metrics count up, the timeline draws, speaker bars fill, decisions and risks slide in. Cinematic, with a live progress rail. |
+| **Meeting Replay** | A scrubbable vertical timeline that drives every panel at once — active speaker, transcript excerpt, what Astra logged, running tallies. Press play to auto-advance. |
+| **ASTRA** | A living gradient orb (breathing, not a chat rectangle) that expands into an assistant grounded in the current report — talk-time, unresolved decisions, why a risk was flagged — with streaming answers. |
+| **Reading Mode** | A Kindle-grade reader: editorial typography, paper texture, in-report search, a Sections/Bookmarks rail, a document minimap, zoom, focus mode, sticky notes, and hover-to-highlight — annotations persist per report. |
+| **Keyboard-first** | ⌘K command palette (jump anywhere, search meetings, switch themes), a `?` shortcut guide, and `g`-chord navigation. |
+| **Craft** | Synthesized (asset-free) UI sound engine — muted by default, mesh-gradient backgrounds that carry each section's emotion, magnetic buttons, cursor-tilt cards, and reduced-motion respected throughout. |
+| **Landing** | Editorial hero with a mouse-parallax report stack, a scroll-lit story beat, an animated journey, a Pinterest-meets-Apple feature bento, testimonials, and pricing. |
+| **Design system** | Every color is a CSS variable, so one `data-theme` swap re-skins the whole product across **6 themes** (Light, Aurora, Ocean, Sunset, Forest, Royal). |
 | **Backend** | Express + MongoDB API with JWT auth, a transcript→report intelligence service, and Socket.io events driving the live pipeline. |
 
 ## Tech
 
-**Frontend** — React 19 · Vite · TailwindCSS · Framer Motion · GSAP · Lenis · React Router ·
-React Query · Recharts · Lucide
+**Frontend** — React 19 · Vite · TailwindCSS · Framer Motion · GSAP · Lenis ·
+React Flow · React Router · React Query · Recharts · Lucide · Web Audio
 
 **Backend** — Node · Express · MongoDB · Mongoose · JWT · Socket.io · Multer · Zod
 

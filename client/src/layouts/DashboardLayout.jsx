@@ -5,9 +5,18 @@ import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, Bell, Pa
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
+import MeshBackground from '@/components/common/MeshBackground'
 import Astra from '@/components/assistant/Astra'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
+
+// Each destination carries its own emotional tint (color psychology).
+const ROUTE_MOOD = {
+  '/app/reports': 'reports',
+  '/app/upload': 'gold',
+  '/app/analytics': 'timeline',
+  '/app/settings': 'ai',
+}
 
 // The command palette (mounted app-wide) listens for this event.
 const openCommandPalette = () => window.dispatchEvent(new CustomEvent('astera:command'))
@@ -31,7 +40,12 @@ export default function DashboardLayout() {
     location.pathname.startsWith('/app/read')
 
   return (
-    <div className="bg-canvas flex h-screen overflow-hidden">
+    <div className="bg-canvas relative flex h-screen overflow-hidden">
+      {!immersive && (
+        <div className="pointer-events-none fixed inset-0 -z-10 opacity-70">
+          <MeshBackground mood={ROUTE_MOOD[location.pathname] || 'reports'} dots={false} />
+        </div>
+      )}
       {/* Sidebar */}
       <motion.aside
         animate={{ width: collapsed ? 84 : 264 }}

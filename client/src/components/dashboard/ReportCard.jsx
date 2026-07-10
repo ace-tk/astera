@@ -16,7 +16,7 @@ export default function ReportCard({ report, featured = false }) {
   const s = SENTIMENT[report.sentiment] || SENTIMENT.positive
 
   return (
-    <SpotlightCard tint={tint} className={cn('flex h-full flex-col p-6', featured && 'lg:p-8')}>
+    <SpotlightCard tint={tint} tilt={!featured} className={cn('flex h-full flex-col p-6', featured && 'lg:p-8')}>
       <Link to={`/app/report/${report.id}`} className="flex h-full flex-col">
         <div className="flex items-start justify-between gap-4">
           <span className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
