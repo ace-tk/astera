@@ -15,8 +15,9 @@ export default function ThemeSwitcher({ align = 'right' }) {
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex h-10 items-center gap-2 rounded-full border border-ink/10 bg-card/70 px-3 text-sm font-medium backdrop-blur-md transition-colors hover:border-ink/20"
-        aria-label="Change theme"
+        aria-label={`Theme: ${active?.name}. Change theme`}
         aria-expanded={open}
+        aria-haspopup="menu"
       >
         <Palette className="h-4 w-4 text-muted" />
         <span className="hidden sm:inline">{active?.name}</span>

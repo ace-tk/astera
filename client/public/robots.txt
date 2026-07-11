@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Astera — From Conversations to Clarity
+# Sitemap: https://astera.app/sitemap.xml

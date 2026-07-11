@@ -10,7 +10,8 @@ import { STATS } from '@/constants/content'
 function ScrollLitLine({ children }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'start 0.35'] })
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.18, 1])
+  // Floor kept ≥0.55 so even the dimmest word still meets WCAG AA contrast.
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.55, 1])
   return (
     <motion.span ref={ref} style={{ opacity }} className="inline">
       {children}{' '}

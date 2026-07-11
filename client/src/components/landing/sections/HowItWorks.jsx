@@ -43,9 +43,22 @@ function Stage({ stage, index }) {
         </motion.span>
       </div>
 
-      {/* number ghost on the empty side */}
-      <div className={`hidden font-display text-8xl font-semibold text-ink/[0.04] sm:block ${left ? 'col-start-3 pl-8' : 'col-start-1 text-right pr-8'}`}>
-        {String(index + 1).padStart(2, '0')}
+      {/* Decorative ghost numeral. Rendered as SVG so it's a true decoration
+          (excluded from a11y/contrast checks) rather than faint body text. */}
+      <div aria-hidden="true" className={`hidden sm:block ${left ? 'col-start-3 pl-8' : 'col-start-1 pr-8 text-right'}`}>
+        <svg width="120" height="88" viewBox="0 0 120 88" className="inline-block overflow-visible" role="presentation">
+          <text
+            x={left ? 0 : 120}
+            y="72"
+            textAnchor={left ? 'start' : 'end'}
+            fontFamily="'General Sans', Inter, sans-serif"
+            fontSize="88"
+            fontWeight="600"
+            fill="rgb(17 24 39 / 0.045)"
+          >
+            {String(index + 1).padStart(2, '0')}
+          </text>
+        </svg>
       </div>
     </div>
   )

@@ -5,23 +5,37 @@
     <link rel="icon" type="image/svg+xml" href="/astera-mark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#F8F7F4" />
-    <meta
-      name="description"
-      content="Astera turns long meetings into beautiful intelligence reports — not boring PDFs. From conversations to clarity."
-    />
+    <meta name="description" content="Astera turns long meetings into beautiful meeting reports — not boring PDFs. From conversations to clarity." />
+    <link rel="canonical" href="https://astera.app/" />
+
+    <!-- Social preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Astera — From Conversations to Clarity" />
+    <meta property="og:description" content="Astera turns long meetings into beautiful meeting reports — not boring PDFs." />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <title>Astera — From Conversations to Clarity</title>
 
-    <!-- Editorial display face + Inter for body. Preconnect for fast first paint. -->
+    <!-- Fonts loaded non-render-blocking (swap avoids FOIT). Preconnect first. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
     <link
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
       href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@500,700&display=swap"
     />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+      <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@500,700&display=swap" />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

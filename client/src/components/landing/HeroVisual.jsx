@@ -40,9 +40,9 @@ export default function HeroVisual() {
             </span>
             <span className="text-xs text-muted">74:12</span>
           </div>
-          <h3 className="font-display text-2xl leading-tight tracking-tight">
+          <p className="font-display text-2xl leading-tight tracking-tight" aria-hidden="true">
             Q3 Roadmap alignment
-          </h3>
+          </p>
           <p className="mt-2 text-sm text-muted">
             Seven participants aligned on shipping the billing rewrite before the
             enterprise pilot. Two risks surfaced.
