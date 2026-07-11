@@ -7,6 +7,7 @@ import MeshBackground from '@/components/common/MeshBackground'
 import Button from '@/components/ui/Button'
 import { useSound } from '@/context/SoundContext'
 import { accent } from '@/utils/accent'
+import { useThemeHex } from '@/hooks/useThemeHex'
 import { cn } from '@/utils/cn'
 
 // Words rise + un-blur into place — the "paper assembling" title.
@@ -17,6 +18,7 @@ const word = {
 }
 
 function ConfidenceRing({ value, color }) {
+  const hex = useThemeHex()
   const r = 34
   const c = 2 * Math.PI * r
   const mv = useMotionValue(0)
@@ -32,8 +34,8 @@ function ConfidenceRing({ value, color }) {
   return (
     <div className="relative grid h-24 w-24 place-items-center">
       <svg width="96" height="96" viewBox="0 0 96 96" className="-rotate-90">
-        <circle cx="48" cy="48" r={r} fill="none" stroke="rgb(17 24 39 / 0.08)" strokeWidth="6" />
-        <motion.circle cx="48" cy="48" r={r} fill="none" stroke={accent(color).hex} strokeWidth="6" strokeLinecap="round" strokeDasharray={c} style={{ strokeDashoffset: dash }} />
+        <circle cx="48" cy="48" r={r} fill="none" stroke="rgb(var(--line) / 0.1)" strokeWidth="6" />
+        <motion.circle cx="48" cy="48" r={r} fill="none" stroke={hex(color)} strokeWidth="6" strokeLinecap="round" strokeDasharray={c} style={{ strokeDashoffset: dash }} />
       </svg>
       <div className="absolute text-center">
         <div className={cn('font-display text-xl font-semibold', accent(color).text)}>{display}%</div>

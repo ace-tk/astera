@@ -3,6 +3,7 @@ import {
   PieChart, Pie, Cell, BarChart, Bar,
 } from 'recharts'
 import { WORKSPACE_ANALYTICS as W } from '@/services/mockData'
+import { useThemeHex } from '@/hooks/useThemeHex'
 import { accent } from '@/utils/accent'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
@@ -30,6 +31,7 @@ function ChartTip({ active, payload, label }) {
 }
 
 export default function Analytics() {
+  const hex = useThemeHex()
   return (
     <div className="mx-auto max-w-shell">
       <Reveal>
@@ -64,15 +66,15 @@ export default function Analytics() {
                 <AreaChart data={W.weekly} margin={{ left: -20, right: 8, top: 8 }}>
                   <defs>
                     <linearGradient id="g-dec" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#365DF5" stopOpacity={0.35} />
-                      <stop offset="100%" stopColor="#365DF5" stopOpacity={0} />
+                      <stop offset="0%" stopColor={hex('royal')} stopOpacity={0.35} />
+                      <stop offset="100%" stopColor={hex('royal')} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="4 4" stroke="rgba(17,24,39,0.06)" vertical={false} />
+                  <CartesianGrid strokeDasharray="4 4" stroke="rgb(var(--line) / 0.07)" vertical={false} />
                   <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9CA3AF' }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9CA3AF' }} />
                   <Tooltip content={<ChartTip />} cursor={{ stroke: 'rgba(17,24,39,0.15)' }} />
-                  <Area type="monotone" dataKey="decisions" stroke="#365DF5" strokeWidth={2.5} fill="url(#g-dec)" />
+                  <Area type="monotone" dataKey="decisions" stroke={hex('royal')} strokeWidth={2.5} fill="url(#g-dec)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -88,7 +90,7 @@ export default function Analytics() {
                 <PieChart>
                   <Pie data={W.distribution} dataKey="value" nameKey="name" innerRadius={48} outerRadius={72} paddingAngle={3} strokeWidth={0}>
                     {W.distribution.map((d) => (
-                      <Cell key={d.name} fill={accent(d.color).hex} />
+                      <Cell key={d.name} fill={hex(d.color)} />
                     ))}
                   </Pie>
                   <Tooltip content={<ChartTip />} />
@@ -116,11 +118,11 @@ export default function Analytics() {
           <div className="mt-6 h-52">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={W.weekly} margin={{ left: -20, right: 8, top: 8 }}>
-                <CartesianGrid strokeDasharray="4 4" stroke="rgba(17,24,39,0.06)" vertical={false} />
+                <CartesianGrid strokeDasharray="4 4" stroke="rgb(var(--line) / 0.07)" vertical={false} />
                 <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9CA3AF' }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#9CA3AF' }} />
                 <Tooltip content={<ChartTip />} cursor={{ fill: 'rgba(17,24,39,0.03)' }} />
-                <Bar dataKey="reports" fill="#38BDF8" radius={[8, 8, 0, 0]} maxBarSize={40} />
+                <Bar dataKey="reports" fill={hex('sky')} radius={[8, 8, 0, 0]} maxBarSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>

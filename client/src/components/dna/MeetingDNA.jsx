@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
+import { useThemeHex } from '@/hooks/useThemeHex'
 import { cn } from '@/utils/cn'
 
 /**
@@ -12,10 +13,12 @@ import { cn } from '@/utils/cn'
  */
 export default function MeetingDNA({ dna, color = 'royal', size = 320, showLabels = true, animate = true, className }) {
   const reduce = useReducedMotion()
+  const hex = useThemeHex()
   const cx = size / 2
   const cy = size / 2
   const R = size * (showLabels ? 0.32 : 0.42)
   const a = accent(color)
+  const mainHex = hex(color)
 
   const traits = useMemo(
     () =>
@@ -51,9 +54,9 @@ export default function MeetingDNA({ dna, color = 'royal', size = 320, showLabel
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
         <defs>
           <radialGradient id={gid} cx="50%" cy="50%" r="60%">
-            <stop offset="0%" stopColor={a.hex} stopOpacity="0.55" />
-            <stop offset="70%" stopColor={a.hex} stopOpacity="0.22" />
-            <stop offset="100%" stopColor={a.hex} stopOpacity="0.05" />
+            <stop offset="0%" stopColor={mainHex} stopOpacity="0.55" />
+            <stop offset="70%" stopColor={mainHex} stopOpacity="0.22" />
+            <stop offset="100%" stopColor={mainHex} stopOpacity="0.05" />
           </radialGradient>
           <filter id={`${gid}-glow`} x="-40%" y="-40%" width="180%" height="180%">
             <feGaussianBlur stdDeviation="6" result="b" />
@@ -66,18 +69,18 @@ export default function MeetingDNA({ dna, color = 'royal', size = 320, showLabel
 
         {/* guide rings */}
         {rings.map((s) => (
-          <polygon key={s} points={guide(s)} fill="none" stroke="rgb(17 24 39 / 0.06)" strokeWidth="1" />
+          <polygon key={s} points={guide(s)} fill="none" stroke="rgb(var(--line) / 0.08)" strokeWidth="1" />
         ))}
         {/* spokes */}
         {traits.map((t) => (
-          <line key={t.key} x1={cx} y1={cy} x2={t.ax} y2={t.ay} stroke="rgb(17 24 39 / 0.06)" strokeWidth="1" />
+          <line key={t.key} x1={cx} y1={cy} x2={t.ax} y2={t.ay} stroke="rgb(var(--line) / 0.08)" strokeWidth="1" />
         ))}
 
         {/* the DNA shape */}
         <motion.polygon
           points={polygon}
           fill={`url(#${gid})`}
-          stroke={a.hex}
+          stroke={mainHex}
           strokeWidth="2"
           strokeLinejoin="round"
           filter={`url(#${gid}-glow)`}
@@ -94,7 +97,7 @@ export default function MeetingDNA({ dna, color = 'royal', size = 320, showLabel
             cx={t.x}
             cy={t.y}
             r="4"
-            fill={accent(t.color).hex}
+            fill={hex(t.color)}
             stroke="white"
             strokeWidth="1.5"
             initial={animate && !reduce ? { scale: 0, opacity: 0 } : false}
@@ -110,7 +113,7 @@ export default function MeetingDNA({ dna, color = 'royal', size = 320, showLabel
             cy={cy}
             r={R}
             fill="none"
-            stroke={a.hex}
+            stroke={mainHex}
             strokeWidth="1"
             strokeDasharray="2 8"
             opacity="0.3"

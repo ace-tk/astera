@@ -3,10 +3,12 @@ import { AnimatePresence, motion, useMotionValue, useTransform, animate as fmAni
 import { X, Sparkles } from 'lucide-react'
 import { deriveConfidence } from '@/utils/confidence'
 import { accent } from '@/utils/accent'
+import { useThemeHex } from '@/hooks/useThemeHex'
 import { cn } from '@/utils/cn'
 
 /** A single animated confidence gauge. */
 function Gauge({ value, color, delay = 0, size = 84 }) {
+  const hex = useThemeHex()
   const r = size / 2 - 7
   const c = 2 * Math.PI * r
   const mv = useMotionValue(0)
@@ -22,8 +24,8 @@ function Gauge({ value, color, delay = 0, size = 84 }) {
   return (
     <div className="relative grid place-items-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(17 24 39 / 0.08)" strokeWidth="6" />
-        <motion.circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={accent(color).hex} strokeWidth="6" strokeLinecap="round" strokeDasharray={c} style={{ strokeDashoffset: dash }} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(var(--line) / 0.1)" strokeWidth="6" />
+        <motion.circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={hex(color)} strokeWidth="6" strokeLinecap="round" strokeDasharray={c} style={{ strokeDashoffset: dash }} />
       </svg>
       <span className={cn('absolute font-display text-lg font-semibold', accent(color).text)}>{n}%</span>
     </div>
