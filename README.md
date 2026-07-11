@@ -107,7 +107,7 @@ To use the live API instead of seeded data, set `VITE_DEMO_MODE=false` and
 ## 🎨 Design language
 
 - **Editorial, not admin.** Warm paper `#F8F7F4`, oversized display type, generous whitespace, magazine layouts.
-- **Six themes, one switch.** Every color is a CSS variable, so a single `data-theme` on `<html>` re-skins the entire product — Light, Aurora, Ocean, Sunset, Forest, and a low-light Royal. No re-render; the browser repaints from the cascade.
+- **Three exceptional themes, one switch.** Every color is a CSS variable, so a single `data-theme` on `<html>` re-skins the entire product — Light, Sunset, and a low-light Royal — including charts, Meeting DNA, and gauges. No re-render; the browser repaints from the cascade.
 - **Each feature owns a color.** Reports = royal, AI = purple, timeline = emerald, compliance = golden, risks = rose, analytics = sky, upload = coral.
 - **Sound, tastefully.** A synthesized Web Audio engine (zero audio assets) — muted by default, opt-in.
 
@@ -186,7 +186,7 @@ astera/
 │       ├── hooks/              # hotkeys, magnetic, tilt, parallax, smooth-scroll, data
 │       ├── services/           # api · reports · intelligence · replay · astra · sound
 │       ├── constants/          # themes · content · demo meetings + DNA
-│       └── styles/             # design tokens + 6 themes
+│       └── styles/             # design tokens + 3 themes
 └── server/                     # Express API
     └── src/
         ├── controllers/  services/  models/  routes/  middleware/  config/
@@ -207,7 +207,21 @@ astera/
 - **Reduce motion** honors the OS setting _and_ a manual toggle that drives Framer's global `MotionConfig` (so JS-driven animations settle instantly, not just CSS ones).
 - **Keyboard-first** — command palette, shortcut guide, `g`-chords, focus-visible rings, and an always-show-focus option.
 - **Semantics** — a `<main>` landmark, skip-to-content link, ARIA labels on icon-only controls, and a real bottom-nav on mobile.
-- **Larger-text** preference and theme contrast across all six palettes.
+- **Larger-text** preference and theme contrast across all three palettes.
+
+---
+
+## ✅ Interaction integrity (Zero Dead UI)
+
+Astera holds a **zero dead UI** bar: every interactive element is either
+production-ready or removed — no decorative buttons, no fake loading, no
+"coming soon". The full audit lives in
+**[docs/INTERACTION_INVENTORY.md](docs/INTERACTION_INVENTORY.md)**.
+
+Verified by driving the running app in a real browser across **all 13 routes,
+all 3 themes, mobile, and reduced-motion** — asserting correct behavior and
+**zero console errors**. The codebase carries no stray `console.*`, no
+TODO/placeholder text, and no unused imports.
 
 ---
 

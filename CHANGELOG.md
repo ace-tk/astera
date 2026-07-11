@@ -3,6 +3,53 @@
 All notable changes to Astera. This project loosely follows
 [Keep a Changelog](https://keepachangelog.com/) and semantic versioning.
 
+## [1.1.0] — 2026-07-11 · Launch hardening
+
+The final-week pass a senior product engineer + QA lead would run: a
+**Zero Dead UI** audit — every interactive element tested, then either made
+production-ready or removed. See [Interaction Inventory](docs/INTERACTION_INVENTORY.md).
+
+### ✨ Added — real interactions (no more placeholders)
+
+- **AI Confidence Details** — the confidence ring is now a real modal with six
+  animated radial gauges (overall, transcript, speaker, decisions, timeline,
+  risks), each derived from the report's own data with a short explanation.
+- **Executive-summary narration** — the summary reads aloud via the Web Speech
+  API with play/pause/resume/restart, playback speed, mute, and word-by-word
+  highlighting; hides gracefully where speech synthesis is unavailable.
+- **Report feedback loop** — "Was this intelligence useful?" Yes celebrates +
+  persists; "Not quite" opens a reasons modal. Stored per report, with Undo.
+- **Review Mode** — a slide-in editor to correct the title, sharpen the summary,
+  set a priority, edit/add/remove action items, and add notes — saved locally
+  and reflected on the report immediately.
+- **Notifications** — the topbar bell is a real recent-intelligence feed with an
+  unread count that clears on open.
+- **Share** copies a real link to the clipboard.
+- **ASTRA memory** — recalls the report you were last in and your return visits,
+  greeting you accordingly.
+
+### 🎨 Changed
+
+- **Three exceptional themes** — reduced six palettes to Light, Sunset, Royal;
+  charts, Meeting DNA, and confidence gauges now re-skin per theme (not just the
+  chrome). Retired themes fall back to Light.
+- **Premium microcopy** — "Preparing your workspace…", "Gathering your
+  intelligence…", "Create intelligence", "Understanding".
+- All report modals close on Escape.
+
+### 🗑️ Removed (dead UI)
+
+- The static bell button, the placeholder feedback buttons, the report Export
+  button, and three surplus themes — each replaced or retired.
+
+### ✅ QA
+
+- Every route renders with content and **zero console errors**; interactions
+  exercised across all three themes, mobile, and reduced-motion.
+- Codebase: no stray `console.*`, no TODO/placeholder text, no unused imports.
+
+---
+
 ## [1.0.0] — 2026-07-11
 
 The "launch-ready" release. Astera went from a polished SaaS to a product built
