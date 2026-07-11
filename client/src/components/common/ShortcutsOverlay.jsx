@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X, Keyboard } from 'lucide-react'
 import { useHotkeys, MOD_LABEL } from '@/hooks/useHotkeys'
-import { useSound } from '@/context/SoundContext'
 
 const GROUPS = [
   {
@@ -27,7 +26,7 @@ const GROUPS = [
     items: [
       { keys: ['Click'], label: 'Inspect a node' },
       { keys: ['Space', 'Drag'], label: 'Pan the canvas' },
-      { keys: ['R'], label: 'Re-run intelligence' },
+      { keys: ['R'], label: 'Re-run analysis' },
     ],
   },
   {
@@ -50,7 +49,6 @@ function Key({ children }) {
 
 export default function ShortcutsOverlay() {
   const [open, setOpen] = useState(false)
-  const { play } = useSound()
 
   useHotkeys(
     [

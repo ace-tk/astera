@@ -6,7 +6,7 @@ import { getBezierPath } from 'reactflow'
  * particle that travels source → target along the path — so data visibly
  * "moves" through the pipeline. No default React Flow edge styling.
  */
-function AnimatedEdgeBase({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data }) {
+function AnimatedEdgeBase({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data }) {
   const [path] = getBezierPath({ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, curvature: 0.35 })
   const active = data?.active !== false
   const color = data?.color || 'rgb(17 24 39 / 0.18)'

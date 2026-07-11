@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion'
  * speed, glow color, brightness, and pulse so Astra feels alive and reflects
  * what she's doing (sleeping → listening → thinking → writing → completed).
  */
-export const ASTRA_STATES = {
+const ASTRA_STATES = {
   sleeping: { speed: 20, glow: '124 58 237', dim: 0.6, pulse: false, blob: 9 },
   idle: { speed: 11, glow: '124 58 237', dim: 0.92, pulse: false, blob: 7 },
   listening: { speed: 9, glow: '56 189 248', dim: 1, pulse: true, blob: 6 },

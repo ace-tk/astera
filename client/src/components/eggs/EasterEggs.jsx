@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTheme } from '@/context/ThemeContext'
 import { useSound } from '@/context/SoundContext'
@@ -85,13 +85,16 @@ export default function EasterEggs() {
   const { toast } = useToast()
   const firstTheme = useRef(true)
 
-  const celebrate = (big) => {
-    setBurst(false)
-    requestAnimationFrame(() => setBurst(true))
-    play('chime')
-    if (big) toast({ title: 'You found it. ✦', description: 'The Konami code lives. Enjoy the confetti.', variant: 'magic', color: 'purple' })
-    setTimeout(() => setBurst(false), 2600)
-  }
+  const celebrate = useCallback(
+    (big) => {
+      setBurst(false)
+      requestAnimationFrame(() => setBurst(true))
+      play('chime')
+      if (big) toast({ title: 'You found it. ✦', description: 'The Konami code lives. Enjoy the confetti.', variant: 'magic', color: 'purple' })
+      setTimeout(() => setBurst(false), 2600)
+    },
+    [play, toast],
+  )
 
   useEffect(() => {
     const onKey = (e) => {
@@ -106,8 +109,7 @@ export default function EasterEggs() {
     window.addEventListener('keydown', onKey)
     window.addEventListener('astera:plane', onPlane)
     return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('astera:plane', onPlane) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [celebrate, play])
 
   // Gentle celebration when the palette changes (not on first paint).
   useEffect(() => {
@@ -115,7 +117,6 @@ export default function EasterEggs() {
     setBurst(false)
     requestAnimationFrame(() => setBurst(true))
     setTimeout(() => setBurst(false), 2200)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme])
 
   return (

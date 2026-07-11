@@ -120,7 +120,7 @@ export default function About() {
             <p className="text-sm leading-relaxed text-muted">
               <span className="font-medium text-ink">Honest note.</span> This build runs in demo mode with
               sample meetings and a deterministic heuristic analyser — the transcription and LLM extraction
-              steps above are the production path, not yet wired. Nothing here claims analysis it didn't perform.
+              steps above are the production path, not yet wired. Nothing here claims analysis it didn’t perform.
             </p>
           </div>
         </Section>

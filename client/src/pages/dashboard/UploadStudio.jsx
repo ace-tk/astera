@@ -199,7 +199,7 @@ export default function UploadStudio() {
             </motion.span>
             <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight">Sample report ready.</h2>
             <p className="mt-3 max-w-md text-muted">
-              Here's an example of what Astera produces — decisions, commitments, and risks,
+              Here’s an example of what Astera produces — decisions, commitments, and risks,
               each tied back to a moment in the meeting. Open it to explore the full experience.
             </p>
             <div className="mt-8 flex gap-3">

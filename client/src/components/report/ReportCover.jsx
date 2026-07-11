@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button'
 import { useSound } from '@/context/SoundContext'
 import { accent } from '@/utils/accent'
 import { useThemeHex } from '@/hooks/useThemeHex'
+import { markCovered } from '@/utils/coverSession'
 import { cn } from '@/utils/cn'
 
 // Words rise + un-blur into place — the "paper assembling" title.
@@ -45,10 +46,6 @@ function ConfidenceRing({ value, color }) {
   )
 }
 
-// Track which reports have already revealed this session (show once per id).
-const shown = new Set()
-export const wasCovered = (id) => shown.has(id)
-export const markCovered = (id) => shown.add(id)
 
 export default function ReportCover({ report, onReveal }) {
   const a = accent(report.color)

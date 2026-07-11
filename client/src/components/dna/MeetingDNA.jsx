@@ -17,7 +17,6 @@ export default function MeetingDNA({ dna, color = 'royal', size = 320, showLabel
   const cx = size / 2
   const cy = size / 2
   const R = size * (showLabels ? 0.32 : 0.42)
-  const a = accent(color)
   const mainHex = hex(color)
 
   const traits = useMemo(
