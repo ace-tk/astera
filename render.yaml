@@ -1,0 +1,22 @@
+# Render blueprint for the Astera API.
+# Database lives on MongoDB Atlas; set MONGODB_URI + JWT_SECRET in the dashboard.
+services:
+  - type: web
+    name: astera-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5050
+      - key: CLIENT_URL
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
