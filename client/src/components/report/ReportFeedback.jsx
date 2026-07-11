@@ -32,6 +32,13 @@ export default function ReportFeedback({ reportId }) {
     setPicked([])
   }, [reportId])
 
+  useEffect(() => {
+    if (!modalOpen) return
+    const onKey = (e) => e.key === 'Escape' && setModalOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [modalOpen])
+
   const persist = (val) => {
     localStorage.setItem(key(reportId), JSON.stringify(val))
     setSaved(val)

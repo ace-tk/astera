@@ -65,6 +65,17 @@
     @apply inline-flex items-center gap-1.5 rounded-full border border-ink/10 bg-card/70 px-3 py-1 text-sm font-medium backdrop-blur-md;
   }
 
+  /* Form inputs used across editing surfaces (Review Mode, settings). */
+  .input {
+    @apply w-full rounded-xl border border-ink/10 bg-paper px-3.5 py-2.5 text-sm outline-none transition-colors;
+  }
+  .input:focus {
+    border-color: rgb(var(--accent));
+  }
+  .input-bare {
+    @apply w-full border-0 bg-transparent p-0 outline-none;
+  }
+
   /* The signature link underline that grows on hover. */
   .link-underline {
     @apply relative;

@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint } from 'lucide-react'
+import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint, Gauge, PencilLine } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
+import { useReportEdits } from '@/hooks/useReportEdits'
 import { useToast } from '@/context/ToastContext'
 import MeetingDNA from '@/components/dna/MeetingDNA'
+import ReviewMode from '@/components/report/ReviewMode'
 import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
 import ReportTimeline from '@/components/report/ReportTimeline'
 import ReportCover, { wasCovered } from '@/components/report/ReportCover'
 import NarratedSummary from '@/components/report/NarratedSummary'
 import ReportFeedback from '@/components/report/ReportFeedback'
+import ConfidenceDetails from '@/components/report/ConfidenceDetails'
 import InfoBadge from '@/components/interview/InfoBadge'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
@@ -22,16 +25,46 @@ const RISK_STYLE = {
   low: { text: 'text-golden', bg: 'bg-golden/10', label: 'Low' },
 }
 
+const PRIORITY_BADGE = {
+  high: 'bg-rose/10 text-rose',
+  medium: 'bg-orange/10 text-orange',
+  low: 'bg-emerald/10 text-emerald',
+}
+
 export default function Report() {
   const { id } = useParams()
   const { data: report, isLoading } = useReport(id)
+  const { edits, save, edited } = useReportEdits(id)
   const { toast } = useToast()
   const [covered, setCovered] = useState(true)
+  const [confOpen, setConfOpen] = useState(false)
+  const [reviewOpen, setReviewOpen] = useState(false)
+
+  // Merge the user's Review Mode edits over the report for display.
+  const view = useMemo(
+    () =>
+      report
+        ? {
+            ...report,
+            title: edits.title ?? report.title,
+            headline: edits.headline ?? report.headline,
+            commitments: edits.commitments ?? report.commitments,
+          }
+        : report,
+    [report, edits],
+  )
 
   // Reveal the cover once per report per session.
   useEffect(() => {
     if (report) setCovered(!wasCovered(report.id))
   }, [report?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // The cover's confidence ring opens this modal via an event.
+  useEffect(() => {
+    const openConf = () => setConfOpen(true)
+    window.addEventListener('astera:confidence', openConf)
+    return () => window.removeEventListener('astera:confidence', openConf)
+  }, [])
 
   if (isLoading || !report) {
     return (
@@ -48,7 +81,7 @@ export default function Report() {
   return (
     <>
     <AnimatePresence>
-      {covered && <ReportCover report={report} onReveal={() => setCovered(false)} />}
+      {covered && <ReportCover report={view} onReveal={() => setCovered(false)} />}
     </AnimatePresence>
     <article className="mx-auto max-w-4xl">
       {/* Back + actions */}
@@ -56,9 +89,10 @@ export default function Report() {
         <Link to="/app/reports" className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink">
           <ArrowLeft className="h-4 w-4" /> All reports
         </Link>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap justify-end gap-2">
           <Button as={Link} to={`/app/read/${report.id}`} variant="accent" size="sm"><BookOpen className="h-4 w-4" /> Read</Button>
           <Button as={Link} to={`/app/replay/${report.id}`} variant="soft" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
+          <Button variant="soft" size="sm" onClick={() => { setReviewOpen(true) }}><PencilLine className="h-4 w-4" /> Review</Button>
           <Button
             variant="soft"
             size="sm"
@@ -79,11 +113,19 @@ export default function Report() {
 
       {/* Masthead */}
       <Reveal className="mt-8">
-        <span className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
-          <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} /> {report.subtitle}
-        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
+            <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} /> {report.subtitle}
+          </span>
+          {edits.priority && (
+            <span className={cn('inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium', PRIORITY_BADGE[edits.priority])}>
+              {edits.priority[0].toUpperCase() + edits.priority.slice(1)} priority
+            </span>
+          )}
+          {edited && <span className="rounded-full bg-ink/[0.05] px-3 py-1 text-xs font-medium text-muted">Reviewed</span>}
+        </div>
         <h1 className="mt-5 font-display text-display-sm font-semibold leading-[1.02] tracking-tight text-balance">
-          {report.title}
+          {view.title}
         </h1>
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
           <span>{new Date(report.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
@@ -99,7 +141,7 @@ export default function Report() {
         <div className="relative overflow-hidden rounded-3xl border border-ink/8 bg-card p-8 shadow-soft">
           <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> Astera summary</span>
           <div className="mt-4">
-            <NarratedSummary text={report.headline} color={report.color} />
+            <NarratedSummary key={view.headline} text={view.headline} color={report.color} />
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {report.participants.map((p) => (
@@ -164,11 +206,29 @@ export default function Report() {
                     </div>
                   ))}
                 </div>
+                <button
+                  onClick={() => setConfOpen(true)}
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/[0.06] px-4 py-2 text-sm font-medium text-purple transition-colors hover:bg-purple/10"
+                >
+                  <Gauge className="h-4 w-4" /> {report.dna.aiConfidence}% AI confidence · view breakdown
+                </button>
               </div>
             </div>
           </div>
         </Reveal>
       )}
+
+      {edits.notes && (
+        <Reveal delay={0.05} className="mt-6">
+          <div className="rounded-3xl border border-purple/20 bg-purple/[0.04] p-6">
+            <span className="eyebrow text-purple"><PencilLine className="h-3.5 w-3.5" /> Your notes</span>
+            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-ink/85">{edits.notes}</p>
+          </div>
+        </Reveal>
+      )}
+
+      <ConfidenceDetails report={report} open={confOpen} onClose={() => setConfOpen(false)} />
+      <ReviewMode open={reviewOpen} onClose={() => setReviewOpen(false)} report={report} edits={edits} onSave={save} />
 
       {/* Timeline */}
       <Reveal delay={0.1} className="mt-14">
@@ -237,7 +297,7 @@ export default function Report() {
             <Flag className="h-6 w-6 text-golden" /> Commitments
           </h2>
           <div className="mt-6 space-y-3">
-            {report.commitments.map((c, i) => (
+            {view.commitments.map((c, i) => (
               <Reveal key={i} delay={i * 0.06}>
                 <div className="flex items-center gap-4 rounded-2xl border border-ink/8 bg-card p-5 shadow-soft">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-golden/15 text-golden">

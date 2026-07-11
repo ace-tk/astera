@@ -102,7 +102,14 @@ export default function ReportCover({ report, onReveal }) {
 
         {report.dna && (
           <motion.div variants={word} className="mt-8 flex justify-center">
-            <ConfidenceRing value={report.dna.aiConfidence} color={report.color} />
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('astera:confidence'))}
+              className="rounded-full transition-transform hover:scale-105"
+              aria-label="View AI confidence breakdown"
+              title="View confidence breakdown"
+            >
+              <ConfidenceRing value={report.dna.aiConfidence} color={report.color} />
+            </button>
           </motion.div>
         )}
 
