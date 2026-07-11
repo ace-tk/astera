@@ -112,7 +112,7 @@ function NodePreview({ kind, color }) {
 
 const STATUS = {
   done: { ring: 'ring-emerald/40', dot: 'bg-emerald', label: 'Complete' },
-  active: { ring: 'ring-accent/50', dot: 'bg-accent', label: 'Processing' },
+  active: { ring: 'ring-accent/50', dot: 'bg-accent', label: 'Understanding' },
   idle: { ring: 'ring-ink/8', dot: 'bg-ink/20', label: 'Queued' },
 }
 

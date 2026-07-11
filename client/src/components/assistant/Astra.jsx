@@ -5,7 +5,7 @@ import { X, ArrowUp, Sparkles } from 'lucide-react'
 import AstraOrb from './AstraOrb'
 import { useReports } from '@/hooks/useReports'
 import { useSound } from '@/context/SoundContext'
-import { answer, SUGGESTIONS, GREETING } from '@/services/astra'
+import { answer, SUGGESTIONS, greetWithMemory } from '@/services/astra'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
 
@@ -99,11 +99,11 @@ export default function Astra() {
     return () => window.removeEventListener('astera:open', openIt)
   }, [play])
 
-  // Greet once when first opened with a report loaded.
+  // Greet once when first opened with a report loaded — with a little memory.
   useEffect(() => {
     if (open && report && messages.length === 0) {
       setAstraState('writing')
-      setMessages([{ id: nextId(), role: 'astra', ...GREETING(report), stream: true }])
+      setMessages([{ id: nextId(), role: 'astra', ...greetWithMemory(report), stream: true }])
     }
   }, [open, report, messages.length])
 

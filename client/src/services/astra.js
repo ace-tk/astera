@@ -77,3 +77,36 @@ export function answer(question, report) {
 export const GREETING = (report) => ({
   text: `Hi, I'm Astra. I sat in on “${report.title}” and read every word. Ask me anything — or tap a prompt below.`,
 })
+
+const LAST_KEY = 'astera:lastReport'
+const VISITS_KEY = 'astera:astraVisits'
+
+/**
+ * A greeting with a little memory. Astra recalls the report you were last in and
+ * your return visits — a touch of personality, never a nag. Reads/writes the
+ * memory here so the assistant "remembers" across navigations and sessions.
+ */
+export function greetWithMemory(report) {
+  let last = null
+  let visits = 1
+  try {
+    last = JSON.parse(localStorage.getItem(LAST_KEY) || 'null')
+    visits = Number(localStorage.getItem(VISITS_KEY) || 0) + 1
+    localStorage.setItem(VISITS_KEY, String(visits))
+    localStorage.setItem(LAST_KEY, JSON.stringify({ id: report.id, title: report.title, ts: Date.now() }))
+  } catch {
+    return GREETING(report)
+  }
+
+  if (last && last.id !== report.id) {
+    return {
+      text: `Welcome back — last time you were in “${last.title}”. For “${report.title}” I've pulled the ${report.metrics.decisions} decisions and ${report.metrics.risks} risks to the top. What would you like to know?`,
+    }
+  }
+  if (visits > 2) {
+    return {
+      text: `Good to see you again. I've re-read “${report.title}” — ${report.metrics.decisions} decisions, ${report.metrics.commitments} commitments, ${report.metrics.risks} risks. Where should we start?`,
+    }
+  }
+  return GREETING(report)
+}

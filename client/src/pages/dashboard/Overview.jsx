@@ -68,7 +68,7 @@ export default function Overview() {
           <div className="h-72 animate-pulse rounded-3xl border border-ink/8 bg-card" />
         )}
       </Reveal>
-      {isLoading && <p className="mt-4 text-sm text-muted">Loading your reports…</p>}
+      {isLoading && <p className="mt-4 text-sm text-muted">Gathering your intelligence…</p>}
 
       {/* Recent reports */}
       <h2 className="mt-14 font-display text-2xl font-medium tracking-tight">Recent</h2>

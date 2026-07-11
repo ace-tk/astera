@@ -102,7 +102,7 @@ function Canvas() {
   }, [running, play])
 
   if (!report) {
-    return <div className="grid h-full place-items-center text-muted">Loading workspace…</div>
+    return <div className="grid h-full place-items-center text-muted">Preparing your workspace…</div>
   }
 
   return (
@@ -126,7 +126,7 @@ function Canvas() {
         nodesConnectable={false}
         elementsSelectable
       >
-        <Background gap={26} size={1} color="rgb(17 24 39 / 0.05)" />
+        <Background gap={26} size={1} color="rgb(128 128 150 / 0.16)" />
         <Controls showInteractive={false} position="bottom-right" />
       </ReactFlow>
 
