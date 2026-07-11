@@ -26,7 +26,7 @@ export default function Overview() {
           icon={UploadCloud}
           title="No conversations yet."
           description="Every great report starts with one discussion. Drop in a recording and watch Astera bring it to life."
-          action={<Button as={Link} to="/app/upload" variant="accent">Create intelligence</Button>}
+          action={<Button as={Link} to="/app/upload" variant="accent">Generate report</Button>}
         />
       </div>
     )

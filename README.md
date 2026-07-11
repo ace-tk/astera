@@ -130,11 +130,16 @@ flowchart LR
   I --> J
 ```
 
-In production, transcription runs through **Deepgram** and extraction through
-**OpenAI**; without keys, a deterministic heuristic extractor produces the same
-report shape, so the entire pipeline is demonstrable offline. Progress streams to
-the client over **Socket.io**, which is what drives the live Upload Studio and the
-"re-run intelligence" sweep.
+> **Honest status.** This build ships the **heuristic extractor only** — it does
+> not call an LLM, and the API labels every report `engine: 'heuristic'` so it
+> never claims analysis it didn't perform. Deepgram (transcription) + OpenAI
+> (extraction) are the intended production path, stubbed behind a seam in
+> `server/src/services/intelligence.js`. The app runs in **demo mode** over
+> curated sample meetings; nothing in the UI pretends otherwise.
+
+The report shape is identical whichever analyser runs, so the entire pipeline is
+demonstrable offline. Progress streams to the client over **Socket.io**, which
+drives the Upload Studio and the "re-run analysis" sweep.
 
 ---
 

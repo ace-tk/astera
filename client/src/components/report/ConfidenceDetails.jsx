@@ -67,7 +67,7 @@ export default function ConfidenceDetails({ report, open, onClose }) {
             onMouseDown={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-label="AI confidence details"
+            aria-label="Confidence analysis"
             className="relative w-full max-w-lg overflow-hidden rounded-[1.75rem] border border-ink/10 bg-card shadow-float"
           >
             {/* header */}
@@ -75,8 +75,8 @@ export default function ConfidenceDetails({ report, open, onClose }) {
               <div className="flex items-center gap-4">
                 <Gauge value={overall.value} color="purple" size={72} />
                 <div>
-                  <span className="eyebrow text-purple"><Sparkles className="h-3.5 w-3.5" /> AI confidence</span>
-                  <h2 className="mt-1 font-display text-xl font-semibold tracking-tight">How sure is Astra?</h2>
+                  <span className="eyebrow text-purple"><Sparkles className="h-3.5 w-3.5" /> Confidence analysis</span>
+                  <h2 className="mt-1 font-display text-xl font-semibold tracking-tight">How solid is this read?</h2>
                   <p className="mt-1 max-w-xs text-xs leading-relaxed text-muted">{overall.note}</p>
                 </div>
               </div>

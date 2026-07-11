@@ -39,7 +39,7 @@ export default function CommandPalette() {
   const commands = useMemo(() => {
     const go = (to) => () => navigate(to)
     const nav = [
-      { id: 'nav-workspace', label: 'Workspace', hint: 'Intelligence canvas', icon: Workflow, group: 'Go to', run: go('/app') },
+      { id: 'nav-workspace', label: 'Workspace', hint: 'Meeting map', icon: Workflow, group: 'Go to', run: go('/app') },
       { id: 'nav-demos', label: 'Demo Workspace', hint: 'Six real meetings', icon: Sparkles, group: 'Go to', run: go('/app/demos') },
       { id: 'nav-reports', label: 'Reports', hint: 'All reports', icon: FileText, group: 'Go to', run: go('/app/reports') },
       { id: 'nav-upload', label: 'Upload Studio', hint: 'New recording', icon: UploadCloud, group: 'Go to', run: go('/app/upload') },
@@ -49,7 +49,7 @@ export default function CommandPalette() {
       { id: 'nav-status', label: 'System status', hint: 'Service health', icon: Activity, group: 'Go to', run: go('/app/status') },
     ]
     const actions = [
-      { id: 'act-generate', label: 'Create intelligence', hint: 'Upload & compose', icon: UploadCloud, group: 'Actions', run: go('/app/upload') },
+      { id: 'act-generate', label: 'New report', hint: 'Upload a recording', icon: UploadCloud, group: 'Actions', run: go('/app/upload') },
       { id: 'act-sound', label: soundOn ? 'Mute sounds' : 'Enable sounds', hint: 'Interface audio', icon: Volume2, group: 'Actions', run: () => toggleSound() },
       { id: 'act-tour', label: 'Restart product tour', hint: 'Six-step walkthrough', icon: Sparkles, group: 'Actions', run: () => window.dispatchEvent(new CustomEvent('astera:tour')) },
       { id: 'act-shortcuts', label: 'Keyboard shortcuts', hint: 'Show the guide', icon: CommandIcon, group: 'Actions', run: () => window.dispatchEvent(new CustomEvent('astera:shortcuts')) },

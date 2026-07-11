@@ -138,7 +138,7 @@ function Canvas() {
           className="pointer-events-auto max-w-md rounded-3xl border border-ink/8 bg-card/80 p-5 shadow-soft backdrop-blur-xl"
         >
           <div className="flex items-center justify-between gap-2">
-            <span className="eyebrow text-purple"><Sparkles className="h-3.5 w-3.5" /> Intelligence Workspace</span>
+            <span className="eyebrow text-purple"><Sparkles className="h-3.5 w-3.5" /> Meeting map</span>
             <InfoBadge
               title="Why React Flow"
               points={[
@@ -199,7 +199,7 @@ function Canvas() {
             <Maximize2 className="h-4 w-4" /> Fit
           </Button>
           <Button size="sm" variant="accent" onClick={runSweep} disabled={running}>
-            <Play className="h-4 w-4" /> {running ? 'Thinking…' : 'Re-run intelligence'}
+            <Play className="h-4 w-4" /> {running ? 'Analyzing…' : 'Re-run analysis'}
           </Button>
         </motion.div>
       </div>

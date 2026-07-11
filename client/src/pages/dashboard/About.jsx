@@ -26,7 +26,7 @@ const ARCH = [
   { title: 'Client', tech: 'React 19 · Vite · Tailwind · Framer Motion · React Flow', color: 'royal' },
   { title: 'API', tech: 'Node · Express · JWT · Zod · Socket.io', color: 'purple' },
   { title: 'Data', tech: 'MongoDB · Mongoose', color: 'emerald' },
-  { title: 'AI', tech: 'Deepgram (speech) · OpenAI (extraction)', color: 'coral' },
+  { title: 'Analysis', tech: 'Deepgram (speech) · OpenAI (extraction) — in production', color: 'coral' },
 ]
 
 function Section({ eyebrow, title, children, color = 'royal' }) {
@@ -103,7 +103,7 @@ export default function About() {
         </Section>
 
         {/* AI pipeline */}
-        <Section eyebrow="AI pipeline" title="How a conversation becomes clarity." color="emerald">
+        <Section eyebrow="Analysis pipeline" title="How a conversation becomes clarity." color="emerald">
           <div className="space-y-3">
             {PIPELINE.map((p) => (
               <div key={p.step} className="flex gap-4 rounded-2xl border border-ink/8 bg-card p-5 shadow-soft">
@@ -114,6 +114,14 @@ export default function About() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-4 flex items-start gap-3 rounded-2xl border border-emerald/25 bg-emerald/[0.06] p-5">
+            <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-emerald/12 text-emerald"><Sparkles className="h-4 w-4" /></span>
+            <p className="text-sm leading-relaxed text-muted">
+              <span className="font-medium text-ink">Honest note.</span> This build runs in demo mode with
+              sample meetings and a deterministic heuristic analyser — the transcription and LLM extraction
+              steps above are the production path, not yet wired. Nothing here claims analysis it didn't perform.
+            </p>
           </div>
         </Section>
 

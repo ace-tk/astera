@@ -75,7 +75,7 @@ export function answer(question, report) {
 }
 
 export const GREETING = (report) => ({
-  text: `Hi, I'm Astra. I sat in on “${report.title}” and read every word. Ask me anything — or tap a prompt below.`,
+  text: `Hi, I'm Astra. I read through “${report.title}” — ask me anything, or tap a suggestion below.`,
 })
 
 const LAST_KEY = 'astera:lastReport'

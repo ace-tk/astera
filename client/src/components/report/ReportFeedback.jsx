@@ -10,7 +10,7 @@ const REASONS = ['More detail', 'Wrong summary', 'Wrong speaker', 'Wrong decisio
 const key = (id) => `astera:feedback:${id}`
 
 /**
- * "Was this intelligence useful?" — a real feedback loop. Yes plays a small
+ * "Was this report useful?" — a real feedback loop. Yes plays a small
  * celebration and stores locally; No opens a modal to capture what was missing.
  * Both persist per report and reflect prior feedback on return.
  */
@@ -47,7 +47,7 @@ export default function ReportFeedback({ reportId }) {
   const onYes = () => {
     play('chime')
     persist({ useful: true, reasons: [], ts: Date.now() })
-    toast({ title: 'Thank you.', description: 'Glad the intelligence landed. Astra keeps learning from this.', variant: 'success', color: 'emerald' })
+    toast({ title: 'Thank you.', description: 'Glad the report landed. Astra keeps learning from this.', variant: 'success', color: 'emerald' })
   }
 
   const submitNo = () => {
@@ -79,7 +79,7 @@ export default function ReportFeedback({ reportId }) {
   return (
     <>
       <div className="mt-16 flex flex-col items-start justify-between gap-4 rounded-3xl border border-ink/8 bg-card p-6 shadow-soft sm:flex-row sm:items-center">
-        <p className="text-sm font-medium">Was this intelligence useful?</p>
+        <p className="text-sm font-medium">Was this report useful?</p>
         <div className="flex gap-2">
           <Button variant="soft" size="sm" onClick={onYes}><ThumbsUp className="h-4 w-4" /> Yes</Button>
           <Button variant="ghost" size="sm" magnetic={false} onClick={() => { setModalOpen(true); play('open') }}><ThumbsDown className="h-4 w-4" /> Not quite</Button>

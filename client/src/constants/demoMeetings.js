@@ -272,6 +272,6 @@ export const DNA_TRAITS = [
   { key: 'collaboration', label: 'Collaboration', color: 'emerald' },
   { key: 'energy', label: 'Energy', color: 'coral', labelKey: 'energyLabel' },
   { key: 'compliance', label: 'Compliance', color: 'golden' },
-  { key: 'aiConfidence', label: 'AI Confidence', color: 'purple' },
+  { key: 'aiConfidence', label: 'Confidence', color: 'purple' },
   { key: 'conflict', label: 'Conflict', color: 'rose', invert: true },
 ]

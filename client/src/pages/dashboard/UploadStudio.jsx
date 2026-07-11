@@ -62,9 +62,12 @@ export default function UploadStudio() {
           Drop a recording. Walk away.
         </h1>
         <p className="mt-4 max-w-xl text-muted">
-          Audio, video, or a raw transcript. Astera diarizes, understands, and
-          composes — then pings you when clarity is ready.
+          Audio, video, or a raw transcript. In production, Astera transcribes and
+          analyses it; here, it composes a sample report you can explore end to end.
         </p>
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-emerald/25 bg-emerald/[0.06] px-3 py-1 text-xs font-medium text-emerald">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald" /> Demo mode · sample analysis
+        </span>
       </Reveal>
 
       <AnimatePresence mode="wait">
@@ -129,7 +132,7 @@ export default function UploadStudio() {
                     <p className="text-xs text-muted">{(file.size / 1_000_000).toFixed(1)} MB · ready to process</p>
                   </div>
                   <button onClick={reset} className="text-muted hover:text-ink"><X className="h-4 w-4" /></button>
-                  <Button size="sm" variant="accent" onClick={start}>Create intelligence</Button>
+                  <Button size="sm" variant="accent" onClick={start}>Generate report</Button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -147,7 +150,7 @@ export default function UploadStudio() {
           >
             <div className="flex items-center gap-3">
               <Loader2 className="h-5 w-5 animate-spin text-accent" />
-              <p className="font-display text-xl font-medium">Composing your report…</p>
+              <p className="font-display text-xl font-medium">Composing a sample report…</p>
             </div>
             <div className="mt-8 space-y-1">
               {STAGES.map((s, i) => {
@@ -194,9 +197,10 @@ export default function UploadStudio() {
             >
               <Check className="h-10 w-10" />
             </motion.span>
-            <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight">Clarity, delivered.</h2>
+            <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight">Sample report ready.</h2>
             <p className="mt-3 max-w-md text-muted">
-              Your intelligence report is ready — 9 decisions, 3 commitments, and 2 risks, all cited back to the moment they were said.
+              Here's an example of what Astera produces — decisions, commitments, and risks,
+              each tied back to a moment in the meeting. Open it to explore the full experience.
             </p>
             <div className="mt-8 flex gap-3">
               <Button variant="accent" onClick={() => navigate('/app/replay/q3-roadmap')}>

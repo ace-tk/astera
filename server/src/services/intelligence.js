@@ -1,10 +1,12 @@
-import { env } from '../config/env.js'
-
 /**
- * The intelligence layer. In production this calls Deepgram (transcription) and
- * OpenAI (extraction). Without keys it runs a deterministic heuristic pass so
- * the whole pipeline is demonstrable end-to-end offline. The output shape is
- * identical either way, so the rest of the app never branches on which ran.
+ * The analysis layer.
+ *
+ * HONEST STATUS: this ships with a deterministic *heuristic* extractor only —
+ * it does NOT call an LLM. The Deepgram (transcription) and OpenAI (extraction)
+ * integrations are the intended production path and are stubbed here behind the
+ * `usingLLM` check; wire the real calls in `llmExtract()` to enable them. Until
+ * then every report is honestly labelled `engine: 'heuristic'` (see below), so
+ * the API never claims analysis it didn't perform.
  */
 
 const COLORS = ['royal', 'purple', 'emerald', 'coral', 'sky', 'golden']
@@ -63,7 +65,8 @@ export async function generateReport(transcript, meta = {}, onStage = () => {}) 
     await new Promise((r) => setTimeout(r, 40))
   }
 
-  const usingLLM = Boolean(env.openaiKey)
+  // A real LLM path is not implemented yet, so we never claim one ran even if a
+  // key is present. `llmExtract` is the seam where OpenAI extraction would go.
   const { decisions, risks, commitments, speakers } = heuristicExtract(transcript || '')
 
   const participants = meta.participants?.length ? meta.participants : speakers.length ? speakers : ['Team']
@@ -88,7 +91,7 @@ export async function generateReport(transcript, meta = {}, onStage = () => {}) 
     sentiment: risks.length > decisions.length ? 'mixed' : 'positive',
     duration: meta.duration || '74:12',
     participants,
-    engine: usingLLM ? 'openai' : 'heuristic',
+    engine: 'heuristic', // honest: no LLM call is made in this build
     headline:
       decisions[0]?.text ||
       'Astera distilled this conversation into decisions, commitments, and risks — each cited to the moment it was said.',

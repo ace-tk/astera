@@ -6,6 +6,7 @@ import { useReport } from '@/hooks/useReports'
 import { useReportEdits } from '@/hooks/useReportEdits'
 import { useToast } from '@/context/ToastContext'
 import MeetingDNA from '@/components/dna/MeetingDNA'
+import AstraOrb from '@/components/assistant/AstraOrb'
 import ReviewMode from '@/components/report/ReviewMode'
 import { DNA_TRAITS } from '@/constants/demoMeetings'
 import { accent } from '@/utils/accent'
@@ -133,13 +134,17 @@ export default function Report() {
           <span>{report.duration} runtime</span>
           <span>·</span>
           <span>{report.participants.length} participants</span>
+          <span>·</span>
+          <span className="inline-flex items-center gap-1.5">
+            <AstraOrb size={14} breathing={false} state="completed" /> Generated with ASTRA
+          </span>
         </div>
       </Reveal>
 
       {/* Lede / AI summary */}
       <Reveal delay={0.1} className="mt-10">
         <div className="relative overflow-hidden rounded-3xl border border-ink/8 bg-card p-8 shadow-soft">
-          <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> Astera summary</span>
+          <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> Summary</span>
           <div className="mt-4">
             <NarratedSummary key={view.headline} text={view.headline} color={report.color} />
           </div>
@@ -193,7 +198,7 @@ export default function Report() {
                 </h2>
                 <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
                   Astera reads the shape of the conversation — how decisive it was, how much the room
-                  collaborated, the energy in it, and how confident the AI is in what it found.
+                  collaborated, the energy in it, and how confident the read is in what it found.
                 </p>
                 <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
                   {DNA_TRAITS.map((t) => (
@@ -210,7 +215,7 @@ export default function Report() {
                   onClick={() => setConfOpen(true)}
                   className="mt-6 inline-flex items-center gap-2 rounded-full border border-purple/25 bg-purple/[0.06] px-4 py-2 text-sm font-medium text-purple transition-colors hover:bg-purple/10"
                 >
-                  <Gauge className="h-4 w-4" /> {report.dna.aiConfidence}% AI confidence · view breakdown
+                  <Gauge className="h-4 w-4" /> {report.dna.aiConfidence}% confidence · view analysis
                 </button>
               </div>
             </div>

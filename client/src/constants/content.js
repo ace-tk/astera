@@ -14,7 +14,7 @@ export const NAV_LINKS = [
 export const JOURNEY = [
   { key: 'meeting', title: 'Meeting', body: 'A 74-minute call. Seven voices. One goal.', color: 'coral', glyph: 'mic' },
   { key: 'transcript', title: 'Transcript', body: 'Every word, diarized and timestamped.', color: 'orange', glyph: 'text' },
-  { key: 'intelligence', title: 'AI Intelligence', body: 'Decisions, owners, and intent extracted.', color: 'purple', glyph: 'brain' },
+  { key: 'intelligence', title: 'Meeting Insights', body: 'Decisions, owners, and intent extracted.', color: 'purple', glyph: 'brain' },
   { key: 'timeline', title: 'Timeline', body: 'The story of the room, minute by minute.', color: 'emerald', glyph: 'timeline' },
   { key: 'report', title: 'Report', body: 'A publication, not a PDF dump.', color: 'royal', glyph: 'report' },
   { key: 'compliance', title: 'Compliance', body: 'Commitments and obligations, flagged.', color: 'golden', glyph: 'shield' },
@@ -34,7 +34,7 @@ export const FEATURES = [
   },
   {
     id: 'ai',
-    eyebrow: 'Intelligence',
+    eyebrow: 'Insights',
     title: 'It reads intent, not just words.',
     body: 'Decisions, owners, blockers, and sentiment — surfaced with citations back to the exact moment they were said.',
     color: 'purple',
@@ -119,7 +119,7 @@ export const PRICING = [
     price: 0,
     tagline: 'For the curious.',
     color: 'emerald',
-    features: ['5 reports / month', 'Timeline & summary', 'Light + Aurora themes', 'Email delivery'],
+    features: ['5 reports / month', 'Timeline & summary', 'Light & Sunset themes', 'Email delivery'],
     cta: 'Start free',
   },
   {
@@ -131,8 +131,8 @@ export const PRICING = [
     featured: true,
     features: [
       'Unlimited reports',
-      'AI intelligence & risk flags',
-      'All six themes',
+      'Insights & risk flags',
+      'All three themes',
       'Compliance extraction',
       'Workspace analytics',
       'Shareable report links',
@@ -154,5 +154,5 @@ export const STATS = [
   { value: '74', suffix: 'min', label: 'Average meeting, read in 90 seconds' },
   { value: '12', suffix: '×', label: 'Faster than writing minutes by hand' },
   { value: '98', suffix: '%', label: 'Of decisions captured with citations' },
-  { value: '6', suffix: '', label: 'Themes, so every workspace feels like home' },
+  { value: '3', suffix: '', label: 'Themes, so every workspace feels like home' },
 ]

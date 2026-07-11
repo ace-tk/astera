@@ -14,7 +14,7 @@ const STATE = {
 const SERVICES = [
   { id: 'api', name: 'API Gateway', desc: 'Express · REST', icon: Server, state: 'operational', latency: '42ms', uptime: '99.98%', spark: [8, 6, 7, 5, 6, 4, 5, 6, 5, 4] },
   { id: 'db', name: 'Database', desc: 'MongoDB Atlas', icon: Database, state: 'operational', latency: '11ms', uptime: '99.99%', spark: [3, 4, 3, 5, 3, 4, 3, 3, 4, 3] },
-  { id: 'ai', name: 'AI Pipeline', desc: 'Transcription · extraction', icon: Cpu, state: 'elevated', latency: '1.2s', uptime: '99.90%', spark: [10, 12, 9, 14, 11, 16, 13, 12, 15, 11] },
+  { id: 'ai', name: 'Analysis Engine', desc: 'Transcription · extraction', icon: Cpu, state: 'elevated', latency: '1.2s', uptime: '99.90%', spark: [10, 12, 9, 14, 11, 16, 13, 12, 15, 11] },
   { id: 'storage', name: 'Storage', desc: 'Media · Cloudinary', icon: HardDrive, state: 'operational', latency: '63ms', uptime: '99.95%', spark: [7, 6, 8, 6, 7, 6, 7, 8, 6, 7] },
   { id: 'realtime', name: 'Realtime', desc: 'Socket.io channels', icon: Radio, state: 'operational', latency: '28ms', uptime: '99.97%', spark: [5, 4, 6, 5, 4, 5, 6, 4, 5, 5] },
 ]

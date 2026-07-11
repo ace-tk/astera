@@ -14,9 +14,9 @@ import { cn } from '@/utils/cn'
 const KEY = 'astera:onboarded'
 
 const STEPS = [
-  { icon: Workflow, color: 'purple', title: 'The Intelligence Workspace', body: 'Every meeting becomes a living graph — recording, transcript, decisions, risks, and report, all connected. Click any node to inspect what Astra understood.', to: '/app', cta: 'Open the canvas' },
+  { icon: Workflow, color: 'purple', title: 'The Workspace', body: 'Every meeting becomes a connected map — recording, transcript, decisions, risks, and report. Open any step to see what Astra found.', to: '/app', cta: 'Open the canvas' },
   { icon: Fingerprint, color: 'royal', title: 'Meeting DNA', body: 'Astera reads the shape of a conversation — how decisive it was, how much the room collaborated, its energy — and draws a fingerprint unique to every meeting.', to: '/app/report/board-fy26', cta: 'See a fingerprint' },
-  { icon: Clapperboard, color: 'coral', title: 'Cinematic AI Replay', body: 'Never watch a spinner. Watch the report compose itself — the summary writes, metrics count up, the timeline draws, and findings slide into place.', to: '/app/replay/board-fy26', cta: 'Watch it build' },
+  { icon: Clapperboard, color: 'coral', title: 'Cinematic Replay', body: 'Never watch a spinner. Watch the report compose itself — the summary writes, metrics count up, the timeline draws, and findings slide into place.', to: '/app/replay/board-fy26', cta: 'Watch it build' },
   { icon: ListVideo, color: 'emerald', title: 'Scrub the meeting', body: 'A living timeline you can move through — transcript, speaker, decisions, and running tallies update the moment you land on any point.', to: '/app/replay/board-fy26', cta: 'Try the replay' },
   { icon: Sparkles, color: 'purple', title: 'Ask ASTRA', body: 'A living assistant, grounded in the meeting. Ask who spoke most, why something is a risk, or what was decided — answers come straight from the report.', to: '/app/report/board-fy26', cta: 'Meet Astra', astra: true },
   { icon: BookOpen, color: 'golden', title: 'Read it like a magazine', body: 'A premium reader with search, bookmarks, sticky notes, a minimap, and focus mode — because a report is only useful if people actually read it.', to: '/app/read/board-fy26', cta: 'Open the reader' },

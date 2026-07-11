@@ -9,7 +9,7 @@
 export const WORKSPACE_NODES = [
   { id: 'recording', kind: 'recording', title: 'Meeting Recording', subtitle: 'Source audio', color: 'coral', x: 0, y: 120 },
   { id: 'transcript', kind: 'transcript', title: 'Transcript', subtitle: 'Diarized · timestamped', color: 'orange', x: 320, y: 40 },
-  { id: 'ai', kind: 'ai', title: 'AI Understanding', subtitle: 'Intent & meaning', color: 'purple', x: 660, y: 150 },
+  { id: 'ai', kind: 'ai', title: 'Understanding', subtitle: 'Intent & meaning', color: 'purple', x: 660, y: 150 },
   { id: 'timeline', kind: 'timeline', title: 'Timeline', subtitle: 'Minute by minute', color: 'emerald', x: 1020, y: 20 },
   { id: 'speaker', kind: 'speaker', title: 'Speaker Analysis', subtitle: 'Who held the room', color: 'sky', x: 1020, y: 270 },
   { id: 'decision', kind: 'decision', title: 'Decision Engine', subtitle: 'What was decided', color: 'royal', x: 1380, y: 120 },

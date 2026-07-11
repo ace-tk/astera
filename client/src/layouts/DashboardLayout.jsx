@@ -105,12 +105,11 @@ export default function DashboardLayout() {
 
         <div className="flex flex-col gap-2">
           {!collapsed && (
-            <div className="rounded-2xl border border-ink/8 bg-paper p-4">
-              <p className="text-xs font-medium">Studio plan</p>
-              <p className="mt-1 text-xs text-muted">18 of ∞ reports this month</p>
-              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-ink/8">
-                <div className="h-full w-2/3 rounded-full bg-accent" />
-              </div>
+            <div className="rounded-2xl border border-emerald/25 bg-emerald/[0.06] p-4">
+              <p className="flex items-center gap-1.5 text-xs font-medium text-emerald">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald" /> Demo mode
+              </p>
+              <p className="mt-1 text-xs text-muted">Exploring sample meetings — no account or backend needed.</p>
             </div>
           )}
           <button

@@ -56,7 +56,7 @@ function PanelBody({ node, report }) {
     case 'transcript':
       return (
         <div className="space-y-2.5">
-          <p className="text-xs text-muted">Highlighted where the AI found meaning.</p>
+          <p className="text-xs text-muted">Highlighted where Astra found meaning.</p>
           {TRANSCRIPT.map((l, i) => (
             <motion.div
               key={i}

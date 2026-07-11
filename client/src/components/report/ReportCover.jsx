@@ -107,8 +107,8 @@ export default function ReportCover({ report, onReveal }) {
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('astera:confidence'))}
               className="rounded-full transition-transform hover:scale-105"
-              aria-label="View AI confidence breakdown"
-              title="View confidence breakdown"
+              aria-label="View confidence analysis"
+              title="View confidence analysis"
             >
               <ConfidenceRing value={report.dna.aiConfidence} color={report.color} />
             </button>
