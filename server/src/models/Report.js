@@ -97,6 +97,9 @@ const reportSchema = new mongoose.Schema(
       type: [{ speaker: String, start: Number, end: Number, text: String, sentiment: String, _id: false }],
       select: false,
     },
+    // Full computed analytics (speaker/topic/risk/compliance/quality/insights).
+    // Stored; returned only on single-report fetch (select:false + explicit select).
+    analysis: { type: mongoose.Schema.Types.Mixed, select: false },
   },
   { timestamps: true },
 )

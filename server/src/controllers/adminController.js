@@ -61,7 +61,7 @@ export async function getReport(req, res) {
   if (needDB(res)) return
   const { id } = req.params
   const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id }
-  const report = await Report.findOne(query).populate('owner', 'name email')
+  const report = await Report.findOne(query).select('+analysis').populate('owner', 'name email')
   if (!report) return res.status(404).json({ error: 'Report not found' })
   res.json({ report: adminReportJSON(report) })
 }

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { Report } from '../models/Report.js'
 import { generateReport } from '../services/intelligence.js'
 import { ingestFile } from '../services/ingest.js'
+import { buildMeetingAnalysis } from '../services/analysis.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 const needDB = (res) => {
@@ -34,7 +35,7 @@ export async function getReport(req, res) {
   if (needDB(res)) return
   const { id } = req.params
   const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id }
-  const report = await Report.findOne({ ...query, owner: req.userId })
+  const report = await Report.findOne({ ...query, owner: req.userId }).select('+analysis')
   if (!report) return res.status(404).json({ error: 'Report not found' })
   res.json({ report: report.toClientJSON() })
 }
@@ -69,6 +70,7 @@ export async function createReport(req, res) {
   let transcription = null
   let diarization = []
   let speakers = []
+  let deepgram = null
   let source
   if (file) {
     source = { fileName: file.originalname, mimeType: file.mimetype, sizeBytes: file.size }
@@ -78,6 +80,7 @@ export async function createReport(req, res) {
       transcription = ingested.transcription
       diarization = ingested.diarization || []
       speakers = ingested.speakers || []
+      deepgram = ingested.deepgram || null
     } catch (err) {
       return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
     }
@@ -95,15 +98,41 @@ export async function createReport(req, res) {
   const meta = { ...parsed.data, title }
   if (transcription?.durationSec) meta.duration = formatDuration(transcription.durationSec)
 
-  const draft = await generateReport(transcript, meta, emit)
+  // For diarized audio, feed the pipeline one utterance per line so it extracts
+  // clean per-statement decisions/risks/commitments (speakers are re-attributed
+  // below). Text/DOCX/PDF keep their own structure.
+  const pipelineInput = diarization.length ? diarization.map((u) => u.text).join('\n') : transcript
+  const draft = await generateReport(pipelineInput, meta, emit)
 
-  // Enrich the report with real audio intelligence — this composes on top of the
-  // pipeline output (participants, speaking time, summary, sentiment); it does not
-  // change the pipeline itself. Text/DOCX/PDF reports are untouched.
+  // Comprehensive analytics from the real signals (diarization/topics/sentiment
+  // + the heuristic decisions/risks/commitments). Composed on top of the pipeline
+  // output — the pipeline itself is not modified.
+  const date = new Date().toISOString().slice(0, 10)
+  const analysis = buildMeetingAnalysis({ meta, transcript, diarization, speakers, transcription, draft, deepgram })
+  analysis.generatedAt = new Date()
+  analysis.metadata.date = date
+
+  // Fill the EXISTING report fields with real values (no placeholders) for audio.
   if (speakers.length) {
     draft.participants = speakers.map((s) => s.label)
     draft.talkTime = speakers.map((s) => ({ name: s.label, pct: s.pct }))
-    draft.metrics = { ...draft.metrics, owners: speakers.length }
+    // Decisions & action items attributed to the speaker who said them.
+    draft.decisions = analysis.decisions.map((d) => ({ text: d.decision, owner: d.owner, at: d.timestamp, confidence: d.confidence / 100 }))
+    draft.commitments = analysis.actionItems.map((a) => ({ text: a.task, owner: a.owner, due: a.deadline || 'This week', at: a.at }))
+    draft.metrics = { ...draft.metrics, owners: new Set(draft.decisions.map((d) => d.owner)).size || speakers.length }
+    // Real timeline from the attributed, timestamped events.
+    const events = [
+      ...draft.decisions.map((d) => ({ at: d.at, label: d.text.slice(0, 28), color: 'royal', kind: 'decision' })),
+      ...draft.risks.map((r) => ({ at: r.at, label: r.text.slice(0, 28), color: 'rose', kind: 'risk' })),
+      ...draft.commitments.map((c) => ({ at: c.at, label: c.text.slice(0, 28), color: 'golden', kind: 'commitment' })),
+    ].filter((e) => e.at)
+    if (events.length) draft.timeline = events.sort((a, b) => String(a.at).localeCompare(String(b.at)))
+    // Meeting DNA driven by real signals.
+    if (analysis.speakerContribution) draft.dna = { ...draft.dna, collaboration: analysis.speakerContribution.conversationBalanceScore }
+    draft.dna = { ...draft.dna, compliance: analysis.compliance.complianceScore }
+    const s = analysis.sentiment
+    const total = (s.positive || 0) + (s.neutral || 0) + (s.negative || 0)
+    if (total) draft.dna.conflict = Math.max(6, Math.min(92, Math.round(6 + (s.negative / total) * 80)))
   }
   if (transcription?.summary) draft.headline = transcription.summary
   if (transcription?.sentiment) draft.sentiment = mapSentiment(transcription.sentiment)
@@ -113,11 +142,12 @@ export async function createReport(req, res) {
     ...draft,
     slug,
     owner: req.userId,
-    date: new Date().toISOString().slice(0, 10),
+    date,
     source,
     transcript, // stored (select:false) — never returned to clients
     transcription: transcription || undefined,
     diarization: diarization.length ? diarization : undefined,
+    analysis, // full analytics (select:false) — returned on single-report fetch
   })
   io?.to(room).emit('report:ready', { id: report.slug })
   res.status(201).json({ report: report.toClientJSON() })

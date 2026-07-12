@@ -167,6 +167,11 @@ async function transcribeAudio(buffer, onStage) {
       topics,
       sentiment: results?.sentiments?.average?.sentiment || undefined,
     },
+    // Raw extras used transiently to build the analytics (not stored as-is).
+    deepgram: {
+      topicSegments: results?.topics?.segments || [],
+      sentimentAvg: results?.sentiments?.average || null,
+    },
   }
 }
 
@@ -188,5 +193,5 @@ export async function ingestFile(file, onStage) {
   else if (kind === 'pdf') transcript = await extractPdf(file.buffer)
 
   if (!transcript) throw new IngestError('No readable text was found in that document.', 422)
-  return { transcript, transcription: null, diarization: [], speakers: [] }
+  return { transcript, transcription: null, diarization: [], speakers: [], deepgram: null }
 }
