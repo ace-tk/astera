@@ -1,7 +1,8 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { onUnauthorized } from '@/services/api'
 import PageLoader from '@/components/common/PageLoader'
 import ScrollToTop from '@/components/common/ScrollToTop'
 import CommandPalette from '@/components/common/CommandPalette'
@@ -30,12 +31,34 @@ const Status = lazy(() => import('@/pages/dashboard/Status'))
 const About = lazy(() => import('@/pages/dashboard/About'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
+/**
+ * When an authenticated request 401s (an expired/invalid session), AuthContext
+ * clears the session; here we send the user to sign in — but only if they were
+ * inside the workspace, so a stale token never yanks a visitor off the landing
+ * or demo. Graceful, and never a white screen.
+ */
+function SessionExpiryRedirect() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const pathRef = useRef(location.pathname)
+  pathRef.current = location.pathname
+  useEffect(
+    () =>
+      onUnauthorized(() => {
+        if (pathRef.current.startsWith('/app')) navigate('/login', { replace: true })
+      }),
+    [navigate],
+  )
+  return null
+}
+
 export default function App() {
   const location = useLocation()
   const { reduceMotion } = useA11y()
   return (
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
       <ScrollToTop />
+      <SessionExpiryRedirect />
       <GlobalShortcuts />
       <CommandPalette />
       <ShortcutsOverlay />

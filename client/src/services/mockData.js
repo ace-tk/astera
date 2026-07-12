@@ -133,6 +133,11 @@ export const getReports = () => REPORTS
 export const getReport = (id) => REPORTS.find((r) => r.id === id) || REPORTS[0]
 export const getDemoMeetings = () => REPORTS.filter((r) => r.demo)
 
+// The full set of seeded demo ids. Used to keep the demo showcase reachable by
+// id even for a signed-in user, without ever mixing demo data into their own list.
+export const DEMO_IDS = new Set(REPORTS.map((r) => r.id))
+export const isDemoId = (id) => DEMO_IDS.has(id)
+
 export const WORKSPACE_ANALYTICS = {
   totalReports: 38,
   totalMinutes: 2714,

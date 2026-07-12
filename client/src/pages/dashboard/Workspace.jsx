@@ -1,15 +1,18 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import ReactFlow, { Background, Controls, ReactFlowProvider, useReactFlow } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { motion } from 'framer-motion'
-import { Sparkles, Play, Maximize2, ChevronDown } from 'lucide-react'
+import { Sparkles, Play, Maximize2, ChevronDown, UploadCloud } from 'lucide-react'
 import WorkspaceNode from '@/components/workspace/WorkspaceNode'
 import AnimatedEdge from '@/components/workspace/AnimatedEdge'
 import NodePanel from '@/components/workspace/NodePanel'
 import MeshBackground from '@/components/common/MeshBackground'
+import EmptyState from '@/components/common/EmptyState'
 import InfoBadge from '@/components/interview/InfoBadge'
 import Button from '@/components/ui/Button'
 import { useReports } from '@/hooks/useReports'
+import { useAuth } from '@/context/AuthContext'
 import { useSound } from '@/context/SoundContext'
 import { WORKSPACE_NODES, WORKSPACE_EDGES, WORKSPACE_ORDER } from '@/constants/workspace'
 import { accent } from '@/utils/accent'
@@ -27,7 +30,8 @@ const LEGEND = [
 ]
 
 function Canvas() {
-  const { data: reports = [] } = useReports()
+  const { data: reports = [], isLoading } = useReports()
+  const { isAuthed } = useAuth()
   const [reportIdx, setReportIdx] = useState(0)
   const report = reports[reportIdx]
   const [selected, setSelected] = useState(null)
@@ -102,6 +106,24 @@ function Canvas() {
   }, [running, play])
 
   if (!report) {
+    // A signed-in user with no reports yet — the real, empty Workspace.
+    if (isAuthed && !isLoading && reports.length === 0) {
+      return (
+        <div className="grid h-full place-items-center">
+          <EmptyState
+            color="coral"
+            icon={UploadCloud}
+            title="No meetings yet."
+            description="Upload your first recording and watch it come alive here as a living graph."
+            action={
+              <Button as={Link} to="/app/upload" variant="accent">
+                <UploadCloud className="h-4 w-4" /> Upload your first meeting
+              </Button>
+            }
+          />
+        </div>
+      )
+    }
     return <div className="grid h-full place-items-center text-muted">Preparing your workspace…</div>
   }
 

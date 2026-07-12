@@ -6,10 +6,12 @@ import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
 import Notifications from '@/components/common/Notifications'
+import UserMenu from '@/components/common/UserMenu'
 import MeshBackground from '@/components/common/MeshBackground'
 import Astra from '@/components/assistant/Astra'
 import Onboarding from '@/components/onboarding/Onboarding'
 import Button from '@/components/ui/Button'
+import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/utils/cn'
 
 // Each destination carries its own emotional tint (color psychology).
@@ -35,6 +37,7 @@ const NAV = [
 export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const location = useLocation()
+  const { isAuthed } = useAuth()
 
   // Immersive routes fill the viewport with no padding (canvas / reader).
   const immersive =
@@ -104,7 +107,7 @@ export default function DashboardLayout() {
         </nav>
 
         <div className="flex flex-col gap-2">
-          {!collapsed && (
+          {!collapsed && !isAuthed && (
             <div className="rounded-2xl border border-emerald/25 bg-emerald/[0.06] p-4">
               <p className="flex items-center gap-1.5 text-xs font-medium text-emerald">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald" /> Demo mode
@@ -145,6 +148,7 @@ export default function DashboardLayout() {
           <Button as={Link} to="/app/upload" size="sm" variant="accent" aria-label="New report">
             <UploadCloud className="h-4 w-4" /> <span className="hidden sm:inline">New report</span>
           </Button>
+          <UserMenu />
         </header>
 
         <AnimatePresence mode="wait">

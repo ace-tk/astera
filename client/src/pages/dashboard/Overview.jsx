@@ -24,9 +24,13 @@ export default function Overview() {
         <EmptyState
           color="coral"
           icon={UploadCloud}
-          title="No conversations yet."
-          description="Every great report starts with one discussion. Drop in a recording and watch Astera bring it to life."
-          action={<Button as={Link} to="/app/upload" variant="accent">Generate report</Button>}
+          title="No meetings yet."
+          description="Every great report starts with one conversation. Add a recording and watch Astera bring it to life."
+          action={
+            <Button as={Link} to="/app/upload" variant="accent">
+              <UploadCloud className="h-4 w-4" /> Upload your first meeting
+            </Button>
+          }
         />
       </div>
     )

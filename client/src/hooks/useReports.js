@@ -1,11 +1,37 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchReports, fetchReport } from '@/services/reports'
+import { useAuth } from '@/context/AuthContext'
+import { getReports, getReport, isDemoId } from '@/services/mockData'
+import { fetchMyReports, fetchMyReport } from '@/services/reports'
 
-/** React Query hooks over the reports service (demo-aware). */
+/**
+ * Report data hooks. The axis is authentication, not a build flag:
+ *  - Signed-in users (Real Workspace) get ONLY their own reports from MongoDB.
+ *  - Guests (Explore Demo) get the seeded demo data — fully client-side.
+ *
+ * Seeded demo reports stay reachable by id (the showcase in the Demos gallery)
+ * even when signed in, so they never leak into a real user's list yet still open.
+ *
+ * While the session is being restored we hold `isLoading` true so consumers show
+ * a loader instead of flashing an empty/demo state before the real data arrives.
+ */
 export function useReports() {
-  return useQuery({ queryKey: ['reports'], queryFn: fetchReports })
+  const { isAuthed, isLoading: authLoading } = useAuth()
+  const query = useQuery({
+    queryKey: ['reports', isAuthed ? 'me' : 'demo'],
+    queryFn: isAuthed ? fetchMyReports : () => getReports(),
+    enabled: !authLoading,
+  })
+  return { ...query, isLoading: authLoading || query.isLoading }
 }
 
 export function useReport(id) {
-  return useQuery({ queryKey: ['report', id], queryFn: () => fetchReport(id), enabled: Boolean(id) })
+  const { isAuthed, isLoading: authLoading } = useAuth()
+  // Demo reports (and any lookup while unauthenticated) resolve from seeded data.
+  const demo = !isAuthed || isDemoId(id)
+  const query = useQuery({
+    queryKey: ['report', demo ? 'demo' : 'me', id],
+    queryFn: () => (demo ? getReport(id) : fetchMyReport(id)),
+    enabled: Boolean(id) && !authLoading,
+  })
+  return { ...query, isLoading: authLoading || query.isLoading }
 }
