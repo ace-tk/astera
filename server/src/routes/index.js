@@ -8,8 +8,21 @@ import * as admin from '../controllers/adminController.js'
 
 const router = Router()
 
-// In-memory upload buffer, capped to a sane size to avoid memory exhaustion.
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 100 * 1024 * 1024 } })
+// In-memory upload buffer, capped to 100 MB to avoid memory exhaustion. Files
+// are never written to disk — the buffer is passed straight to the ingest
+// pipeline and garbage-collected after the response.
+const MAX_UPLOAD_MB = 100
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MAX_UPLOAD_MB * 1024 * 1024 } })
+
+// Wrap multer so file-size / upload errors return a friendly JSON message.
+const uploadMedia = (req, res, next) =>
+  upload.single('media')(req, res, (err) => {
+    if (!err) return next()
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({ error: `That file is too large. The limit is ${MAX_UPLOAD_MB} MB — try a shorter recording or extract the audio.` })
+    }
+    return res.status(400).json({ error: 'Upload failed. Please try again.' })
+  })
 
 router.get('/health', (req, res) => res.json({ ok: true, service: 'astera-api', ts: Date.now() }))
 
@@ -23,7 +36,7 @@ router.patch('/auth/me', requireAuth, asyncHandler(updateMe))
 // the client; the API only ever serves a user their own persisted reports.
 router.get('/reports', requireAuth, asyncHandler(listReports))
 router.get('/reports/:id', requireAuth, asyncHandler(getReport))
-router.post('/reports', requireAuth, upload.single('media'), asyncHandler(createReport))
+router.post('/reports', requireAuth, uploadMedia, asyncHandler(createReport))
 router.patch('/reports/:id', requireAuth, asyncHandler(updateReport))
 router.delete('/reports/:id', requireAuth, asyncHandler(deleteReport))
 

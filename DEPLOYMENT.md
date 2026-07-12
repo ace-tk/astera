@@ -59,6 +59,7 @@ and it provisions the service.
 | `MONGODB_URI` | Atlas connection string |
 | `JWT_SECRET` | Render generates a strong value; or set your own (≥32 chars) |
 | `ADMIN_EMAILS` | comma-separated admin emails for the admin panel (optional) |
+| `DEEPGRAM_API_KEY` | speech-to-text for audio/video uploads — free key at [console.deepgram.com](https://console.deepgram.com) (optional; TXT/DOCX/PDF work without it) |
 
 > The server **refuses to boot** in production with a missing/weak/default
 > `JWT_SECRET` — this is intentional. Generate one with

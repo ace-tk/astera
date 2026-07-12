@@ -160,6 +160,12 @@ export default function Report() {
           <span className="inline-flex items-center gap-1.5">
             <AstraOrb size={14} breathing={false} state="completed" /> Generated with ASTRA
           </span>
+          {report.transcription?.engine === 'deepgram' && (
+            <>
+              <span>·</span>
+              <span>Transcribed by Deepgram{report.transcription.language ? ` · ${report.transcription.language}` : ''}</span>
+            </>
+          )}
         </div>
       </Reveal>
 

@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { AnimatePresence, motion } from 'framer-motion'
-import { UploadCloud, FileAudio, Check, Loader2, X, Clapperboard, AlertTriangle, Info } from 'lucide-react'
+import { UploadCloud, FileAudio, Check, Loader2, X, Clapperboard, AlertTriangle } from 'lucide-react'
 import { JOURNEY } from '@/constants/content'
 import { config } from '@/config'
 import { accent } from '@/utils/accent'
@@ -20,18 +20,17 @@ import { cn } from '@/utils/cn'
 const STAGES = JOURNEY.slice(1)
 const STAGE_INDEX = Object.fromEntries(STAGES.map((s, i) => [s.key, i]))
 
-// MVP: transcripts generate reports; audio/video is acknowledged but honestly
-// deferred until real transcription ships.
-const TRANSCRIPT_RE = /\.(txt|vtt|srt)$/i
-const AUDIO_RE = /\.(mp3|mp4|wav|m4a)$/i
-const AUDIO_MESSAGE =
-  'Audio transcription is planned for the production version. For this MVP, please upload a transcript (TXT, VTT or SRT) to generate a report.'
+// Everything the backend can ingest: recordings (transcribed by Deepgram),
+// transcripts, and documents (DOCX/PDF, text-extracted).
+const SUPPORTED_RE = /\.(mp3|mp4|wav|m4a|txt|vtt|srt|md|docx|pdf)$/i
 
 /** Turn an API/network error into a friendly, honest message. */
 function friendlyError(err) {
-  if (err?.status === 422) return err.data?.error || 'That transcript couldn’t be read — make sure it has some text.'
+  // Prefer the backend's own message (unsupported type, too large, transcription
+  // failed / not configured / timed out, no readable text, etc.).
+  if (err?.data?.error) return err.data.error
   if (err?.status === 401) return 'Your session has expired. Please sign in again to generate a report.'
-  if (err?.status >= 500) return 'Something went wrong on our side while generating your report. Please try again.'
+  if (err?.status >= 500) return 'Something went wrong on our side. Please try again.'
   if (err?.message === 'Failed to fetch' || /networkerror/i.test(err?.message || ''))
     return 'Network error — check your connection and try again.'
   return err?.message || 'Upload failed. Please try again.'
@@ -44,7 +43,6 @@ export default function UploadStudio() {
   const [dragging, setDragging] = useState(false)
   const [stage, setStage] = useState(-1)
   const [error, setError] = useState('')
-  const [notice, setNotice] = useState('') // honest audio/video message
   const inputRef = useRef(null)
   const socketRef = useRef(null)
   const navigate = useNavigate()
@@ -52,7 +50,6 @@ export default function UploadStudio() {
   const pickFile = (f) => {
     if (!f) return
     setError('')
-    setNotice('')
     setFile(f) // keep the real File so signed-in users upload its actual bytes
     setPhase('ready')
   }
@@ -83,7 +80,6 @@ export default function UploadStudio() {
     setFile(null)
     setStage(-1)
     setError('')
-    setNotice('')
   }
 
   // Guests: compose a sample report (demo mode, unchanged).
@@ -92,24 +88,19 @@ export default function UploadStudio() {
     setStage(0)
   }
 
-  // Signed-in users: a real upload → heuristic analysis → saved report.
+  // Signed-in users: a real upload → transcribe/extract → analysis → saved report.
   const startReal = async (f) => {
     const name = f.name || ''
-    if (AUDIO_RE.test(name)) {
-      setNotice(AUDIO_MESSAGE)
-      return
-    }
-    if (!TRANSCRIPT_RE.test(name)) {
-      setError('Unsupported file type. Upload a transcript as TXT, VTT, or SRT.')
+    if (!SUPPORTED_RE.test(name)) {
+      setError('Unsupported file type. Upload MP3, MP4, WAV, M4A, TXT, DOCX, or PDF.')
       return
     }
     if (f.size === 0) {
-      setError('That file looks empty. Upload a transcript with some text in it.')
+      setError('That file looks empty. Upload a recording, transcript, or document with content.')
       return
     }
 
     setError('')
-    setNotice('')
     setPhase('processing')
     setStage(0)
 
@@ -195,7 +186,7 @@ export default function UploadStudio() {
               <input
                 ref={inputRef}
                 type="file"
-                accept="audio/*,video/*,.txt,.vtt,.srt"
+                accept="audio/*,video/*,.txt,.vtt,.srt,.docx,.pdf"
                 className="hidden"
                 onChange={(e) => pickFile(e.target.files?.[0])}
               />
@@ -208,7 +199,7 @@ export default function UploadStudio() {
               <p className="mt-6 font-display text-2xl font-medium tracking-tight">
                 {dragging ? 'Release to upload' : 'Drag your meeting here'}
               </p>
-              <p className="mt-2 text-sm text-muted">or click to browse · MP3, MP4, WAV, VTT up to 2GB</p>
+              <p className="mt-2 text-sm text-muted">or click to browse · audio, video, TXT, DOCX, PDF up to 100MB</p>
 
               {/* faint waveform floor */}
               <div className="pointer-events-none absolute inset-x-8 bottom-6 opacity-[0.12]">
@@ -233,21 +224,6 @@ export default function UploadStudio() {
                   </div>
                   <button onClick={reset} className="text-muted hover:text-ink"><X className="h-4 w-4" /></button>
                   <Button size="sm" variant="accent" onClick={start}>Generate report</Button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Honest note when a signed-in user picks audio/video (no fake AI). */}
-            <AnimatePresence>
-              {notice && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="mt-4 flex items-start gap-3 rounded-2xl border border-golden/30 bg-golden/[0.07] p-4 text-sm text-ink"
-                >
-                  <Info className="mt-0.5 h-4.5 w-4.5 shrink-0 text-golden" />
-                  <p>{notice}</p>
                 </motion.div>
               )}
             </AnimatePresence>

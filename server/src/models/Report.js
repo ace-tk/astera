@@ -79,12 +79,21 @@ const reportSchema = new mongoose.Schema(
       mimeType: String,
       sizeBytes: Number,
     },
+    // Full transcript stored with the report but never sent to clients (select:false).
+    transcript: { type: String, select: false },
+    // Set only when audio was transcribed (Deepgram); shown on the report.
+    transcription: {
+      engine: String, // e.g. 'deepgram'
+      language: String, // detected language code
+      durationSec: Number, // audio length in seconds
+    },
   },
   { timestamps: true },
 )
 
 reportSchema.methods.toClientJSON = function () {
   const o = this.toObject()
+  delete o.transcript // stored server-side only; never leaves the API
   return {
     ...o,
     id: o.slug || String(o._id),

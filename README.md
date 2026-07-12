@@ -63,7 +63,7 @@ npm run dev            # → http://localhost:5173
 
 # Backend — optional API + realtime pipeline
 cd ../server
-cp .env.example .env   # add MONGODB_URI + JWT_SECRET, or leave blank for demo mode
+cp .env.example .env   # add MONGODB_URI + JWT_SECRET (+ DEEPGRAM_API_KEY for audio), or leave blank for demo mode
 npm install
 npm run dev            # → http://localhost:5050
 npm run seed           # optional: seed a demo account + reports
@@ -130,12 +130,14 @@ flowchart LR
   I --> J
 ```
 
-> **Honest status.** This build ships the **heuristic extractor only** — it does
-> not call an LLM, and the API labels every report `engine: 'heuristic'` so it
-> never claims analysis it didn't perform. Deepgram (transcription) + OpenAI
-> (extraction) are the intended production path, stubbed behind a seam in
-> `server/src/services/intelligence.js`. The app runs in **demo mode** over
-> curated sample meetings; nothing in the UI pretends otherwise.
+> **Honest status.** Uploaded **audio/video is really transcribed by Deepgram**
+> (`server/src/services/ingest.js`, model `nova-2`); DOCX/PDF are text-extracted.
+> The resulting transcript is then analysed by the **heuristic extractor** — the
+> API labels every report `engine: 'heuristic'` so it never claims LLM analysis
+> it didn't perform. OpenAI (extraction) remains the intended next step, seamed
+> in `server/src/services/intelligence.js`. Set `DEEPGRAM_API_KEY` to enable
+> audio uploads; transcripts and documents work without it. The app also runs in
+> **demo mode** over curated sample meetings.
 
 The report shape is identical whichever analyser runs, so the entire pipeline is
 demonstrable offline. Progress streams to the client over **Socket.io**, which

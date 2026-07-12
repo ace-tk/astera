@@ -151,6 +151,46 @@ describe('reports — full lifecycle & ownership isolation', () => {
   })
 })
 
+describe('file ingest (docs / audio)', () => {
+  // A minimal one-page PDF containing the text "Hello PDF".
+  const MINI_PDF = Buffer.from(
+    '%PDF-1.1\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 200 200]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj\n4 0 obj<</Length 44>>stream\nBT /F1 18 Tf 20 100 Td (Hello PDF) Tj ET\nendstream endobj\n5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\nxref\n0 6\n0000000000 65535 f \ntrailer<</Root 1 0 R/Size 6>>\nstartxref\n0\n%%EOF',
+    'latin1',
+  )
+
+  it('extracts text from a PDF and generates a report', async () => {
+    const { token } = newUser()
+    const res = await request(app)
+      .post('/api/reports')
+      .set('Authorization', `Bearer ${token}`)
+      .field('title', 'From PDF')
+      .attach('media', MINI_PDF, { filename: 'notes.pdf', contentType: 'application/pdf' })
+    expect(res.status).toBe(201)
+    expect(res.body.report.title).toBe('From PDF')
+    expect(res.body.report.transcript).toBeUndefined() // never returned to clients
+  })
+
+  it('rejects an unsupported file type with 415', async () => {
+    const { token } = newUser()
+    const res = await request(app)
+      .post('/api/reports')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('media', Buffer.from('MZ...'), { filename: 'thing.exe', contentType: 'application/octet-stream' })
+    expect(res.status).toBe(415)
+    expect(res.body.error).toMatch(/unsupported/i)
+  })
+
+  it('returns a friendly 503 for audio when Deepgram is not configured', async () => {
+    const { token } = newUser()
+    const res = await request(app)
+      .post('/api/reports')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('media', Buffer.from([0x49, 0x44, 0x33]), { filename: 'meeting.mp3', contentType: 'audio/mpeg' })
+    expect(res.status).toBe(503)
+    expect(res.body.error).toMatch(/transcription isn.t configured|deepgram/i)
+  })
+})
+
 describe('profile (PATCH /api/auth/me)', () => {
   it('updates the signed-in user’s name and exposes createdAt', async () => {
     const email = `p+${new mongoose.Types.ObjectId()}@astera.dev`

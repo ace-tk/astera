@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { z } from 'zod'
 import { Report } from '../models/Report.js'
 import { generateReport } from '../services/intelligence.js'
+import { ingestFile } from '../services/ingest.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 const needDB = (res) => {
@@ -10,11 +11,14 @@ const needDB = (res) => {
   return true
 }
 
-const TEXT_RE = /\.(txt|vtt|srt|md|csv|json)$/i
-const isTextUpload = (f) => f && (f.mimetype?.startsWith('text/') || TEXT_RE.test(f.originalname || ''))
-
 const slugify = (s) =>
   `${s || 'report'}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40) || 'report'
+
+const formatDuration = (sec) => {
+  const m = Math.floor(sec / 60)
+  const s = Math.round(sec % 60)
+  return `${m}:${String(s).padStart(2, '0')}`
+}
 
 /** Every report belongs to the authenticated user (routes enforce requireAuth). */
 export async function listReports(req, res) {
@@ -41,9 +45,10 @@ const createSchema = z.object({
 
 /**
  * Create a report from a real upload — a transcript in the body, or an uploaded
- * file (`media`). Text files are read as the transcript; audio/video are stored
- * as source metadata (browser transcription isn't available, so the heuristic
- * runs on whatever text is present). Emits `report:stage` over the socket.
+ * file (`media`). The ingest service turns the file into text: text files are
+ * read directly, DOCX/PDF are extracted, and audio/video are transcribed by
+ * Deepgram. The resulting transcript is then fed into the existing report
+ * pipeline unchanged. Emits `report:stage` over the socket for live progress.
  */
 export async function createReport(req, res) {
   if (needDB(res)) return
@@ -53,27 +58,37 @@ export async function createReport(req, res) {
   }
 
   const file = req.file
+  const io = req.app.get('io')
+  const room = `user:${req.userId}`
+  const emit = (stage) => io?.to(room).emit('report:stage', { stage })
+
   let transcript = (parsed.data.transcript || '').trim()
+  let transcription = null
   let source
   if (file) {
     source = { fileName: file.originalname, mimeType: file.mimetype, sizeBytes: file.size }
-    if (isTextUpload(file) && !transcript) transcript = file.buffer.toString('utf8').trim()
+    try {
+      const ingested = await ingestFile(file, emit) // reads / extracts / transcribes
+      transcript = ingested.transcript
+      transcription = ingested.transcription
+    } catch (err) {
+      return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
+    }
   }
 
-  // A report needs *something* to analyze: a transcript, or a text file.
-  if (!transcript && !file) {
-    return res.status(422).json({ error: 'Provide a transcript or upload a file to analyze.' })
+  if (!transcript) {
+    return res.status(422).json({ error: 'We couldn’t find any text to analyze. Upload a transcript, document, or recording.' })
   }
 
   const title =
     parsed.data.title?.trim() ||
     (file ? file.originalname.replace(/\.[^.]+$/, '') : 'Untitled meeting')
 
-  const io = req.app.get('io')
-  const room = `user:${req.userId}`
-  const draft = await generateReport(transcript, { ...parsed.data, title }, (stage) => {
-    io?.to(room).emit('report:stage', { stage })
-  })
+  // A real transcription gives us the true duration — hand it to the pipeline.
+  const meta = { ...parsed.data, title }
+  if (transcription?.durationSec) meta.duration = formatDuration(transcription.durationSec)
+
+  const draft = await generateReport(transcript, meta, emit)
 
   const slug = `${slugify(title)}-${Date.now().toString(36).slice(-5)}`
   const report = await Report.create({
@@ -82,8 +97,8 @@ export async function createReport(req, res) {
     owner: req.userId,
     date: new Date().toISOString().slice(0, 10),
     source,
-    // audio/video with no transcript → be honest the analysis is source-limited
-    subtitle: file && !transcript ? 'Uploaded recording (no transcript)' : draft.subtitle,
+    transcript, // stored (select:false) — never returned to clients
+    transcription: transcription || undefined,
   })
   io?.to(room).emit('report:ready', { id: report.slug })
   res.status(201).json({ report: report.toClientJSON() })

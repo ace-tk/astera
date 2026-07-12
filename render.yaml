@@ -21,3 +21,5 @@ services:
         generateValue: true # Render generates a strong secret
       - key: ADMIN_EMAILS
         sync: false # comma-separated admin emails (optional; leave blank for none)
+      - key: DEEPGRAM_API_KEY
+        sync: false # speech-to-text for audio/video uploads (console.deepgram.com)
