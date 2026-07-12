@@ -81,11 +81,21 @@ const reportSchema = new mongoose.Schema(
     },
     // Full transcript stored with the report but never sent to clients (select:false).
     transcript: { type: String, select: false },
-    // Set only when audio was transcribed (Deepgram); shown on the report.
+    // Audio-intelligence metadata (Deepgram). Light enough to send to the client.
     transcription: {
-      engine: String, // e.g. 'deepgram'
+      engine: String, // 'deepgram'
+      model: String, // 'nova-3'
       language: String, // detected language code
       durationSec: Number, // audio length in seconds
+      speakerCount: Number, // diarized speaker count
+      summary: String, // Deepgram summary
+      topics: [String], // detected discussion topics
+      sentiment: String, // overall sentiment (positive | neutral | negative)
+    },
+    // Diarized speaker timeline (utterances). Stored, never sent (select:false).
+    diarization: {
+      type: [{ speaker: String, start: Number, end: Number, text: String, sentiment: String, _id: false }],
+      select: false,
     },
   },
   { timestamps: true },
@@ -94,6 +104,7 @@ const reportSchema = new mongoose.Schema(
 reportSchema.methods.toClientJSON = function () {
   const o = this.toObject()
   delete o.transcript // stored server-side only; never leaves the API
+  delete o.diarization // heavy speaker timeline stays server-side
   return {
     ...o,
     id: o.slug || String(o._id),

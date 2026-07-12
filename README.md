@@ -130,14 +130,17 @@ flowchart LR
   I --> J
 ```
 
-> **Honest status.** Uploaded **audio/video is really transcribed by Deepgram**
-> (`server/src/services/ingest.js`, model `nova-2`); DOCX/PDF are text-extracted.
-> The resulting transcript is then analysed by the **heuristic extractor** — the
-> API labels every report `engine: 'heuristic'` so it never claims LLM analysis
-> it didn't perform. OpenAI (extraction) remains the intended next step, seamed
-> in `server/src/services/intelligence.js`. Set `DEEPGRAM_API_KEY` to enable
-> audio uploads; transcripts and documents work without it. The app also runs in
-> **demo mode** over curated sample meetings.
+> **Honest status.** Uploaded **audio/video is really transcribed by Deepgram
+> Nova-3** (`server/src/services/ingest.js`) with smart formatting, punctuation,
+> paragraphs, **speaker diarization, utterances + word timestamps, topics,
+> summaries, and sentiment** (auto language detection; intelligence add-ons fall
+> back gracefully for unsupported languages). Diarization drives the report's
+> real speaker list + speaking time; the Deepgram summary becomes the executive
+> summary. The transcript is then analysed by the **heuristic extractor**
+> (`engine: 'heuristic'`) — decisions/risks/commitments — so the API never claims
+> LLM analysis it didn't perform. DOCX/PDF are text-extracted. Transcript,
+> diarized timeline, and metadata are stored in MongoDB alongside the report. Set
+> `DEEPGRAM_API_KEY` to enable audio; transcripts and documents work without it.
 
 The report shape is identical whichever analyser runs, so the entire pipeline is
 demonstrable offline. Progress streams to the client over **Socket.io**, which

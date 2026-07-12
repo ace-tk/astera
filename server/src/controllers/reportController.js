@@ -20,6 +20,9 @@ const formatDuration = (sec) => {
   return `${m}:${String(s).padStart(2, '0')}`
 }
 
+// Deepgram sentiment → the report's sentiment enum.
+const mapSentiment = (s) => (s === 'positive' ? 'positive' : s === 'negative' ? 'negative' : 'mixed')
+
 /** Every report belongs to the authenticated user (routes enforce requireAuth). */
 export async function listReports(req, res) {
   if (needDB(res)) return
@@ -64,6 +67,8 @@ export async function createReport(req, res) {
 
   let transcript = (parsed.data.transcript || '').trim()
   let transcription = null
+  let diarization = []
+  let speakers = []
   let source
   if (file) {
     source = { fileName: file.originalname, mimeType: file.mimetype, sizeBytes: file.size }
@@ -71,6 +76,8 @@ export async function createReport(req, res) {
       const ingested = await ingestFile(file, emit) // reads / extracts / transcribes
       transcript = ingested.transcript
       transcription = ingested.transcription
+      diarization = ingested.diarization || []
+      speakers = ingested.speakers || []
     } catch (err) {
       return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
     }
@@ -90,6 +97,17 @@ export async function createReport(req, res) {
 
   const draft = await generateReport(transcript, meta, emit)
 
+  // Enrich the report with real audio intelligence — this composes on top of the
+  // pipeline output (participants, speaking time, summary, sentiment); it does not
+  // change the pipeline itself. Text/DOCX/PDF reports are untouched.
+  if (speakers.length) {
+    draft.participants = speakers.map((s) => s.label)
+    draft.talkTime = speakers.map((s) => ({ name: s.label, pct: s.pct }))
+    draft.metrics = { ...draft.metrics, owners: speakers.length }
+  }
+  if (transcription?.summary) draft.headline = transcription.summary
+  if (transcription?.sentiment) draft.sentiment = mapSentiment(transcription.sentiment)
+
   const slug = `${slugify(title)}-${Date.now().toString(36).slice(-5)}`
   const report = await Report.create({
     ...draft,
@@ -99,6 +117,7 @@ export async function createReport(req, res) {
     source,
     transcript, // stored (select:false) — never returned to clients
     transcription: transcription || undefined,
+    diarization: diarization.length ? diarization : undefined,
   })
   io?.to(room).emit('report:ready', { id: report.slug })
   res.status(201).json({ report: report.toClientJSON() })

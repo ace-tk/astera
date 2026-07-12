@@ -78,6 +78,24 @@ async function extractPdf(buffer) {
   }
 }
 
+// Nova-3 with the full audio-intelligence feature set. The intelligence add-ons
+// (topics/summarize/sentiment) only support some languages, so if the rich call
+// is rejected we fall back to core transcription + diarization — the transcript
+// always comes through.
+const RICH_OPTS = {
+  model: 'nova-3',
+  smart_format: true,
+  punctuate: true,
+  paragraphs: true,
+  diarize: true,
+  utterances: true,
+  detect_language: true,
+  topics: true,
+  summarize: 'v2',
+  sentiment: true,
+}
+const CORE_OPTS = { model: 'nova-3', smart_format: true, punctuate: true, paragraphs: true, diarize: true, utterances: true, detect_language: true }
+
 async function transcribeAudio(buffer, onStage) {
   if (!env.deepgramKey) {
     throw new IngestError(
@@ -85,36 +103,69 @@ async function transcribeAudio(buffer, onStage) {
       503,
     )
   }
-  onStage?.('transcript') // real "Transcribing" stage — begins before analysis
+  onStage?.('transcript') // "Transcribing"
   const { DeepgramClient } = await import('@deepgram/sdk')
   const dg = new DeepgramClient({ apiKey: env.deepgramKey })
+  const run = (opts) => withTimeout(dg.listen.v1.media.transcribeFile(buffer, opts), 180_000, 'Transcription')
 
   let result
   try {
-    result = await withTimeout(
-      dg.listen.v1.media.transcribeFile(buffer, {
-        model: 'nova-2',
-        smart_format: true,
-        detect_language: true,
-      }),
-      120_000,
-      'Transcription',
-    )
+    result = await run(RICH_OPTS)
   } catch (err) {
     if (err instanceof IngestError) throw err // timeout
-    throw new IngestError('We couldn’t transcribe that audio. Check the file is valid audio/video and try again.', 502)
+    try {
+      result = await run(CORE_OPTS) // intelligence features unsupported for this audio/language
+    } catch (err2) {
+      if (err2 instanceof IngestError) throw err2
+      throw new IngestError('We couldn’t transcribe that audio. Check the file is valid audio/video and try again.', 502)
+    }
   }
 
-  const channel = result?.results?.channels?.[0]
+  onStage?.('intelligence') // "Speaker Analysis"
+  const results = result?.results
+  const channel = results?.channels?.[0]
   const transcript = (channel?.alternatives?.[0]?.transcript || '').trim()
   if (!transcript) throw new IngestError('No speech was detected in that recording.', 422)
 
+  // Diarized speaker timeline (utterances) — 1-indexed speaker labels.
+  const utterances = Array.isArray(results?.utterances) ? results.utterances : []
+  const round = (n) => Math.round((Number(n) || 0) * 100) / 100
+  const diarization = utterances.map((u) => ({
+    speaker: `Speaker ${Number(u.speaker ?? 0) + 1}`,
+    start: round(u.start),
+    end: round(u.end),
+    text: u.transcript || '',
+    sentiment: u.sentiment || undefined,
+  }))
+
+  // Real speaking time / participation per speaker.
+  const timeBy = {}
+  for (const u of utterances) {
+    const k = Number(u.speaker ?? 0)
+    timeBy[k] = (timeBy[k] || 0) + Math.max(0, (Number(u.end) || 0) - (Number(u.start) || 0))
+  }
+  const total = Object.values(timeBy).reduce((a, b) => a + b, 0) || 1
+  const speakers = Object.entries(timeBy)
+    .sort((a, b) => b[1] - a[1])
+    .map(([sp, sec]) => ({ label: `Speaker ${Number(sp) + 1}`, speakingSec: Math.round(sec), pct: Math.round((sec / total) * 100) }))
+
+  const topics = [
+    ...new Set((results?.topics?.segments || []).flatMap((s) => (s.topics || []).map((t) => t.topic)).filter(Boolean)),
+  ].slice(0, 12)
+
   return {
     transcript,
+    diarization,
+    speakers,
     transcription: {
       engine: 'deepgram',
+      model: 'nova-3',
       language: channel?.detected_language || 'en',
       durationSec: Math.round(result?.metadata?.duration || 0),
+      speakerCount: speakers.length,
+      summary: (results?.summary?.short || '').trim() || undefined,
+      topics,
+      sentiment: results?.sentiments?.average?.sentiment || undefined,
     },
   }
 }
@@ -137,5 +188,5 @@ export async function ingestFile(file, onStage) {
   else if (kind === 'pdf') transcript = await extractPdf(file.buffer)
 
   if (!transcript) throw new IngestError('No readable text was found in that document.', 422)
-  return { transcript, transcription: null }
+  return { transcript, transcription: null, diarization: [], speakers: [] }
 }
