@@ -54,10 +54,11 @@ and it provisions the service.
 | Var | Notes |
 | --- | --- |
 | `NODE_ENV` | `production` |
-| `PORT` | `5050` (Render injects its own; the app reads `PORT`) |
+| `PORT` | injected by Render automatically — the app binds `process.env.PORT` |
 | `CLIENT_URL` | your Vercel URL — **CORS + Socket.io are pinned to it** |
 | `MONGODB_URI` | Atlas connection string |
 | `JWT_SECRET` | Render generates a strong value; or set your own (≥32 chars) |
+| `ADMIN_EMAILS` | comma-separated admin emails for the admin panel (optional) |
 
 > The server **refuses to boot** in production with a missing/weak/default
 > `JWT_SECRET` — this is intentional. Generate one with
