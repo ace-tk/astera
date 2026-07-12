@@ -25,8 +25,8 @@ userSchema.methods.verifyPassword = function (plain) {
 
 // Never leak the hash to the client.
 userSchema.methods.toSafeJSON = function () {
-  const { _id, name, email, workspace, role, theme, plan } = this
-  return { id: _id, name, email, workspace, role, theme, plan }
+  const { _id, name, email, workspace, role, theme, plan, createdAt } = this
+  return { id: _id, name, email, workspace, role, theme, plan, createdAt }
 }
 
 export const User = mongoose.model('User', userSchema)

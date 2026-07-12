@@ -74,7 +74,7 @@ export default function UserMenu() {
               </div>
               <div className="p-1.5">
                 <Link
-                  to="/app/settings"
+                  to="/app/profile"
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-ink/[0.04]"
                 >

@@ -7,3 +7,4 @@ import { api } from './api'
 export const signupRequest = (payload) => api.post('/auth/signup', payload)
 export const loginRequest = (payload) => api.post('/auth/login', payload)
 export const meRequest = () => api.get('/auth/me')
+export const updateProfileRequest = (patch) => api.patch('/auth/me', patch)

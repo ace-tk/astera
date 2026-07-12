@@ -150,6 +150,24 @@ describe('reports — full lifecycle & ownership isolation', () => {
   })
 })
 
+describe('profile (PATCH /api/auth/me)', () => {
+  it('updates the signed-in user’s name and exposes createdAt', async () => {
+    const email = `p+${new mongoose.Types.ObjectId()}@astera.dev`
+    const signup = await request(app).post('/api/auth/signup').send({ name: 'Old Name', email, password: 'supersecret123' })
+    const token = signup.body.token
+    const res = await request(app).patch('/api/auth/me').set('Authorization', `Bearer ${token}`).send({ name: 'New Name' })
+    expect(res.status).toBe(200)
+    expect(res.body.user.name).toBe('New Name')
+    expect(res.body.user.email).toBe(email.toLowerCase()) // email stays immutable
+    expect(res.body.user.createdAt).toBeTruthy()
+  })
+
+  it('requires auth', async () => {
+    const res = await request(app).patch('/api/auth/me').send({ name: 'x' })
+    expect(res.status).toBe(401)
+  })
+})
+
 describe('auth validation', () => {
   it('rejects a malformed login with 422', async () => {
     const res = await request(app).post('/api/auth/login').send({ email: 'not-an-email' })

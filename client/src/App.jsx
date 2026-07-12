@@ -27,6 +27,7 @@ const Replay = lazy(() => import('@/pages/dashboard/Replay'))
 const Reader = lazy(() => import('@/pages/dashboard/Reader'))
 const Analytics = lazy(() => import('@/pages/dashboard/Analytics'))
 const Settings = lazy(() => import('@/pages/dashboard/Settings'))
+const Profile = lazy(() => import('@/pages/dashboard/Profile'))
 const Status = lazy(() => import('@/pages/dashboard/Status'))
 const About = lazy(() => import('@/pages/dashboard/About'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -80,6 +81,7 @@ export default function App() {
               <Route path="replay/:id" element={<Replay />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="profile" element={<Profile />} />
               <Route path="status" element={<Status />} />
               <Route path="about" element={<About />} />
             </Route>

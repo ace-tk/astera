@@ -2,6 +2,7 @@ import { Router } from 'express'
 import multer from 'multer'
 import { asyncHandler, requireAuth } from '../middleware/index.js'
 import { signup, login, me } from '../controllers/authController.js'
+import { updateMe } from '../controllers/userController.js'
 import { listReports, getReport, createReport, updateReport, deleteReport } from '../controllers/reportController.js'
 
 const router = Router()
@@ -15,6 +16,7 @@ router.get('/health', (req, res) => res.json({ ok: true, service: 'astera-api', 
 router.post('/auth/signup', asyncHandler(signup))
 router.post('/auth/login', asyncHandler(login))
 router.get('/auth/me', requireAuth, asyncHandler(me))
+router.patch('/auth/me', requireAuth, asyncHandler(updateMe))
 
 // Reports — every route is owner-scoped and REQUIRES auth. Demo data lives on
 // the client; the API only ever serves a user their own persisted reports.
