@@ -9,7 +9,7 @@ import CommandPalette from '@/components/common/CommandPalette'
 import ShortcutsOverlay from '@/components/common/ShortcutsOverlay'
 import GlobalShortcuts from '@/components/common/GlobalShortcuts'
 import EasterEggs from '@/components/eggs/EasterEggs'
-import { GuestOnly } from '@/components/auth/RouteGuards'
+import { GuestOnly, RequireAdmin } from '@/components/auth/RouteGuards'
 import { useA11y } from '@/context/A11yContext'
 
 // Route-level code splitting keeps the landing bundle lean.
@@ -28,6 +28,11 @@ const Reader = lazy(() => import('@/pages/dashboard/Reader'))
 const Analytics = lazy(() => import('@/pages/dashboard/Analytics'))
 const Settings = lazy(() => import('@/pages/dashboard/Settings'))
 const Profile = lazy(() => import('@/pages/dashboard/Profile'))
+const AdminLayout = lazy(() => import('@/layouts/AdminLayout'))
+const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
+const AdminUsers = lazy(() => import('@/pages/admin/AdminUsers'))
+const AdminReports = lazy(() => import('@/pages/admin/AdminReports'))
+const AdminReportReview = lazy(() => import('@/pages/admin/AdminReportReview'))
 const Status = lazy(() => import('@/pages/dashboard/Status'))
 const About = lazy(() => import('@/pages/dashboard/About'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -82,6 +87,12 @@ export default function App() {
               <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<Settings />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="reports" element={<AdminReports />} />
+                <Route path="reports/:id" element={<AdminReportReview />} />
+              </Route>
               <Route path="status" element={<Status />} />
               <Route path="about" element={<About />} />
             </Route>

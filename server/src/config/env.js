@@ -26,6 +26,9 @@ const schema = z.object({
   JWT_EXPIRES_IN: z.string().default('7d'),
   OPENAI_API_KEY: z.string().optional().default(''),
   DEEPGRAM_API_KEY: z.string().optional().default(''),
+  // Comma-separated allowlist of admin emails — a simple way to grant the admin
+  // role without a separate promotion flow. Also honored: a user whose role is 'admin'.
+  ADMIN_EMAILS: z.string().optional().default(''),
 })
 
 const parsed = schema.safeParse(process.env)
@@ -48,7 +51,14 @@ export const env = {
   jwtExpiresIn: e.JWT_EXPIRES_IN,
   openaiKey: e.OPENAI_API_KEY,
   deepgramKey: e.DEEPGRAM_API_KEY,
+  adminEmails: e.ADMIN_EMAILS.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean),
   isProd,
+}
+
+/** A user is an admin if their role is 'admin' or their email is allowlisted. */
+export function isAdminUser(user) {
+  if (!user) return false
+  return user.role === 'admin' || env.adminEmails.includes((user.email || '').toLowerCase())
 }
 
 // Kept for call-site compatibility; validation now happens at import time.

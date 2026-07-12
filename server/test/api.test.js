@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 import { createApp } from '../src/app.js'
 import { env } from '../src/config/env.js'
+import { User } from '../src/models/User.js'
 
 // A real in-memory Mongo is connected by test/setup.js, so these tests exercise
 // the true persistence + ownership path. Each user is a fresh ObjectId identity.
@@ -165,6 +166,56 @@ describe('profile (PATCH /api/auth/me)', () => {
   it('requires auth', async () => {
     const res = await request(app).patch('/api/auth/me').send({ name: 'x' })
     expect(res.status).toBe(401)
+  })
+})
+
+describe('admin', () => {
+  const adminToken = async () => {
+    const passwordHash = await User.hashPassword('supersecret123')
+    const u = await User.create({ name: 'Admin', email: `admin+${new mongoose.Types.ObjectId()}@astera.dev`, passwordHash, role: 'admin' })
+    return jwt.sign({ sub: String(u._id) }, env.jwtSecret, { expiresIn: '1h' })
+  }
+
+  it('requires auth', async () => {
+    expect((await request(app).get('/api/admin/stats')).status).toBe(401)
+  })
+
+  it('blocks non-admins with 403', async () => {
+    const email = `na+${new mongoose.Types.ObjectId()}@astera.dev`
+    const s = await request(app).post('/api/auth/signup').send({ name: 'NA', email, password: 'supersecret123' })
+    const res = await request(app).get('/api/admin/stats').set('Authorization', `Bearer ${s.body.token}`)
+    expect(res.status).toBe(403)
+  })
+
+  it('lets an admin read stats/users and approve, edit, delete a report', async () => {
+    const token = await adminToken()
+    const owner = await request(app)
+      .post('/api/auth/signup')
+      .send({ name: 'Owner', email: `o+${new mongoose.Types.ObjectId()}@astera.dev`, password: 'supersecret123' })
+    const created = await request(app)
+      .post('/api/reports')
+      .set('Authorization', `Bearer ${owner.body.token}`)
+      .send({ title: 'Admin sees me', transcript: SAMPLE })
+    const rid = created.body.report.id
+    expect(created.body.report.reviewStatus).toBe('pending') // new reports await review
+
+    const stats = await request(app).get('/api/admin/stats').set('Authorization', `Bearer ${token}`)
+    expect(stats.status).toBe(200)
+    expect(stats.body.stats.totalReports).toBeGreaterThanOrEqual(1)
+
+    const users = await request(app).get('/api/admin/users').set('Authorization', `Bearer ${token}`)
+    expect(users.body.users.some((x) => x.reportsCount >= 1)).toBe(true)
+
+    const approve = await request(app)
+      .patch(`/api/admin/reports/${rid}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ reviewStatus: 'approved', headline: 'Edited by admin' })
+    expect(approve.status).toBe(200)
+    expect(approve.body.report.reviewStatus).toBe('approved')
+    expect(approve.body.report.headline).toBe('Edited by admin')
+    expect(approve.body.report.owner.email).toContain('o+') // owner summary exposed
+
+    expect((await request(app).delete(`/api/admin/reports/${rid}`).set('Authorization', `Bearer ${token}`)).status).toBe(200)
   })
 })
 

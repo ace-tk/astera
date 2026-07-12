@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
+import { isAdminUser } from '../config/env.js'
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,7 +27,7 @@ userSchema.methods.verifyPassword = function (plain) {
 // Never leak the hash to the client.
 userSchema.methods.toSafeJSON = function () {
   const { _id, name, email, workspace, role, theme, plan, createdAt } = this
-  return { id: _id, name, email, workspace, role, theme, plan, createdAt }
+  return { id: _id, name, email, workspace, role, theme, plan, createdAt, isAdmin: isAdminUser(this) }
 }
 
 export const User = mongoose.model('User', userSchema)

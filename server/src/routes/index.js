@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import multer from 'multer'
-import { asyncHandler, requireAuth } from '../middleware/index.js'
+import { asyncHandler, requireAuth, requireAdmin } from '../middleware/index.js'
 import { signup, login, me } from '../controllers/authController.js'
 import { updateMe } from '../controllers/userController.js'
 import { listReports, getReport, createReport, updateReport, deleteReport } from '../controllers/reportController.js'
+import * as admin from '../controllers/adminController.js'
 
 const router = Router()
 
@@ -25,5 +26,13 @@ router.get('/reports/:id', requireAuth, asyncHandler(getReport))
 router.post('/reports', requireAuth, upload.single('media'), asyncHandler(createReport))
 router.patch('/reports/:id', requireAuth, asyncHandler(updateReport))
 router.delete('/reports/:id', requireAuth, asyncHandler(deleteReport))
+
+// Admin — every route requires an authenticated admin (403 otherwise).
+router.get('/admin/stats', requireAuth, requireAdmin, asyncHandler(admin.stats))
+router.get('/admin/users', requireAuth, requireAdmin, asyncHandler(admin.listUsers))
+router.get('/admin/reports', requireAuth, requireAdmin, asyncHandler(admin.listReports))
+router.get('/admin/reports/:id', requireAuth, requireAdmin, asyncHandler(admin.getReport))
+router.patch('/admin/reports/:id', requireAuth, requireAdmin, asyncHandler(admin.updateReport))
+router.delete('/admin/reports/:id', requireAuth, requireAdmin, asyncHandler(admin.deleteReport))
 
 export default router

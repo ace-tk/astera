@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { LogOut, UserRound } from 'lucide-react'
+import { LogOut, UserRound, ShieldCheck } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useSound } from '@/context/SoundContext'
 import Button from '@/components/ui/Button'
@@ -80,6 +80,15 @@ export default function UserMenu() {
                 >
                   <UserRound className="h-4 w-4 text-muted" /> Profile
                 </Link>
+                {user?.isAdmin && (
+                  <Link
+                    to="/app/admin"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm transition-colors hover:bg-ink/[0.04]"
+                  >
+                    <ShieldCheck className="h-4 w-4 text-accent" /> Admin
+                  </Link>
+                )}
                 <button
                   onClick={onLogout}
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm text-coral transition-colors hover:bg-coral/[0.06]"

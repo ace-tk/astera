@@ -45,6 +45,8 @@ const reportSchema = new mongoose.Schema(
     date: String, // display date (YYYY-MM-DD)
     color: { type: String, default: 'royal' },
     status: { type: String, enum: ['processing', 'ready', 'failed'], default: 'processing' },
+    // Admin review state — distinct from the generation `status` above.
+    reviewStatus: { type: String, enum: ['draft', 'pending', 'approved'], default: 'pending' },
     sentiment: { type: String, enum: ['positive', 'mixed', 'negative'], default: 'positive' },
     duration: String,
     participants: [String],

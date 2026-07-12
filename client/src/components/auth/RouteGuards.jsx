@@ -23,3 +23,13 @@ export function GuestOnly({ children }) {
   if (isAuthed) return <Navigate to={location.state?.from || '/app'} replace />
   return children
 }
+
+/** Admin-only. Guests go to sign in; signed-in non-admins are sent back to /app. */
+export function RequireAdmin({ children }) {
+  const { isAuthed, isLoading, user } = useAuth()
+  const location = useLocation()
+  if (isLoading) return <PageLoader />
+  if (!isAuthed) return <Navigate to="/login" replace state={{ from: location.pathname }} />
+  if (!user?.isAdmin) return <Navigate to="/app" replace />
+  return children
+}
