@@ -57,6 +57,23 @@ test('theme switching re-skins and persists', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'royal')
 })
 
+test('upload studio runs the pipeline through to the ready screen', async ({ page }) => {
+  await page.goto('/app/upload')
+  // pick a file → ready state
+  await page.setInputFiles('input[type=file]', {
+    name: 'meeting.txt',
+    mimeType: 'text/plain',
+    buffer: Buffer.from('Maya: We decided to ship. Sam: I will send metrics by Friday.'),
+  })
+  await expect(page.getByRole('button', { name: /generate report/i })).toBeVisible()
+  // run the staged pipeline
+  await page.getByRole('button', { name: /generate report/i }).click()
+  await expect(page.getByText(/Composing a sample report/i)).toBeVisible()
+  // it must reach the done screen (regression: AnimatePresence mode="wait" deadlock)
+  await expect(page.getByRole('heading', { name: /Sample report ready/i })).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByRole('button', { name: /open report/i })).toBeVisible()
+})
+
 test('no console errors on the core journey', async ({ page }) => {
   await page.goto('/app')
   await page.waitForTimeout(1500)

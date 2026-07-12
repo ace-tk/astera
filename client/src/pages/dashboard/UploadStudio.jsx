@@ -172,7 +172,12 @@ export default function UploadStudio() {
                       {activeNow && <p className="text-xs text-muted">{s.body}</p>}
                     </div>
                     {activeNow && (
-                      <motion.span layoutId="proc-dot" className={cn('h-2 w-2 rounded-full', a.bg)} />
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [1, 1.5, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                        className={cn('h-2 w-2 rounded-full', a.bg)}
+                      />
                     )}
                   </div>
                 )
