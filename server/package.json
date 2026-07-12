@@ -31,6 +31,7 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "mongodb-memory-server": "^11.2.0",
     "supertest": "^7.2.2",
     "vitest": "^3.2.7"
   }

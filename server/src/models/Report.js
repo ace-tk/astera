@@ -22,17 +22,33 @@ const timelineSchema = new mongoose.Schema(
   { _id: false },
 )
 
+const dnaSchema = new mongoose.Schema(
+  {
+    decisionDriven: Number,
+    collaboration: Number,
+    conflict: Number,
+    energy: Number,
+    energyLabel: String,
+    compliance: Number,
+    aiConfidence: Number,
+  },
+  { _id: false },
+)
+
 const reportSchema = new mongoose.Schema(
   {
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
     slug: { type: String, index: true },
     title: { type: String, required: true },
     subtitle: String,
+    category: { type: String, default: 'Your upload' },
+    date: String, // display date (YYYY-MM-DD)
     color: { type: String, default: 'royal' },
     status: { type: String, enum: ['processing', 'ready', 'failed'], default: 'processing' },
     sentiment: { type: String, enum: ['positive', 'mixed', 'negative'], default: 'positive' },
     duration: String,
     participants: [String],
+    engine: { type: String, default: 'heuristic' }, // honest label: which analyzer ran
     headline: String,
     metrics: {
       decisions: Number,
@@ -41,11 +57,20 @@ const reportSchema = new mongoose.Schema(
       commitments: Number,
       talkBalance: Number,
     },
+    dna: dnaSchema,
     decisions: [decisionSchema],
     risks: [riskSchema],
     commitments: [commitmentSchema],
     timeline: [timelineSchema],
     talkTime: [{ name: String, pct: Number, _id: false }],
+    // User-editable (Review Mode) — persisted server-side for real accounts.
+    priority: { type: String, enum: ['high', 'medium', 'low', null], default: null },
+    notes: String,
+    feedback: {
+      useful: Boolean,
+      reasons: [String],
+      at: Date,
+    },
     source: {
       fileName: String,
       fileUrl: String,
@@ -58,7 +83,11 @@ const reportSchema = new mongoose.Schema(
 
 reportSchema.methods.toClientJSON = function () {
   const o = this.toObject()
-  return { ...o, id: o.slug || String(o._id) }
+  return {
+    ...o,
+    id: o.slug || String(o._id),
+    date: o.date || (o.createdAt ? new Date(o.createdAt).toISOString().slice(0, 10) : undefined),
+  }
 }
 
 export const Report = mongoose.model('Report', reportSchema)
