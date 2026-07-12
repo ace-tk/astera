@@ -15,3 +15,13 @@ export async function fetchMyReport(id) {
   const { report } = await api.get(`/reports/${id}`)
   return report
 }
+
+export async function updateMyReport(id, patch) {
+  const { report } = await api.patch(`/reports/${id}`, patch)
+  return report
+}
+
+export async function deleteMyReport(id) {
+  await api.del(`/reports/${id}`)
+  return id
+}

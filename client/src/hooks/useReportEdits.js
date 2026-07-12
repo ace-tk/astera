@@ -1,41 +1,75 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useAuth } from '@/context/AuthContext'
+import { isDemoId } from '@/services/mockData'
+import { useUpdateReport } from '@/hooks/useReports'
 
 /**
- * Persisted, per-report edits captured in Review Mode. Stored locally so a user
- * can correct a title, sharpen the summary, re-prioritize, add notes, or fix
- * action items — and see it reflected immediately on the report.
+ * Per-report edits captured in Review Mode — title, summary, priority, notes,
+ * action items.
+ *
+ * For a signed-in user's own report the edits persist to MongoDB (the report
+ * itself is the source of truth). For demo reports (or guests) they persist to
+ * localStorage exactly as before, so the demo stays fully client-side.
  */
 const key = (id) => `astera:review:${id}`
 
-export function useReportEdits(reportId) {
-  const [edits, setEdits] = useState({})
+export function useReportEdits(report) {
+  const id = report?.id
+  const { isAuthed } = useAuth()
+  const cloud = Boolean(isAuthed && id && !isDemoId(id))
+  const update = useUpdateReport()
+  const [localEdits, setLocalEdits] = useState({})
 
+  // localStorage overlay — demo / guest reports only.
   useEffect(() => {
-    try {
-      setEdits(JSON.parse(localStorage.getItem(key(reportId)) || '{}'))
-    } catch {
-      setEdits({})
+    if (cloud || !id) {
+      setLocalEdits({})
+      return
     }
-  }, [reportId])
+    try {
+      setLocalEdits(JSON.parse(localStorage.getItem(key(id)) || '{}'))
+    } catch {
+      setLocalEdits({})
+    }
+  }, [id, cloud])
+
+  // Real reports already carry their edited values; expose the persisted review
+  // fields (priority, notes) as "edits" so the report page renders them. Title,
+  // summary, and commitments come straight off the (updated) report.
+  const edits = cloud ? { priority: report?.priority || undefined, notes: report?.notes || undefined } : localEdits
 
   const save = useCallback(
-    (next) => {
+    async (next) => {
+      if (cloud) {
+        const patch = {
+          priority: next.priority ?? null, // '' / unset → clear
+          notes: next.notes ?? '',
+          commitments: next.commitments || [],
+        }
+        if (next.title !== undefined) patch.title = next.title
+        if (next.headline !== undefined) patch.headline = next.headline
+        await update.mutateAsync({ id, patch })
+        return
+      }
+      // demo / guest → localStorage; drop empty keys so an unedited report has none
       const clean = { ...next }
-      // Drop empty keys so an unedited report has no stored override.
       Object.keys(clean).forEach((k) => {
         if (clean[k] == null || clean[k] === '') delete clean[k]
       })
-      setEdits(clean)
-      if (Object.keys(clean).length) localStorage.setItem(key(reportId), JSON.stringify(clean))
-      else localStorage.removeItem(key(reportId))
+      setLocalEdits(clean)
+      if (Object.keys(clean).length) localStorage.setItem(key(id), JSON.stringify(clean))
+      else localStorage.removeItem(key(id))
     },
-    [reportId],
+    [cloud, id, update],
   )
 
   const reset = useCallback(() => {
-    localStorage.removeItem(key(reportId))
-    setEdits({})
-  }, [reportId])
+    if (cloud) return
+    localStorage.removeItem(key(id))
+    setLocalEdits({})
+  }, [cloud, id])
 
-  return { edits, save, reset, edited: Object.keys(edits).length > 0 }
+  const edited = cloud ? Boolean(report?.priority || report?.notes) : Object.keys(localEdits).length > 0
+
+  return { edits, save, reset, edited, mode: cloud ? 'cloud' : 'local' }
 }

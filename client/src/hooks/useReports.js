@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@/context/AuthContext'
 import { getReports, getReport, isDemoId } from '@/services/mockData'
-import { fetchMyReports, fetchMyReport } from '@/services/reports'
+import { fetchMyReports, fetchMyReport, updateMyReport, deleteMyReport } from '@/services/reports'
 
 /**
  * Report data hooks. The axis is authentication, not a build flag:
@@ -32,6 +32,32 @@ export function useReport(id) {
     queryKey: ['report', demo ? 'demo' : 'me', id],
     queryFn: () => (demo ? getReport(id) : fetchMyReport(id)),
     enabled: Boolean(id) && !authLoading,
+    retry: false, // a 404 (not yours / missing) shouldn't retry — surface it
   })
   return { ...query, isLoading: authLoading || query.isLoading }
+}
+
+/** Persist a report edit (rename, summary, priority, notes, action items, feedback). */
+export function useUpdateReport() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, patch }) => updateMyReport(id, patch),
+    onSuccess: (report) => {
+      qc.setQueryData(['report', 'me', report.id], report)
+      qc.invalidateQueries({ queryKey: ['reports', 'me'] })
+    },
+  })
+}
+
+/** Delete a report and drop it from the cached list immediately. */
+export function useDeleteReport() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id) => deleteMyReport(id),
+    onSuccess: (id) => {
+      qc.setQueryData(['reports', 'me'], (prev) => (Array.isArray(prev) ? prev.filter((r) => r.id !== id) : prev))
+      qc.removeQueries({ queryKey: ['report', 'me', id] })
+      qc.invalidateQueries({ queryKey: ['reports', 'me'] })
+    },
+  })
 }

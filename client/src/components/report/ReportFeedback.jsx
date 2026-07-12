@@ -4,17 +4,24 @@ import { ThumbsUp, ThumbsDown, Check, X, Sparkles } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { useToast } from '@/context/ToastContext'
 import { useSound } from '@/context/SoundContext'
+import { useAuth } from '@/context/AuthContext'
+import { isDemoId } from '@/services/mockData'
+import { useUpdateReport } from '@/hooks/useReports'
 import { cn } from '@/utils/cn'
 
 const REASONS = ['More detail', 'Wrong summary', 'Wrong speaker', 'Wrong decision', 'Missing action item', 'Other']
 const key = (id) => `astera:feedback:${id}`
 
 /**
- * "Was this report useful?" — a real feedback loop. Yes plays a small
- * celebration and stores locally; No opens a modal to capture what was missing.
- * Both persist per report and reflect prior feedback on return.
+ * "Was this report useful?" — a real feedback loop. For a signed-in user's own
+ * report the feedback persists to MongoDB; for demo reports it stays in
+ * localStorage exactly as before. Reflects prior feedback on return.
  */
-export default function ReportFeedback({ reportId }) {
+export default function ReportFeedback({ report }) {
+  const reportId = report?.id
+  const { isAuthed } = useAuth()
+  const cloud = Boolean(isAuthed && reportId && !isDemoId(reportId))
+  const update = useUpdateReport()
   const { toast } = useToast()
   const { play } = useSound()
   const [saved, setSaved] = useState(null) // { useful, reasons }
@@ -22,15 +29,19 @@ export default function ReportFeedback({ reportId }) {
   const [picked, setPicked] = useState([])
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(key(reportId))
-      setSaved(raw ? JSON.parse(raw) : null)
-    } catch {
-      setSaved(null)
+    if (cloud) {
+      setSaved(report?.feedback?.useful != null ? { useful: report.feedback.useful, reasons: report.feedback.reasons || [] } : null)
+    } else {
+      try {
+        const raw = localStorage.getItem(key(reportId))
+        setSaved(raw ? JSON.parse(raw) : null)
+      } catch {
+        setSaved(null)
+      }
     }
     setModalOpen(false)
     setPicked([])
-  }, [reportId])
+  }, [reportId, cloud, report?.feedback])
 
   useEffect(() => {
     if (!modalOpen) return
@@ -39,9 +50,18 @@ export default function ReportFeedback({ reportId }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [modalOpen])
 
-  const persist = (val) => {
-    localStorage.setItem(key(reportId), JSON.stringify(val))
-    setSaved(val)
+  const persist = async (val) => {
+    setSaved(val) // optimistic
+    if (cloud) {
+      try {
+        await update.mutateAsync({ id: reportId, patch: { feedback: { useful: val.useful, reasons: val.reasons } } })
+      } catch {
+        toast({ title: 'Couldn’t save feedback', description: 'Please try again.', variant: 'warn', color: 'rose' })
+        setSaved(null)
+      }
+    } else {
+      localStorage.setItem(key(reportId), JSON.stringify(val))
+    }
   }
 
   const onYes = () => {
@@ -70,7 +90,7 @@ export default function ReportFeedback({ reportId }) {
         <p className="text-sm text-muted">
           {saved.useful ? 'Thanks — you marked this report useful.' : `Thanks for the note${saved.reasons.length ? ` (${saved.reasons.join(', ')})` : ''}. We’ll sharpen it.`}
           {' '}
-          <button onClick={() => { localStorage.removeItem(key(reportId)); setSaved(null) }} className="link-underline font-medium text-ink">Undo</button>
+          <button onClick={() => { if (!cloud) localStorage.removeItem(key(reportId)); setSaved(null) }} className="link-underline font-medium text-ink">Undo</button>
         </p>
       </motion.div>
     )
@@ -107,7 +127,7 @@ export default function ReportFeedback({ reportId }) {
               <div className="flex items-start justify-between">
                 <div>
                   <h2 className="font-display text-xl font-semibold tracking-tight">What was missing?</h2>
-                  <p className="mt-1 text-sm text-muted">Pick anything that felt off — it stays on your device.</p>
+                  <p className="mt-1 text-sm text-muted">Pick anything that felt off — {cloud ? 'it saves to your report.' : 'it stays on your device.'}</p>
                 </div>
                 <button onClick={() => setModalOpen(false)} className="grid h-8 w-8 place-items-center rounded-full text-muted hover:text-ink" aria-label="Close"><X className="h-4 w-4" /></button>
               </div>

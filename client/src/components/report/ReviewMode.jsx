@@ -22,7 +22,7 @@ const PRI_CLASS = {
  * the summary, set a priority, add notes, and edit action items. Saves locally
  * and the report reflects it immediately. No placeholder.
  */
-export default function ReviewMode({ open, onClose, report, edits, onSave }) {
+export default function ReviewMode({ open, onClose, report, edits, onSave, mode = 'local' }) {
   const { toast } = useToast()
   const { play } = useSound()
   const [title, setTitle] = useState('')
@@ -30,6 +30,7 @@ export default function ReviewMode({ open, onClose, report, edits, onSave }) {
   const [priority, setPriority] = useState('')
   const [notes, setNotes] = useState('')
   const [actions, setActions] = useState([])
+  const [saving, setSaving] = useState(false)
 
   // Close on Escape.
   useEffect(() => {
@@ -53,18 +54,35 @@ export default function ReviewMode({ open, onClose, report, edits, onSave }) {
   const removeAction = (i) => { setActions((a) => a.filter((_, j) => j !== i)); play('tick') }
   const addAction = () => { setActions((a) => [...a, { text: '', owner: 'Unassigned', due: 'TBD', at: '—' }]); play('tick') }
 
-  const commit = () => {
-    onSave({
-      ...edits,
-      title: title !== report.title ? title : undefined,
-      headline: headline !== report.headline ? headline : undefined,
-      priority: priority || undefined,
-      notes: notes || undefined,
-      commitments: actions.filter((a) => a.text.trim()),
-    })
-    play('chime')
-    toast({ title: 'Report updated', description: 'Your review is saved to this device.', variant: 'success', color: 'emerald' })
-    onClose()
+  const commit = async () => {
+    setSaving(true)
+    try {
+      await onSave({
+        ...edits,
+        title: title !== report.title ? title : undefined,
+        headline: headline !== report.headline ? headline : undefined,
+        priority: priority || undefined,
+        notes: notes || undefined,
+        commitments: actions.filter((a) => a.text.trim()),
+      })
+      play('chime')
+      toast({
+        title: 'Report updated',
+        description: mode === 'cloud' ? 'Saved to your workspace.' : 'Saved to this device.',
+        variant: 'success',
+        color: 'emerald',
+      })
+      onClose()
+    } catch (err) {
+      toast({
+        title: 'Couldn’t save your review',
+        description: err?.status === 404 ? 'This report is no longer available.' : 'Please try again.',
+        variant: 'warn',
+        color: 'rose',
+      })
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -146,8 +164,8 @@ export default function ReviewMode({ open, onClose, report, edits, onSave }) {
                 Reset to original
               </button>
               <div className="flex gap-2">
-                <Button variant="ghost" size="sm" magnetic={false} onClick={onClose}>Cancel</Button>
-                <Button variant="accent" size="sm" onClick={commit}><Check className="h-4 w-4" /> Save review</Button>
+                <Button variant="ghost" size="sm" magnetic={false} onClick={onClose} disabled={saving}>Cancel</Button>
+                <Button variant="accent" size="sm" onClick={commit} disabled={saving}><Check className="h-4 w-4" /> {saving ? 'Saving…' : 'Save review'}</Button>
               </div>
             </div>
           </motion.aside>

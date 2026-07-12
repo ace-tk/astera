@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Clock, Users } from 'lucide-react'
+import { ArrowUpRight, Clock, Users, PencilLine, Trash2, Check, X } from 'lucide-react'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
@@ -10,10 +11,35 @@ const SENTIMENT = {
   negative: { label: 'Tense', dot: 'bg-rose' },
 }
 
-export default function ReportCard({ report, featured = false }) {
+// Keep a click inside the card's controls from following the card's Link.
+const swallow = (e) => {
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+/**
+ * A report tile. Read-only by default (demo cards are unchanged). When
+ * `editable` (a signed-in user's own report) it gains inline rename + delete,
+ * both of which never navigate into the report.
+ */
+export default function ReportCard({ report, featured = false, editable = false, onRename, onDelete }) {
   const a = accent(report.color)
   const tint = a.hex.replace('#', '').match(/.{2}/g).map((h) => parseInt(h, 16)).join(' ')
   const s = SENTIMENT[report.sentiment] || SENTIMENT.positive
+
+  const [renaming, setRenaming] = useState(false)
+  const [draft, setDraft] = useState(report.title)
+
+  const startRename = (e) => {
+    swallow(e)
+    setDraft(report.title)
+    setRenaming(true)
+  }
+  const commitRename = () => {
+    const next = draft.trim()
+    setRenaming(false)
+    if (next && next !== report.title) onRename?.(next)
+  }
 
   return (
     <SpotlightCard tint={tint} tilt={!featured} className={cn('flex h-full flex-col p-6', featured && 'lg:p-8')}>
@@ -22,14 +48,55 @@ export default function ReportCard({ report, featured = false }) {
           <span className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
             <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} /> {report.subtitle}
           </span>
-          <span className="grid h-9 w-9 place-items-center rounded-full border border-ink/8 text-muted transition-all group-hover:border-ink/20 group-hover:text-ink group-hover:rotate-45">
-            <ArrowUpRight className="h-4 w-4" />
-          </span>
+          {editable ? (
+            <div className="flex items-center gap-1" onClick={swallow}>
+              <button
+                onClick={startRename}
+                aria-label="Rename report"
+                className="grid h-8 w-8 place-items-center rounded-full border border-ink/8 text-muted transition-colors hover:border-ink/20 hover:text-ink"
+              >
+                <PencilLine className="h-3.5 w-3.5" />
+              </button>
+              <button
+                onClick={(e) => { swallow(e); onDelete?.() }}
+                aria-label="Delete report"
+                className="grid h-8 w-8 place-items-center rounded-full border border-ink/8 text-muted transition-colors hover:border-rose/40 hover:text-rose"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ) : (
+            <span className="grid h-9 w-9 place-items-center rounded-full border border-ink/8 text-muted transition-all group-hover:border-ink/20 group-hover:text-ink group-hover:rotate-45">
+              <ArrowUpRight className="h-4 w-4" />
+            </span>
+          )}
         </div>
 
-        <h3 className={cn('mt-5 font-display font-medium leading-tight tracking-tight text-balance', featured ? 'text-3xl' : 'text-2xl')}>
-          {report.title}
-        </h3>
+        {renaming ? (
+          <div className="mt-5 flex items-center gap-2" onClick={swallow}>
+            <input
+              autoFocus
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { e.preventDefault(); commitRename() }
+                if (e.key === 'Escape') { e.preventDefault(); setRenaming(false) }
+              }}
+              onBlur={commitRename}
+              className={cn(
+                'w-full rounded-xl border border-ink/15 bg-paper px-3 py-2 font-display font-medium tracking-tight outline-none focus:border-accent',
+                featured ? 'text-2xl' : 'text-xl',
+              )}
+              aria-label="Report title"
+            />
+            <button onMouseDown={(e) => e.preventDefault()} onClick={(e) => { swallow(e); commitRename() }} aria-label="Save title" className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent text-white"><Check className="h-4 w-4" /></button>
+            <button onMouseDown={(e) => e.preventDefault()} onClick={(e) => { swallow(e); setRenaming(false) }} aria-label="Cancel rename" className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-ink/10 text-muted hover:text-ink"><X className="h-4 w-4" /></button>
+          </div>
+        ) : (
+          <h3 className={cn('mt-5 font-display font-medium leading-tight tracking-tight text-balance', featured ? 'text-3xl' : 'text-2xl')}>
+            {report.title}
+          </h3>
+        )}
         {featured && <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{report.headline}</p>}
 
         <div className="mt-5 flex flex-wrap items-center gap-4 text-xs text-muted">

@@ -35,8 +35,8 @@ const PRIORITY_BADGE = {
 
 export default function Report() {
   const { id } = useParams()
-  const { data: report, isLoading } = useReport(id)
-  const { edits, save, edited } = useReportEdits(id)
+  const { data: report, isLoading, isError } = useReport(id)
+  const { edits, save, edited, mode } = useReportEdits(report)
   const { toast } = useToast()
   const [covered, setCovered] = useState(true)
   const [confOpen, setConfOpen] = useState(false)
@@ -68,12 +68,33 @@ export default function Report() {
     return () => window.removeEventListener('astera:confidence', openConf)
   }, [])
 
-  if (isLoading || !report) {
+  if (isLoading) {
     return (
       <div className="mx-auto max-w-4xl space-y-4">
         <div className="h-8 w-40 animate-pulse rounded-full bg-card" />
         <div className="h-24 animate-pulse rounded-3xl bg-card" />
         <div className="h-64 animate-pulse rounded-3xl bg-card" />
+      </div>
+    )
+  }
+
+  // Missing report, or one that belongs to another user (the API returns 404 and
+  // never exposes it). A friendly dead-end, not a broken screen.
+  if (isError || !report) {
+    return (
+      <div className="mx-auto grid min-h-[60vh] max-w-4xl place-items-center px-6 text-center">
+        <div>
+          <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-rose/10 text-rose">
+            <AlertTriangle className="h-7 w-7" />
+          </span>
+          <h1 className="mt-6 font-display text-2xl font-semibold tracking-tight">Report not found</h1>
+          <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
+            This report doesn’t exist, or it belongs to another account and isn’t yours to view.
+          </p>
+          <Button as={Link} to="/app/reports" variant="soft" size="sm" className="mt-6">
+            <ArrowLeft className="h-4 w-4" /> Back to your reports
+          </Button>
+        </div>
       </div>
     )
   }
@@ -234,7 +255,7 @@ export default function Report() {
       )}
 
       <ConfidenceDetails report={report} open={confOpen} onClose={() => setConfOpen(false)} />
-      <ReviewMode open={reviewOpen} onClose={() => setReviewOpen(false)} report={report} edits={edits} onSave={save} />
+      <ReviewMode open={reviewOpen} onClose={() => setReviewOpen(false)} report={report} edits={edits} onSave={save} mode={mode} />
 
       {/* Timeline */}
       <Reveal delay={0.1} className="mt-14">
@@ -342,7 +363,7 @@ export default function Report() {
         </div>
       </section>
 
-      <ReportFeedback reportId={report.id} />
+      <ReportFeedback report={report} />
     </article>
     </>
   )
