@@ -29,7 +29,7 @@ export default defineConfig({
         // Deliberate code-splitting: keep the animation/vendor weight
         // out of the initial paint so the landing hero streams fast.
         manualChunks: {
-          motion: ['framer-motion', 'gsap', 'lenis'],
+          motion: ['framer-motion', 'lenis'],
           charts: ['recharts'],
           vendor: ['react', 'react-dom', 'react-router-dom'],
         },
