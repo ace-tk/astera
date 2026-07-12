@@ -8,10 +8,14 @@ import CommandPalette from '@/components/common/CommandPalette'
 import ShortcutsOverlay from '@/components/common/ShortcutsOverlay'
 import GlobalShortcuts from '@/components/common/GlobalShortcuts'
 import EasterEggs from '@/components/eggs/EasterEggs'
+import { GuestOnly } from '@/components/auth/RouteGuards'
 import { useA11y } from '@/context/A11yContext'
 
 // Route-level code splitting keeps the landing bundle lean.
 const Landing = lazy(() => import('@/pages/Landing'))
+const Login = lazy(() => import('@/pages/auth/Login'))
+const Register = lazy(() => import('@/pages/auth/Register'))
+const ForgotPassword = lazy(() => import('@/pages/auth/ForgotPassword'))
 const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'))
 const Workspace = lazy(() => import('@/pages/dashboard/Workspace'))
 const DemoWorkspace = lazy(() => import('@/pages/dashboard/DemoWorkspace'))
@@ -40,6 +44,9 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
+            <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
+            <Route path="/forgot" element={<ForgotPassword />} />
             <Route path="/app" element={<DashboardLayout />}>
               <Route index element={<Workspace />} />
               <Route path="demos" element={<DemoWorkspace />} />
