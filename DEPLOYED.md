@@ -36,6 +36,7 @@ Secrets live **only in the Render/Vercel dashboards and Atlas** — never in git
 | `JWT_SECRET` | signs auth tokens | 96-hex secret; rotating it logs everyone out |
 | `CLIENT_URL` | `https://astera-silk.vercel.app` | **CORS + Socket.io pin to this** — no trailing slash |
 | `ADMIN_EMAILS` | admin allowlist | comma-separated; accounts with these emails get the Admin panel |
+| `DEEPGRAM_API_KEY` | audio/video speech-to-text | from console.deepgram.com; without it, audio uploads return a friendly message (TXT/DOCX/PDF still work) |
 
 ### Frontend — Vercel → project → Settings → Environment Variables
 | Variable | Value | Notes |
