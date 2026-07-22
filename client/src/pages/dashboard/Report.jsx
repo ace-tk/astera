@@ -15,6 +15,7 @@ import ReportCover from '@/components/report/ReportCover'
 import { wasCovered } from '@/utils/coverSession'
 import NarratedSummary from '@/components/report/NarratedSummary'
 import ReportFeedback from '@/components/report/ReportFeedback'
+import ReportAnalyzer from '@/components/report/ReportAnalyzer'
 import ConfidenceDetails from '@/components/report/ConfidenceDetails'
 import InfoBadge from '@/components/interview/InfoBadge'
 import Reveal from '@/components/ui/Reveal'
@@ -262,6 +263,8 @@ export default function Report() {
 
       <ConfidenceDetails report={report} open={confOpen} onClose={() => setConfOpen(false)} />
       <ReviewMode open={reviewOpen} onClose={() => setReviewOpen(false)} report={report} edits={edits} onSave={save} mode={mode} />
+
+      <ReportAnalyzer report={report} />
 
       {/* Timeline */}
       <Reveal delay={0.1} className="mt-14">

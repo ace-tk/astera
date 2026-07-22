@@ -23,6 +23,19 @@ window.matchMedia ||= (query) => ({
 
 window.scrollTo ||= vi.fn()
 
+if (!window.IntersectionObserver) {
+  class IntersectionObserverMock {
+    constructor(callback) {
+      this.callback = callback
+    }
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() { return [] }
+  }
+  window.IntersectionObserver = IntersectionObserverMock
+}
+
 if (!window.ResizeObserver) {
   window.ResizeObserver = class {
     observe() {}
