@@ -16,6 +16,7 @@ import { wasCovered } from '@/utils/coverSession'
 import NarratedSummary from '@/components/report/NarratedSummary'
 import ReportFeedback from '@/components/report/ReportFeedback'
 import ReportAnalyzer from '@/components/report/ReportAnalyzer'
+import SpeakerAnalysis from '@/components/report/SpeakerAnalysis'
 import ConfidenceDetails from '@/components/report/ConfidenceDetails'
 import InfoBadge from '@/components/interview/InfoBadge'
 import Reveal from '@/components/ui/Reveal'
@@ -272,6 +273,8 @@ export default function Report() {
           <ReportTimeline timeline={report.timeline} duration={report.duration} />
         </div>
       </Reveal>
+
+      <SpeakerAnalysis report={report} />
 
       {/* Decisions */}
       <section className="mt-16">
