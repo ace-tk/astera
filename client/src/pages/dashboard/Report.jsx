@@ -17,6 +17,7 @@ import NarratedSummary from '@/components/report/NarratedSummary'
 import ReportFeedback from '@/components/report/ReportFeedback'
 import ReportAnalyzer from '@/components/report/ReportAnalyzer'
 import SpeakerAnalysis from '@/components/report/SpeakerAnalysis'
+import KeyActions from '@/components/report/KeyActions'
 import ConfidenceDetails from '@/components/report/ConfidenceDetails'
 import InfoBadge from '@/components/interview/InfoBadge'
 import Reveal from '@/components/ui/Reveal'
@@ -275,6 +276,8 @@ export default function Report() {
       </Reveal>
 
       <SpeakerAnalysis report={report} />
+
+      <KeyActions report={report} />
 
       {/* Decisions */}
       <section className="mt-16">
