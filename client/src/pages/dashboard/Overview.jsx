@@ -84,24 +84,6 @@ export default function Overview() {
     })
   }
 
-  if (!isLoading && reports.length === 0) {
-    return (
-      <div className="mx-auto grid min-h-[60vh] max-w-shell place-items-center">
-        <EmptyState
-          color="coral"
-          icon={UploadCloud}
-          title="No meetings yet."
-          description="Every great report starts with one conversation. Add a recording and watch Astera bring it to life."
-          action={
-            <Button as={Link} to="/app/upload" variant="accent">
-              <UploadCloud className="h-4 w-4" /> Upload your first meeting
-            </Button>
-          }
-        />
-      </div>
-    )
-  }
-
   const [featured, ...rest] = view
 
   return (

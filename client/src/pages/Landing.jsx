@@ -3,6 +3,7 @@ import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Hero from '@/components/landing/sections/Hero'
+import InteractiveDashboardPreview from '@/components/dashboard/InteractiveDashboardPreview'
 import Story from '@/components/landing/sections/Story'
 import HowItWorks from '@/components/landing/sections/HowItWorks'
 import Features from '@/components/landing/sections/Features'
@@ -24,6 +25,20 @@ export default function Landing() {
       <AmbientBackground />
       <Navbar />
       <Hero />
+      <section className="mx-auto max-w-shell px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-12">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="eyebrow text-sky">Dashboard showcase</p>
+          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            See the product the moment you land.
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+            Astera turns conversations into a calm executive surface that feels polished, immediate, and action-ready.
+          </p>
+        </div>
+        <div className="mt-10">
+          <InteractiveDashboardPreview />
+        </div>
+      </section>
       <Story />
       <HowItWorks />
       <Features />
