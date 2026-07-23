@@ -27,28 +27,28 @@ export default function HeroVisual() {
   const { x: px, y: py } = useMouseParallax()
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[34rem]">
+    <div className="relative mx-auto aspect-square w-full max-w-[38rem]">
       {/* soft glow pad behind the stack */}
       <div className="absolute inset-8 rounded-[3rem] bg-gradient-to-br from-accent/10 to-transparent blur-2xl" />
 
       {/* main report card */}
-      <Layer depth={-22} px={px} py={py} float className="inset-x-6 top-10 z-20">
-        <div className="rounded-[2rem] border border-ink/8 bg-card p-6 shadow-float">
+      <Layer depth={-22} px={px} py={py} float className="inset-x-4 top-6 z-20">
+        <div className="rounded-[2.2rem] border border-ink/8 bg-card p-7 shadow-float sm:p-8">
           <div className="mb-4 flex items-center justify-between">
             <span className="chip text-xs">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald" /> Report ready
             </span>
             <span className="text-xs text-muted">74:12</span>
           </div>
-          <p className="font-display text-2xl leading-tight tracking-tight" aria-hidden="true">
+          <p className="font-display text-[1.7rem] leading-tight tracking-tight sm:text-[2rem]" aria-hidden="true">
             Q3 Roadmap alignment
           </p>
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-2 text-sm leading-relaxed text-muted sm:text-[0.95rem]">
             Seven participants aligned on shipping the billing rewrite before the
-            enterprise pilot. Two risks surfaced.
+            enterprise pilot. Two risks surfaced and one promise was captured.
           </p>
           <div className="mt-5">
-            <Waveform bars={40} height={40} />
+            <Waveform bars={40} height={44} />
           </div>
           <div className="mt-5 grid grid-cols-3 gap-2">
             {[
@@ -66,7 +66,7 @@ export default function HeroVisual() {
       </Layer>
 
       {/* floating decision chip */}
-      <Layer depth={-46} px={px} py={py} float className="left-[-4%] top-[42%] z-30">
+      <Layer depth={-46} px={px} py={py} float className="left-[-2%] top-[42%] z-30">
         <div className="flex items-center gap-3 rounded-2xl border border-ink/8 bg-card px-4 py-3 shadow-lift">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald/12 text-emerald">
             <Glyph name="shield" size={22} />
@@ -79,7 +79,7 @@ export default function HeroVisual() {
       </Layer>
 
       {/* floating AI chip */}
-      <Layer depth={-60} px={px} py={py} float className="right-[-6%] top-[20%] z-30">
+      <Layer depth={-60} px={px} py={py} float className="right-[-3%] top-[20%] z-30">
         <div className="flex items-center gap-3 rounded-2xl border border-ink/8 bg-card px-4 py-3 shadow-lift">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-purple/12 text-purple">
             <Glyph name="brain" size={22} />

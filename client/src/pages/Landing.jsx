@@ -3,6 +3,7 @@ import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Hero from '@/components/landing/sections/Hero'
+import ReportPreviewCarousel from '@/components/landing/ReportPreviewCarousel'
 import InteractiveDashboardPreview from '@/components/dashboard/InteractiveDashboardPreview'
 import Story from '@/components/landing/sections/Story'
 import HowItWorks from '@/components/landing/sections/HowItWorks'
@@ -25,6 +26,7 @@ export default function Landing() {
       <AmbientBackground />
       <Navbar />
       <Hero />
+      <ReportPreviewCarousel />
       <section className="mx-auto max-w-shell px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-12">
         <div className="mx-auto max-w-3xl text-center">
           <p className="eyebrow text-sky">Dashboard showcase</p>
