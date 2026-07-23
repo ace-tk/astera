@@ -14,6 +14,25 @@ import { useA11y } from '@/context/A11yContext'
 
 // Route-level code splitting keeps the landing bundle lean.
 const Landing = lazy(() => import('@/pages/Landing'))
+const Services = lazy(() => import('@/pages/Services'))
+const ServiceCategory = lazy(() => import('@/pages/services/ServiceCategory'))
+const ServiceCategoryLayout = lazy(() => import('@/components/services/ServiceCategoryLayout'))
+const DraftingOverview = lazy(() => import('@/pages/services/drafting/DraftingOverview'))
+const RedactionPvCse = lazy(() => import('@/pages/services/drafting/RedactionPvCse'))
+const RedactionPvCssct = lazy(() => import('@/pages/services/drafting/RedactionPvCssct'))
+const ByCityOverview = lazy(() => import('@/pages/services/by-city/ByCityOverview'))
+const CityPage = lazy(() => import('@/pages/services/by-city/CityPage'))
+const CommunicationOverview = lazy(() => import('@/pages/services/communication/CommunicationOverview'))
+const CommunicationCse = lazy(() => import('@/pages/services/communication/CommunicationCse'))
+const CommunicationAsc = lazy(() => import('@/pages/services/communication/CommunicationAsc'))
+const Newsletter = lazy(() => import('@/pages/services/communication/Newsletter'))
+const TrainingOverview = lazy(() => import('@/pages/services/training/TrainingOverview'))
+const Formation = lazy(() => import('@/pages/services/training/Formation'))
+const FormationCse = lazy(() => import('@/pages/services/training/FormationCse'))
+const GuidesOverview = lazy(() => import('@/pages/services/guides/GuidesOverview'))
+const GuideDuComite = lazy(() => import('@/pages/services/guides/GuideDuComite'))
+const ModelePvCseGratuit = lazy(() => import('@/pages/services/guides/ModelePvCseGratuit'))
+const PricingPage = lazy(() => import('@/pages/services/pricing/PricingPage'))
 const Login = lazy(() => import('@/pages/auth/Login'))
 const Register = lazy(() => import('@/pages/auth/Register'))
 const ForgotPassword = lazy(() => import('@/pages/auth/ForgotPassword'))
@@ -73,6 +92,34 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Landing />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/services/drafting" element={<ServiceCategoryLayout />}>
+              <Route index element={<DraftingOverview />} />
+              <Route path="redaction-pv-cse" element={<RedactionPvCse />} />
+              <Route path="redaction-pv-cssct" element={<RedactionPvCssct />} />
+            </Route>
+            <Route path="/services/by-city" element={<ServiceCategoryLayout />}>
+              <Route index element={<ByCityOverview />} />
+              <Route path=":citySlug" element={<CityPage />} />
+            </Route>
+            <Route path="/services/communication" element={<ServiceCategoryLayout />}>
+              <Route index element={<CommunicationOverview />} />
+              <Route path="communication-cse" element={<CommunicationCse />} />
+              <Route path="communication-asc" element={<CommunicationAsc />} />
+              <Route path="newsletter" element={<Newsletter />} />
+            </Route>
+            <Route path="/services/training" element={<ServiceCategoryLayout />}>
+              <Route index element={<TrainingOverview />} />
+              <Route path="formation" element={<Formation />} />
+              <Route path="formation-cse" element={<FormationCse />} />
+            </Route>
+            <Route path="/services/guides" element={<ServiceCategoryLayout />}>
+              <Route index element={<GuidesOverview />} />
+              <Route path="guide-du-comite" element={<GuideDuComite />} />
+              <Route path="modele-pv-cse-gratuit" element={<ModelePvCseGratuit />} />
+            </Route>
+            <Route path="/services/pricing" element={<PricingPage />} />
+            <Route path="/services/:slug" element={<ServiceCategory />} />
             <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
             <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
             <Route path="/forgot" element={<ForgotPassword />} />

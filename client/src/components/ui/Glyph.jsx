@@ -86,6 +86,21 @@ const paths = {
       <path d="M22 28L46 8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
     </>
   ),
+  map: (
+    <>
+      <path d="M28 6c-8 0-14 6-14 14 0 11 14 30 14 30s14-19 14-30c0-8-6-14-14-14z" fill="currentColor" opacity="0.12" />
+      <path d="M28 6c-8 0-14 6-14 14 0 11 14 30 14 30s14-19 14-30c0-8-6-14-14-14z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+      <circle cx="28" cy="20" r="5.5" fill="none" stroke="currentColor" strokeWidth="2.2" />
+    </>
+  ),
+  download: (
+    <>
+      <rect x="8" y="34" width="40" height="14" rx="5" fill="currentColor" opacity="0.1" />
+      <path d="M28 8v28" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+      <path d="M18 26l10 10 10-10" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 40h28" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" opacity="0.4" />
+    </>
+  ),
 }
 
 export default function Glyph({ name = 'report', size = 56, className, ...props }) {

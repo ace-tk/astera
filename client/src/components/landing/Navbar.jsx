@@ -41,15 +41,19 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="rounded-full px-4 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink"
-            >
-              {l.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((l) => {
+            const linkClass =
+              'rounded-full px-4 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
+            return l.href.startsWith('/') ? (
+              <Link key={l.href} to={l.href} className={linkClass}>
+                {l.label}
+              </Link>
+            ) : (
+              <a key={l.href} href={l.href} className={linkClass}>
+                {l.label}
+              </a>
+            )
+          })}
         </div>
 
         <div className="flex items-center gap-2">
@@ -77,16 +81,18 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -12 }}
             className="absolute inset-x-4 top-20 rounded-3xl border border-ink/10 bg-card p-4 shadow-float md:hidden"
           >
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-2xl px-4 py-3 text-lg font-medium hover:bg-ink/[0.04]"
-              >
-                {l.label}
-              </a>
-            ))}
+            {NAV_LINKS.map((l) => {
+              const linkClass = 'block rounded-2xl px-4 py-3 text-lg font-medium hover:bg-ink/[0.04]'
+              return l.href.startsWith('/') ? (
+                <Link key={l.href} to={l.href} onClick={() => setOpen(false)} className={linkClass}>
+                  {l.label}
+                </Link>
+              ) : (
+                <a key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass}>
+                  {l.label}
+                </a>
+              )
+            })}
             <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
               <ThemeSwitcher align="left" />
               <Button as={Link} to="/app" size="sm">
