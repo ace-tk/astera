@@ -3,6 +3,7 @@ import { Check, Lightbulb } from 'lucide-react'
 import { accent } from '@/utils/accent'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
+import { renderEmphasis } from '@/utils/richText'
 
 function Paragraph({ text }) {
   return <p className="text-base leading-relaxed text-muted text-pretty">{text}</p>
@@ -17,7 +18,7 @@ function ListBlock({ ordered, items, a }) {
           <span className={cn('mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-xs font-medium', a.softBg, a.text)}>
             {ordered ? i + 1 : <Check className="h-3 w-3" />}
           </span>
-          {item}
+          {typeof item === 'string' ? renderEmphasis(item) : item}
         </li>
       ))}
     </Tag>

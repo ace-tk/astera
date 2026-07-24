@@ -23,6 +23,7 @@ export const NAV_LINKS = [
     ],
   },
   { label: 'Tarification', href: '/atoopv/tarification' },
+  { label: 'À propos', href: '/atoopv/a-propos' },
 ]
 
 // The animated "journey" a conversation takes through Astera.
