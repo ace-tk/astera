@@ -40,7 +40,7 @@ export default class ErrorBoundary extends Component {
               onClick={() => window.location.reload()}
               className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-paper shadow-lift transition-transform hover:-translate-y-0.5"
             >
-              Reload Astera
+              Reload ATOOPV
             </button>
             <a
               href="/app"

@@ -59,15 +59,15 @@ export default function About() {
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted text-pretty">
             Every meeting holds a decision, a promise, a risk — and most of it evaporates the moment
-            the call ends. Astera keeps it, and hands it back as a report your team actually reads.
+            the call ends. ATOOPV keeps it, and hands it back as a report your team actually reads.
             From conversations to clarity.
           </p>
         </Reveal>
 
         {/* Why */}
-        <Section eyebrow="Why Astera exists" title="Notes die. Decisions get lost. Promises quietly disappear." color="coral">
+        <Section eyebrow="Why ATOOPV exists" title="Notes die. Decisions get lost. Promises quietly disappear." color="coral">
           <p className="max-w-xl leading-relaxed text-muted">
-            Note-takers capture words, not meaning. Transcripts are long and unread. Astera reads the
+            Note-takers capture words, not meaning. Transcripts are long and unread. ATOOPV reads the
             <em> intent</em> of a conversation — what was decided, who owns it, what’s at risk — and
             composes it into something worth opening. The goal was never another AI dashboard; it was
             a product people remember.
@@ -126,7 +126,7 @@ export default function About() {
         </Section>
 
         {/* How workspace / replay work */}
-        <Section eyebrow="Signature experiences" title="Two ideas that make Astera unmistakable." color="sky">
+        <Section eyebrow="Signature experiences" title="Two ideas that make ATOOPV unmistakable." color="sky">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
               <span className="grid h-11 w-11 place-items-center rounded-2xl bg-purple/10 text-purple"><Workflow className="h-5 w-5" /></span>

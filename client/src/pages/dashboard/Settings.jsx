@@ -80,7 +80,7 @@ export default function Settings() {
       <Reveal>
         <p className="eyebrow text-emerald"><Sparkles className="h-3.5 w-3.5" /> Settings</p>
         <h1 className="mt-3 font-display text-display-sm font-semibold leading-[1.02] tracking-tight text-balance">
-          Make Astera feel like home.
+          Make ATOOPV feel like home.
         </h1>
       </Reveal>
 
@@ -142,7 +142,7 @@ export default function Settings() {
                     <Toggle on={a11y.alwaysFocus} onChange={(v) => a11y.set('alwaysFocus', v)} label="Always show focus rings" />
                   </Row>
                 </div>
-                <p className="mt-4 rounded-xl bg-paper p-3 text-xs text-muted">Astera also respects your system’s “reduce motion” setting automatically.</p>
+                <p className="mt-4 rounded-xl bg-paper p-3 text-xs text-muted">ATOOPV also respects your system’s “reduce motion” setting automatically.</p>
               </Card>
             )}
 
@@ -205,7 +205,7 @@ export default function Settings() {
 
             {tab === 'about' && (
               <>
-                <Card title="Astera">
+                <Card title="ATOOPV">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm">Version <span className="font-mono font-medium">{APP_VERSION}</span></p>
@@ -216,7 +216,7 @@ export default function Settings() {
                   <div className="mt-5 grid gap-3 sm:grid-cols-3">
                     <Link to="/app/about" className="group flex items-center gap-3 rounded-2xl border border-ink/8 bg-paper p-4 transition-colors hover:border-ink/20">
                       <span className="grid h-9 w-9 place-items-center rounded-xl bg-royal/10 text-royal"><Info className="h-4 w-4" /></span>
-                      <span className="flex-1 text-sm font-medium">About Astera</span>
+                      <span className="flex-1 text-sm font-medium">About ATOOPV</span>
                       <ArrowRight className="h-4 w-4 text-muted transition-transform group-hover:translate-x-0.5" />
                     </Link>
                     <Link to="/app/status" className="group flex items-center gap-3 rounded-2xl border border-ink/8 bg-paper p-4 transition-colors hover:border-ink/20">

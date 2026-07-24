@@ -56,7 +56,7 @@ export default function Hero() {
             transition={{ delay: 0.7, duration: 0.8 }}
             className="mt-7 max-w-prose text-lg leading-relaxed text-muted text-pretty"
           >
-            Astera turns a 74-minute conversation into a beautiful intelligence
+            ATOOPV turns a 74-minute conversation into a beautiful intelligence
             report — decisions, owners, risks, and a scrubbable timeline. Not a
             boring PDF. A publication your team actually reads.
           </motion.p>

@@ -86,7 +86,7 @@ export default function ReportCover({ report, onReveal }) {
 
       <motion.div variants={container} initial="hidden" animate="show" className="relative w-full max-w-xl px-8 text-center">
         <motion.div variants={word} className="flex justify-center">
-          <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> Astera Intelligence Report</span>
+          <span className={cn('eyebrow', a.text)}><Sparkles className="h-3.5 w-3.5" /> ATOOPV Intelligence Report</span>
         </motion.div>
 
         <h1 className="mt-6 font-display text-display-sm font-semibold leading-[1.03] tracking-tight text-balance">

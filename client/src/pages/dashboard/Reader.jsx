@@ -222,7 +222,7 @@ export default function Reader() {
             </div>
 
             <footer className="mt-24 flex items-center gap-3 border-t border-ink/8 pt-8 text-sm text-muted">
-              <Sparkles className="h-4 w-4 text-accent" /> Composed by Astera · From conversations to clarity.
+              <Sparkles className="h-4 w-4 text-accent" /> Composed by ATOOPV · From conversations to clarity.
             </footer>
           </article>
 

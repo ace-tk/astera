@@ -21,7 +21,7 @@ function ScrollLitLine({ children }) {
 
 export default function Story() {
   const words =
-    'Every meeting holds a decision, a promise, a risk. Most of it evaporates the moment the call ends. Astera keeps it — and hands it back as a story.'.split(
+    'Every meeting holds a decision, a promise, a risk. Most of it evaporates the moment the call ends. ATOOPV keeps it — and hands it back as a story.'.split(
       ' ',
     )
 

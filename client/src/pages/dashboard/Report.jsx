@@ -229,7 +229,7 @@ export default function Report() {
                   Every meeting has a fingerprint.
                 </h2>
                 <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                  Astera reads the shape of the conversation — how decisive it was, how much the room
+                  ATOOPV reads the shape of the conversation — how decisive it was, how much the room
                   collaborated, the energy in it, and how confident the read is in what it found.
                 </p>
                 <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">

@@ -15,7 +15,7 @@ const KEY = 'astera:onboarded'
 
 const STEPS = [
   { icon: Workflow, color: 'purple', title: 'The Workspace', body: 'Every meeting becomes a connected map — recording, transcript, decisions, risks, and report. Open any step to see what Astra found.', to: '/app', cta: 'Open the canvas' },
-  { icon: Fingerprint, color: 'royal', title: 'Meeting DNA', body: 'Astera reads the shape of a conversation — how decisive it was, how much the room collaborated, its energy — and draws a fingerprint unique to every meeting.', to: '/app/report/board-fy26', cta: 'See a fingerprint' },
+  { icon: Fingerprint, color: 'royal', title: 'Meeting DNA', body: 'ATOOPV reads the shape of a conversation — how decisive it was, how much the room collaborated, its energy — and draws a fingerprint unique to every meeting.', to: '/app/report/board-fy26', cta: 'See a fingerprint' },
   { icon: Clapperboard, color: 'coral', title: 'Cinematic Replay', body: 'Never watch a spinner. Watch the report compose itself — the summary writes, metrics count up, the timeline draws, and findings slide into place.', to: '/app/replay/board-fy26', cta: 'Watch it build' },
   { icon: ListVideo, color: 'emerald', title: 'Scrub the meeting', body: 'A living timeline you can move through — transcript, speaker, decisions, and running tallies update the moment you land on any point.', to: '/app/replay/board-fy26', cta: 'Try the replay' },
   { icon: Sparkles, color: 'purple', title: 'Ask ASTRA', body: 'A living assistant, grounded in the meeting. Ask who spoke most, why something is a risk, or what was decided — answers come straight from the report.', to: '/app/report/board-fy26', cta: 'Meet Astra', astra: true },
@@ -108,12 +108,12 @@ export default function Onboarding() {
               className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-ink/10 bg-card p-10 text-center shadow-float"
             >
               <PaperStack />
-              <span className="eyebrow mt-8 justify-center text-purple"><Sparkles className="h-3.5 w-3.5" /> Welcome to Astera</span>
+              <span className="eyebrow mt-8 justify-center text-purple"><Sparkles className="h-3.5 w-3.5" /> Welcome to ATOOPV</span>
               <h2 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance">
                 Let’s replay one meeting together.
               </h2>
               <p className="mx-auto mt-4 max-w-sm text-muted">
-                Astera turns conversations into clarity. Take the 60-second tour, or jump
+                ATOOPV turns conversations into clarity. Take the 60-second tour, or jump
                 straight into six real meetings — nothing to upload.
               </p>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">

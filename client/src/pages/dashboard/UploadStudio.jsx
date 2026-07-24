@@ -152,8 +152,8 @@ export default function UploadStudio() {
         </h1>
         <p className="mt-4 max-w-xl text-muted">
           {isAuthed
-            ? 'Upload a transcript — TXT, VTT, or SRT. Astera analyzes it with its heuristic engine and saves the report to your workspace.'
-            : 'Audio, video, or a raw transcript. In production, Astera transcribes and analyses it; here, it composes a sample report you can explore end to end.'}
+            ? 'Upload a transcript — TXT, VTT, or SRT. ATOOPV analyzes it with its heuristic engine and saves the report to your workspace.'
+            : 'Audio, video, or a raw transcript. In production, ATOOPV transcribes and analyses it; here, it composes a sample report you can explore end to end.'}
         </p>
         <span className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-emerald/25 bg-emerald/[0.06] px-3 py-1 text-xs font-medium text-emerald">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald" />{' '}
@@ -313,7 +313,7 @@ export default function UploadStudio() {
             </motion.span>
             <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight">Sample report ready.</h2>
             <p className="mt-3 max-w-md text-muted">
-              Here’s an example of what Astera produces — decisions, commitments, and risks,
+              Here’s an example of what ATOOPV produces — decisions, commitments, and risks,
               each tied back to a moment in the meeting. Open it to explore the full experience.
             </p>
             <div className="mt-8 flex gap-3">

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const DEFAULT_TITLE = 'Astera — From conversations to clarity.'
+const DEFAULT_TITLE = 'ATOOPV — From conversations to clarity.'
 
 function upsertMetaDescription(content) {
   let tag = document.querySelector('meta[name="description"]')
@@ -23,7 +23,7 @@ function upsertMetaDescription(content) {
 export function usePageMeta({ title, description }) {
   useEffect(() => {
     const previousTitle = document.title
-    document.title = title ? `${title} — Astera` : DEFAULT_TITLE
+    document.title = title ? `${title} — ATOOPV` : DEFAULT_TITLE
 
     let previousDescription
     if (description) previousDescription = upsertMetaDescription(description)

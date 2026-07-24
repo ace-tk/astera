@@ -26,7 +26,7 @@ export default function Footer() {
                 From conversations to clarity.
               </h2>
               <p className="mt-5 max-w-lg text-lg text-paper/70">
-                Give Astera your next recording. Get back a report your whole team
+                Give ATOOPV your next recording. Get back a report your whole team
                 will want to read — before the room even clears.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
@@ -53,7 +53,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Wordmark />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-              Astera turns long meetings into beautiful intelligence reports.
+              ATOOPV turns long meetings into beautiful intelligence reports.
               From conversations to clarity.
             </p>
           </div>
@@ -74,7 +74,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-ink/8 py-8 text-sm text-muted sm:flex-row">
-          <p>© {new Date().getFullYear()} Astera. Crafted, not generated.</p>
+          <p>© {new Date().getFullYear()} ATOOPV. Crafted, not generated.</p>
           <div className="flex gap-6">
             <a href="#" className="link-underline hover:text-ink">Privacy</a>
             <a href="#" className="link-underline hover:text-ink">Terms</a>

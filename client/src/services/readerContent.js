@@ -15,7 +15,7 @@ export function buildSections(report) {
       kind: 'overview',
       paragraphs: [
         report.headline,
-        `The conversation ran ${report.duration} across ${names.length} voices — including ${nameList} — and Astera captured ${report.metrics.decisions} decisions, ${report.metrics.commitments} commitments, and ${report.metrics.risks} risks, each cited back to the moment it was said.`,
+        `The conversation ran ${report.duration} across ${names.length} voices — including ${nameList} — and ATOOPV captured ${report.metrics.decisions} decisions, ${report.metrics.commitments} commitments, and ${report.metrics.risks} risks, each cited back to the moment it was said.`,
       ],
     },
     {
@@ -37,7 +37,7 @@ export function buildSections(report) {
       kind: 'risks',
       paragraphs: [
         report.risks.length
-          ? `Astera surfaced ${report.risks.length} risks — the quiet red flags the room may have skated past.`
+          ? `ATOOPV surfaced ${report.risks.length} risks — the quiet red flags the room may have skated past.`
           : 'No material risks were detected in this conversation.',
       ],
       items: report.risks.map((r) => ({
@@ -50,7 +50,7 @@ export function buildSections(report) {
       id: 'actions',
       title: 'Action items',
       kind: 'actions',
-      paragraphs: [`${report.commitments.length} commitments were made on the record. Astera keeps watch until each is closed.`],
+      paragraphs: [`${report.commitments.length} commitments were made on the record. ATOOPV keeps watch until each is closed.`],
       items: report.commitments.map((c) => ({
         lead: c.text,
         meta: `${c.owner} · due ${c.due} · ${c.at}`,

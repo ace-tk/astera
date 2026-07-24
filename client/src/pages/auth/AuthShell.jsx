@@ -15,7 +15,7 @@ export default function AuthShell({ eyebrow, title, subtitle, children, footer }
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-paper px-4 py-10">
       <AmbientBackground />
       <div className="absolute inset-x-0 top-0 flex items-center justify-between px-5 py-5 sm:px-8">
-        <Link to="/" aria-label="Astera home">
+        <Link to="/" aria-label="ATOOPV home">
           <Wordmark />
         </Link>
         <ThemeSwitcher />

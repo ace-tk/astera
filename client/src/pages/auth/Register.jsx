@@ -37,7 +37,7 @@ export default function Register() {
   return (
     <AuthShell
       eyebrow="Get started"
-      title="Create your Astera account"
+      title="Create your ATOOPV account"
       subtitle="Upload real meetings and get reports that are yours — saved and waiting when you return."
       footer={
         <>

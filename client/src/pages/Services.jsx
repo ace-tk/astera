@@ -10,7 +10,7 @@ import { SERVICE_CATEGORIES } from '@/constants/services'
 export default function Services() {
   usePageMeta({
     title: 'Services',
-    description: 'Minute drafting, training, communication, and more — the same care Astera brings to every report, now covering the full life of your council.',
+    description: 'Minute drafting, training, communication, and more — the same care ATOOPV brings to every report, now covering the full life of your council.',
   })
 
   return (
@@ -37,7 +37,7 @@ export default function Services() {
           <Reveal delay={0.1}>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted text-pretty">
               Minute drafting, training, communication, and more — the same care
-              Astera brings to every report, now covering the full life of your
+              ATOOPV brings to every report, now covering the full life of your
               council.
             </p>
           </Reveal>

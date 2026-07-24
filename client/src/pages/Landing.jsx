@@ -34,7 +34,7 @@ export default function Landing() {
             See the product the moment you land.
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-            Astera turns conversations into a calm executive surface that feels polished, immediate, and action-ready.
+            ATOOPV turns conversations into a calm executive surface that feels polished, immediate, and action-ready.
           </p>
         </div>
         <div className="mt-10">

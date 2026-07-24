@@ -45,7 +45,7 @@ export default function CommandPalette() {
       { id: 'nav-upload', label: 'Upload Studio', hint: 'New recording', icon: UploadCloud, group: 'Go to', run: go('/app/upload') },
       { id: 'nav-analytics', label: 'Analytics', hint: 'Workspace signals', icon: BarChart3, group: 'Go to', run: go('/app/analytics') },
       { id: 'nav-settings', label: 'Settings', hint: 'Preferences', icon: Settings2, group: 'Go to', run: go('/app/settings') },
-      { id: 'nav-about', label: 'About Astera', hint: 'The story & architecture', icon: Info, group: 'Go to', run: go('/app/about') },
+      { id: 'nav-about', label: 'About ATOOPV', hint: 'The story & architecture', icon: Info, group: 'Go to', run: go('/app/about') },
       { id: 'nav-status', label: 'System status', hint: 'Service health', icon: Activity, group: 'Go to', run: go('/app/status') },
     ]
     const actions = [

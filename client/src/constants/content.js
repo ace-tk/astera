@@ -28,7 +28,7 @@ export const FEATURES = [
     id: 'reports',
     eyebrow: 'Reports',
     title: 'Meetings, rewritten as publications.',
-    body: 'Astera composes a narrative report — headline, summary, decisions, and open threads — typeset like a magazine, not exported like a spreadsheet.',
+    body: 'ATOOPV composes a narrative report — headline, summary, decisions, and open threads — typeset like a magazine, not exported like a spreadsheet.',
     color: 'royal',
     span: 'lg:col-span-3 lg:row-span-2',
     glyph: 'report',
@@ -64,7 +64,7 @@ export const FEATURES = [
     id: 'risks',
     eyebrow: 'Risks',
     title: 'The quiet red flags, surfaced.',
-    body: 'Astera watches for risk language and unresolved tension the room may have skated past.',
+    body: 'ATOOPV watches for risk language and unresolved tension the room may have skated past.',
     color: 'rose',
     span: 'lg:col-span-2',
     glyph: 'alert',
@@ -82,7 +82,7 @@ export const FEATURES = [
     id: 'upload',
     eyebrow: 'Upload Studio',
     title: 'Drop a recording. Walk away.',
-    body: 'Audio, video, or a raw transcript. Astera handles the rest and pings you when clarity is ready.',
+    body: 'Audio, video, or a raw transcript. ATOOPV handles the rest and pings you when clarity is ready.',
     color: 'coral',
     span: 'lg:col-span-3',
     glyph: 'upload',
@@ -92,7 +92,7 @@ export const FEATURES = [
 export const TESTIMONIALS = [
   {
     quote:
-      'We replaced three tools and a note-taker with Astera. The reports are the first meeting artifact anyone on my team actually reads.',
+      'We replaced three tools and a note-taker with ATOOPV. The reports are the first meeting artifact anyone on my team actually reads.',
     name: 'Maya Okafor',
     role: 'VP Product, Northwind',
     color: 'royal',

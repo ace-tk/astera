@@ -3,7 +3,7 @@
  * environment lives here so we never sprinkle `import.meta.env` across the app.
  */
 export const config = {
-  appName: 'Astera',
+  appName: 'ATOOPV',
   tagline: 'From Conversations to Clarity.',
   apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:5050/api',
   socketUrl: import.meta.env.VITE_SOCKET_URL || 'http://localhost:5050',

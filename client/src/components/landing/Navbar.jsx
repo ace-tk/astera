@@ -36,7 +36,7 @@ export default function Navbar() {
             : 'border-transparent bg-card/40 backdrop-blur-md',
         )}
       >
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Astera home">
+        <Link to="/" className="flex items-center gap-2.5" aria-label="ATOOPV home">
           <Wordmark />
         </Link>
 

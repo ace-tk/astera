@@ -130,7 +130,7 @@ export default function DashboardLayout() {
         {/* Topbar */}
         <header className="z-30 flex shrink-0 items-center gap-3 border-b border-ink/8 bg-paper/70 px-4 py-3.5 backdrop-blur-xl sm:gap-4 sm:px-6 sm:py-4">
           {/* mobile logo (sidebar is desktop-only) */}
-          <Link to="/app" className="lg:hidden" aria-label="Astera home"><Wordmark mono /></Link>
+          <Link to="/app" className="lg:hidden" aria-label="ATOOPV home"><Wordmark mono /></Link>
           <div className="flex flex-1 items-center gap-3">
             <button
               onClick={openCommandPalette}

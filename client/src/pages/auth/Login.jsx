@@ -33,11 +33,11 @@ export default function Login() {
   return (
     <AuthShell
       eyebrow="Welcome back"
-      title="Sign in to Astera"
+      title="Sign in to ATOOPV"
       subtitle="Access your own meetings, reports, and history."
       footer={
         <>
-          New to Astera?{' '}
+          New to ATOOPV?{' '}
           <Link to="/register" state={{ from }} className="link-underline font-medium text-ink">
             Create an account
           </Link>
