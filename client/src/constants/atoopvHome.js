@@ -4,14 +4,14 @@
  * Kept entirely in French — this is an internal migration of ATOOPV's own
  * site, not a translation task like the English /services content.
  *
- * Two links out of scope for this phase (the embedded budget-simulator form
- * under "Estimez votre besoin en 2 minutes", and individual blog articles)
- * point forward to routes that will ship with later phases (/atoopv/simulateur,
- * /atoopv/atoosavoir, /atoopv/ressources, /atoopv/services, /atoopv/contact)
- * rather than out to atoopv.com — this is a migration, not a set of outbound
- * links to the original site. The source page also repeats its "Ressources
- * gratuites" block verbatim twice near the bottom; only the (more complete)
- * second copy is represented here.
+ * The "veille juridique" and "ressources" links now point at the real
+ * ported Ressources pages (/atoopv/ressources/...) built from
+ * content/resources/*.md. What's still out of scope points forward to
+ * routes that will ship with later phases (/atoopv/simulateur,
+ * /atoopv/services, /atoopv/contact) rather than out to atoopv.com — this
+ * is a migration, not a set of outbound links to the original site. The
+ * source page also repeats its "Ressources gratuites" block verbatim twice
+ * near the bottom; only the (more complete) second copy is represented here.
  */
 import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Lock } from 'lucide-react'
 
@@ -113,24 +113,24 @@ export const ACCUEIL = {
         title: 'Arrêt maladie : durée légale et LFSS 2026',
         body: 'Ce que change la loi de financement de la Sécurité sociale 2026 pour les employeurs et les CSE.',
         cta: 'Lire l’article →',
-        to: '/atoopv/atoosavoir',
+        to: '/atoopv/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie',
       },
       {
         badge: '144 000 impressions',
         title: 'Congé payé vendredi après 37h : le calcul qui surprend',
         body: 'Combien de jours de CP décomptés pour un vendredi posé après 37h lundi–jeudi ?',
         cta: 'Lire l’article →',
-        to: '/atoopv/atoosavoir',
+        to: '/atoopv/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables',
       },
       {
         badge: '131 000 impressions',
         title: 'CP + heures sup : 3 bulletins, 3 résultats',
         body: 'La règle du maintien de salaire et ses effets sur les bulletins de paie.',
         cta: 'Lire l’article →',
-        to: '/atoopv/atoosavoir',
+        to: '/atoopv/ressources/conges-payes-heures-supplementaires-calcul-bulletins-paie',
       },
     ],
-    footerCta: { label: '⚖️ Voir toute la veille juridique CSE — 8 articles', to: '/atoopv/atoosavoir' },
+    footerCta: { label: '⚖️ Voir toute la veille juridique CSE — 8 articles', to: '/atoopv/ressources/veille-juridique-cse' },
   },
   devis: {
     eyebrow: 'Devis qualifié — réponse sous 24h',
@@ -202,14 +202,14 @@ export const ACCUEIL = {
         title: 'Comment lire un arrêt de la Cour de cassation',
         body: 'Fiche pédagogique : structure, vocabulaire et méthode de lecture décryptés pour les élus.',
         cta: 'Lire le guide →',
-        to: '/atoopv/ressources',
+        to: '/atoopv/ressources/comment-lire-arret-cour-de-cassation',
       },
       {
         badge: '7 guides',
         title: 'Tous nos livres blancs CSE',
         body: 'Suppléance, CSSCT, heures de délégation, budget, formation… 7 guides en téléchargement libre.',
         cta: 'Voir tous les guides →',
-        to: '/atoopv/ressources',
+        to: '/atoopv/ressources/guides-livres-blancs-cse',
       },
     ],
   },

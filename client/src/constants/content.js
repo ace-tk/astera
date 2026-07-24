@@ -10,6 +10,18 @@ export const NAV_LINKS = [
   { label: 'Services', href: '/services' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Accueil', href: '/atoopv' },
+  {
+    label: 'Ressources',
+    href: '/atoopv/ressources',
+    children: [
+      { label: 'Guides Juridiques', href: '/atoopv/ressources/guides-livres-blancs-cse' },
+      { label: 'Modèles de PV', href: '/atoopv/ressources/modeles-pv' },
+      { label: 'Mentions Obligatoires du PV', href: '/atoopv/ressources/mentions-obligatoires-pv' },
+      { label: 'Actualité Sociale', href: '/atoopv/ressources/actualite-sociale' },
+      { label: 'Lire un arrêt de la Cour de cassation', href: '/atoopv/ressources/comment-lire-arret-cour-de-cassation' },
+      { label: 'La Minute CSE : le droit du CSE expliqué en vidéo', href: '/atoopv/ressources/la-minute-cse' },
+    ],
+  },
 ]
 
 // The animated "journey" a conversation takes through Astera.

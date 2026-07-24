@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Menu, X, ArrowUpRight } from 'lucide-react'
+import { Menu, X, ArrowUpRight, ChevronDown } from 'lucide-react'
 import { NAV_LINKS } from '@/constants/content'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
+import NavDropdown from '@/components/landing/NavDropdown'
 import { cn } from '@/utils/cn'
 
 /** Floating pill navbar that condenses once you scroll past the hero. */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [mobileExpanded, setMobileExpanded] = useState(null)
   const { scrollY } = useScroll()
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 24))
 
@@ -44,6 +46,9 @@ export default function Navbar() {
           {NAV_LINKS.map((l) => {
             const linkClass =
               'rounded-full px-4 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
+            if (l.children) {
+              return <NavDropdown key={l.href} label={l.label} href={l.href} items={l.children} />
+            }
             return l.href.startsWith('/') ? (
               <Link key={l.href} to={l.href} className={linkClass}>
                 {l.label}
@@ -83,6 +88,48 @@ export default function Navbar() {
           >
             {NAV_LINKS.map((l) => {
               const linkClass = 'block rounded-2xl px-4 py-3 text-lg font-medium hover:bg-ink/[0.04]'
+              if (l.children) {
+                const isExpanded = mobileExpanded === l.href
+                return (
+                  <div key={l.href}>
+                    <div className="flex items-center">
+                      <Link to={l.href} onClick={() => setOpen(false)} className={cn(linkClass, 'flex-1')}>
+                        {l.label}
+                      </Link>
+                      <button
+                        onClick={() => setMobileExpanded(isExpanded ? null : l.href)}
+                        aria-label={isExpanded ? `Masquer le sous-menu ${l.label}` : `Afficher le sous-menu ${l.label}`}
+                        aria-expanded={isExpanded}
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full hover:bg-ink/[0.04]"
+                      >
+                        <ChevronDown className={cn('h-5 w-5 transition-transform', isExpanded && 'rotate-180')} />
+                      </button>
+                    </div>
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          className="overflow-hidden pl-4"
+                        >
+                          {l.children.map((c) => (
+                            <Link
+                              key={c.href}
+                              to={c.href}
+                              onClick={() => setOpen(false)}
+                              className="block rounded-xl px-4 py-2.5 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]"
+                            >
+                              {c.label}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
+              }
               return l.href.startsWith('/') ? (
                 <Link key={l.href} to={l.href} onClick={() => setOpen(false)} className={linkClass}>
                   {l.label}
