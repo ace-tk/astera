@@ -22,6 +22,7 @@ export const NAV_LINKS = [
       { label: 'La Minute CSE : le droit du CSE expliqué en vidéo', href: '/atoopv/ressources/la-minute-cse' },
     ],
   },
+  { label: 'Tarification', href: '/atoopv/tarification' },
 ]
 
 // The animated "journey" a conversation takes through Astera.

@@ -15,6 +15,7 @@ import { useA11y } from '@/context/A11yContext'
 // Route-level code splitting keeps the landing bundle lean.
 const Landing = lazy(() => import('@/pages/Landing'))
 const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
+const Tarification = lazy(() => import('@/pages/atoopv/Tarification'))
 const RessourceArticle = lazy(() => import('@/pages/ressources/RessourceArticle'))
 const VeilleJuridique = lazy(() => import('@/pages/ressources/VeilleJuridique'))
 const Services = lazy(() => import('@/pages/Services'))
@@ -96,6 +97,7 @@ export default function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Landing />} />
             <Route path="/atoopv" element={<Accueil />} />
+            <Route path="/atoopv/tarification" element={<Tarification />} />
             <Route path="/atoopv/ressources" element={<ServiceCategoryLayout />}>
               <Route index element={<RessourceArticle slug="guides-livres-blancs-cse" />} />
               <Route path="veille-juridique-cse" element={<VeilleJuridique />} />
