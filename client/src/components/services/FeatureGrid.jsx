@@ -39,7 +39,25 @@ export default function FeatureGrid({ eyebrow, heading, lead, items, color = 'ro
       <div className={cn('mt-8 grid grid-cols-1 gap-4', COLS[columns] || COLS[4])}>
         {items.map((item, i) => {
           const Icon = item.icon
-          const card = (
+          const card = item.featured ? (
+            <div className={cn('group flex h-full flex-col rounded-[1.6rem] p-6 text-white shadow-lift transition-all duration-300 hover:-translate-y-1', a.bg)}>
+              <div className="flex items-start justify-between gap-3">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15">
+                  <Icon className="h-5 w-5" />
+                </span>
+                {item.eyebrow && (
+                  <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium uppercase tracking-wide">{item.eyebrow}</span>
+                )}
+              </div>
+              <h3 className="mt-4 font-display text-lg font-medium tracking-tight">{item.title}</h3>
+              {item.body && <p className="mt-2 text-sm leading-relaxed text-white/80">{item.body}</p>}
+              {item.cta && (
+                <span className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink transition-transform group-hover:translate-x-0.5">
+                  {item.cta.label}
+                </span>
+              )}
+            </div>
+          ) : (
             <div className="group h-full rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
               <div className="flex items-start justify-between gap-3">
                 <span className={cn('grid h-11 w-11 shrink-0 place-items-center rounded-2xl', a.softBg, a.text)}>

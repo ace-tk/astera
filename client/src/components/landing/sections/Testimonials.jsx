@@ -3,20 +3,25 @@ import { accent } from '@/utils/accent'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
 
-/** Three voices, set as pull-quotes with an oversized editorial quote mark. */
-export default function Testimonials() {
+/**
+ * Pull-quotes with an oversized editorial quote mark. Generic over
+ * `eyebrow`/`heading`/`items` (falling back to Astera's own landing copy) so
+ * other pages — e.g. the ported ATOOPV Accueil — can reuse the same visual
+ * grammar with their own testimonials instead of duplicating this component.
+ */
+export default function Testimonials({ eyebrow = 'In the room', heading = 'The artifact people actually read.', items = TESTIMONIALS }) {
   return (
     <section className="relative py-section">
       <div className="shell">
         <Reveal className="text-center">
-          <span className="eyebrow justify-center">In the room</span>
+          <span className="eyebrow justify-center">{eyebrow}</span>
           <h2 className="mx-auto mt-6 max-w-2xl font-display text-display-sm font-medium leading-[1.06] tracking-tight text-balance">
-            The artifact people actually read.
+            {heading}
           </h2>
         </Reveal>
 
         <div className="mt-16 grid gap-5 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => {
+          {items.map((t, i) => {
             const a = accent(t.color)
             return (
               <Reveal key={t.name} delay={i * 0.1}>

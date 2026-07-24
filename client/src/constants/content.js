@@ -9,6 +9,7 @@ export const NAV_LINKS = [
   { label: 'Features', href: '#features' },
   { label: 'Services', href: '/services' },
   { label: 'Pricing', href: '#pricing' },
+  { label: 'Accueil', href: '/atoopv' },
 ]
 
 // The animated "journey" a conversation takes through Astera.

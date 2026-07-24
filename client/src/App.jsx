@@ -14,6 +14,7 @@ import { useA11y } from '@/context/A11yContext'
 
 // Route-level code splitting keeps the landing bundle lean.
 const Landing = lazy(() => import('@/pages/Landing'))
+const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
 const Services = lazy(() => import('@/pages/Services'))
 const ServiceCategory = lazy(() => import('@/pages/services/ServiceCategory'))
 const ServiceCategoryLayout = lazy(() => import('@/components/services/ServiceCategoryLayout'))
@@ -92,6 +93,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Landing />} />
+            <Route path="/atoopv" element={<Accueil />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/drafting" element={<ServiceCategoryLayout />}>
               <Route index element={<DraftingOverview />} />
