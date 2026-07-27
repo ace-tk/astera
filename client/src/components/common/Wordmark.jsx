@@ -13,10 +13,11 @@ const LOGO = {
   icon: { light: '/logo/icon-dark.png', royal: '/logo/icon-white.png' },
 }
 
-export default function Wordmark({ className, mono = false }) {
+export default function Wordmark({ className, imgClassName, mono = false }) {
   const { theme } = useTheme()
   const variant = theme === 'royal' ? 'royal' : 'light'
   const src = mono ? LOGO.icon[variant] : LOGO.horizontal[variant]
+  const defaultImgClass = mono ? 'h-8 w-8 object-contain' : 'h-7 w-auto object-contain'
 
   return (
     <motion.span
@@ -26,7 +27,7 @@ export default function Wordmark({ className, mono = false }) {
       transition={{ type: 'spring', stiffness: 300, damping: 18 }}
       title="ATOOPV"
     >
-      <img src={src} alt="ATOOPV" className={mono ? 'h-8 w-8 object-contain' : 'h-7 w-auto object-contain'} />
+      <img src={src} alt="ATOOPV" className={imgClassName || defaultImgClass} />
     </motion.span>
   )
 }

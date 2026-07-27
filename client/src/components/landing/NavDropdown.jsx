@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
+import HashAwareLink from '@/components/landing/HashAwareLink'
 import { cn } from '@/utils/cn'
 
 /**
@@ -14,14 +14,14 @@ import { cn } from '@/utils/cn'
 export default function NavDropdown({ label, href, items }) {
   const [open, setOpen] = useState(false)
   const linkClass =
-    'flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
+    'flex items-center gap-1 rounded-full px-2.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
 
   return (
     <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <Link to={href} className={linkClass} aria-haspopup="true" aria-expanded={open}>
+      <HashAwareLink href={href} className={linkClass} aria-haspopup="true" aria-expanded={open}>
         {label}
         <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', open && 'rotate-180')} />
-      </Link>
+      </HashAwareLink>
 
       <AnimatePresence>
         {open && (
@@ -33,14 +33,14 @@ export default function NavDropdown({ label, href, items }) {
             className="absolute left-1/2 top-full z-50 mt-2 w-64 -translate-x-1/2 overflow-hidden rounded-2xl border border-ink/10 bg-card p-1.5 shadow-float"
           >
             {items.map((item) => (
-              <Link
+              <HashAwareLink
                 key={item.href}
-                to={item.href}
+                href={item.href}
                 onClick={() => setOpen(false)}
                 className="block rounded-xl px-3 py-2.5 text-sm leading-snug text-ink/80 transition-colors hover:bg-ink/[0.04] hover:text-ink"
               >
                 {item.label}
-              </Link>
+              </HashAwareLink>
             ))}
           </motion.div>
         )}

@@ -7,6 +7,7 @@ import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
 import NavDropdown from '@/components/landing/NavDropdown'
+import HashAwareLink from '@/components/landing/HashAwareLink'
 import { cn } from '@/utils/cn'
 
 /** Floating pill navbar that condenses once you scroll past the hero. */
@@ -26,42 +27,38 @@ export default function Navbar() {
     >
       <motion.nav
         animate={{
-          width: scrolled ? 'min(64rem, 100%)' : 'min(72rem, 100%)',
+          width: 'min(80rem, 100%)',
           paddingTop: scrolled ? 8 : 12,
           paddingBottom: scrolled ? 8 : 12,
         }}
         transition={{ type: 'spring', stiffness: 260, damping: 30 }}
         className={cn(
-          'flex items-center justify-between gap-4 rounded-full border px-4 sm:px-5',
+          'flex items-center justify-between gap-3 rounded-full border px-4 sm:px-5',
           scrolled
             ? 'border-ink/10 bg-card/80 shadow-lift backdrop-blur-xl'
             : 'border-transparent bg-card/40 backdrop-blur-md',
         )}
       >
-        <Link to="/" className="flex items-center gap-2.5" aria-label="ATOOPV home">
-          <Wordmark />
+        <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label="ATOOPV home">
+          <Wordmark imgClassName="h-9 w-auto object-contain sm:h-10" />
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-0.5 md:flex">
           {NAV_LINKS.map((l) => {
             const linkClass =
-              'rounded-full px-4 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
+              'rounded-full px-2.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
             if (l.children) {
               return <NavDropdown key={l.href} label={l.label} href={l.href} items={l.children} />
             }
-            return l.href.startsWith('/') ? (
-              <Link key={l.href} to={l.href} className={linkClass}>
+            return (
+              <HashAwareLink key={l.href} href={l.href} className={linkClass}>
                 {l.label}
-              </Link>
-            ) : (
-              <a key={l.href} href={l.href} className={linkClass}>
-                {l.label}
-              </a>
+              </HashAwareLink>
             )
           })}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <div className="hidden sm:block">
             <ThemeSwitcher />
           </div>
@@ -93,9 +90,9 @@ export default function Navbar() {
                 return (
                   <div key={l.href}>
                     <div className="flex items-center">
-                      <Link to={l.href} onClick={() => setOpen(false)} className={cn(linkClass, 'flex-1')}>
+                      <HashAwareLink href={l.href} onClick={() => setOpen(false)} className={cn(linkClass, 'flex-1')}>
                         {l.label}
-                      </Link>
+                      </HashAwareLink>
                       <button
                         onClick={() => setMobileExpanded(isExpanded ? null : l.href)}
                         aria-label={isExpanded ? `Masquer le sous-menu ${l.label}` : `Afficher le sous-menu ${l.label}`}
@@ -115,14 +112,14 @@ export default function Navbar() {
                           className="overflow-hidden pl-4"
                         >
                           {l.children.map((c) => (
-                            <Link
+                            <HashAwareLink
                               key={c.href}
-                              to={c.href}
+                              href={c.href}
                               onClick={() => setOpen(false)}
                               className="block rounded-xl px-4 py-2.5 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]"
                             >
                               {c.label}
-                            </Link>
+                            </HashAwareLink>
                           ))}
                         </motion.div>
                       )}
@@ -130,14 +127,10 @@ export default function Navbar() {
                   </div>
                 )
               }
-              return l.href.startsWith('/') ? (
-                <Link key={l.href} to={l.href} onClick={() => setOpen(false)} className={linkClass}>
+              return (
+                <HashAwareLink key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass}>
                   {l.label}
-                </Link>
-              ) : (
-                <a key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass}>
-                  {l.label}
-                </a>
+                </HashAwareLink>
               )
             })}
             <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
