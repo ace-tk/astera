@@ -4,11 +4,16 @@
  */
 
 export const NAV_LINKS = [
-  { label: 'Story', href: '#story' },
-  { label: 'How it works', href: '#how' },
-  { label: 'Features', href: '#features' },
+  {
+    label: 'Story',
+    href: '#story',
+    children: [
+      { label: 'How it works', href: '#how' },
+      { label: 'Features', href: '#features' },
+      { label: 'Pricing', href: '#pricing' },
+    ],
+  },
   { label: 'Services', href: '/services' },
-  { label: 'Pricing', href: '#pricing' },
   { label: 'Accueil', href: '/atoopv' },
   {
     label: 'Ressources',
