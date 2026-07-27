@@ -26,11 +26,6 @@ export function GuestOnly({ children }) {
 
 /** Admin-only. Guests go to sign in; signed-in non-admins are sent back to /app. */
 export function RequireAdmin({ children }) {
-  // TEMP — Admin Portal UI review bypass. Dev-build only (import.meta.env.DEV
-  // is always false in a production build, so this cannot ship). Remove this
-  // block to restore the real guard below once the UI is finalized.
-  if (import.meta.env.DEV) return children
-
   const { isAuthed, isLoading, user } = useAuth()
   const location = useLocation()
   if (isLoading) return <PageLoader />
