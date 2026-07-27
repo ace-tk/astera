@@ -6,6 +6,7 @@ import { X, Mail, CalendarDays, ShieldCheck } from 'lucide-react'
 import { fetchAdminUsers, fetchAdminReports } from '@/services/admin'
 import StatusChip from '@/components/admin/StatusChip'
 import Button from '@/components/ui/Button'
+import Reveal from '@/components/ui/Reveal'
 
 const fmt = (d) => (d ? new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—')
 
@@ -15,7 +16,14 @@ export default function AdminUsers() {
 
   return (
     <>
-      <div className="overflow-x-auto rounded-3xl border border-ink/8 bg-card shadow-soft">
+      <Reveal>
+        <p className="eyebrow text-accent"><ShieldCheck className="h-3.5 w-3.5" /> Admin · Users</p>
+        <h1 className="mt-3 font-display text-display-sm font-semibold leading-[1.02] tracking-tight text-balance">
+          Every account, at a glance.
+        </h1>
+      </Reveal>
+
+      <div className="mt-8 overflow-x-auto rounded-3xl border border-ink/8 bg-card shadow-soft">
         <table className="w-full min-w-[40rem] text-left text-sm">
           <thead className="border-b border-ink/8 text-xs uppercase tracking-widest text-muted">
             <tr>

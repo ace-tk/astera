@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, Trash2 } from 'lucide-react'
+import { Check, Trash2, ShieldCheck } from 'lucide-react'
 import { fetchAdminReports, updateAdminReport, deleteAdminReport } from '@/services/admin'
 import { useToast } from '@/context/ToastContext'
 import StatusChip from '@/components/admin/StatusChip'
 import Button from '@/components/ui/Button'
+import Reveal from '@/components/ui/Reveal'
 
 const fmt = (d) => (d ? new Date(d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '—')
 
@@ -35,7 +36,14 @@ export default function AdminReports() {
 
   return (
     <>
-      <div className="overflow-x-auto rounded-3xl border border-ink/8 bg-card shadow-soft">
+      <Reveal>
+        <p className="eyebrow text-accent"><ShieldCheck className="h-3.5 w-3.5" /> Admin · Reports</p>
+        <h1 className="mt-3 font-display text-display-sm font-semibold leading-[1.02] tracking-tight text-balance">
+          Review, approve, and manage every report.
+        </h1>
+      </Reveal>
+
+      <div className="mt-8 overflow-x-auto rounded-3xl border border-ink/8 bg-card shadow-soft">
         <table className="w-full min-w-[44rem] text-left text-sm">
           <thead className="border-b border-ink/8 text-xs uppercase tracking-widest text-muted">
             <tr>

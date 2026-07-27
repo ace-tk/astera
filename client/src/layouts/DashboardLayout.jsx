@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, PanelLeftClose, PanelLeft, Sparkles } from 'lucide-react'
+import {
+  Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, PanelLeftClose, PanelLeft, Sparkles,
+  LayoutDashboard, LayoutGrid, Building2, Users, ArrowLeftRight,
+} from 'lucide-react'
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
@@ -34,10 +37,25 @@ const NAV = [
   { to: '/app/settings', label: 'Settings', icon: Settings2, active: 'text-emerald' },
 ]
 
+// The Admin Portal reuses this exact sidebar/topbar shell — it just swaps in
+// its own nav destinations while inside /app/admin/*.
+const ADMIN_NAV = [
+  { to: '/app/admin', label: 'Dashboard', icon: LayoutDashboard, end: true, active: 'text-royal' },
+  { to: '/app/admin/workspace', label: 'Workspace', icon: LayoutGrid, active: 'text-purple' },
+  { to: '/app/admin/reports', label: 'Reports', icon: FileText, active: 'text-sky' },
+  { to: '/app/admin/customers', label: 'Customers', icon: Building2, active: 'text-golden' },
+  { to: '/app/admin/users', label: 'Users', icon: Users, active: 'text-coral' },
+  { to: '/app/admin/analytics', label: 'Analytics', icon: BarChart3, active: 'text-emerald' },
+  { to: '/app/admin/settings', label: 'Settings', icon: Settings2, active: 'text-rose' },
+]
+
 export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const location = useLocation()
   const { isAuthed } = useAuth()
+
+  const isAdminArea = location.pathname.startsWith('/app/admin')
+  const nav = isAdminArea ? ADMIN_NAV : NAV
 
   // Immersive routes fill the viewport with no padding (canvas / reader).
   const immersive =
@@ -65,8 +83,17 @@ export default function DashboardLayout() {
           <Link to="/">{collapsed ? <Wordmark mono /> : <Wordmark />}</Link>
         </div>
 
+        {isAdminArea && !collapsed && (
+          <div className="mt-4 flex items-center justify-between rounded-2xl bg-ink/[0.03] px-3 py-2">
+            <span className="text-xs font-semibold uppercase tracking-widest text-muted">Admin</span>
+            <Link to="/app" className="inline-flex items-center gap-1 text-xs font-medium text-muted transition-colors hover:text-ink">
+              <ArrowLeftRight className="h-3 w-3" /> Workspace
+            </Link>
+          </div>
+        )}
+
         <nav className="mt-6 flex flex-1 flex-col gap-1">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -170,7 +197,7 @@ export default function DashboardLayout() {
       </div>
 
       {/* Mobile bottom navigation */}
-      <MobileTabBar />
+      <MobileTabBar nav={nav} />
 
       {/* ASTRA — the always-present intelligence assistant */}
       <Astra />
@@ -182,11 +209,11 @@ export default function DashboardLayout() {
 }
 
 /** Native-feeling bottom tab bar for small screens (the sidebar is desktop-only). */
-function MobileTabBar() {
+function MobileTabBar({ nav }) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/8 bg-card/90 backdrop-blur-xl lg:hidden" aria-label="Primary">
-      <div className="flex items-stretch justify-around px-2 pb-[env(safe-area-inset-bottom)]">
-        {NAV.map((item) => (
+      <div className="flex items-stretch justify-around overflow-x-auto px-1 pb-[env(safe-area-inset-bottom)]">
+        {nav.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

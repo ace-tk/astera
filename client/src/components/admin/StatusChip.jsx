@@ -1,11 +1,17 @@
 import { cn } from '@/utils/cn'
 
-// The three admin review states — a colored dot carries the status, with a dark
-// label on a soft tint so every chip clears WCAG AA contrast.
+// Admin status states — a colored dot carries the status, with a dark
+// label on a soft tint so every chip clears WCAG AA contrast. Covers report
+// review states plus the record states (customers/users/reports lifecycle)
+// used across the rest of the Admin Portal.
 const REVIEW_STATUS = {
   approved: { label: 'Approved', dot: 'bg-emerald', bg: 'bg-emerald/10' },
   pending: { label: 'Pending Review', dot: 'bg-orange', bg: 'bg-orange/10' },
   draft: { label: 'Draft', dot: 'bg-ink/40', bg: 'bg-ink/[0.06]' },
+  published: { label: 'Published', dot: 'bg-emerald', bg: 'bg-emerald/10' },
+  archived: { label: 'Archived', dot: 'bg-ink/40', bg: 'bg-ink/[0.06]' },
+  active: { label: 'Active', dot: 'bg-emerald', bg: 'bg-emerald/10' },
+  disabled: { label: 'Disabled', dot: 'bg-rose', bg: 'bg-rose/10' },
 }
 
 export default function StatusChip({ status }) {

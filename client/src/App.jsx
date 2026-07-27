@@ -58,9 +58,13 @@ const Settings = lazy(() => import('@/pages/dashboard/Settings'))
 const Profile = lazy(() => import('@/pages/dashboard/Profile'))
 const AdminLayout = lazy(() => import('@/layouts/AdminLayout'))
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
+const AdminWorkspace = lazy(() => import('@/pages/admin/AdminWorkspace'))
 const AdminUsers = lazy(() => import('@/pages/admin/AdminUsers'))
 const AdminReports = lazy(() => import('@/pages/admin/AdminReports'))
 const AdminReportReview = lazy(() => import('@/pages/admin/AdminReportReview'))
+const AdminCustomers = lazy(() => import('@/pages/admin/AdminCustomers'))
+const AdminAnalytics = lazy(() => import('@/pages/admin/AdminAnalytics'))
+const AdminSettings = lazy(() => import('@/pages/admin/AdminSettings'))
 const Status = lazy(() => import('@/pages/dashboard/Status'))
 const About = lazy(() => import('@/pages/dashboard/About'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -157,9 +161,13 @@ export default function App() {
               <Route path="profile" element={<Profile />} />
               <Route path="admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
                 <Route index element={<AdminDashboard />} />
+                <Route path="workspace" element={<AdminWorkspace />} />
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="reports" element={<AdminReports />} />
                 <Route path="reports/:id" element={<AdminReportReview />} />
+                <Route path="customers" element={<AdminCustomers />} />
+                <Route path="analytics" element={<AdminAnalytics />} />
+                <Route path="settings" element={<AdminSettings />} />
               </Route>
               <Route path="status" element={<Status />} />
               <Route path="about" element={<About />} />
