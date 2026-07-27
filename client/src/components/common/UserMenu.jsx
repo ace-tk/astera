@@ -37,7 +37,7 @@ export default function UserMenu() {
   const onLogout = () => {
     setOpen(false)
     logout()
-    navigate('/')
+    navigate('/', { replace: true })
   }
 
   return (

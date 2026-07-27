@@ -26,8 +26,9 @@ export default function Register() {
     }
     setBusy(true)
     try {
-      await register(form.name.trim(), form.email.trim(), form.password)
-      navigate(from, { replace: true })
+      // Same rule as Login: the role decides the destination.
+      const user = await register(form.name.trim(), form.email.trim(), form.password)
+      navigate(user?.isAdmin ? '/app/admin' : '/app', { replace: true })
     } catch (err) {
       setError(err.status === 409 ? 'An account with that email already exists.' : err.message || 'Could not create your account.')
       setBusy(false)
@@ -97,13 +98,6 @@ export default function Register() {
           )}
         </Button>
       </form>
-
-      <p className="mt-6 text-center text-xs text-muted">
-        Just exploring?{' '}
-        <Link to="/app" className="link-underline font-medium text-ink">
-          Continue to the demo
-        </Link>
-      </p>
     </AuthShell>
   )
 }

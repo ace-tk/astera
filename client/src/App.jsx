@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { onUnauthorized } from '@/services/api'
@@ -9,7 +9,8 @@ import CommandPalette from '@/components/common/CommandPalette'
 import ShortcutsOverlay from '@/components/common/ShortcutsOverlay'
 import GlobalShortcuts from '@/components/common/GlobalShortcuts'
 import EasterEggs from '@/components/eggs/EasterEggs'
-import { GuestOnly, RequireAdmin } from '@/components/auth/RouteGuards'
+import { GuestOnly, RequireAuth, RequireAdmin } from '@/components/auth/RouteGuards'
+import { useAuth } from '@/context/AuthContext'
 import { useA11y } from '@/context/A11yContext'
 
 // Route-level code splitting keeps the landing bundle lean.
@@ -90,6 +91,18 @@ function SessionExpiryRedirect() {
   return null
 }
 
+/**
+ * The sole entry point behind "Open app": by the time this renders, RequireAuth
+ * has already guaranteed a signed-in user. Admins are sent straight to their
+ * dashboard; everyone else lands on the customer Workspace. Nobody picks a
+ * destination — the role does.
+ */
+function AppEntry() {
+  const { user } = useAuth()
+  if (user?.isAdmin) return <Navigate to="/app/admin" replace />
+  return <Workspace />
+}
+
 export default function App() {
   const location = useLocation()
   const { reduceMotion } = useA11y()
@@ -148,8 +161,8 @@ export default function App() {
             <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
             <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
             <Route path="/forgot" element={<ForgotPassword />} />
-            <Route path="/app" element={<DashboardLayout />}>
-              <Route index element={<Workspace />} />
+            <Route path="/app" element={<RequireAuth><DashboardLayout /></RequireAuth>}>
+              <Route index element={<AppEntry />} />
               <Route path="demos" element={<DemoWorkspace />} />
               <Route path="reports" element={<Overview />} />
               <Route path="upload" element={<UploadStudio />} />

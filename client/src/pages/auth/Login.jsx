@@ -22,8 +22,11 @@ export default function Login() {
     setError('')
     setBusy(true)
     try {
-      await login(form.email.trim(), form.password)
-      navigate(from, { replace: true })
+      // Role decides the destination, not wherever the user happened to
+      // request /login from — an admin always lands on their dashboard, a
+      // customer always lands on their workspace.
+      const user = await login(form.email.trim(), form.password)
+      navigate(user?.isAdmin ? '/app/admin' : '/app', { replace: true })
     } catch (err) {
       setError(err.status === 401 ? 'Incorrect email or password.' : err.message || 'Could not sign in.')
       setBusy(false)
@@ -88,13 +91,6 @@ export default function Login() {
           )}
         </Button>
       </form>
-
-      <p className="mt-6 text-center text-xs text-muted">
-        Just exploring?{' '}
-        <Link to="/app" className="link-underline font-medium text-ink">
-          Continue to the demo
-        </Link>
-      </p>
     </AuthShell>
   )
 }

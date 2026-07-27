@@ -83,7 +83,7 @@ export default function Profile() {
 
   const onLogout = () => {
     logout()
-    navigate('/')
+    navigate('/', { replace: true })
   }
 
   const STATS = [

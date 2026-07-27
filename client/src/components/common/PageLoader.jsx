@@ -14,12 +14,17 @@ export default function PageLoader() {
         className="flex flex-col items-center gap-5"
       >
         <div className="relative h-12 w-12">
+          {/* Plain CSS (Tailwind's built-in animate-ping), not framer-motion: this
+              loader can mount and unmount in rapid succession during route
+              transitions, and framer-motion's async keyframe resolver has been
+              observed to throw ("reading '0' of null") when a JS-driven
+              array-keyframe animation is torn down mid-flight. A CSS animation
+              has no such lifecycle to race. */}
           {[0, 1, 2].map((i) => (
-            <motion.span
+            <span
               key={i}
-              className="absolute inset-0 rounded-2xl border border-accent/40"
-              animate={{ scale: [1, 1.6], opacity: [0.6, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.4, ease: 'easeOut' }}
+              className="absolute inset-0 animate-ping rounded-2xl border border-accent/40"
+              style={{ animationDuration: '1.6s', animationDelay: `${i * 0.4}s` }}
             />
           ))}
           <div className="absolute inset-0 grid place-items-center rounded-2xl">
