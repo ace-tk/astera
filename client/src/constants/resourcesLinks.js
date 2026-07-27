@@ -57,6 +57,8 @@ const SECTION_MAP = {
   'a-propos': '/atoopv/a-propos',
   faq: '/atoopv/a-propos',
   atoosavoir: '/atoopv/atoosavoir',
+  'atoosavoir/exemple': '/atoopv/atoosavoir/exemple',
+  'atoosavoir/cgv': '/atoopv/atoosavoir/cgv',
 }
 
 const ASSET_EXT_RE = /\.(jpe?g|png|webp|gif|pdf|mp4)$/i

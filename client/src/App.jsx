@@ -18,6 +18,9 @@ const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
 const Tarification = lazy(() => import('@/pages/atoopv/Tarification'))
 const APropos = lazy(() => import('@/pages/atoopv/APropos'))
 const Autodiagnostic = lazy(() => import('@/pages/atoopv/Autodiagnostic'))
+const Atoosavoir = lazy(() => import('@/pages/atoopv/Atoosavoir'))
+const AtoosavoirExemple = lazy(() => import('@/pages/atoopv/AtoosavoirExemple'))
+const AtoosavoirCgv = lazy(() => import('@/pages/atoopv/AtoosavoirCgv'))
 const RessourceArticle = lazy(() => import('@/pages/ressources/RessourceArticle'))
 const VeilleJuridique = lazy(() => import('@/pages/ressources/VeilleJuridique'))
 const Services = lazy(() => import('@/pages/Services'))
@@ -102,6 +105,9 @@ export default function App() {
             <Route path="/atoopv/tarification" element={<Tarification />} />
             <Route path="/atoopv/a-propos" element={<APropos />} />
             <Route path="/atoopv/autodiagnostic" element={<Autodiagnostic />} />
+            <Route path="/atoopv/atoosavoir" element={<Atoosavoir />} />
+            <Route path="/atoopv/atoosavoir/exemple" element={<AtoosavoirExemple />} />
+            <Route path="/atoopv/atoosavoir/cgv" element={<AtoosavoirCgv />} />
             <Route path="/atoopv/ressources" element={<ServiceCategoryLayout />}>
               <Route index element={<RessourceArticle slug="guides-livres-blancs-cse" />} />
               <Route path="veille-juridique-cse" element={<VeilleJuridique />} />

@@ -101,7 +101,7 @@ export async function generateReport(transcript, meta = {}, onStage = () => {}) 
 
   return {
     title: meta.title || 'Untitled meeting',
-    subtitle: meta.subtitle || 'Analyzed by Astera',
+    subtitle: meta.subtitle || 'Analyzed by ATOOPV',
     category: meta.category || 'Your upload',
     color: pick(COLORS, seed),
     status: 'ready',
@@ -111,7 +111,7 @@ export async function generateReport(transcript, meta = {}, onStage = () => {}) 
     engine: 'heuristic', // honest: no LLM call is made in this build
     headline:
       decisions[0]?.text ||
-      'Astera distilled this conversation into decisions, commitments, and risks — each cited to the moment it was said.',
+      'ATOOPV distilled this conversation into decisions, commitments, and risks — each cited to the moment it was said.',
     metrics: {
       decisions: decisions.length,
       owners: new Set(decisions.map((d) => d.owner)).size,

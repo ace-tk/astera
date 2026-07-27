@@ -25,6 +25,7 @@ export const NAV_LINKS = [
   { label: 'Tarification', href: '/atoopv/tarification' },
   { label: 'À propos', href: '/atoopv/a-propos' },
   { label: 'Autodiagnostic', href: '/atoopv/autodiagnostic' },
+  { label: 'AtooSavoir', href: '/atoopv/atoosavoir' },
 ]
 
 // The animated "journey" a conversation takes through Astera.
