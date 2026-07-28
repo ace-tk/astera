@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowUpRight, Clock, Users, PencilLine, FileEdit, Download, Trash2, Check, X } from 'lucide-react'
 import SpotlightCard from '@/components/ui/SpotlightCard'
+import StatusChip from '@/components/admin/StatusChip'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
 
@@ -119,6 +120,7 @@ export default function ReportCard({ report, featured = false, editable = false,
           <span className="inline-flex items-center gap-1.5"><Users className="h-3.5 w-3.5" /> {report.participants.length}</span>
           <span className="inline-flex items-center gap-1.5"><span className={cn('h-1.5 w-1.5 rounded-full', s.dot)} /> {s.label}</span>
           <span>{new Date(report.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+          {report.request && <StatusChip status="delivered" />}
         </div>
 
         <div className="mt-auto grid grid-cols-4 gap-2 pt-6">
