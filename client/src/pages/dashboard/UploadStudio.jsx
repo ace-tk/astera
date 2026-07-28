@@ -390,7 +390,7 @@ function RequestReportForm() {
       if (customerNotes) form.append('customerNotes', customerNotes)
       if (file) form.append('media', file)
       await submitReportRequest(form)
-      toast({ title: 'Request submitted', description: 'Our team will draft your report and publish it here once it’s ready.', variant: 'success', color: 'emerald' })
+      toast({ title: 'Request submitted successfully', description: 'Our team will draft your report and publish it here once it’s ready.', variant: 'success', color: 'emerald' })
       navigate('/app/reports')
     } catch (err) {
       setError(err?.data?.error || 'Couldn’t submit your request. Please try again.')

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Plus, Trash2, Check, FileEdit } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import { REPORT_TYPES, DELIVERY_MODES } from '@/constants/reportRequests'
+import { categoryIcon } from '@/utils/reportCategory'
 import { cn } from '@/utils/cn'
 
 const emptyItem = () => ({ text: '', owner: '', due: '', at: '' })
@@ -75,9 +76,16 @@ export default function ReportComposer({ initial, onSaveDraft, onPublish, saving
           <input value={title} onChange={(e) => setTitle(e.target.value)} className="input" placeholder="e.g. Q4 Board Sync — Official Minutes" />
         </Field>
         <Field label="Report category">
-          <select value={reportType} onChange={(e) => setReportType(e.target.value)} className="input">
-            {REPORT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
+          <div className="relative">
+            {categoryIcon(reportType) && (
+              <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted">
+                {(() => { const Icon = categoryIcon(reportType).icon; return <Icon className="h-4 w-4" /> })()}
+              </span>
+            )}
+            <select value={reportType} onChange={(e) => setReportType(e.target.value)} className={cn('input', categoryIcon(reportType) && 'pl-10')}>
+              {REPORT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </div>
         </Field>
         <Field label="Delivery mode">
           <select value={deliveryMode} onChange={(e) => setDeliveryMode(e.target.value)} className="input">

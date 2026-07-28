@@ -58,7 +58,10 @@ export default function Report() {
     if (searchParams.get('download') === '1') {
       setCovered(false)
       setSearchParams((sp) => { sp.delete('download'); return sp }, { replace: true })
-      const t = setTimeout(() => window.print(), 350)
+      const t = setTimeout(() => {
+        window.print()
+        toast({ title: 'Report downloaded', description: 'Saved as a PDF from your print dialog.', variant: 'success', color: 'emerald' })
+      }, 350)
       return () => clearTimeout(t)
     }
   }, [report?.id]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -137,7 +140,17 @@ export default function Report() {
           <Button as={Link} to={`/app/read/${report.id}`} variant="accent" size="sm"><BookOpen className="h-4 w-4" /> Read</Button>
           <Button as={Link} to={`/app/replay/${report.id}`} variant="soft" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
           <Button variant="soft" size="sm" onClick={() => { setReviewOpen(true) }}><PencilLine className="h-4 w-4" /> Edit</Button>
-          <Button variant="soft" size="sm" onClick={() => { setCovered(false); window.print() }}><Download className="h-4 w-4" /> Download</Button>
+          <Button
+            variant="soft"
+            size="sm"
+            onClick={() => {
+              setCovered(false)
+              window.print()
+              toast({ title: 'Report downloaded', description: 'Saved as a PDF from your print dialog.', variant: 'success', color: 'emerald' })
+            }}
+          >
+            <Download className="h-4 w-4" /> Download
+          </Button>
           <Button
             variant="soft"
             size="sm"

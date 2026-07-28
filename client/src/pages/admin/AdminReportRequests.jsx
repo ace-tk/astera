@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 import { Inbox, Search, Clock, Loader2, FileCheck2, PackageCheck, Layers } from 'lucide-react'
 import { fetchAdminRequests } from '@/services/admin'
 import { REPORT_TYPES, DELIVERY_MODES, REQUEST_STATUSES } from '@/constants/reportRequests'
+import { categoryIcon } from '@/utils/reportCategory'
 import StatusChip from '@/components/admin/StatusChip'
+import DeliveryBadge from '@/components/dashboard/DeliveryBadge'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
@@ -112,8 +114,11 @@ export default function AdminReportRequests() {
                 <Clock className="mx-auto mb-2 h-5 w-5 animate-pulse" /> Loading requests…
               </td></tr>
             )}
-            {view.map((r) => (
-              <tr key={r.id} className="border-b border-ink/5 last:border-0 hover:bg-ink/[0.02]">
+            {view.map((r) => {
+              const cat = categoryIcon(r.reportType)
+              const urgent = r.deliveryMode === 'Urgent'
+              return (
+              <tr key={r.id} className={cn('border-b border-ink/5 last:border-0 hover:bg-ink/[0.02]', urgent && 'bg-rose/[0.03]')}>
                 <td className="px-5 py-3.5">
                   <p className="font-medium">{r.customer?.name || '—'}</p>
                   <p className="text-xs text-muted">{r.customer?.email}</p>
@@ -121,8 +126,10 @@ export default function AdminReportRequests() {
                 <td className="px-5 py-3.5">
                   <Link to={`/app/admin/report-requests/${r.id}`} className="font-medium hover:underline">{r.meetingName}</Link>
                 </td>
-                <td className="px-5 py-3.5 text-muted">{r.reportType}</td>
-                <td className="px-5 py-3.5 text-muted">{r.deliveryMode}</td>
+                <td className="px-5 py-3.5 text-muted">
+                  <span className="inline-flex items-center gap-1.5">{cat && <cat.icon className="h-3.5 w-3.5" />} {r.reportType}</span>
+                </td>
+                <td className="px-5 py-3.5"><DeliveryBadge mode={r.deliveryMode} /></td>
                 <td className="px-5 py-3.5 text-muted">{r.meetingDate || '—'}</td>
                 <td className="px-5 py-3.5 text-muted">{fmt(r.createdAt)}</td>
                 <td className="px-5 py-3.5"><StatusChip status={r.status} /></td>
@@ -132,7 +139,8 @@ export default function AdminReportRequests() {
                   </div>
                 </td>
               </tr>
-            ))}
+              )
+            })}
             {!isLoading && view.length === 0 && (
               <tr><td colSpan={8} className="px-5 py-8 text-center text-muted">No report requests match.</td></tr>
             )}

@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Paperclip, Download, ArrowRight, Calendar, Clock3 } from 'lucide-react'
+import { ArrowLeft, Paperclip, Download, ArrowRight, Calendar, Clock3, History, Send, FileEdit, Check, PackageCheck, Inbox } from 'lucide-react'
 import {
   fetchAdminRequest, updateAdminRequestStatus, createReportFromRequest,
-  updateAdminReport, fetchRequestAttachmentUrl, downloadRequestAttachment,
+  updateAdminReport, fetchAdminReport, fetchRequestAttachmentUrl, downloadRequestAttachment,
 } from '@/services/admin'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
+import { categoryIcon } from '@/utils/reportCategory'
 import ReportComposer from '@/components/admin/ReportComposer'
 import StatusChip from '@/components/admin/StatusChip'
+import DeliveryBadge from '@/components/dashboard/DeliveryBadge'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
+import { cn } from '@/utils/cn'
 
 const NEXT_STATUS = { pending_review: 'in_progress', in_progress: 'ready' }
 const NEXT_LABEL = { pending_review: 'Mark In Progress', in_progress: 'Mark Ready' }
@@ -29,6 +32,14 @@ export default function AdminReportRequestDetail() {
     queryKey: ['admin', 'report-request', id],
     queryFn: () => fetchAdminRequest(id),
     retry: false,
+  })
+
+  // Only fetched to enrich the Activity History below with real report
+  // timestamps (draft created / published) — no new endpoint involved.
+  const { data: linkedReport } = useQuery({
+    queryKey: ['admin', 'report', req?.report],
+    queryFn: () => fetchAdminReport(req.report),
+    enabled: Boolean(req?.report),
   })
 
   const refresh = () => {
@@ -49,7 +60,7 @@ export default function AdminReportRequestDetail() {
       const report = await createReportFromRequest(id, payload)
       if (publish) await updateAdminReport(report.id, { publishStatus: 'published' })
       refresh()
-      toast({ title: publish ? 'Report published' : 'Draft saved', variant: 'success', color: 'emerald' })
+      toast({ title: publish ? 'Report published successfully' : 'Draft saved', variant: 'success', color: 'emerald' })
       navigate(`/app/admin/reports/${report.id}`)
     } catch (err) {
       toast({ title: 'Couldn’t save the report', description: err?.data?.error || 'Please try again.', variant: 'warn', color: 'rose' })
@@ -109,6 +120,7 @@ export default function AdminReportRequestDetail() {
       <Reveal className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
           <StatusChip status={req.status} />
+          <DeliveryBadge mode={req.deliveryMode} className="text-sm" />
           <span className="text-sm text-muted">{req.customer?.name || 'Unknown'} ({req.customer?.email || '—'})</span>
         </div>
         <h1 className="mt-4 font-display text-display-sm font-semibold leading-[1.05] tracking-tight text-balance">{req.meetingName}</h1>
@@ -116,7 +128,7 @@ export default function AdminReportRequestDetail() {
 
       <Reveal delay={0.05} className="mt-8">
         <div className="grid gap-4 rounded-3xl border border-ink/8 bg-card p-6 shadow-soft sm:grid-cols-2">
-          <Detail label="Report type" value={req.reportType} />
+          <Detail label="Report type" value={req.reportType} icon={categoryIcon(req.reportType)?.icon} />
           <Detail label="Delivery mode" value={req.deliveryMode} />
           <Detail label="Meeting date" value={req.meetingDate} icon={Calendar} />
           <Detail label="Meeting time" value={req.meetingTime} icon={Clock3} />
@@ -124,6 +136,8 @@ export default function AdminReportRequestDetail() {
           <Detail label="Customer" value={`${req.customer?.name || '—'} · ${req.customer?.email || '—'}`} />
         </div>
       </Reveal>
+
+      <ActivityHistory request={req} report={linkedReport} />
 
       {req.customerNotes && (
         <Reveal delay={0.08} className="mt-6">
@@ -196,5 +210,56 @@ function Detail({ label, value, icon: Icon }) {
       </span>
       <p className="mt-1 text-sm font-medium">{value || '—'}</p>
     </div>
+  )
+}
+
+/**
+ * A best-effort activity log built only from timestamps that genuinely exist
+ * (request/report createdAt & updatedAt) — no synthetic events are invented,
+ * so a step only appears once we actually have a moment to attach to it.
+ */
+function ActivityHistory({ request, report }) {
+  const events = [{ label: 'Customer submitted the request', icon: Send, at: request.createdAt }]
+
+  if (report || ['in_progress', 'ready', 'delivered'].includes(request.status)) {
+    events.push({ label: 'Status changed to In Progress', icon: Inbox, at: report?.createdAt || request.updatedAt })
+  }
+  if (['ready', 'delivered'].includes(request.status)) {
+    events.push({ label: 'Status changed to Ready', icon: Check, at: request.updatedAt })
+  }
+  if (report) {
+    events.push({ label: 'Draft saved', icon: FileEdit, at: report.createdAt })
+    if (report.publishStatus === 'published') {
+      events.push({ label: 'Report published', icon: Check, at: report.updatedAt })
+    }
+  }
+  if (request.status === 'delivered') {
+    events.push({ label: 'Delivered to customer', icon: PackageCheck, at: request.updatedAt })
+  }
+
+  return (
+    <Reveal delay={0.09} className="mt-6">
+      <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
+        <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-muted">
+          <History className="h-3.5 w-3.5" /> Activity history
+        </span>
+        <div className="mt-4 space-y-0">
+          {events.map((e, i) => (
+            <div key={i} className="flex gap-3">
+              <div className="flex flex-col items-center">
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald/10 text-emerald">
+                  <e.icon className="h-3.5 w-3.5" />
+                </span>
+                {i < events.length - 1 && <span className="w-px flex-1 bg-ink/10" />}
+              </div>
+              <div className={cn('min-w-0', i < events.length - 1 ? 'pb-4' : '')}>
+                <p className="text-sm font-medium">{e.label}</p>
+                <p className="text-xs text-muted">{fmtDateTime(e.at)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Reveal>
   )
 }

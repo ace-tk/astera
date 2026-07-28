@@ -4,6 +4,7 @@ import { ArrowUpRight, Clock, Users, PencilLine, FileEdit, Download, Trash2, Che
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import StatusChip from '@/components/admin/StatusChip'
 import { accent } from '@/utils/accent'
+import { categoryIcon } from '@/utils/reportCategory'
 import { cn } from '@/utils/cn'
 
 const SENTIMENT = {
@@ -28,6 +29,7 @@ export default function ReportCard({ report, featured = false, editable = false,
   const a = accent(report.color)
   const tint = a.hex.replace('#', '').match(/.{2}/g).map((h) => parseInt(h, 16)).join(' ')
   const s = SENTIMENT[report.sentiment] || SENTIMENT.positive
+  const cat = categoryIcon(report.subtitle)
 
   const [renaming, setRenaming] = useState(false)
   const [draft, setDraft] = useState(report.title)
@@ -48,7 +50,7 @@ export default function ReportCard({ report, featured = false, editable = false,
       <Link to={`/app/report/${report.id}`} className="flex h-full flex-col">
         <div className="flex items-start justify-between gap-4">
           <span className={cn('inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
-            <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} /> {report.subtitle}
+            {cat ? <cat.icon className="h-3.5 w-3.5" /> : <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} />} {report.subtitle}
           </span>
           {editable ? (
             <div className="flex items-center gap-1" onClick={swallow}>

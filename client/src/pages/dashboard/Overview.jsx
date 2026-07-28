@@ -2,18 +2,25 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
-import { UploadCloud, Search, Trash2, AlertTriangle, Inbox } from 'lucide-react'
+import { UploadCloud, Search, Trash2, AlertTriangle, Inbox, Clock, Loader2, PackageCheck, Layers } from 'lucide-react'
 import { useReports, useUpdateReport, useDeleteReport } from '@/hooks/useReports'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import { isDemoId } from '@/services/mockData'
 import { fetchMyRequests } from '@/services/reportRequests'
 import ReportCard from '@/components/dashboard/ReportCard'
-import StatusChip from '@/components/admin/StatusChip'
+import RequestCard from '@/components/dashboard/RequestCard'
 import EmptyState from '@/components/common/EmptyState'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
+
+const REQUEST_SUMMARY = [
+  { key: 'pending_review', label: 'Pending', icon: Clock, color: 'text-orange', bar: 'bg-orange' },
+  { key: 'in_progress', label: 'In Progress', icon: Loader2, color: 'text-sky', bar: 'bg-sky' },
+  { key: 'delivered', label: 'Delivered', icon: PackageCheck, color: 'text-emerald', bar: 'bg-emerald' },
+  { key: 'total', label: 'Total Requests', icon: Layers, color: 'text-purple', bar: 'bg-purple' },
+]
 
 const SUMMARY = [
   { label: 'Reports this month', value: '18', accent: 'text-royal', bar: 'bg-royal' },
@@ -47,6 +54,11 @@ export default function Overview() {
     queryFn: fetchMyRequests,
     enabled: isAuthed,
   })
+  const requestStats = useMemo(() => {
+    const c = { pending_review: 0, in_progress: 0, delivered: 0, total: myRequests.length }
+    myRequests.forEach((r) => { if (c[r.status] !== undefined) c[r.status] += 1 })
+    return c
+  }, [myRequests])
   const updateReport = useUpdateReport()
   const deleteReport = useDeleteReport()
 
@@ -119,28 +131,45 @@ export default function Overview() {
       </div>
 
       {/* My Requests — every submitted Report Request, kept in sync with the Admin Panel */}
-      {myRequests.length > 0 && (
+      {isAuthed && (
         <Reveal className="mt-10">
-          <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
-            <h2 className="flex items-center gap-2 font-display text-lg font-medium tracking-tight">
-              <Inbox className="h-4.5 w-4.5 text-orange" /> My requests
-            </h2>
-            <div className="mt-4 space-y-2">
-              {myRequests.map((r) => (
-                <div key={r.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ink/8 bg-paper px-4 py-3">
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium">{r.meetingName}</p>
-                    <p className="mt-0.5 text-xs text-muted">
-                      {r.reportType} · {r.deliveryMode}
-                      {r.meetingDate && <> · Meeting {new Date(r.meetingDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</>}
-                      {' '}· Submitted {new Date(r.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                    </p>
-                  </div>
-                  <StatusChip status={r.status} />
-                </div>
-              ))}
+          <h2 className="flex items-center gap-2 font-display text-lg font-medium tracking-tight">
+            <Inbox className="h-4.5 w-4.5 text-orange" /> My requests
+          </h2>
+
+          {myRequests.length > 0 ? (
+            <>
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {REQUEST_SUMMARY.map((s, i) => (
+                  <Reveal key={s.key} delay={i * 0.05}>
+                    <div className="rounded-2xl border border-ink/8 bg-card p-4 shadow-soft">
+                      <s.icon className={cn('h-4 w-4', s.color)} />
+                      <div className={cn('mt-2 font-display text-2xl font-semibold tracking-tight', s.color)}>{requestStats[s.key]}</div>
+                      <p className="mt-0.5 text-xs text-muted">{s.label}</p>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+
+              <div className="mt-4 space-y-3">
+                {myRequests.map((r) => <RequestCard key={r.id} request={r} />)}
+              </div>
+            </>
+          ) : (
+            <div className="mt-4 rounded-3xl border border-ink/8 bg-card">
+              <EmptyState
+                icon={Inbox}
+                color="orange"
+                title="No report requests yet"
+                description="Upload your first meeting to begin generating AI reports."
+                action={
+                  <Button as={Link} to="/app/upload" variant="accent" size="sm">
+                    <UploadCloud className="h-4 w-4" /> Upload Meeting
+                  </Button>
+                }
+              />
             </div>
-          </div>
+          )}
         </Reveal>
       )}
 

@@ -67,7 +67,7 @@ export default function ReviewMode({ open, onClose, report, edits, onSave, mode 
       })
       play('chime')
       toast({
-        title: 'Report updated',
+        title: 'Changes saved successfully',
         description: mode === 'cloud' ? 'Saved to your workspace.' : 'Saved to this device.',
         variant: 'success',
         color: 'emerald',

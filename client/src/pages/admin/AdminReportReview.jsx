@@ -50,7 +50,7 @@ export default function AdminReportReview() {
       await updateAdminReport(id, { ...payload, publishStatus: publish ? 'published' : 'draft' })
       refresh()
       setComposerOpen(false)
-      toast({ title: publish ? 'Report published' : 'Draft saved', variant: 'success', color: 'emerald' })
+      toast({ title: publish ? 'Report published successfully' : 'Draft saved', variant: 'success', color: 'emerald' })
     } catch (err) {
       toast({ title: 'Couldn’t save', description: err?.data?.error || 'Please try again.', variant: 'warn', color: 'rose' })
     } finally {

@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Users } from 'lucide-react'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import MeetingDNA from '@/components/dna/MeetingDNA'
 import { accent } from '@/utils/accent'
+import { categoryIcon } from '@/utils/reportCategory'
 import { cn } from '@/utils/cn'
 
 const initials = (name) => name.split(' ').map((w) => w[0]).join('').slice(0, 2)
@@ -12,6 +13,7 @@ const initials = (name) => name.split(' ').map((w) => w[0]).join('').slice(0, 2)
 export default function DemoCard({ report, index = 0 }) {
   const a = accent(report.color)
   const tint = a.hex.replace('#', '').match(/.{2}/g).map((h) => parseInt(h, 16)).join(' ')
+  const cat = categoryIcon(report.category)
 
   return (
     <motion.div
@@ -23,7 +25,7 @@ export default function DemoCard({ report, index = 0 }) {
         <Link to={`/app/report/${report.id}`} className="flex h-full flex-col p-6">
           <div className="flex items-start justify-between">
             <span className={cn('inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium', a.softBg, a.text)}>
-              <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} /> {report.category}
+              {cat ? <cat.icon className="h-3.5 w-3.5" /> : <span className={cn('h-1.5 w-1.5 rounded-full', a.bg)} />} {report.category}
             </span>
             {/* DNA motif */}
             <div className="-mr-2 -mt-2 opacity-90">
