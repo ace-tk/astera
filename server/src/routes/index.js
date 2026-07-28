@@ -5,6 +5,7 @@ import { signup, login, me } from '../controllers/authController.js'
 import { updateMe } from '../controllers/userController.js'
 import { listReports, getReport, createReport, updateReport, deleteReport } from '../controllers/reportController.js'
 import * as admin from '../controllers/adminController.js'
+import * as reportRequests from '../controllers/reportRequestController.js'
 
 const router = Router()
 
@@ -40,6 +41,11 @@ router.post('/reports', requireAuth, uploadMedia, asyncHandler(createReport))
 router.patch('/reports/:id', requireAuth, asyncHandler(updateReport))
 router.delete('/reports/:id', requireAuth, asyncHandler(deleteReport))
 
+// Report Requests — customer submits, admin manages. Distinct from /reports:
+// no AI runs on these until an admin manually authors a report from one.
+router.post('/report-requests', requireAuth, uploadMedia, asyncHandler(reportRequests.createRequest))
+router.get('/report-requests', requireAuth, asyncHandler(reportRequests.listMyRequests))
+
 // Admin — every route requires an authenticated admin (403 otherwise).
 router.get('/admin/stats', requireAuth, requireAdmin, asyncHandler(admin.stats))
 router.get('/admin/users', requireAuth, requireAdmin, asyncHandler(admin.listUsers))
@@ -47,5 +53,11 @@ router.get('/admin/reports', requireAuth, requireAdmin, asyncHandler(admin.listR
 router.get('/admin/reports/:id', requireAuth, requireAdmin, asyncHandler(admin.getReport))
 router.patch('/admin/reports/:id', requireAuth, requireAdmin, asyncHandler(admin.updateReport))
 router.delete('/admin/reports/:id', requireAuth, requireAdmin, asyncHandler(admin.deleteReport))
+
+router.get('/admin/report-requests', requireAuth, requireAdmin, asyncHandler(reportRequests.listRequests))
+router.get('/admin/report-requests/:id', requireAuth, requireAdmin, asyncHandler(reportRequests.getRequest))
+router.get('/admin/report-requests/:id/attachment', requireAuth, requireAdmin, asyncHandler(reportRequests.getAttachment))
+router.patch('/admin/report-requests/:id', requireAuth, requireAdmin, asyncHandler(reportRequests.updateStatus))
+router.post('/admin/report-requests/:id/report', requireAuth, requireAdmin, asyncHandler(reportRequests.createReportFromRequest))
 
 export default router

@@ -5,6 +5,7 @@ import { ArrowLeft, PencilLine, Check, X, Flag, AlertTriangle, CheckCircle2 } fr
 import { fetchAdminReport, updateAdminReport } from '@/services/admin'
 import { useToast } from '@/context/ToastContext'
 import ReviewMode from '@/components/report/ReviewMode'
+import ReportComposer from '@/components/admin/ReportComposer'
 import StatusChip from '@/components/admin/StatusChip'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
@@ -41,6 +42,22 @@ export default function AdminReportReview() {
     refresh()
   }
 
+  const [composerOpen, setComposerOpen] = useState(false)
+  const [composerSaving, setComposerSaving] = useState(false)
+  const saveComposer = async (payload, publish) => {
+    setComposerSaving(true)
+    try {
+      await updateAdminReport(id, { ...payload, publishStatus: publish ? 'published' : 'draft' })
+      refresh()
+      setComposerOpen(false)
+      toast({ title: publish ? 'Report published' : 'Draft saved', variant: 'success', color: 'emerald' })
+    } catch (err) {
+      toast({ title: 'Couldn’t save', description: err?.data?.error || 'Please try again.', variant: 'warn', color: 'rose' })
+    } finally {
+      setComposerSaving(false)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -61,6 +78,11 @@ export default function AdminReportReview() {
     )
   }
 
+  // Admin-authored reports (created from a Report Request) use the draft/
+  // publish workflow and the structured composer; AI-generated reports keep
+  // today's reviewStatus approve/reject + ReviewMode flow, untouched.
+  const isAuthored = Boolean(report.request)
+
   return (
     <div className="mx-auto max-w-3xl">
       <div className="flex items-center justify-between">
@@ -68,19 +90,41 @@ export default function AdminReportReview() {
           <ArrowLeft className="h-4 w-4" /> All reports
         </Link>
         <div className="flex flex-wrap justify-end gap-2">
-          <Button variant="soft" size="sm" magnetic={false} onClick={() => setReviewOpen(true)}><PencilLine className="h-4 w-4" /> Edit</Button>
-          <Button variant="soft" size="sm" magnetic={false} onClick={() => setStatus.mutate('draft')} disabled={setStatus.isPending}><X className="h-4 w-4" /> Reject</Button>
-          <Button variant="accent" size="sm" magnetic={false} onClick={() => setStatus.mutate('approved')} disabled={setStatus.isPending || report.reviewStatus === 'approved'}><Check className="h-4 w-4" /> Approve</Button>
+          {isAuthored ? (
+            <Button variant="soft" size="sm" magnetic={false} onClick={() => setComposerOpen((v) => !v)}>
+              <PencilLine className="h-4 w-4" /> {composerOpen ? 'Close editor' : 'Edit'}
+            </Button>
+          ) : (
+            <>
+              <Button variant="soft" size="sm" magnetic={false} onClick={() => setReviewOpen(true)}><PencilLine className="h-4 w-4" /> Edit</Button>
+              <Button variant="soft" size="sm" magnetic={false} onClick={() => setStatus.mutate('draft')} disabled={setStatus.isPending}><X className="h-4 w-4" /> Reject</Button>
+              <Button variant="accent" size="sm" magnetic={false} onClick={() => setStatus.mutate('approved')} disabled={setStatus.isPending || report.reviewStatus === 'approved'}><Check className="h-4 w-4" /> Approve</Button>
+            </>
+          )}
         </div>
       </div>
 
       <Reveal className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
-          <StatusChip status={report.reviewStatus} />
+          <StatusChip status={isAuthored ? report.publishStatus : report.reviewStatus} />
+          {isAuthored && report.reportType && <span className="chip text-xs">{report.reportType}</span>}
           <span className="text-sm text-muted">Owner · {report.owner?.name || 'Unknown'} ({report.owner?.email || '—'})</span>
         </div>
         <h1 className="mt-4 font-display text-display-sm font-semibold leading-[1.05] tracking-tight text-balance">{report.title}</h1>
       </Reveal>
+
+      {isAuthored && composerOpen && (
+        <Reveal delay={0.05} className="mt-8">
+          <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
+            <ReportComposer
+              initial={report}
+              saving={composerSaving}
+              onSaveDraft={(payload) => saveComposer(payload, false)}
+              onPublish={(payload) => saveComposer(payload, true)}
+            />
+          </div>
+        </Reveal>
+      )}
 
       {/* Summary */}
       <Reveal delay={0.05} className="mt-8">
@@ -120,7 +164,55 @@ export default function AdminReportReview() {
         </Reveal>
       )}
 
+      {isAuthored && (
+        <Reveal delay={0.05} className="mt-8">
+          <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
+            <span className="text-xs font-medium uppercase tracking-widest text-muted">Report details</span>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <Detail label="Meeting type" value={report.meetingType} />
+              <Detail label="Client / Organization" value={report.clientOrg} />
+              <Detail label="Meeting owner" value={report.meetingOwner} />
+              <Detail label="Language" value={report.language} />
+              <Detail label="Delivery mode" value={report.deliveryMode} />
+              <Detail label="Duration" value={report.duration} />
+            </div>
+            {report.tags?.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {report.tags.map((t) => <span key={t} className="chip text-xs">{t}</span>)}
+              </div>
+            )}
+            {report.complianceNotes && (
+              <div className="mt-5">
+                <span className="text-xs font-medium uppercase tracking-widest text-muted">Compliance notes</span>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-ink/85">{report.complianceNotes}</p>
+              </div>
+            )}
+            {report.riskNotes && (
+              <div className="mt-5">
+                <span className="text-xs font-medium uppercase tracking-widest text-muted">Risk notes</span>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-ink/85">{report.riskNotes}</p>
+              </div>
+            )}
+            {report.reportContent && (
+              <div className="mt-5">
+                <span className="text-xs font-medium uppercase tracking-widest text-muted">Report content</span>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-ink/85">{report.reportContent}</p>
+              </div>
+            )}
+          </div>
+        </Reveal>
+      )}
+
       <ReviewMode open={reviewOpen} onClose={() => setReviewOpen(false)} report={report} edits={{}} onSave={saveEdits} mode="cloud" />
+    </div>
+  )
+}
+
+function Detail({ label, value }) {
+  return (
+    <div>
+      <span className="text-xs font-medium uppercase tracking-widest text-muted">{label}</span>
+      <p className="mt-1 text-sm font-medium">{value || '—'}</p>
     </div>
   )
 }

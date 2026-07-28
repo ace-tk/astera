@@ -12,6 +12,11 @@ const REVIEW_STATUS = {
   archived: { label: 'Archived', dot: 'bg-ink/40', bg: 'bg-ink/[0.06]' },
   active: { label: 'Active', dot: 'bg-emerald', bg: 'bg-emerald/10' },
   disabled: { label: 'Disabled', dot: 'bg-rose', bg: 'bg-rose/10' },
+  // Report Requests pipeline.
+  pending_review: { label: 'Pending Review', dot: 'bg-orange', bg: 'bg-orange/10' },
+  in_progress: { label: 'In Progress', dot: 'bg-sky', bg: 'bg-sky/10' },
+  ready: { label: 'Ready', dot: 'bg-golden', bg: 'bg-golden/10' },
+  delivered: { label: 'Delivered', dot: 'bg-emerald', bg: 'bg-emerald/10' },
 }
 
 export default function StatusChip({ status }) {

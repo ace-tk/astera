@@ -47,10 +47,15 @@ function withCustomerView(report) {
   return json
 }
 
+// Draft admin-authored reports are never exposed to the customer they belong
+// to — only published ones (and every pre-existing/AI-generated report, whose
+// publishStatus defaults to 'published') are visible here.
+const visibleToCustomer = { publishStatus: { $ne: 'draft' } }
+
 /** Every report belongs to the authenticated user (routes enforce requireAuth). */
 export async function listReports(req, res) {
   if (needDB(res)) return
-  const reports = await Report.find({ owner: req.userId }).sort('-createdAt').limit(100)
+  const reports = await Report.find({ owner: req.userId, ...visibleToCustomer }).sort('-createdAt').limit(100)
   res.json({ reports: reports.map(withCustomerView) })
 }
 
@@ -58,7 +63,7 @@ export async function getReport(req, res) {
   if (needDB(res)) return
   const { id } = req.params
   const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id }
-  const report = await Report.findOne({ ...query, owner: req.userId }).select('+analysis')
+  const report = await Report.findOne({ ...query, owner: req.userId, ...visibleToCustomer }).select('+analysis')
   if (!report) return res.status(404).json({ error: 'Report not found' })
   res.json({ report: withCustomerView(report) })
 }

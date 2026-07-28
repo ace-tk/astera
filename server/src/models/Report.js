@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { REPORT_TYPES, DELIVERY_MODES } from '../constants.js'
 
 /**
  * The Report is Astera's core artifact — mirrors the client's report shape so
@@ -78,6 +79,24 @@ const reportSchema = new mongoose.Schema(
       commitments: [commitmentSchema],
       editedAt: Date,
     },
+    // Admin-authored report fields (Report Requests workflow). Additive —
+    // AI-generated reports never set these.
+    reportType: { type: String, enum: REPORT_TYPES }, // "Report Category" in the admin form
+    meetingType: String,
+    clientOrg: String,
+    meetingOwner: String,
+    language: String,
+    complianceNotes: String,
+    riskNotes: String,
+    tags: [String],
+    reportContent: String,
+    deliveryMode: { type: String, enum: DELIVERY_MODES },
+    request: { type: mongoose.Schema.Types.ObjectId, ref: 'ReportRequest', default: null },
+    // Customer visibility gate. Defaults to 'published' so every existing (and
+    // every future AI-generated) report keeps today's visibility unchanged —
+    // only reports created via the admin Report Requests workflow start as
+    // 'draft' and stay admin-only until explicitly published.
+    publishStatus: { type: String, enum: ['draft', 'published'], default: 'published' },
     feedback: {
       useful: Boolean,
       reasons: [String],

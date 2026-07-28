@@ -1,12 +1,15 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
-import { UploadCloud, Search, Trash2, AlertTriangle } from 'lucide-react'
+import { UploadCloud, Search, Trash2, AlertTriangle, Inbox } from 'lucide-react'
 import { useReports, useUpdateReport, useDeleteReport } from '@/hooks/useReports'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import { isDemoId } from '@/services/mockData'
+import { fetchMyRequests } from '@/services/reportRequests'
 import ReportCard from '@/components/dashboard/ReportCard'
+import StatusChip from '@/components/admin/StatusChip'
 import EmptyState from '@/components/common/EmptyState'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
@@ -39,6 +42,13 @@ export default function Overview() {
   const { data: reports = [], isLoading } = useReports()
   const { isAuthed } = useAuth()
   const { toast } = useToast()
+  const { data: myRequests = [] } = useQuery({
+    queryKey: ['reports', 'my-requests'],
+    queryFn: fetchMyRequests,
+    enabled: isAuthed,
+  })
+  // Once delivered, the report itself shows up below — no need to keep it here.
+  const openRequests = myRequests.filter((r) => r.status !== 'delivered')
   const updateReport = useUpdateReport()
   const deleteReport = useDeleteReport()
 
@@ -109,6 +119,28 @@ export default function Overview() {
           </Reveal>
         ))}
       </div>
+
+      {/* My Requests — in-flight Report Requests, until delivered */}
+      {openRequests.length > 0 && (
+        <Reveal className="mt-10">
+          <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft">
+            <h2 className="flex items-center gap-2 font-display text-lg font-medium tracking-tight">
+              <Inbox className="h-4.5 w-4.5 text-orange" /> My requests
+            </h2>
+            <div className="mt-4 space-y-2">
+              {openRequests.map((r) => (
+                <div key={r.id} className="flex items-center justify-between gap-3 rounded-2xl border border-ink/8 bg-paper px-4 py-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{r.meetingName}</p>
+                    <p className="mt-0.5 text-xs text-muted">{r.reportType} · submitted {new Date(r.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
+                  </div>
+                  <StatusChip status={r.status} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      )}
 
       {/* Search + sort */}
       <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">

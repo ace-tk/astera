@@ -2,7 +2,9 @@ import mongoose from 'mongoose'
 import { z } from 'zod'
 import { User } from '../models/User.js'
 import { Report } from '../models/Report.js'
+import { ReportRequest } from '../models/ReportRequest.js'
 import { isAdminUser } from '../config/env.js'
+import { REPORT_TYPES, DELIVERY_MODES } from '../constants.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 const needDB = (res) => {
@@ -72,10 +74,28 @@ const updateSchema = z.object({
   commitments: z
     .array(z.object({ text: z.string(), owner: z.string().optional(), due: z.string().optional(), at: z.string().optional() }))
     .optional(),
+  decisions: z
+    .array(z.object({ text: z.string(), owner: z.string().optional(), at: z.string().optional(), confidence: z.number().optional() }))
+    .optional(),
   reviewStatus: z.enum(['draft', 'pending', 'approved']).optional(),
+  // Admin-authored report fields (Report Requests workflow) — all optional so
+  // AI-generated report edits (which never set these) are unaffected.
+  reportType: z.enum(REPORT_TYPES).optional(),
+  meetingType: z.string().max(160).optional(),
+  clientOrg: z.string().max(160).optional(),
+  meetingOwner: z.string().max(160).optional(),
+  duration: z.string().optional(),
+  language: z.string().max(60).optional(),
+  complianceNotes: z.string().max(4000).optional(),
+  riskNotes: z.string().max(4000).optional(),
+  tags: z.array(z.string()).optional(),
+  reportContent: z.string().max(20000).optional(),
+  deliveryMode: z.enum(DELIVERY_MODES).optional(),
+  publishStatus: z.enum(['draft', 'published']).optional(),
 })
 
-/** Admin edit — summary, action items, and review status (approve / reject). */
+/** Admin edit — summary, action items, review status, and (for admin-authored
+ * reports) the Report Requests fields + draft/publish state. */
 export async function updateReport(req, res) {
   if (needDB(res)) return
   const parsed = updateSchema.safeParse(req.body)
@@ -92,8 +112,33 @@ export async function updateReport(req, res) {
     report.commitments = p.commitments
     report.metrics.commitments = p.commitments.length
   }
+  if (p.decisions !== undefined) {
+    report.decisions = p.decisions
+    report.metrics.decisions = p.decisions.length
+  }
   if (p.reviewStatus !== undefined) report.reviewStatus = p.reviewStatus
+  if (p.reportType !== undefined) report.reportType = p.reportType
+  if (p.meetingType !== undefined) report.meetingType = p.meetingType
+  if (p.clientOrg !== undefined) report.clientOrg = p.clientOrg
+  if (p.meetingOwner !== undefined) report.meetingOwner = p.meetingOwner
+  if (p.duration !== undefined) report.duration = p.duration
+  if (p.language !== undefined) report.language = p.language
+  if (p.complianceNotes !== undefined) report.complianceNotes = p.complianceNotes
+  if (p.riskNotes !== undefined) report.riskNotes = p.riskNotes
+  if (p.tags !== undefined) report.tags = p.tags
+  if (p.reportContent !== undefined) report.reportContent = p.reportContent
+  if (p.deliveryMode !== undefined) report.deliveryMode = p.deliveryMode
+
+  const publishing = p.publishStatus === 'published' && report.publishStatus !== 'published'
+  if (p.publishStatus !== undefined) report.publishStatus = p.publishStatus
+
   await report.save()
+
+  // Publishing an admin-authored report delivers its originating request.
+  if (publishing && report.request) {
+    await ReportRequest.findByIdAndUpdate(report.request, { status: 'delivered' })
+  }
+
   await report.populate('owner', 'name email')
   res.json({ report: adminReportJSON(report) })
 }

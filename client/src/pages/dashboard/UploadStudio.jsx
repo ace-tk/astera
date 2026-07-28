@@ -2,12 +2,15 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { io } from 'socket.io-client'
 import { AnimatePresence, motion } from 'framer-motion'
-import { UploadCloud, FileAudio, Check, Loader2, X, Clapperboard, AlertTriangle } from 'lucide-react'
+import { UploadCloud, FileAudio, Check, Loader2, X, Clapperboard, AlertTriangle, Inbox, Sparkles } from 'lucide-react'
 import { JOURNEY } from '@/constants/content'
 import { config } from '@/config'
 import { accent } from '@/utils/accent'
 import { api } from '@/services/api'
 import { useAuth } from '@/context/AuthContext'
+import { useToast } from '@/context/ToastContext'
+import { submitReportRequest } from '@/services/reportRequests'
+import { REPORT_TYPES, DELIVERY_MODES } from '@/constants/reportRequests'
 import Glyph from '@/components/ui/Glyph'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
@@ -38,6 +41,7 @@ function friendlyError(err) {
 
 export default function UploadStudio() {
   const { isAuthed, user } = useAuth()
+  const [mode, setMode] = useState('instant') // instant | request
   const [phase, setPhase] = useState('idle') // idle | ready | processing | done
   const [file, setFile] = useState(null)
   const [dragging, setDragging] = useState(false)
@@ -161,6 +165,28 @@ export default function UploadStudio() {
         </span>
       </Reveal>
 
+      {isAuthed && (
+        <Reveal delay={0.05} className="mt-8">
+          <div className="inline-flex items-center gap-1 rounded-full border border-ink/8 bg-card p-1">
+            <button
+              onClick={() => setMode('instant')}
+              className={cn('inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors', mode === 'instant' ? 'bg-ink text-paper' : 'text-muted hover:text-ink')}
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Instant AI Report
+            </button>
+            <button
+              onClick={() => setMode('request')}
+              className={cn('inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors', mode === 'request' ? 'bg-ink text-paper' : 'text-muted hover:text-ink')}
+            >
+              <Inbox className="h-3.5 w-3.5" /> Request a Report
+            </button>
+          </div>
+        </Reveal>
+      )}
+
+      {mode === 'request' && isAuthed && <RequestReportForm />}
+
+      {mode === 'instant' && (
       <AnimatePresence mode="wait">
         {/* IDLE / READY — dropzone */}
         {(phase === 'idle' || phase === 'ready') && (
@@ -326,6 +352,109 @@ export default function UploadStudio() {
           </motion.div>
         )}
       </AnimatePresence>
+      )}
     </div>
+  )
+}
+
+/** The "Request a Report" intake form — no AI runs here; it creates a Report
+ * Request that an admin picks up and manually authors (see Admin > Report
+ * Requests). Attachment is optional; the customer describes the meeting. */
+function RequestReportForm() {
+  const navigate = useNavigate()
+  const { toast } = useToast()
+  const [meetingName, setMeetingName] = useState('')
+  const [reportType, setReportType] = useState(REPORT_TYPES[0])
+  const [deliveryMode, setDeliveryMode] = useState(DELIVERY_MODES[0])
+  const [meetingDate, setMeetingDate] = useState('')
+  const [meetingTime, setMeetingTime] = useState('')
+  const [customerNotes, setCustomerNotes] = useState('')
+  const [file, setFile] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const submit = async () => {
+    if (!meetingName.trim()) {
+      setError('Give the meeting a name so we know what to draft.')
+      return
+    }
+    setError('')
+    setSubmitting(true)
+    try {
+      const form = new FormData()
+      form.append('meetingName', meetingName)
+      form.append('reportType', reportType)
+      form.append('deliveryMode', deliveryMode)
+      if (meetingDate) form.append('meetingDate', meetingDate)
+      if (meetingTime) form.append('meetingTime', meetingTime)
+      if (customerNotes) form.append('customerNotes', customerNotes)
+      if (file) form.append('media', file)
+      await submitReportRequest(form)
+      toast({ title: 'Request submitted', description: 'Our team will draft your report and publish it here once it’s ready.', variant: 'success', color: 'emerald' })
+      navigate('/app/reports')
+    } catch (err) {
+      setError(err?.data?.error || 'Couldn’t submit your request. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mt-10 rounded-[2rem] border border-ink/8 bg-card p-8 shadow-soft">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <label className="block sm:col-span-2">
+          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Meeting name</span>
+          <input value={meetingName} onChange={(e) => setMeetingName(e.target.value)} className="input" placeholder="e.g. Q4 Board Sync" />
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Report type</span>
+          <select value={reportType} onChange={(e) => setReportType(e.target.value)} className="input">
+            {REPORT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Delivery mode</span>
+          <select value={deliveryMode} onChange={(e) => setDeliveryMode(e.target.value)} className="input">
+            {DELIVERY_MODES.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Meeting date</span>
+          <input type="date" value={meetingDate} onChange={(e) => setMeetingDate(e.target.value)} className="input" />
+        </label>
+        <label className="block">
+          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Meeting time</span>
+          <input type="time" value={meetingTime} onChange={(e) => setMeetingTime(e.target.value)} className="input" />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Notes for our team</span>
+          <textarea value={customerNotes} onChange={(e) => setCustomerNotes(e.target.value)} rows={3} className="input resize-none" placeholder="Anything we should know before drafting this report…" />
+        </label>
+      </div>
+
+      <label className="mt-5 flex cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-ink/12 p-4 transition-colors hover:border-coral/50">
+        <input type="file" className="hidden" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-coral/10 text-coral"><UploadCloud className="h-5 w-5" /></span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-medium">{file ? file.name : 'Attach a recording or document (optional)'}</span>
+          <span className="block text-xs text-muted">{file ? `${(file.size / 1_000_000).toFixed(1)} MB` : 'Audio, video, or a document — up to 100MB'}</span>
+        </span>
+        {file && (
+          <button onClick={(e) => { e.preventDefault(); setFile(null) }} className="shrink-0 text-muted hover:text-ink"><X className="h-4 w-4" /></button>
+        )}
+      </label>
+
+      {error && (
+        <div role="alert" className="mt-4 flex items-start gap-3 rounded-2xl border border-coral/30 bg-coral/[0.07] p-4 text-sm text-coral">
+          <AlertTriangle className="mt-0.5 h-4.5 w-4.5 shrink-0" /><p>{error}</p>
+        </div>
+      )}
+
+      <div className="mt-6 flex justify-end">
+        <Button variant="accent" onClick={submit} disabled={submitting}>
+          <Inbox className="h-4 w-4" /> {submitting ? 'Submitting…' : 'Submit request'}
+        </Button>
+      </div>
+    </motion.div>
   )
 }
