@@ -91,14 +91,16 @@ export default function Hero() {
         </div>
 
         {/* Right: floating report visual */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative"
-        >
-          <HeroVisual />
-        </motion.div>
+        <div className="lg:-translate-y-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
+          >
+            <HeroVisual />
+          </motion.div>
+        </div>
       </div>
 
       {/* scroll indicator */}
