@@ -69,7 +69,7 @@ export function useReportEdits(report) {
     setLocalEdits({})
   }, [cloud, id])
 
-  const edited = cloud ? Boolean(report?.priority || report?.notes) : Object.keys(localEdits).length > 0
+  const edited = cloud ? Boolean(report?.priority || report?.notes || report?.hasCustomerEdits) : Object.keys(localEdits).length > 0
 
   return { edits, save, reset, edited, mode: cloud ? 'cloud' : 'local' }
 }

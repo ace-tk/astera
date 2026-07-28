@@ -16,7 +16,7 @@ const word = {
 
 export default function Hero() {
   return (
-    <section className="relative pt-36 sm:pt-40 lg:pt-44">
+    <section className="relative pt-28 sm:pt-32 lg:pt-36">
       <div className="shell grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
         {/* Left: editorial headline */}
         <div className="relative z-10">

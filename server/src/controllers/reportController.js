@@ -24,11 +24,34 @@ const formatDuration = (sec) => {
 // Deepgram sentiment → the report's sentiment enum.
 const mapSentiment = (s) => (s === 'positive' ? 'positive' : s === 'negative' ? 'negative' : 'mixed')
 
+/**
+ * Customer-facing serialization. Overlays the customer's private
+ * `customerEdits` (title/headline/commitments from Review Mode) on top of the
+ * base report so the customer always sees their edited version — without
+ * ever mutating the underlying fields the admin panel reads and writes.
+ */
+function withCustomerView(report) {
+  const json = report.toClientJSON()
+  const ce = json.customerEdits
+  delete json.customerEdits
+  const hasEdits = Boolean(ce && (ce.title !== undefined || ce.headline !== undefined || ce.commitments !== undefined))
+  if (ce) {
+    if (ce.title !== undefined) json.title = ce.title
+    if (ce.headline !== undefined) json.headline = ce.headline
+    if (ce.commitments !== undefined) {
+      json.commitments = ce.commitments
+      json.metrics = { ...json.metrics, commitments: ce.commitments.length }
+    }
+  }
+  json.hasCustomerEdits = hasEdits
+  return json
+}
+
 /** Every report belongs to the authenticated user (routes enforce requireAuth). */
 export async function listReports(req, res) {
   if (needDB(res)) return
   const reports = await Report.find({ owner: req.userId }).sort('-createdAt').limit(100)
-  res.json({ reports: reports.map((r) => r.toClientJSON()) })
+  res.json({ reports: reports.map(withCustomerView) })
 }
 
 export async function getReport(req, res) {
@@ -37,7 +60,7 @@ export async function getReport(req, res) {
   const query = mongoose.isValidObjectId(id) ? { _id: id } : { slug: id }
   const report = await Report.findOne({ ...query, owner: req.userId }).select('+analysis')
   if (!report) return res.status(404).json({ error: 'Report not found' })
-  res.json({ report: report.toClientJSON() })
+  res.json({ report: withCustomerView(report) })
 }
 
 const createSchema = z.object({
@@ -150,7 +173,7 @@ export async function createReport(req, res) {
     analysis, // full analytics (select:false) — returned on single-report fetch
   })
   io?.to(room).emit('report:ready', { id: report.slug })
-  res.status(201).json({ report: report.toClientJSON() })
+  res.status(201).json({ report: withCustomerView(report) })
 }
 
 const updateSchema = z.object({
@@ -166,7 +189,14 @@ const updateSchema = z.object({
     .optional(),
 })
 
-/** Edit a report (Review Mode / feedback). Owner-scoped. */
+/**
+ * Edit a report (Review Mode / feedback). Owner-scoped.
+ *
+ * Title, headline, and commitments are saved into `customerEdits` — the
+ * customer's own personal copy — instead of the shared top-level fields, so
+ * this NEVER modifies the original report an admin sees in the admin panel.
+ * Priority/notes are already customer-only fields the admin never touches.
+ */
 export async function updateReport(req, res) {
   if (needDB(res)) return
   const parsed = updateSchema.safeParse(req.body)
@@ -179,18 +209,20 @@ export async function updateReport(req, res) {
   if (!report) return res.status(404).json({ error: 'Report not found' })
 
   const p = parsed.data
-  if (p.title !== undefined) report.title = p.title
-  if (p.headline !== undefined) report.headline = p.headline
+  if (p.title !== undefined || p.headline !== undefined || p.commitments !== undefined) {
+    const ce = report.customerEdits ? report.customerEdits.toObject() : {}
+    if (p.title !== undefined) ce.title = p.title
+    if (p.headline !== undefined) ce.headline = p.headline
+    if (p.commitments !== undefined) ce.commitments = p.commitments
+    ce.editedAt = new Date()
+    report.customerEdits = ce
+  }
   if (p.priority !== undefined) report.priority = p.priority
   if (p.notes !== undefined) report.notes = p.notes
-  if (p.commitments !== undefined) {
-    report.commitments = p.commitments
-    report.metrics.commitments = p.commitments.length
-  }
   if (p.feedback !== undefined) report.feedback = { ...p.feedback, at: new Date() }
 
   await report.save()
-  res.json({ report: report.toClientJSON() })
+  res.json({ report: withCustomerView(report) })
 }
 
 /** Delete a report. Owner-scoped. */

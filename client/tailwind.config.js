@@ -62,7 +62,7 @@ export default {
         18: '4.5rem',
         22: '5.5rem',
         30: '7.5rem',
-        section: 'clamp(6rem, 12vw, 11rem)',
+        section: 'clamp(4.5rem, 9vw, 8rem)',
       },
       maxWidth: {
         shell: '78rem',

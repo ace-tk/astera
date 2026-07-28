@@ -64,12 +64,12 @@ export default function DashboardLayout() {
     location.pathname.startsWith('/app/read')
 
   return (
-    <div className="bg-canvas relative flex h-screen overflow-hidden">
+    <div className="bg-canvas relative flex h-screen overflow-hidden print:h-auto print:overflow-visible">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper">
         Skip to content
       </a>
       {!immersive && (
-        <div className="pointer-events-none fixed inset-0 -z-10 opacity-70">
+        <div className="pointer-events-none fixed inset-0 -z-10 opacity-70 print:hidden">
           <MeshBackground mood={ROUTE_MOOD[location.pathname] || 'reports'} dots={false} />
         </div>
       )}
@@ -77,7 +77,7 @@ export default function DashboardLayout() {
       <motion.aside
         animate={{ width: collapsed ? 84 : 264 }}
         transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-        className="sticky top-0 hidden h-screen shrink-0 flex-col border-r border-ink/8 bg-card/60 p-4 backdrop-blur-xl lg:flex"
+        className="sticky top-0 hidden h-screen shrink-0 flex-col border-r border-ink/8 bg-card/60 p-4 backdrop-blur-xl lg:flex print:hidden"
       >
         <div className="flex items-center justify-between px-2 py-2">
           <Link to="/">{collapsed ? <Wordmark mono /> : <Wordmark />}</Link>
@@ -155,7 +155,7 @@ export default function DashboardLayout() {
       {/* Main */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Topbar */}
-        <header className="z-30 flex shrink-0 items-center gap-3 border-b border-ink/8 bg-paper/70 px-4 py-3.5 backdrop-blur-xl sm:gap-4 sm:px-6 sm:py-4">
+        <header className="z-30 flex shrink-0 items-center gap-3 border-b border-ink/8 bg-paper/70 px-4 py-3.5 backdrop-blur-xl sm:gap-4 sm:px-6 sm:py-4 print:hidden">
           {/* mobile logo (sidebar is desktop-only) */}
           <Link to="/app" className="lg:hidden" aria-label="ATOOPV home"><Wordmark mono /></Link>
           <div className="flex flex-1 items-center gap-3">
@@ -187,7 +187,7 @@ export default function DashboardLayout() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              'min-h-0 flex-1',
+              'min-h-0 flex-1 print:h-auto print:overflow-visible',
               immersive ? 'overflow-hidden' : 'overflow-y-auto px-4 pb-28 pt-6 sm:px-8 sm:pb-8 sm:pt-8 lg:px-10',
             )}
           >
@@ -200,10 +200,10 @@ export default function DashboardLayout() {
       <MobileTabBar nav={nav} />
 
       {/* ASTRA — the always-present intelligence assistant */}
-      <Astra />
+      <div className="print:hidden"><Astra /></div>
 
       {/* First-run welcome + guided tour */}
-      <Onboarding />
+      <div className="print:hidden"><Onboarding /></div>
     </div>
   )
 }
@@ -211,7 +211,7 @@ export default function DashboardLayout() {
 /** Native-feeling bottom tab bar for small screens (the sidebar is desktop-only). */
 function MobileTabBar({ nav }) {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/8 bg-card/90 backdrop-blur-xl lg:hidden" aria-label="Primary">
+    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/8 bg-card/90 backdrop-blur-xl print:hidden lg:hidden" aria-label="Primary">
       <div className="flex items-stretch justify-around overflow-x-auto px-1 pb-[env(safe-area-inset-bottom)]">
         {nav.map((item) => (
           <NavLink

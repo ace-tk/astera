@@ -16,7 +16,11 @@ function StageCard({ stage, index, showConnector = false }) {
       className="group relative h-full rounded-[1.6rem] border border-ink/8 bg-card/95 p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift sm:p-6"
     >
       {showConnector ? (
-        <div className="pointer-events-none absolute right-[-0.75rem] top-1/2 hidden h-px w-6 -translate-y-1/2 bg-ink/10 lg:block" aria-hidden="true" />
+        <div className="pointer-events-none absolute right-[-0.75rem] top-1/2 z-10 hidden h-3 w-6 -translate-y-1/2 lg:block" aria-hidden="true">
+          <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-ink/0 via-ink/25 to-ink/0" />
+          <span className={`absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 blur-[4px] ${a.bg}`} />
+          <span className={`absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full ${a.bg}`} />
+        </div>
       ) : null}
       <div className="flex items-start gap-3">
         <span className={`mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-2xl ${a.softBg} ${a.text}`}>

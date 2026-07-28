@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint, Gauge, PencilLine } from 'lucide-react'
+import { ArrowLeft, Share2, Sparkles, AlertTriangle, CheckCircle2, Flag, Clapperboard, BookOpen, Fingerprint, Gauge, PencilLine, Download } from 'lucide-react'
 import { useReport } from '@/hooks/useReports'
 import { useReportEdits } from '@/hooks/useReportEdits'
 import { useToast } from '@/context/ToastContext'
@@ -39,12 +39,29 @@ const PRIORITY_BADGE = {
 
 export default function Report() {
   const { id } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { data: report, isLoading, isError } = useReport(id)
   const { edits, save, edited, mode } = useReportEdits(report)
   const { toast } = useToast()
   const [covered, setCovered] = useState(true)
   const [confOpen, setConfOpen] = useState(false)
   const [reviewOpen, setReviewOpen] = useState(false)
+
+  // Deep-linked actions from the reports list (?edit=1 / ?download=1) — open
+  // Edit mode or trigger the print-to-PDF download as soon as the report loads.
+  useEffect(() => {
+    if (!report) return
+    if (searchParams.get('edit') === '1') {
+      setReviewOpen(true)
+      setSearchParams((sp) => { sp.delete('edit'); return sp }, { replace: true })
+    }
+    if (searchParams.get('download') === '1') {
+      setCovered(false)
+      setSearchParams((sp) => { sp.delete('download'); return sp }, { replace: true })
+      const t = setTimeout(() => window.print(), 350)
+      return () => clearTimeout(t)
+    }
+  }, [report?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Merge the user's Review Mode edits over the report for display.
   const view = useMemo(
@@ -112,14 +129,15 @@ export default function Report() {
     </AnimatePresence>
     <article className="mx-auto max-w-4xl">
       {/* Back + actions */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between print:hidden">
         <Link to="/app/reports" className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink">
           <ArrowLeft className="h-4 w-4" /> All reports
         </Link>
         <div className="flex flex-wrap justify-end gap-2">
           <Button as={Link} to={`/app/read/${report.id}`} variant="accent" size="sm"><BookOpen className="h-4 w-4" /> Read</Button>
           <Button as={Link} to={`/app/replay/${report.id}`} variant="soft" size="sm"><Clapperboard className="h-4 w-4" /> Replay</Button>
-          <Button variant="soft" size="sm" onClick={() => { setReviewOpen(true) }}><PencilLine className="h-4 w-4" /> Review</Button>
+          <Button variant="soft" size="sm" onClick={() => { setReviewOpen(true) }}><PencilLine className="h-4 w-4" /> Edit</Button>
+          <Button variant="soft" size="sm" onClick={() => { setCovered(false); window.print() }}><Download className="h-4 w-4" /> Download</Button>
           <Button
             variant="soft"
             size="sm"

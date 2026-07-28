@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowUpRight, Clock, Users, PencilLine, Trash2, Check, X } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ArrowUpRight, Clock, Users, PencilLine, FileEdit, Download, Trash2, Check, X } from 'lucide-react'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
@@ -23,6 +23,7 @@ const swallow = (e) => {
  * both of which never navigate into the report.
  */
 export default function ReportCard({ report, featured = false, editable = false, onRename, onDelete }) {
+  const navigate = useNavigate()
   const a = accent(report.color)
   const tint = a.hex.replace('#', '').match(/.{2}/g).map((h) => parseInt(h, 16)).join(' ')
   const s = SENTIMENT[report.sentiment] || SENTIMENT.positive
@@ -50,6 +51,20 @@ export default function ReportCard({ report, featured = false, editable = false,
           </span>
           {editable ? (
             <div className="flex items-center gap-1" onClick={swallow}>
+              <button
+                onClick={(e) => { swallow(e); navigate(`/app/report/${report.id}?edit=1`) }}
+                aria-label="Edit report"
+                className="grid h-8 w-8 place-items-center rounded-full border border-ink/8 text-muted transition-colors hover:border-ink/20 hover:text-ink"
+              >
+                <FileEdit className="h-3.5 w-3.5" />
+              </button>
+              <button
+                onClick={(e) => { swallow(e); navigate(`/app/report/${report.id}?download=1`) }}
+                aria-label="Download report"
+                className="grid h-8 w-8 place-items-center rounded-full border border-ink/8 text-muted transition-colors hover:border-ink/20 hover:text-ink"
+              >
+                <Download className="h-3.5 w-3.5" />
+              </button>
               <button
                 onClick={startRename}
                 aria-label="Rename report"

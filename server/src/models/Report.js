@@ -68,6 +68,16 @@ const reportSchema = new mongoose.Schema(
     // User-editable (Review Mode) — persisted server-side for real accounts.
     priority: { type: String, enum: ['high', 'medium', 'low', null], default: null },
     notes: String,
+    // Customer's private overlay for Review Mode's title/headline/commitments
+    // edits. Kept separate from the fields above so a customer's edits are
+    // their own personal copy and never overwrite the admin-authoritative
+    // report those same fields hold (see reportController.withCustomerView).
+    customerEdits: {
+      title: String,
+      headline: String,
+      commitments: [commitmentSchema],
+      editedAt: Date,
+    },
     feedback: {
       useful: Boolean,
       reasons: [String],

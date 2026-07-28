@@ -27,7 +27,7 @@ export default function Landing() {
       <Navbar />
       <Hero />
       <ReportPreviewCarousel />
-      <section className="mx-auto max-w-shell px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-12">
+      <section className="mx-auto max-w-shell px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pb-16 lg:pt-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="eyebrow text-sky">Dashboard showcase</p>
           <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
