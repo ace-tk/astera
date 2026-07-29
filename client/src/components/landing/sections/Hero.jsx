@@ -60,29 +60,16 @@ export default function Hero() {
             report — decisions, owners, risks, and a scrubbable timeline. Not a
             boring PDF. A publication your team actually reads.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.85, duration: 0.8 }}
-            className="mt-9 flex flex-wrap items-center gap-3"
-          >
-            <Button as={Link} to="/app" size="lg" variant="accent">
-              Generate beautiful reports <ArrowUpRight className="h-5 w-5" />
-            </Button>
-            <Button as="a" href="#how" size="lg" variant="ghost" magnetic={false}>
-              <Play className="h-4 w-4" /> Watch demo
-            </Button>
-          </motion.div>
         </div>
 
-        {/* Right: floating report visual, with "Trusted by" resting under it */}
-        <div className="lg:-translate-y-24">
+        {/* Right: floating report visual, with "Trusted by" and the CTAs
+            stacked beneath it — centered on the card for a clean hierarchy. */}
+        <div className="flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative"
+            className="relative w-full"
           >
             <HeroVisual />
           </motion.div>
@@ -91,7 +78,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.1, duration: 1 }}
-            className="mt-2 flex items-center justify-center gap-5 text-sm text-muted lg:justify-end lg:pr-6"
+            className="mt-44 flex items-center justify-center gap-4 text-sm text-muted sm:mt-8 lg:mt-44 xl:mt-8"
           >
             <div className="flex -space-x-2">
               {['bg-coral', 'bg-purple', 'bg-emerald', 'bg-golden'].map((c) => (
@@ -99,6 +86,20 @@ export default function Hero() {
               ))}
             </div>
             <span>Trusted by teams who’d rather build than take minutes.</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.85, duration: 0.8 }}
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          >
+            <Button as={Link} to="/app" size="lg" variant="accent">
+              Generate beautiful reports <ArrowUpRight className="h-5 w-5" />
+            </Button>
+            <Button as="a" href="#how" size="lg" variant="ghost" magnetic={false}>
+              <Play className="h-4 w-4" /> Watch demo
+            </Button>
           </motion.div>
         </div>
       </div>
