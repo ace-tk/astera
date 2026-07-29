@@ -12,6 +12,7 @@ import { categoryIcon } from '@/utils/reportCategory'
 import ReportComposer from '@/components/admin/ReportComposer'
 import StatusChip from '@/components/admin/StatusChip'
 import DeliveryBadge from '@/components/dashboard/DeliveryBadge'
+import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
@@ -54,6 +55,7 @@ export default function AdminReportRequestDetail() {
   })
 
   const [creating, setCreating] = useState(false)
+  const [pendingPublish, setPendingPublish] = useState(null) // payload awaiting publish confirmation
   const createAndMaybePublish = async (payload, publish) => {
     setCreating(true)
     try {
@@ -192,12 +194,24 @@ export default function AdminReportRequestDetail() {
                 initial={{ title: req.meetingName, reportType: req.reportType, deliveryMode: req.deliveryMode }}
                 saving={creating}
                 onSaveDraft={(payload) => createAndMaybePublish(payload, false)}
-                onPublish={(payload) => createAndMaybePublish(payload, true)}
+                onPublish={(payload) => setPendingPublish(payload)}
               />
             </div>
           </div>
         )}
       </Reveal>
+
+      <ConfirmDialog
+        open={Boolean(pendingPublish)}
+        onCancel={() => setPendingPublish(null)}
+        onConfirm={() => { const p = pendingPublish; setPendingPublish(null); createAndMaybePublish(p, true) }}
+        busy={creating}
+        icon={Send}
+        color="emerald"
+        title="Publish this report?"
+        description="The customer will immediately see it in their Reports."
+        confirmLabel="Publish"
+      />
     </div>
   )
 }

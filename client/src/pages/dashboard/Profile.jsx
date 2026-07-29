@@ -188,7 +188,8 @@ export default function Profile() {
         </div>
       </Reveal>
 
-      {/* Company details */}
+      {/* Company details — guest accounts never had a company profile to fill in */}
+      {user.accountType !== 'guest' && (
       <Reveal delay={0.08} className="mt-6">
         <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft sm:p-8">
           <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-muted">
@@ -227,6 +228,7 @@ export default function Profile() {
           </div>
         </div>
       </Reveal>
+      )}
 
       {/* Statistics */}
       <div className="mt-6 grid grid-cols-3 gap-3">

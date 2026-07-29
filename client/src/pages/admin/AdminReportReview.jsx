@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, PencilLine, Check, X, Flag, AlertTriangle, CheckCircle2, Download } from 'lucide-react'
+import { ArrowLeft, PencilLine, Check, X, Flag, AlertTriangle, CheckCircle2, Download, Send } from 'lucide-react'
 import { fetchAdminReport, updateAdminReport } from '@/services/admin'
 import { useToast } from '@/context/ToastContext'
 import ReviewMode from '@/components/report/ReviewMode'
 import ReportComposer from '@/components/admin/ReportComposer'
 import StatusChip from '@/components/admin/StatusChip'
+import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 
@@ -55,6 +56,7 @@ export default function AdminReportReview() {
 
   const [composerOpen, setComposerOpen] = useState(false)
   const [composerSaving, setComposerSaving] = useState(false)
+  const [pendingPublish, setPendingPublish] = useState(null) // payload awaiting publish confirmation
   const saveComposer = async (payload, publish) => {
     setComposerSaving(true)
     try {
@@ -132,7 +134,7 @@ export default function AdminReportReview() {
               initial={report}
               saving={composerSaving}
               onSaveDraft={(payload) => saveComposer(payload, false)}
-              onPublish={(payload) => saveComposer(payload, true)}
+              onPublish={(payload) => setPendingPublish(payload)}
             />
           </div>
         </Reveal>
@@ -216,6 +218,18 @@ export default function AdminReportReview() {
       )}
 
       <ReviewMode open={reviewOpen} onClose={() => setReviewOpen(false)} report={report} edits={{}} onSave={saveEdits} mode="cloud" />
+
+      <ConfirmDialog
+        open={Boolean(pendingPublish)}
+        onCancel={() => setPendingPublish(null)}
+        onConfirm={() => { const p = pendingPublish; setPendingPublish(null); saveComposer(p, true) }}
+        busy={composerSaving}
+        icon={Send}
+        color="emerald"
+        title="Publish this report?"
+        description="The customer will immediately see it in their Reports."
+        confirmLabel="Publish"
+      />
     </div>
   )
 }

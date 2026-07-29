@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { Building2, Search, ExternalLink, ChevronLeft, ChevronRight, UserPlus, ArrowUpDown } from 'lucide-react'
-import { fetchAdminCustomers } from '@/services/admin'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Building2, Search, ExternalLink, ChevronLeft, ChevronRight, UserPlus, ArrowUpDown, Power, Ban } from 'lucide-react'
+import { fetchAdminCustomers, bulkUpdateAdminCustomerStatus } from '@/services/admin'
+import { useToast } from '@/context/ToastContext'
 import { ACCOUNT_STATUSES, COUNTRIES } from '@/constants/countries'
 import StatusChip from '@/components/admin/StatusChip'
 import SearchableSelect from '@/components/ui/SearchableSelect'
+import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
@@ -26,14 +28,32 @@ const COLUMNS = [
   { key: 'createdAt', label: 'Created' },
 ]
 
+const BULK_META = {
+  activate: { title: 'Activate the selected customers?', confirmLabel: 'Activate', icon: Power, color: 'emerald' },
+  suspend: { title: 'Suspend the selected customers?', description: 'They will lose access immediately. You can reactivate anytime.', confirmLabel: 'Suspend', icon: Ban, color: 'rose', danger: true },
+}
+
 export default function AdminCustomers() {
+  const [qInput, setQInput] = useState('')
   const [q, setQ] = useState('')
   const [status, setStatus] = useState('')
   const [verified, setVerified] = useState('')
   const [country, setCountry] = useState('')
   const [sort, setSort] = useState('-createdAt')
   const [page, setPage] = useState(1)
+  const [selected, setSelected] = useState(() => new Set())
+  const [bulkConfirm, setBulkConfirm] = useState(null) // 'activate' | 'suspend' | null
   const pageSize = 20
+
+  const qc = useQueryClient()
+  const { toast } = useToast()
+
+  // Debounced search — keeps the list fast/responsive while typing instead of
+  // refetching on every keystroke.
+  useEffect(() => {
+    const t = setTimeout(() => { setQ(qInput); setPage(1) }, 300)
+    return () => clearTimeout(t)
+  }, [qInput])
 
   const { data, isLoading } = useQuery({
     queryKey: ['admin', 'customers', { q, status, verified, country, sort, page }],
@@ -44,11 +64,42 @@ export default function AdminCustomers() {
   const total = data?.total || 0
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
 
+  const bulkMutation = useMutation({
+    mutationFn: (statusValue) => bulkUpdateAdminCustomerStatus(Array.from(selected), statusValue),
+    onSuccess: (_r, statusValue) => {
+      qc.invalidateQueries({ queryKey: ['admin', 'customers'] })
+      toast({ title: `${selected.size} customer${selected.size === 1 ? '' : 's'} ${statusValue}`, variant: 'success', color: statusValue === 'active' ? 'emerald' : 'rose' })
+      setSelected(new Set())
+    },
+    onError: () => toast({ title: 'Couldn’t update selected customers', variant: 'warn', color: 'rose' }),
+  })
+
   const toggleSort = (key) => {
     if (!key) return
     setPage(1)
     setSort((s) => (s === key ? `-${key}` : s === `-${key}` ? key : `-${key}`))
   }
+
+  const toggleOne = (id) => setSelected((s) => {
+    const next = new Set(s)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    return next
+  })
+
+  const allOnPageSelected = customers.length > 0 && customers.every((c) => selected.has(c.id))
+  const toggleAllOnPage = () => setSelected((s) => {
+    if (allOnPageSelected) {
+      const next = new Set(s)
+      customers.forEach((c) => next.delete(c.id))
+      return next
+    }
+    const next = new Set(s)
+    customers.forEach((c) => next.add(c.id))
+    return next
+  })
+
+  const bm = bulkConfirm ? BULK_META[bulkConfirm] : null
 
   return (
     <>
@@ -68,9 +119,9 @@ export default function AdminCustomers() {
         <label className="relative flex-1">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
-            value={q}
-            onChange={(e) => { setQ(e.target.value); setPage(1) }}
-            placeholder="Search company, name, or email…"
+            value={qInput}
+            onChange={(e) => setQInput(e.target.value)}
+            placeholder="Search company, name, email, VAT, or phone…"
             aria-label="Search customers"
             className="h-11 w-full rounded-full border border-ink/8 bg-card pl-11 pr-4 text-sm outline-none transition-colors placeholder:text-muted/70 focus:border-accent"
           />
@@ -105,10 +156,36 @@ export default function AdminCustomers() {
         </div>
       </div>
 
+      {selected.size > 0 && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-accent/25 bg-accent/[0.06] px-4 py-3">
+          <span className="text-sm font-medium">{selected.size} selected</span>
+          <div className="flex gap-2">
+            <Button variant="soft" size="sm" magnetic={false} onClick={() => setBulkConfirm('activate')} disabled={bulkMutation.isPending}>
+              <Power className="h-3.5 w-3.5" /> Activate
+            </Button>
+            <Button variant="soft" size="sm" magnetic={false} onClick={() => setBulkConfirm('suspend')} disabled={bulkMutation.isPending}>
+              <Ban className="h-3.5 w-3.5" /> Suspend
+            </Button>
+            <Button variant="ghost" size="sm" magnetic={false} onClick={() => setSelected(new Set())}>
+              Clear
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="mt-6 overflow-x-auto rounded-3xl border border-ink/8 bg-card shadow-soft">
-        <table className="w-full min-w-[72rem] text-left text-sm">
+        <table className="w-full min-w-[76rem] text-left text-sm">
           <thead className="border-b border-ink/8 text-xs uppercase tracking-widest text-muted">
             <tr>
+              <th className="w-10 px-4 py-3.5">
+                <input
+                  type="checkbox"
+                  aria-label="Select all customers on this page"
+                  checked={allOnPageSelected}
+                  onChange={toggleAllOnPage}
+                  className="h-4 w-4 rounded border-ink/20 accent-accent"
+                />
+              </th>
               {COLUMNS.map((c) => (
                 <th key={c.label} className="px-4 py-3.5 font-medium">
                   {c.key ? (
@@ -122,9 +199,18 @@ export default function AdminCustomers() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && <tr><td colSpan={12} className="px-4 py-8 text-center text-muted">Loading customers…</td></tr>}
+            {isLoading && <tr><td colSpan={13} className="px-4 py-8 text-center text-muted">Loading customers…</td></tr>}
             {!isLoading && customers.map((c) => (
-              <tr key={c.id} className="border-b border-ink/5 last:border-0 hover:bg-ink/[0.02]">
+              <tr key={c.id} className={cn('border-b border-ink/5 last:border-0 hover:bg-ink/[0.02]', selected.has(c.id) && 'bg-accent/[0.04]')}>
+                <td className="px-4 py-3.5">
+                  <input
+                    type="checkbox"
+                    aria-label={`Select ${c.name}`}
+                    checked={selected.has(c.id)}
+                    onChange={() => toggleOne(c.id)}
+                    className="h-4 w-4 rounded border-ink/20 accent-accent"
+                  />
+                </td>
                 <td className="px-4 py-3.5 font-medium">{c.companyName || '—'}</td>
                 <td className="px-4 py-3.5">{c.name}</td>
                 <td className="px-4 py-3.5 text-muted">{c.email}</td>
@@ -153,7 +239,7 @@ export default function AdminCustomers() {
                 </td>
               </tr>
             ))}
-            {!isLoading && customers.length === 0 && <tr><td colSpan={12} className="px-4 py-8 text-center text-muted">No customers match.</td></tr>}
+            {!isLoading && customers.length === 0 && <tr><td colSpan={13} className="px-4 py-8 text-center text-muted">No customers match.</td></tr>}
           </tbody>
         </table>
       </div>
@@ -181,6 +267,19 @@ export default function AdminCustomers() {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        open={Boolean(bulkConfirm)}
+        onCancel={() => setBulkConfirm(null)}
+        onConfirm={() => { bulkMutation.mutate(bulkConfirm === 'activate' ? 'active' : 'suspended'); setBulkConfirm(null) }}
+        busy={bulkMutation.isPending}
+        icon={bm?.icon}
+        color={bm?.color}
+        title={bm?.title}
+        description={bm?.description}
+        confirmLabel={bm?.confirmLabel}
+        danger={bm?.danger}
+      />
     </>
   )
 }
