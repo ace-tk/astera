@@ -10,7 +10,7 @@ export const NAV_LINKS = [
     children: [
       { label: 'How it works', href: '#how' },
       { label: 'Features', href: '#features' },
-      { label: 'Pricing', href: '#pricing' },
+      { label: 'Pricing', href: '/atoopv/tarification' },
     ],
   },
   { label: 'Services', href: '/services' },

@@ -74,24 +74,10 @@ export default function Hero() {
               <Play className="h-4 w-4" /> Watch demo
             </Button>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1, duration: 1 }}
-            className="mt-10 flex items-center gap-5 text-sm text-muted"
-          >
-            <div className="flex -space-x-2">
-              {['bg-coral', 'bg-purple', 'bg-emerald', 'bg-golden'].map((c) => (
-                <span key={c} className={`h-8 w-8 rounded-full ring-2 ring-paper ${c}`} />
-              ))}
-            </div>
-            <span>Trusted by teams who’d rather build than take minutes.</span>
-          </motion.div>
         </div>
 
-        {/* Right: floating report visual */}
-        <div className="lg:-translate-y-10">
+        {/* Right: floating report visual, with "Trusted by" resting under it */}
+        <div className="lg:-translate-y-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -99,6 +85,20 @@ export default function Hero() {
             className="relative"
           >
             <HeroVisual />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.1, duration: 1 }}
+            className="mt-2 flex items-center justify-center gap-5 text-sm text-muted lg:justify-end lg:pr-6"
+          >
+            <div className="flex -space-x-2">
+              {['bg-coral', 'bg-purple', 'bg-emerald', 'bg-golden'].map((c) => (
+                <span key={c} className={`h-8 w-8 rounded-full ring-2 ring-paper ${c}`} />
+              ))}
+            </div>
+            <span>Trusted by teams who’d rather build than take minutes.</span>
           </motion.div>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4 }}
-        className="mx-auto mt-16 flex w-fit flex-col items-center gap-2 text-xs uppercase tracking-widest text-muted"
+        className="mx-auto mt-10 flex w-fit flex-col items-center gap-2 text-xs uppercase tracking-widest text-muted"
       >
         Scroll
         <span className="relative flex h-9 w-5 justify-center rounded-full border border-ink/20">

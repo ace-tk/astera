@@ -7,6 +7,7 @@ import RichTextSection from '@/components/services/RichTextSection'
 import PricingCalculator from '@/components/services/PricingCalculator'
 import FAQSection from '@/components/services/FAQSection'
 import CTASection from '@/components/services/CTASection'
+import Pricing from '@/components/landing/sections/Pricing'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import {
   TARIFICATION_HERO,
@@ -55,6 +56,11 @@ export default function Tarification() {
       </div>
 
       <CTASection {...TARIFICATION_CTA} />
+
+      {/* Homepage Pricing section, relocated here per the Homepage/Tarification
+          restructure — appended below the existing Tarification content, unchanged. */}
+      <Pricing />
+
       <Footer />
     </motion.main>
   )

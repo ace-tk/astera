@@ -9,7 +9,7 @@ import Story from '@/components/landing/sections/Story'
 import HowItWorks from '@/components/landing/sections/HowItWorks'
 import Features from '@/components/landing/sections/Features'
 import Testimonials from '@/components/landing/sections/Testimonials'
-import Pricing from '@/components/landing/sections/Pricing'
+import PlatformShowcase from '@/components/landing/sections/PlatformShowcase'
 import Footer from '@/components/landing/sections/Footer'
 
 export default function Landing() {
@@ -45,7 +45,7 @@ export default function Landing() {
       <HowItWorks />
       <Features />
       <Testimonials />
-      <Pricing />
+      <PlatformShowcase />
       <Footer />
     </motion.main>
   )
