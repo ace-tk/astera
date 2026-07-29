@@ -66,6 +66,7 @@ const AdminReports = lazy(() => import('@/pages/admin/AdminReports'))
 const AdminReportReview = lazy(() => import('@/pages/admin/AdminReportReview'))
 const AdminReportRequests = lazy(() => import('@/pages/admin/AdminReportRequests'))
 const AdminReportRequestDetail = lazy(() => import('@/pages/admin/AdminReportRequestDetail'))
+const AdminFiles = lazy(() => import('@/pages/admin/AdminFiles'))
 const AdminCustomers = lazy(() => import('@/pages/admin/AdminCustomers'))
 const AdminCustomerDetail = lazy(() => import('@/pages/admin/AdminCustomerDetail'))
 const AdminCustomerCreate = lazy(() => import('@/pages/admin/AdminCustomerCreate'))
@@ -186,6 +187,7 @@ export default function App() {
                 <Route path="reports/:id" element={<AdminReportReview />} />
                 <Route path="report-requests" element={<AdminReportRequests />} />
                 <Route path="report-requests/:id" element={<AdminReportRequestDetail />} />
+                <Route path="files" element={<AdminFiles />} />
                 <Route path="customers" element={<AdminCustomers />} />
                 <Route path="customers/new" element={<AdminCustomerCreate />} />
                 <Route path="customers/:id" element={<AdminCustomerDetail />} />

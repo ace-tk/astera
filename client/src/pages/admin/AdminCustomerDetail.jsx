@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   ArrowLeft, Building2, User, Shield, FileText, ExternalLink, Check, X, Ban, Power,
   Mail, KeyRound, PencilLine, UploadCloud, Download, Eye, Clock, StickyNote, Trash2,
-  UserPlus, LogIn, CheckCircle2, History,
+  UserPlus, LogIn, CheckCircle2, History, FolderOpen,
 } from 'lucide-react'
 import {
   fetchAdminCustomer, updateAdminCustomer, updateAdminCustomerStatus,
@@ -338,10 +338,15 @@ export default function AdminCustomerDetail() {
 
       {/* Reports */}
       <Reveal delay={0.16} className="mt-6">
-        <div className="flex items-center gap-2">
-          <FileText className="h-4.5 w-4.5 text-muted" />
-          <h2 className="font-display text-lg font-medium tracking-tight">Reports</h2>
-          <span className="text-sm text-muted">({reports.length})</span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <FileText className="h-4.5 w-4.5 text-muted" />
+            <h2 className="font-display text-lg font-medium tracking-tight">Reports</h2>
+            <span className="text-sm text-muted">({reports.length})</span>
+          </div>
+          <Button as={Link} to={`/app/admin/files?customer=${customer.id}`} size="sm" variant="soft" magnetic={false}>
+            <FolderOpen className="h-3.5 w-3.5" /> View all files
+          </Button>
         </div>
         <div className="mt-4 overflow-x-auto rounded-3xl border border-ink/8 bg-card shadow-soft">
           <table className="w-full min-w-[42rem] text-left text-sm">

@@ -3,7 +3,7 @@ import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, PanelLeftClose, PanelLeft, Sparkles,
-  LayoutDashboard, LayoutGrid, Building2, Users, ArrowLeftRight, Inbox,
+  LayoutDashboard, LayoutGrid, Building2, Users, ArrowLeftRight, Inbox, FolderOpen,
 } from 'lucide-react'
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
@@ -44,6 +44,7 @@ const ADMIN_NAV = [
   { to: '/app/admin/workspace', label: 'Workspace', icon: LayoutGrid, active: 'text-purple' },
   { to: '/app/admin/reports', label: 'Reports', icon: FileText, active: 'text-sky' },
   { to: '/app/admin/report-requests', label: 'Report Requests', icon: Inbox, active: 'text-orange' },
+  { to: '/app/admin/files', label: 'All Files', icon: FolderOpen, active: 'text-mint' },
   { to: '/app/admin/customers', label: 'Customers', icon: Building2, active: 'text-golden' },
   { to: '/app/admin/users', label: 'Users', icon: Users, active: 'text-coral' },
   { to: '/app/admin/analytics', label: 'Analytics', icon: BarChart3, active: 'text-emerald' },

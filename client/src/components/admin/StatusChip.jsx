@@ -17,6 +17,9 @@ const REVIEW_STATUS = {
   in_progress: { label: 'In Progress', dot: 'bg-sky', bg: 'bg-sky/10' },
   ready: { label: 'Ready', dot: 'bg-golden', bg: 'bg-golden/10' },
   delivered: { label: 'Delivered', dot: 'bg-emerald', bg: 'bg-emerald/10' },
+  // All Files — report generation state.
+  processing: { label: 'Processing', dot: 'bg-sky', bg: 'bg-sky/10' },
+  failed: { label: 'Failed', dot: 'bg-rose', bg: 'bg-rose/10' },
 }
 
 export default function StatusChip({ status }) {
