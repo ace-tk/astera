@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { resendVerificationRequest } from '@/services/auth'
 import Button from '@/components/ui/Button'
 import AuthShell, { Field } from './AuthShell'
 
@@ -14,12 +15,15 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [resent, setResent] = useState(false)
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
+  const needsVerification = /verify/i.test(error)
 
   const onSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setResent(false)
     setBusy(true)
     try {
       // Role decides the destination, not wherever the user happened to
@@ -31,6 +35,11 @@ export default function Login() {
       setError(err.status === 401 ? 'Incorrect email or password.' : err.message || 'Could not sign in.')
       setBusy(false)
     }
+  }
+
+  const onResend = async () => {
+    await resendVerificationRequest(form.email.trim())
+    setResent(true)
   }
 
   return (
@@ -78,6 +87,15 @@ export default function Login() {
         {error && (
           <p role="alert" className="rounded-2xl border border-coral/25 bg-coral/[0.06] px-4 py-3 text-sm text-coral">
             {error}
+            {needsVerification && !resent && (
+              <>
+                {' '}
+                <button type="button" onClick={onResend} className="link-underline font-medium text-coral">
+                  Resend verification email
+                </button>
+              </>
+            )}
+            {needsVerification && resent && <span className="mt-1 block font-medium">Verification email sent — check your inbox.</span>}
           </p>
         )}
 

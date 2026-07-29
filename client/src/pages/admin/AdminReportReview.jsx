@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, PencilLine, Check, X, Flag, AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, PencilLine, Check, X, Flag, AlertTriangle, CheckCircle2, Download } from 'lucide-react'
 import { fetchAdminReport, updateAdminReport } from '@/services/admin'
 import { useToast } from '@/context/ToastContext'
 import ReviewMode from '@/components/report/ReviewMode'
@@ -12,6 +12,7 @@ import Button from '@/components/ui/Button'
 
 export default function AdminReportReview() {
   const { id } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const qc = useQueryClient()
   const { toast } = useToast()
   const [reviewOpen, setReviewOpen] = useState(false)
@@ -21,6 +22,16 @@ export default function AdminReportReview() {
     queryFn: () => fetchAdminReport(id),
     retry: false,
   })
+
+  // Deep-linked download (e.g. from a customer's report list in Customer Management).
+  useEffect(() => {
+    if (!report) return
+    if (searchParams.get('download') === '1') {
+      setSearchParams((sp) => { sp.delete('download'); return sp }, { replace: true })
+      const t = setTimeout(() => window.print(), 350)
+      return () => clearTimeout(t)
+    }
+  }, [report?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ['admin', 'report', id] })
@@ -90,6 +101,7 @@ export default function AdminReportReview() {
           <ArrowLeft className="h-4 w-4" /> All reports
         </Link>
         <div className="flex flex-wrap justify-end gap-2">
+          <Button variant="soft" size="sm" magnetic={false} onClick={() => window.print()}><Download className="h-4 w-4" /> Download</Button>
           {isAuthored ? (
             <Button variant="soft" size="sm" magnetic={false} onClick={() => setComposerOpen((v) => !v)}>
               <PencilLine className="h-4 w-4" /> {composerOpen ? 'Close editor' : 'Edit'}

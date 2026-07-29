@@ -83,10 +83,10 @@ export function AuthProvider({ children }) {
   useEffect(() => onUnauthorized(clearSession), [clearSession])
 
   const login = useCallback(async (email, password) => applyAuth(await loginRequest({ email, password })), [applyAuth])
-  const register = useCallback(
-    async (name, email, password) => applyAuth(await signupRequest({ name, email, password })),
-    [applyAuth],
-  )
+  // Signup no longer returns a session — the account must be email-verified
+  // before it can log in, so this just submits the form and lets the caller
+  // show a "check your email" confirmation instead of navigating into the app.
+  const register = useCallback(async (payload) => signupRequest(payload), [])
   const logout = useCallback(() => clearSession(), [clearSession])
   const refresh = useCallback(async () => {
     const { user: u } = await meRequest()

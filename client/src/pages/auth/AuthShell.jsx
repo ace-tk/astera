@@ -4,13 +4,16 @@ import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Wordmark from '@/components/common/Wordmark'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
+import { cn } from '@/utils/cn'
 
 /**
  * Shared chrome for the sign-in / sign-up screens. Reuses the landing's ambient
  * field and the existing wordmark so the auth flow feels of a piece with the
  * product — no new design language, just the locked one on a focused canvas.
+ * `wide` widens the card for forms with many fields (registration) — same
+ * card styling, just more room; Login/ForgotPassword are unaffected.
  */
-export default function AuthShell({ eyebrow, title, subtitle, children, footer }) {
+export default function AuthShell({ eyebrow, title, subtitle, children, footer, wide = false }) {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-paper px-4 py-10">
       <AmbientBackground />
@@ -25,7 +28,10 @@ export default function AuthShell({ eyebrow, title, subtitle, children, footer }
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-full max-w-md rounded-[2rem] border border-ink/8 bg-card/90 p-8 shadow-float backdrop-blur-xl sm:p-10"
+        className={cn(
+          'relative w-full rounded-[2rem] border border-ink/8 bg-card/90 p-8 shadow-float backdrop-blur-xl sm:p-10',
+          wide ? 'max-w-2xl' : 'max-w-md',
+        )}
       >
         {eyebrow && <p className="eyebrow text-accent">{eyebrow}</p>}
         <h1 className="mt-3 font-display text-3xl font-semibold leading-[1.05] tracking-tight text-balance">

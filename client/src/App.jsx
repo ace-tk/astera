@@ -46,6 +46,7 @@ const PricingPage = lazy(() => import('@/pages/services/pricing/PricingPage'))
 const Login = lazy(() => import('@/pages/auth/Login'))
 const Register = lazy(() => import('@/pages/auth/Register'))
 const ForgotPassword = lazy(() => import('@/pages/auth/ForgotPassword'))
+const VerifyEmail = lazy(() => import('@/pages/auth/VerifyEmail'))
 const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'))
 const Workspace = lazy(() => import('@/pages/dashboard/Workspace'))
 const DemoWorkspace = lazy(() => import('@/pages/dashboard/DemoWorkspace'))
@@ -66,6 +67,8 @@ const AdminReportReview = lazy(() => import('@/pages/admin/AdminReportReview'))
 const AdminReportRequests = lazy(() => import('@/pages/admin/AdminReportRequests'))
 const AdminReportRequestDetail = lazy(() => import('@/pages/admin/AdminReportRequestDetail'))
 const AdminCustomers = lazy(() => import('@/pages/admin/AdminCustomers'))
+const AdminCustomerDetail = lazy(() => import('@/pages/admin/AdminCustomerDetail'))
+const AdminCustomerCreate = lazy(() => import('@/pages/admin/AdminCustomerCreate'))
 const AdminAnalytics = lazy(() => import('@/pages/admin/AdminAnalytics'))
 const AdminSettings = lazy(() => import('@/pages/admin/AdminSettings'))
 const Status = lazy(() => import('@/pages/dashboard/Status'))
@@ -163,6 +166,7 @@ export default function App() {
             <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
             <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
             <Route path="/forgot" element={<ForgotPassword />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/app" element={<RequireAuth><DashboardLayout /></RequireAuth>}>
               <Route index element={<AppEntry />} />
               <Route path="demos" element={<DemoWorkspace />} />
@@ -183,6 +187,8 @@ export default function App() {
                 <Route path="report-requests" element={<AdminReportRequests />} />
                 <Route path="report-requests/:id" element={<AdminReportRequestDetail />} />
                 <Route path="customers" element={<AdminCustomers />} />
+                <Route path="customers/new" element={<AdminCustomerCreate />} />
+                <Route path="customers/:id" element={<AdminCustomerDetail />} />
                 <Route path="analytics" element={<AdminAnalytics />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>

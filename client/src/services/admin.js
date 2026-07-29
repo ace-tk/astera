@@ -42,3 +42,17 @@ export async function downloadRequestAttachment(id, filename, token) {
   a.remove()
   URL.revokeObjectURL(url)
 }
+
+/** Admin — Customer Management. */
+export const fetchAdminCustomers = (params = {}) => {
+  const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v)).toString()
+  return api.get(`/admin/customers${qs ? `?${qs}` : ''}`)
+}
+export const fetchAdminCustomer = (id) => api.get(`/admin/customers/${id}`)
+export const createAdminCustomer = (payload) => api.post('/admin/customers', payload).then((r) => r.customer)
+export const updateAdminCustomer = (id, patch) => api.patch(`/admin/customers/${id}`, patch).then((r) => r.customer)
+export const updateAdminCustomerStatus = (id, status) => api.patch(`/admin/customers/${id}/status`, { status }).then((r) => r.customer)
+export const resendCustomerInvitation = (id) => api.post(`/admin/customers/${id}/resend-invitation`)
+export const resendCustomerVerification = (id) => api.post(`/admin/customers/${id}/resend-verification`)
+export const resetCustomerPassword = (id) => api.post(`/admin/customers/${id}/reset-password`)
+export const uploadReportToCustomer = (id, payload) => api.post(`/admin/customers/${id}/reports`, payload).then((r) => r.report)
