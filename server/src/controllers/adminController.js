@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { User } from '../models/User.js'
 import { Report } from '../models/Report.js'
 import { ReportRequest } from '../models/ReportRequest.js'
+import { logActivity } from '../models/ActivityLog.js'
 import { isAdminUser } from '../config/env.js'
 import { REPORT_TYPES, DELIVERY_MODES } from '../constants.js'
 
@@ -137,6 +138,9 @@ export async function updateReport(req, res) {
   // Publishing an admin-authored report delivers its originating request.
   if (publishing && report.request) {
     await ReportRequest.findByIdAndUpdate(report.request, { status: 'delivered' })
+  }
+  if (publishing) {
+    logActivity(report.owner, 'report_published', req.adminUser?.name || 'Admin', { reportId: report._id, title: report.title })
   }
 
   await report.populate('owner', 'name email')

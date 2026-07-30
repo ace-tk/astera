@@ -97,6 +97,8 @@ const reportSchema = new mongoose.Schema(
     // only reports created via the admin Report Requests workflow start as
     // 'draft' and stay admin-only until explicitly published.
     publishStatus: { type: String, enum: ['draft', 'published'], default: 'published' },
+    // All Files module — soft archive, independent of publish/review state.
+    archived: { type: Boolean, default: false },
     feedback: {
       useful: Boolean,
       reasons: [String],

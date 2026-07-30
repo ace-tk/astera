@@ -14,6 +14,19 @@ const newUser = () => {
   const id = new mongoose.Types.ObjectId().toString()
   return { id, token: tokenFor(id) }
 }
+// A real, already-verified user document — for tests that need actual DB
+// persistence (profile updates, admin population of owner.email, etc.)
+// rather than exercising the /auth/signup endpoint's own contract.
+const realUser = async (overrides = {}) => {
+  const passwordHash = await User.hashPassword('supersecret123')
+  const u = await User.create({
+    name: 'Test User',
+    email: `u+${new mongoose.Types.ObjectId()}@astera.dev`,
+    passwordHash,
+    ...overrides,
+  })
+  return { user: u, token: jwt.sign({ sub: String(u._id) }, env.jwtSecret, { expiresIn: '1h' }) }
+}
 const SAMPLE =
   'Maya: We decided to ship the billing rewrite.\nDan: I am worried it might slip.\nSam: I will send the metrics by Fri.'
 
@@ -193,13 +206,11 @@ describe('file ingest (docs / audio)', () => {
 
 describe('profile (PATCH /api/auth/me)', () => {
   it('updates the signed-in user’s name and exposes createdAt', async () => {
-    const email = `p+${new mongoose.Types.ObjectId()}@astera.dev`
-    const signup = await request(app).post('/api/auth/signup').send({ name: 'Old Name', email, password: 'supersecret123' })
-    const token = signup.body.token
+    const { user, token } = await realUser({ name: 'Old Name' })
     const res = await request(app).patch('/api/auth/me').set('Authorization', `Bearer ${token}`).send({ name: 'New Name' })
     expect(res.status).toBe(200)
     expect(res.body.user.name).toBe('New Name')
-    expect(res.body.user.email).toBe(email.toLowerCase()) // email stays immutable
+    expect(res.body.user.email).toBe(user.email.toLowerCase()) // email stays immutable
     expect(res.body.user.createdAt).toBeTruthy()
   })
 
@@ -221,20 +232,17 @@ describe('admin', () => {
   })
 
   it('blocks non-admins with 403', async () => {
-    const email = `na+${new mongoose.Types.ObjectId()}@astera.dev`
-    const s = await request(app).post('/api/auth/signup').send({ name: 'NA', email, password: 'supersecret123' })
-    const res = await request(app).get('/api/admin/stats').set('Authorization', `Bearer ${s.body.token}`)
+    const { token } = await realUser({ name: 'NA' })
+    const res = await request(app).get('/api/admin/stats').set('Authorization', `Bearer ${token}`)
     expect(res.status).toBe(403)
   })
 
   it('lets an admin read stats/users and approve, edit, delete a report', async () => {
     const token = await adminToken()
-    const owner = await request(app)
-      .post('/api/auth/signup')
-      .send({ name: 'Owner', email: `o+${new mongoose.Types.ObjectId()}@astera.dev`, password: 'supersecret123' })
+    const owner = await realUser({ name: 'Owner' })
     const created = await request(app)
       .post('/api/reports')
-      .set('Authorization', `Bearer ${owner.body.token}`)
+      .set('Authorization', `Bearer ${owner.token}`)
       .send({ title: 'Admin sees me', transcript: SAMPLE })
     const rid = created.body.report.id
     expect(created.body.report.reviewStatus).toBe('pending') // new reports await review
@@ -253,7 +261,7 @@ describe('admin', () => {
     expect(approve.status).toBe(200)
     expect(approve.body.report.reviewStatus).toBe('approved')
     expect(approve.body.report.headline).toBe('Edited by admin')
-    expect(approve.body.report.owner.email).toContain('o+') // owner summary exposed
+    expect(approve.body.report.owner.email).toBe(owner.user.email) // owner summary exposed
 
     expect((await request(app).delete(`/api/admin/reports/${rid}`).set('Authorization', `Bearer ${token}`)).status).toBe(200)
   })

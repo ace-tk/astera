@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
 import { z } from 'zod'
 import { ReportRequest } from '../models/ReportRequest.js'
-import { Report } from '../models/Report.js'
 import { saveAttachment, streamAttachment } from '../services/attachments.js'
+import { reportComposerSchema, createReportForOwner } from '../services/reportBuilder.js'
+import { logActivity } from '../models/ActivityLog.js'
 import { REPORT_TYPES, DELIVERY_MODES, REQUEST_STATUSES } from '../constants.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
@@ -11,9 +12,6 @@ const needDB = (res) => {
   res.status(503).json({ error: 'Database unavailable' })
   return true
 }
-
-const slugify = (s) =>
-  `${s || 'report'}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40) || 'report'
 
 /* ----------------------------- Customer side ----------------------------- */
 
@@ -129,26 +127,6 @@ export async function updateStatus(req, res) {
   res.json({ request: request.toClientJSON() })
 }
 
-const createReportSchema = z.object({
-  title: z.string().min(1).max(160),
-  reportType: z.enum(REPORT_TYPES),
-  meetingType: z.string().max(160).optional(),
-  clientOrg: z.string().max(160).optional(),
-  meetingOwner: z.string().max(160).optional(),
-  duration: z.string().optional(),
-  language: z.string().max(60).optional(),
-  headline: z.string().max(4000).optional(), // Summary
-  decisions: z.array(z.object({ text: z.string(), owner: z.string().optional(), at: z.string().optional() })).optional(),
-  commitments: z
-    .array(z.object({ text: z.string(), owner: z.string().optional(), due: z.string().optional(), at: z.string().optional() }))
-    .optional(),
-  complianceNotes: z.string().max(4000).optional(),
-  riskNotes: z.string().max(4000).optional(),
-  tags: z.array(z.string()).optional(),
-  reportContent: z.string().max(20000).optional(),
-  deliveryMode: z.enum(DELIVERY_MODES).optional(),
-})
-
 /** Admin authors a report from a request. Always starts as a draft. */
 export async function createReportFromRequest(req, res) {
   if (needDB(res)) return
@@ -156,45 +134,24 @@ export async function createReportFromRequest(req, res) {
   if (!request) return res.status(404).json({ error: 'Request not found' })
   if (request.report) return res.status(409).json({ error: 'A report already exists for this request — edit it instead.' })
 
-  const parsed = createReportSchema.safeParse(req.body)
+  const parsed = reportComposerSchema.safeParse(req.body)
   if (!parsed.success) return res.status(422).json({ error: 'Invalid report', issues: parsed.error.flatten() })
-  const p = parsed.data
 
-  const slug = `${slugify(p.title)}-${Date.now().toString(36).slice(-5)}`
-  const report = await Report.create({
-    owner: request.customer,
-    slug,
-    title: p.title,
-    subtitle: p.meetingType || p.reportType,
-    category: p.reportType,
-    date: request.meetingDate || new Date().toISOString().slice(0, 10),
-    duration: p.duration,
-    headline: p.headline,
-    decisions: p.decisions || [],
-    commitments: p.commitments || [],
-    metrics: { decisions: p.decisions?.length || 0, commitments: p.commitments?.length || 0, risks: 0, owners: 0, talkBalance: 0 },
-    reportType: p.reportType,
-    meetingType: p.meetingType,
-    clientOrg: p.clientOrg,
-    meetingOwner: p.meetingOwner,
-    language: p.language,
-    complianceNotes: p.complianceNotes,
-    riskNotes: p.riskNotes,
-    tags: p.tags || [],
-    reportContent: p.reportContent,
-    deliveryMode: p.deliveryMode || request.deliveryMode,
-    request: request._id,
-    // Manually authored — never went through the AI-review pipeline.
-    reviewStatus: 'approved',
-    status: 'ready',
-    publishStatus: 'draft',
-    source: request.attachment
-      ? { fileName: request.attachment.fileName, mimeType: request.attachment.mimeType, sizeBytes: request.attachment.sizeBytes }
-      : undefined,
-  })
+  const report = await createReportForOwner(
+    request.customer,
+    { ...parsed.data, deliveryMode: parsed.data.deliveryMode || request.deliveryMode },
+    {
+      date: request.meetingDate,
+      request: request._id,
+      source: request.attachment
+        ? { fileName: request.attachment.fileName, mimeType: request.attachment.mimeType, sizeBytes: request.attachment.sizeBytes }
+        : undefined,
+    },
+  )
 
   request.report = report._id
   if (request.status === 'pending_review') request.status = 'in_progress'
+  logActivity(request.customer, 'report_uploaded', req.adminUser?.name || 'Admin', { reportId: report._id, title: report.title })
   await request.save()
 
   res.status(201).json({ report: report.toClientJSON() })

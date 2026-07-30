@@ -29,6 +29,10 @@ const schema = z.object({
   // Comma-separated allowlist of admin emails — a simple way to grant the admin
   // role without a separate promotion flow. Also honored: a user whose role is 'admin'.
   ADMIN_EMAILS: z.string().optional().default(''),
+  // Email delivery (Customer Management: verification / invitation / reset
+  // emails). Optional — the mailer logs instead of sending when unset.
+  RESEND_API_KEY: z.string().optional().default(''),
+  MAIL_FROM: z.string().optional().default('Astera <onboarding@resend.dev>'),
 })
 
 const parsed = schema.safeParse(process.env)
@@ -52,6 +56,8 @@ export const env = {
   openaiKey: e.OPENAI_API_KEY,
   deepgramKey: e.DEEPGRAM_API_KEY,
   adminEmails: e.ADMIN_EMAILS.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean),
+  resendApiKey: e.RESEND_API_KEY,
+  mailFrom: e.MAIL_FROM,
   isProd,
 }
 

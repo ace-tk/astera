@@ -12,7 +12,7 @@ const reportRequestSchema = new mongoose.Schema(
     customer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     meetingName: { type: String, required: true },
     reportType: { type: String, enum: REPORT_TYPES, default: 'Essential' },
-    deliveryMode: { type: String, enum: DELIVERY_MODES, default: 'Portal' },
+    deliveryMode: { type: String, enum: DELIVERY_MODES, default: 'Normal' },
     meetingDate: String, // YYYY-MM-DD
     meetingTime: String, // HH:MM
     customerNotes: String,

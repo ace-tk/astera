@@ -4,6 +4,7 @@ import { Report } from '../models/Report.js'
 import { generateReport } from '../services/intelligence.js'
 import { ingestFile } from '../services/ingest.js'
 import { buildMeetingAnalysis } from '../services/analysis.js'
+import { logActivity } from '../models/ActivityLog.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 const needDB = (res) => {
@@ -76,25 +77,18 @@ const createSchema = z.object({
 })
 
 /**
- * Create a report from a real upload — a transcript in the body, or an uploaded
- * file (`media`). The ingest service turns the file into text: text files are
- * read directly, DOCX/PDF are extracted, and audio/video are transcribed by
- * Deepgram. The resulting transcript is then fed into the existing report
- * pipeline unchanged. Emits `report:stage` over the socket for live progress.
+ * The AI ingest pipeline, factored out so both the customer-facing self-serve
+ * upload (`createReport`, below) and the admin "Upload" action in All Files
+ * (`fileController.uploadFileForCustomer`) run the exact same logic — the
+ * only difference between the two callers is which `ownerId` the resulting
+ * Report is created under. Nothing about the pipeline itself changes.
+ *
+ * Throws `{ status, publicMessage }` on a handleable failure (bad file,
+ * transcription error, no text found) — callers translate that into an HTTP
+ * response the same way `createReport` always has.
  */
-export async function createReport(req, res) {
-  if (needDB(res)) return
-  const parsed = createSchema.safeParse(req.body)
-  if (!parsed.success) {
-    return res.status(422).json({ error: 'Invalid report request', issues: parsed.error.flatten() })
-  }
-
-  const file = req.file
-  const io = req.app.get('io')
-  const room = `user:${req.userId}`
-  const emit = (stage) => io?.to(room).emit('report:stage', { stage })
-
-  let transcript = (parsed.data.transcript || '').trim()
+export async function runReportIngestPipeline({ file, transcript: rawTranscript, title: titleInput, subtitle, duration: durationInput, ownerId, emit }) {
+  let transcript = (rawTranscript || '').trim()
   let transcription = null
   let diarization = []
   let speakers = []
@@ -102,28 +96,25 @@ export async function createReport(req, res) {
   let source
   if (file) {
     source = { fileName: file.originalname, mimeType: file.mimetype, sizeBytes: file.size }
-    try {
-      const ingested = await ingestFile(file, emit) // reads / extracts / transcribes
-      transcript = ingested.transcript
-      transcription = ingested.transcription
-      diarization = ingested.diarization || []
-      speakers = ingested.speakers || []
-      deepgram = ingested.deepgram || null
-    } catch (err) {
-      return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
-    }
+    const ingested = await ingestFile(file, emit) // reads / extracts / transcribes
+    transcript = ingested.transcript
+    transcription = ingested.transcription
+    diarization = ingested.diarization || []
+    speakers = ingested.speakers || []
+    deepgram = ingested.deepgram || null
   }
 
   if (!transcript) {
-    return res.status(422).json({ error: 'We couldn’t find any text to analyze. Upload a transcript, document, or recording.' })
+    const err = new Error('No transcript text found')
+    err.status = 422
+    err.publicMessage = 'We couldn’t find any text to analyze. Upload a transcript, document, or recording.'
+    throw err
   }
 
-  const title =
-    parsed.data.title?.trim() ||
-    (file ? file.originalname.replace(/\.[^.]+$/, '') : 'Untitled meeting')
+  const title = titleInput?.trim() || (file ? file.originalname.replace(/\.[^.]+$/, '') : 'Untitled meeting')
 
   // A real transcription gives us the true duration — hand it to the pipeline.
-  const meta = { ...parsed.data, title }
+  const meta = { title, subtitle, duration: durationInput }
   if (transcription?.durationSec) meta.duration = formatDuration(transcription.durationSec)
 
   // For diarized audio, feed the pipeline one utterance per line so it extracts
@@ -166,10 +157,10 @@ export async function createReport(req, res) {
   if (transcription?.sentiment) draft.sentiment = mapSentiment(transcription.sentiment)
 
   const slug = `${slugify(title)}-${Date.now().toString(36).slice(-5)}`
-  const report = await Report.create({
+  return Report.create({
     ...draft,
     slug,
-    owner: req.userId,
+    owner: ownerId,
     date,
     source,
     transcript, // stored (select:false) — never returned to clients
@@ -177,7 +168,35 @@ export async function createReport(req, res) {
     diarization: diarization.length ? diarization : undefined,
     analysis, // full analytics (select:false) — returned on single-report fetch
   })
+}
+
+/**
+ * Create a report from a real upload — a transcript in the body, or an uploaded
+ * file (`media`). The ingest service turns the file into text: text files are
+ * read directly, DOCX/PDF are extracted, and audio/video are transcribed by
+ * Deepgram. The resulting transcript is then fed into the existing report
+ * pipeline unchanged. Emits `report:stage` over the socket for live progress.
+ */
+export async function createReport(req, res) {
+  if (needDB(res)) return
+  const parsed = createSchema.safeParse(req.body)
+  if (!parsed.success) {
+    return res.status(422).json({ error: 'Invalid report request', issues: parsed.error.flatten() })
+  }
+
+  const io = req.app.get('io')
+  const room = `user:${req.userId}`
+  const emit = (stage) => io?.to(room).emit('report:stage', { stage })
+
+  let report
+  try {
+    report = await runReportIngestPipeline({ ...parsed.data, file: req.file, ownerId: req.userId, emit })
+  } catch (err) {
+    return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
+  }
+
   io?.to(room).emit('report:ready', { id: report.slug })
+  logActivity(req.userId, 'report_uploaded', 'Customer', { reportId: report._id, title: report.title })
   res.status(201).json({ report: withCustomerView(report) })
 }
 
