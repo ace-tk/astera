@@ -10,6 +10,7 @@ import HowItWorks from '@/components/landing/sections/HowItWorks'
 import Features from '@/components/landing/sections/Features'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import PlatformShowcase from '@/components/landing/sections/PlatformShowcase'
+import Blog from '@/components/landing/sections/Blog'
 import Footer from '@/components/landing/sections/Footer'
 
 export default function Landing() {
@@ -46,6 +47,7 @@ export default function Landing() {
       <Features />
       <Testimonials />
       <PlatformShowcase />
+      <Blog />
       <Footer />
     </motion.main>
   )

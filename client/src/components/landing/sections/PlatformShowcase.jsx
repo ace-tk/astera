@@ -18,7 +18,6 @@ const TILES = [
     title: 'A report that reads like a briefing.',
     body: 'Headline, decisions, owners, and a scrubbable timeline — composed automatically from the raw conversation.',
     color: 'royal',
-    span: 'lg:col-span-3 lg:row-span-2',
     glyph: 'report',
   },
   {
@@ -27,7 +26,6 @@ const TILES = [
     title: 'Knows who spoke, and how it landed.',
     body: 'Talk-time balance and per-speaker contribution, mapped straight from the audio — no manual tagging.',
     color: 'purple',
-    span: 'lg:col-span-3',
     glyph: 'mic',
   },
   {
@@ -36,7 +34,6 @@ const TILES = [
     title: 'Every meeting, measured.',
     body: 'Decision velocity and follow-through, tracked across your whole workspace over time.',
     color: 'coral',
-    span: 'lg:col-span-3',
     glyph: 'chart',
   },
   {
@@ -45,7 +42,6 @@ const TILES = [
     title: 'What was decided, on the record.',
     body: 'Every call made in the room, captured with the moment it happened.',
     color: 'sky',
-    span: 'lg:col-span-2',
     glyph: 'brain',
   },
   {
@@ -54,7 +50,6 @@ const TILES = [
     title: 'Commitments that don’t slip.',
     body: 'Owners and due dates extracted automatically, so follow-through is never a guessing game.',
     color: 'golden',
-    span: 'lg:col-span-2',
     glyph: 'send',
   },
   {
@@ -63,7 +58,6 @@ const TILES = [
     title: 'The quiet red flags, surfaced.',
     body: 'Risk language and unresolved tension the room may have skated past, flagged for review.',
     color: 'rose',
-    span: 'lg:col-span-2',
     glyph: 'alert',
   },
   {
@@ -72,7 +66,6 @@ const TILES = [
     title: 'Scrub straight to the moment.',
     body: 'A living, minute-by-minute timeline you can jump through — see exactly when the room shifted.',
     color: 'emerald',
-    span: 'lg:col-span-3',
     glyph: 'timeline',
   },
   {
@@ -81,7 +74,6 @@ const TILES = [
     title: 'Every promise, kept on file.',
     body: 'Commitments and obligations are logged and flagged, so nothing said out loud quietly disappears.',
     color: 'mint',
-    span: 'lg:col-span-3',
     glyph: 'shield',
   },
 ]
@@ -95,7 +87,7 @@ function ShowcaseTile({ t, i }) {
     .join(' ')
 
   return (
-    <Reveal delay={(i % 3) * 0.06} className={cn('min-h-[15rem]', t.span)}>
+    <Reveal delay={(i % 4) * 0.06} className="aspect-square">
       <SpotlightCard tint={tint} className="flex h-full flex-col justify-between p-7">
         <div className="flex items-start justify-between">
           <span className={cn('grid h-14 w-14 place-items-center rounded-2xl', a.softBg, a.text)}>
@@ -104,10 +96,10 @@ function ShowcaseTile({ t, i }) {
           <span className={cn('eyebrow', a.text)}>{t.eyebrow}</span>
         </div>
         <div className="mt-8">
-          <h3 className="font-display text-2xl font-medium leading-tight tracking-tight text-balance lg:text-[1.7rem]">
+          <h3 className="font-display text-xl font-medium leading-tight tracking-tight text-balance line-clamp-2">
             {t.title}
           </h3>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">{t.body}</p>
+          <p className="mt-3 text-sm leading-relaxed text-muted line-clamp-3">{t.body}</p>
         </div>
         <motion.span className={cn('mt-6 block h-1 w-12 rounded-full transition-all duration-500 group-hover:w-24', a.bg)} />
       </SpotlightCard>
@@ -133,7 +125,7 @@ export default function PlatformShowcase() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid auto-rows-[minmax(15rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {TILES.map((t, i) => (
             <ShowcaseTile key={t.id} t={t} i={i} />
           ))}
