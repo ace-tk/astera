@@ -20,9 +20,26 @@ export const NAV_LINKS = [
     href: '/atoopv/ressources',
     children: [
       { label: 'Guides Juridiques', href: '/atoopv/ressources/guides-livres-blancs-cse' },
-      { label: 'Modèles de PV', href: '/atoopv/ressources/modeles-pv' },
+      {
+        label: 'Modèles de PV',
+        href: '/atoopv/ressources/modeles-pv',
+        children: [
+          { label: 'PV Premium Intégral — Exemple complet', href: '/atoopv/ressources/modele-pv-cse-premium-integral' },
+          { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
+        ],
+      },
       { label: 'Mentions Obligatoires du PV', href: '/atoopv/ressources/mentions-obligatoires-pv' },
-      { label: 'Actualité Sociale', href: '/atoopv/ressources/actualite-sociale' },
+      {
+        label: 'Actualité Sociale',
+        href: '/atoopv/ressources/actualite-sociale',
+        children: [
+          {
+            label: 'Jurisprudence sociale',
+            href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse',
+          },
+          { label: 'Veille juridique CSE', href: '/atoopv/ressources/veille-juridique-cse' },
+        ],
+      },
       { label: 'Lire un arrêt de la Cour de cassation', href: '/atoopv/ressources/comment-lire-arret-cour-de-cassation' },
       { label: 'La Minute CSE : le droit du CSE expliqué en vidéo', href: '/atoopv/ressources/la-minute-cse' },
     ],

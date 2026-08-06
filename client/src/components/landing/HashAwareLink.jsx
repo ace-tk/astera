@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 /**
@@ -13,22 +14,27 @@ import { Link, useLocation } from 'react-router-dom'
  * other page, it's a Link to `/#foo`: a real navigation home, after which
  * useSmoothScroll's own mount-time hash check scrolls to the section once
  * Landing (and Lenis) are ready.
+ *
+ * forwardRef so nested nav dropdowns can focus/blur-track the trigger link
+ * for keyboard-accessible flyout submenus.
  */
-export default function HashAwareLink({ href, children, ...props }) {
+const HashAwareLink = forwardRef(function HashAwareLink({ href, children, ...props }, ref) {
   const { pathname } = useLocation()
   const isHash = href.startsWith('#')
 
   if (isHash && pathname === '/') {
     return (
-      <a href={href} {...props}>
+      <a ref={ref} href={href} {...props}>
         {children}
       </a>
     )
   }
 
   return (
-    <Link to={isHash ? `/${href}` : href} {...props}>
+    <Link ref={ref} to={isHash ? `/${href}` : href} {...props}>
       {children}
     </Link>
   )
-}
+})
+
+export default HashAwareLink

@@ -10,13 +10,86 @@ import NavDropdown from '@/components/landing/NavDropdown'
 import HashAwareLink from '@/components/landing/HashAwareLink'
 import { cn } from '@/utils/cn'
 
+/**
+ * One row of the mobile nav overlay, recursive so an item's `children` can
+ * themselves carry `children` (e.g. Ressources -> Modèles de PV -> Cas
+ * pratiques) without hand-duplicating the accordion markup per depth.
+ * `expanded` is a Set of open hrefs shared across the whole tree, so a
+ * parent and its child accordion can be open at the same time.
+ */
+function MobileNavItem({ item, depth, expanded, onToggle, onNavigate }) {
+  const hasChildren = Boolean(item.children?.length)
+  const isExpanded = expanded.has(item.href)
+  const linkClass = cn(
+    'block rounded-2xl px-4',
+    depth === 0 ? 'py-3 text-lg font-medium hover:bg-ink/[0.04]' : 'py-2.5 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]',
+  )
+
+  if (!hasChildren) {
+    return (
+      <HashAwareLink href={item.href} onClick={onNavigate} className={linkClass}>
+        {item.label}
+      </HashAwareLink>
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex items-center">
+        <HashAwareLink href={item.href} onClick={onNavigate} className={cn(linkClass, 'flex-1')}>
+          {item.label}
+        </HashAwareLink>
+        <button
+          onClick={() => onToggle(item.href)}
+          aria-label={isExpanded ? `Masquer le sous-menu ${item.label}` : `Afficher le sous-menu ${item.label}`}
+          aria-expanded={isExpanded}
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full hover:bg-ink/[0.04]"
+        >
+          <ChevronDown className={cn('h-5 w-5 transition-transform', isExpanded && 'rotate-180')} />
+        </button>
+      </div>
+      <AnimatePresence initial={false}>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden pl-4"
+          >
+            {item.children.map((child) => (
+              <MobileNavItem
+                key={child.href}
+                item={child}
+                depth={depth + 1}
+                expanded={expanded}
+                onToggle={onToggle}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 /** Floating pill navbar that condenses once you scroll past the hero. */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [mobileExpanded, setMobileExpanded] = useState(null)
+  const [mobileExpanded, setMobileExpanded] = useState(() => new Set())
   const { scrollY } = useScroll()
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 24))
+
+  const toggleMobile = (href) => {
+    setMobileExpanded((prev) => {
+      const next = new Set(prev)
+      if (next.has(href)) next.delete(href)
+      else next.add(href)
+      return next
+    })
+  }
 
   return (
     <motion.header
@@ -83,56 +156,16 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -12 }}
             className="absolute inset-x-4 top-20 rounded-3xl border border-ink/10 bg-card p-4 shadow-float md:hidden"
           >
-            {NAV_LINKS.map((l) => {
-              const linkClass = 'block rounded-2xl px-4 py-3 text-lg font-medium hover:bg-ink/[0.04]'
-              if (l.children) {
-                const isExpanded = mobileExpanded === l.href
-                return (
-                  <div key={l.href}>
-                    <div className="flex items-center">
-                      <HashAwareLink href={l.href} onClick={() => setOpen(false)} className={cn(linkClass, 'flex-1')}>
-                        {l.label}
-                      </HashAwareLink>
-                      <button
-                        onClick={() => setMobileExpanded(isExpanded ? null : l.href)}
-                        aria-label={isExpanded ? `Masquer le sous-menu ${l.label}` : `Afficher le sous-menu ${l.label}`}
-                        aria-expanded={isExpanded}
-                        className="grid h-11 w-11 shrink-0 place-items-center rounded-full hover:bg-ink/[0.04]"
-                      >
-                        <ChevronDown className={cn('h-5 w-5 transition-transform', isExpanded && 'rotate-180')} />
-                      </button>
-                    </div>
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          className="overflow-hidden pl-4"
-                        >
-                          {l.children.map((c) => (
-                            <HashAwareLink
-                              key={c.href}
-                              href={c.href}
-                              onClick={() => setOpen(false)}
-                              className="block rounded-xl px-4 py-2.5 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]"
-                            >
-                              {c.label}
-                            </HashAwareLink>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                )
-              }
-              return (
-                <HashAwareLink key={l.href} href={l.href} onClick={() => setOpen(false)} className={linkClass}>
-                  {l.label}
-                </HashAwareLink>
-              )
-            })}
+            {NAV_LINKS.map((l) => (
+              <MobileNavItem
+                key={l.href}
+                item={l}
+                depth={0}
+                expanded={mobileExpanded}
+                onToggle={toggleMobile}
+                onNavigate={() => setOpen(false)}
+              />
+            ))}
             <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
               <ThemeSwitcher align="left" />
               <Button as={Link} to="/app" size="sm">
