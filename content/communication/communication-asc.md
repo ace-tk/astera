@@ -1,6 +1,6 @@
 # Communication ASC CSE — Valoriser les activités sociales et culturelles
 
-- Source URL: https://atoopv.com/services/communication-asc/
+- Source URL: https://atoopv.com/communication-asc/
 - Category: communication
 - Breadcrumb: Services
 

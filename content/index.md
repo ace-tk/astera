@@ -26,13 +26,26 @@ https://atoopv.com/atoosavoir/ via `scripts/extract_atoosavoir.py`
 - [Exemple de fiche atoosavoir](./atoosavoir/atoosavoir-exemple.md)
 - [Conditions générales de vente — atoosavoir](./atoosavoir/atoosavoir-cgv.md)
 
-### drafting
+### drafting, by-city, tarifs-infos, guides, communication, training
 
-- [Rédaction PV de CSE](./drafting/redaction-pv-cse.md)
-- [Rédaction PV de CSSCT](./drafting/redaction-pv-cssct.md)
-- [Services](./drafting/services.md)
+Crawled from the "Services" nav dropdown (all six sub-groups) via
+`scripts/extract_services.py` — see that script's docstring for the
+crawl/scope rules and the slug → category mapping. Supersedes an earlier,
+now-deleted extraction that used stale `/services/<slug>/` URLs (those all
+301-redirect to the flat URLs below on the live site).
 
-### by-city
+#### drafting — "Rédaction PV"
+
+- [Rédaction de PV, formation et communication CSE](./drafting/services.md) — overall Services hub (`/services`)
+- [Vos procès-verbaux de CSE, CSSCT & IRP rédigés par des experts](./drafting/nos-services-pv.md) — category hub (`/services/drafting`)
+- [Rédaction PV CSE](./drafting/redaction-pv-cse.md)
+- [Rédaction à l'acte](./drafting/redaction-pv-cse-a-lacte.md)
+- [Rédaction PV CSSCT](./drafting/redaction-pv-cssct.md)
+- [Externaliser son PV CSE](./drafting/externaliser-pv-cse.md)
+- [Rédaction PV IRP](./drafting/redaction-pv-irp.md)
+- [Rédaction PV CSEC](./drafting/redaction-pv-csec.md)
+
+#### by-city — "Par ville"
 
 - [Rédaction PV CSE Grenoble](./by-city/redaction-pv-cse-grenoble.md)
 - [Rédaction PV CSE Marseille](./by-city/redaction-pv-cse-marseille.md)
@@ -46,26 +59,50 @@ https://atoopv.com/atoosavoir/ via `scripts/extract_atoosavoir.py`
 - [Rédaction PV CSE Lyon](./by-city/redaction-pv-cse-lyon.md)
 - [Rédaction PV CSE Paris](./by-city/redaction-pv-cse-paris.md)
 
+#### tarifs-infos — "Tarifs & Infos"
+
+- [Tarif Rédaction PV CSE](./tarifs-infos/tarif-redaction-pv-cse.md) — category hub (`/services/tarifs-infos`)
+- [PV CSE et Code du Travail](./tarifs-infos/pv-cse-code-travail.md)
+- [Délai Rédaction PV CSE](./tarifs-infos/delai-redaction-pv-cse.md)
+- [Rédacteur PV CSE](./tarifs-infos/redacteur-pv-cse.md)
+
+#### guides — "Guides pratiques" (no hub page on the live site — its nav
+group header is a same-page anchor; `/services/guides` renders a
+synthesized directory of these 13 pages instead)
+
+- [Qui rédige le PV de CSE ?](./guides/qui-redige-pv-cse.md)
+- [Approbation du PV CSE](./guides/approbation-pv-cse.md)
+- [Contenu obligatoire d'un PV de CSE](./guides/pv-cse-contenu-obligatoire.md)
+- [PV CSE dans les entreprises de moins de 50 salariés](./guides/pv-cse-moins-50-salaries.md)
+- [Modèle PV CSE Gratuit](./guides/modele-pv-cse-gratuit.md)
+- [Le procès-verbal du CSE](./guides/proces-verbal-cse.md)
+- [Procès-verbal de CSE : quels délais pour le rédiger ?](./guides/delai-pv-cse.md)
+- [Que doit contenir un procès-verbal de CSE ?](./guides/contenu-pv-cse.md)
+- [Procès-verbal de CSE et délit d'entrave](./guides/pv-cse-delit-entrave.md)
+- [La BDESE et le procès-verbal du CSE](./guides/bdese-pv-cse.md)
+- [Information et consultation du CSE](./guides/information-consultation-cse.md)
+- [La réunion extraordinaire du CSE](./guides/reunion-extraordinaire-cse.md)
+- [Procès-verbal de CSE : synthétique ou in extenso ?](./guides/pv-cse-synthetique-ou-integral.md)
+
+#### communication — "Communication"
+
+- [Communication CSE](./communication/communication-cse.md) — category hub (`/services/communication`)
+- [ActuCSE — Newsletter](./communication/newsletter-actucse.md)
+- [Communication ASC CSE](./communication/communication-asc.md)
+- [Le Guide du Comité CSE](./communication/guide-du-comite.md)
+
+#### training — "Formations"
+
+- [Formation élus CSE](./training/formations-elus-cse-agree.md) — category hub (`/services/training`)
+- [Formation économique des élus du CSE — 5 jours](./training/formation-economique-elus-cse.md)
+- [Formation CSE — Rôle et missions du trésorier](./training/formation-cse-tresorier.md)
+- [Formation CSE — Rôles et missions de la CSSCT](./training/formation-cssct-roles-missions.md)
+- [Formation Pro — Communication](./training/formation-pro-communication.md)
+- [Formation Droit Social — Le contrat de travail et sa rupture](./training/formation-droit-social-contrat-travail.md)
+
 ### pricing
 
-- [Tarification](./pricing/tarification.md)
-
-### guides
-
-- [Guide du comité](./guides/guide-du-comite.md)
-- [Modèle PV CSE gratuit](./guides/modele-pv-cse-gratuit.md)
-
-### communication
-
-- [Communication](./communication/communication.md)
-- [Communication CSE](./communication/communication-cse.md)
-- [Communication ASC](./communication/communication-asc.md)
-- [Newsletter](./communication/newsletter.md)
-
-### training
-
-- [Formation](./training/formation.md)
-- [Formation CSE](./training/formation-cse.md)
+- [Tarification](./pricing/tarification.md) — the interactive pricing simulator (`/services/pricing` and `/atoopv/tarification`), not part of the Services nav dropdown and not re-crawled here.
 
 ### resources
 

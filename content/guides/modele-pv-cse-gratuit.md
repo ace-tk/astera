@@ -1,6 +1,6 @@
-# Modèle PV CSE Gratuit – Télécharger la trame Word (conforme)
+# Modèle PV CSE Gratuit – Trame Word à télécharger | AtooPV
 
-- Source URL: https://atoopv.com/services/modele-pv-cse-gratuit/
+- Source URL: https://atoopv.com/modele-pv-cse-gratuit/
 - Category: guides
 - Breadcrumb: Services
 
@@ -133,16 +133,28 @@ Décrivez-nous votre situation. Nous vous adressons alors un devis gratuit et pe
 
 Cliquez sur une question pour afficher la réponse.
 
+### Que doit contenir un modèle de procès-verbal de CSE ?
+
 Un modèle de PV reprend les éléments attendus d’une réunion : date, heure et lieu, liste des présents, représentés et excusés, ordre du jour, résumé des délibérations, résultats des votes, avis rendus, puis questions diverses. Par ailleurs, le cadre découle des articles L.2315-34 et D.2315-26 du Code du travail. La présentation reste libre, mais l’oubli d’une rubrique — un vote non détaillé, un avis non motivé — peut suffire à fragiliser le document le jour où il faut s’y référer.
 
+### Ce modèle est-il conforme au Code du travail ?
+
 En effet, la trame couvre les éléments prévus par les articles L.2315-34 et D.2315-26. Le Code n’impose pas de format figé : il fixe un contenu minimal et des délais, pas une mise en page. Vous disposez donc d’une base fiable. La conformité réelle, elle, se joue au moment de la rédaction : c’est la fidélité de la restitution, pas la trame, qui donne sa valeur au PV.
+
+### Qui doit rédiger le procès-verbal à partir de ce modèle ?
 
 La rédaction incombe au secrétaire du CSE (article L.2315-34). Il peut s’appuyer sur un autre élu ou confier la rédaction à un prestataire, mais il reste le garant du document et le valide avant diffusion. Le modèle est un point de départ ; sur des séances longues ou conflictuelles, remplir seul une trame vierge tout en suivant les débats reste l’écueil que la plupart des secrétaires découvrent à leurs dépens.
 
 ### Autres questions sur le modèle de PV CSE
 
+### Sous quel délai le PV doit-il être établi ?
+
 À défaut d’accord prévoyant un autre délai, le PV est établi et transmis dans les quinze jours suivant la réunion (article R.2315-25). Ce délai serait ramené à trois jours pour une consultation sur un licenciement économique, et à un jour en cas de redressement ou liquidation judiciaire. Un retard expose le secrétaire : mieux vaut une trame prête et une méthode rodée avant la séance qu’une course contre la montre après.
 
+### Quelle différence entre un PV et un compte-rendu ?
+
 Le compte-rendu est une synthèse informelle, sans portée particulière. Le procès-verbal est le document officiel prévu par la loi : il consigne délibérations et votes, est approuvé en séance suivante et fait foi des débats. C’est lui qui acte un engagement de la direction et peut être produit comme preuve en cas de litige. La trame proposée ici est un modèle de PV, pas de compte-rendu — la distinction n’est pas sémantique, elle est juridique.
+
+### Ce modèle convient-il aussi à la CSSCT ?
 
 La trame s’adapte aux réunions de la CSSCT, dont la logique de consignation des échanges et des avis reste proche. Les sujets diffèrent — santé, sécurité, conditions de travail : ajustez l’ordre du jour et les rubriques aux thèmes propres à la commission, notamment les alertes, les analyses de risques et les suites données.

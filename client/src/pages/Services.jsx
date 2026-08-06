@@ -2,16 +2,26 @@ import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
-import Reveal from '@/components/ui/Reveal'
-import ServiceCard from '@/components/services/ServiceCard'
+import ServiceHero from '@/components/services/ServiceHero'
+import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { SERVICE_CATEGORIES } from '@/constants/services'
+import { getServicePage, excerpt } from '@/services/servicesContent'
+import { resolveServiceHref } from '@/constants/servicesLinks'
+import { stripEmphasis } from '@/utils/richText'
 
+/**
+ * The Services landing page — same source as atoopv.com/services/ (the
+ * "Tous nos services" link in the live nav points straight at it), rendered
+ * the same way every other Services page is: real extracted markdown
+ * through MarkdownArticle, no hand-typed copy. Browsing into a specific
+ * category (Rédaction PV, Par ville, Tarifs & Infos, Guides pratiques,
+ * Communication, Formations) happens via the navbar's own "Services"
+ * dropdown, which mirrors the live nav's nested flyouts.
+ */
 export default function Services() {
-  usePageMeta({
-    title: 'Services',
-    description: 'Minute drafting, training, communication, and more — the same care ATOOPV brings to every report, now covering the full life of your council.',
-  })
+  const page = getServicePage('services')
+
+  usePageMeta({ title: page ? stripEmphasis(page.title) : 'Services', description: page ? excerpt(page.body, 160) : undefined })
 
   return (
     <motion.main
@@ -24,35 +34,13 @@ export default function Services() {
       <AmbientBackground />
       <Navbar />
 
-      <section className="relative pt-36 sm:pt-40 lg:pt-44">
-        <div className="shell">
-          <Reveal>
-            <span className="eyebrow">
-              <span className="h-px w-8 bg-ink/30" /> Services
-            </span>
-            <h1 className="mt-6 max-w-2xl font-display text-display-sm font-medium leading-[1.06] tracking-tight text-balance">
-              Everything your works council needs, beyond the report.
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted text-pretty">
-              Minute drafting, training, communication, and more — the same care
-              ATOOPV brings to every report, now covering the full life of your
-              council.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      {page && <ServiceHero badge={page.breadcrumb} title={page.title} />}
 
-      <section className="relative py-section">
-        <div className="shell">
-          <div className="grid auto-rows-[minmax(19rem,auto)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICE_CATEGORIES.map((service, i) => (
-              <ServiceCard key={service.id} service={service} index={i} />
-            ))}
-          </div>
+      <div className="shell py-14 sm:py-16">
+        <div className="mx-auto max-w-3xl">
+          {page && <MarkdownArticle body={page.body} color="royal" resolveHref={resolveServiceHref} />}
         </div>
-      </section>
+      </div>
 
       <Footer />
     </motion.main>

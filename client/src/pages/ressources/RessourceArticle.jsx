@@ -8,9 +8,9 @@ import { RESSOURCES_NAV } from '@/constants/resourcesNav'
 
 /**
  * Renders one extracted content/resources/<slug>.md file. A single dynamic
- * page for all 34 pages (hubs and leaf articles alike -- they're all just
+ * page for every page (hubs and leaf articles alike -- they're all just
  * extracted markdown, no structural difference) rather than one file per
- * page, same reasoning as by-city's CityPage. The /atoopv/ressources index
+ * page, same reasoning as Services' ServiceArticle. The /atoopv/ressources index
  * route passes slug="guides-livres-blancs-cse" directly: that page *is* the
  * real Ressources landing page on atoopv.com (the nav's "Ressources" link
  * points straight at it), so the index route renders it rather than a

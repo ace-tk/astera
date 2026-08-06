@@ -1,6 +1,6 @@
-# Rédaction PV CSSCT — votre compte rendu CSSCT par des experts
+# Rédaction PV CSSCT — comptes-rendus santé-sécurité
 
-- Source URL: https://atoopv.com/services/redaction-pv-cssct/
+- Source URL: https://atoopv.com/redaction-pv-cssct/
 - Category: drafting
 - Breadcrumb: Services
 

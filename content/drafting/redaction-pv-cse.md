@@ -1,6 +1,6 @@
-# Rédaction du PV de CSE — confiez vos procès-verbaux à un expert
+# Rédaction PV CSE — Confiez vos procès-verbaux à un expert
 
-- Source URL: https://atoopv.com/services/redaction-pv-cse/
+- Source URL: https://atoopv.com/redaction-pv-cse/
 - Category: drafting
 - Breadcrumb: Services
 

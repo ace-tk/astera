@@ -7,15 +7,16 @@ import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
 
 /**
- * Renders one extracted resource markdown body with Astera's editorial
- * typography — the generic counterpart to RichTextSection's hand-typed
- * blocks, for content whose structure isn't known ahead of time (arbitrary
- * headings/paragraphs/lists/tables/images/links straight from a crawled
- * page). Internal links are rewritten via resolveResourceHref so a link
- * that pointed at atoopv.com/some-page in the source markdown lands on the
- * matching page in this app instead.
+ * Renders one extracted markdown body (Ressources or Services) with
+ * Astera's editorial typography — the generic counterpart to
+ * RichTextSection's hand-typed blocks, for content whose structure isn't
+ * known ahead of time (arbitrary headings/paragraphs/lists/tables/images/
+ * links straight from a crawled page). Internal links are rewritten via
+ * `resolveHref` (resolveResourceHref by default, resolveServiceHref for the
+ * Services section) so a link that pointed at atoopv.com/some-page in the
+ * source markdown lands on the matching page in this app instead.
  */
-export default function MarkdownArticle({ body, color = 'sky' }) {
+export default function MarkdownArticle({ body, color = 'sky', resolveHref = resolveResourceHref }) {
   const a = accent(color)
 
   return (
@@ -37,7 +38,7 @@ export default function MarkdownArticle({ body, color = 'sky' }) {
           ol: ({ children }) => <ol className={cn('list-decimal space-y-2 pl-5 marker:font-semibold', a.text)}>{children}</ol>,
           li: ({ children }) => <li className="pl-1 text-base leading-relaxed text-ink/80 marker:text-sm">{children}</li>,
           a: ({ href, children }) => {
-            const resolved = resolveResourceHref(href || '')
+            const resolved = resolveHref(href || '')
             if (resolved.external) {
               return (
                 <a href={resolved.href} target="_blank" rel="noreferrer" className={cn('inline-flex items-center gap-1 font-medium link-underline', a.text)}>

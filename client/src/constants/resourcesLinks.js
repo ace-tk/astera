@@ -8,6 +8,7 @@
  * each one — not guessed.
  */
 import { RESOURCES_BY_SLUG, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
+import { serviceRouteForSlug } from '@/constants/servicesLinks'
 
 // A handful of resource pages are linked under a second, older slug that
 // 301-redirects on the live site (discovered while writing extract_resources.py).
@@ -17,38 +18,11 @@ const ALIASES = {
 }
 
 // Every other internal slug referenced from a Ressources page belongs to a
-// nav section that hasn't been ported yet (Services incl. its Rédaction PV /
-// Par ville / Tarifs / Guides pratiques / Communication / Formations
-// sub-groups, Contact, Simulateur, Autodiagnostic, À propos, atoosavoir).
-// Point each at the forward-looking /atoopv/* stub for that section so the
-// link works today and resolves to the real page once that phase ships,
-// instead of leaking out to the live atoopv.com site.
+// nav section that isn't ported markdown content: Services slugs are
+// resolved by serviceRouteForSlug below (real pages, now that the Services
+// section is ported too — see servicesLinks.js); everything left here is
+// Contact, Simulateur, Autodiagnostic, À propos, or atoosavoir.
 const SECTION_MAP = {
-  services: '/atoopv/services',
-  'nos-services-pv': '/atoopv/services',
-  'redaction-pv-cse': '/atoopv/services',
-  'redaction-pv-cse-a-lacte': '/atoopv/services',
-  'redaction-pv-cssct': '/atoopv/services',
-  'redaction-pv-irp': '/atoopv/services',
-  'redaction-pv-csec': '/atoopv/services',
-  'redaction-du-pv': '/atoopv/services',
-  'externaliser-pv-cse': '/atoopv/services',
-  'externaliser-redaction-pv-cse': '/atoopv/services',
-  'audiotypie-pv-cse': '/atoopv/services',
-  'proces-verbal-cse': '/atoopv/services',
-  'delai-redaction-pv-cse': '/atoopv/services',
-  'tarif-redaction-pv-cse': '/atoopv/services',
-  'redacteur-pv-cse': '/atoopv/services',
-  'pv-cse-code-travail': '/atoopv/services',
-  'qui-redige-pv-cse': '/atoopv/services',
-  'approbation-pv-cse': '/atoopv/services',
-  'pv-cse-contenu-obligatoire': '/atoopv/services',
-  'communication-cse': '/atoopv/services',
-  'newsletter-actucse': '/atoopv/services',
-  'communication-asc': '/atoopv/services',
-  'guide-du-comite': '/atoopv/services',
-  formations: '/atoopv/services',
-  'formations-elus-cse-agree': '/atoopv/services',
   contact: '/atoopv/contact',
   tarification: '/atoopv/simulateur',
   'simulateur-de-prix': '/atoopv/simulateur',
@@ -87,6 +61,9 @@ export function resolveResourceHref(rawHref) {
   const resolvedSlug = ALIASES[slug] || slug
   if (RESOURCES_BY_SLUG.has(resolvedSlug)) return { href: `/atoopv/ressources/${resolvedSlug}`, external: false }
   if (VEILLE_JURIDIQUE_SLUGS.includes(resolvedSlug)) return { href: `/atoopv/ressources/${resolvedSlug}`, external: false }
+
+  const serviceRoute = serviceRouteForSlug(slug)
+  if (serviceRoute) return { href: serviceRoute, external: false }
 
   return { href: SECTION_MAP[slug] || '/atoopv', external: false }
 }

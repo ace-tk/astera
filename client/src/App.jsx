@@ -26,23 +26,9 @@ const AtoosavoirCgv = lazy(() => import('@/pages/atoopv/AtoosavoirCgv'))
 const RessourceArticle = lazy(() => import('@/pages/ressources/RessourceArticle'))
 const VeilleJuridique = lazy(() => import('@/pages/ressources/VeilleJuridique'))
 const Services = lazy(() => import('@/pages/Services'))
-const ServiceCategory = lazy(() => import('@/pages/services/ServiceCategory'))
 const ServiceCategoryLayout = lazy(() => import('@/components/services/ServiceCategoryLayout'))
-const DraftingOverview = lazy(() => import('@/pages/services/drafting/DraftingOverview'))
-const RedactionPvCse = lazy(() => import('@/pages/services/drafting/RedactionPvCse'))
-const RedactionPvCssct = lazy(() => import('@/pages/services/drafting/RedactionPvCssct'))
-const ByCityOverview = lazy(() => import('@/pages/services/by-city/ByCityOverview'))
-const CityPage = lazy(() => import('@/pages/services/by-city/CityPage'))
-const CommunicationOverview = lazy(() => import('@/pages/services/communication/CommunicationOverview'))
-const CommunicationCse = lazy(() => import('@/pages/services/communication/CommunicationCse'))
-const CommunicationAsc = lazy(() => import('@/pages/services/communication/CommunicationAsc'))
-const Newsletter = lazy(() => import('@/pages/services/communication/Newsletter'))
-const TrainingOverview = lazy(() => import('@/pages/services/training/TrainingOverview'))
-const Formation = lazy(() => import('@/pages/services/training/Formation'))
-const FormationCse = lazy(() => import('@/pages/services/training/FormationCse'))
-const GuidesOverview = lazy(() => import('@/pages/services/guides/GuidesOverview'))
-const GuideDuComite = lazy(() => import('@/pages/services/guides/GuideDuComite'))
-const ModelePvCseGratuit = lazy(() => import('@/pages/services/guides/ModelePvCseGratuit'))
+const ServiceArticle = lazy(() => import('@/pages/services/ServiceArticle'))
+const ServiceCategoryDirectory = lazy(() => import('@/pages/services/ServiceCategoryDirectory'))
 const PricingPage = lazy(() => import('@/pages/services/pricing/PricingPage'))
 const Login = lazy(() => import('@/pages/auth/Login'))
 const Register = lazy(() => import('@/pages/auth/Register'))
@@ -140,32 +126,30 @@ export default function App() {
             </Route>
             <Route path="/services" element={<Services />} />
             <Route path="/services/drafting" element={<ServiceCategoryLayout />}>
-              <Route index element={<DraftingOverview />} />
-              <Route path="redaction-pv-cse" element={<RedactionPvCse />} />
-              <Route path="redaction-pv-cssct" element={<RedactionPvCssct />} />
+              <Route index element={<ServiceArticle category="drafting" slug="nos-services-pv" />} />
+              <Route path=":slug" element={<ServiceArticle category="drafting" />} />
             </Route>
             <Route path="/services/by-city" element={<ServiceCategoryLayout />}>
-              <Route index element={<ByCityOverview />} />
-              <Route path=":citySlug" element={<CityPage />} />
+              <Route index element={<ServiceCategoryDirectory category="by-city" />} />
+              <Route path=":slug" element={<ServiceArticle category="by-city" />} />
             </Route>
-            <Route path="/services/communication" element={<ServiceCategoryLayout />}>
-              <Route index element={<CommunicationOverview />} />
-              <Route path="communication-cse" element={<CommunicationCse />} />
-              <Route path="communication-asc" element={<CommunicationAsc />} />
-              <Route path="newsletter" element={<Newsletter />} />
-            </Route>
-            <Route path="/services/training" element={<ServiceCategoryLayout />}>
-              <Route index element={<TrainingOverview />} />
-              <Route path="formation" element={<Formation />} />
-              <Route path="formation-cse" element={<FormationCse />} />
+            <Route path="/services/tarifs-infos" element={<ServiceCategoryLayout />}>
+              <Route index element={<ServiceArticle category="tarifs-infos" slug="tarif-redaction-pv-cse" />} />
+              <Route path=":slug" element={<ServiceArticle category="tarifs-infos" />} />
             </Route>
             <Route path="/services/guides" element={<ServiceCategoryLayout />}>
-              <Route index element={<GuidesOverview />} />
-              <Route path="guide-du-comite" element={<GuideDuComite />} />
-              <Route path="modele-pv-cse-gratuit" element={<ModelePvCseGratuit />} />
+              <Route index element={<ServiceCategoryDirectory category="guides" />} />
+              <Route path=":slug" element={<ServiceArticle category="guides" />} />
+            </Route>
+            <Route path="/services/communication" element={<ServiceCategoryLayout />}>
+              <Route index element={<ServiceArticle category="communication" slug="communication-cse" />} />
+              <Route path=":slug" element={<ServiceArticle category="communication" />} />
+            </Route>
+            <Route path="/services/training" element={<ServiceCategoryLayout />}>
+              <Route index element={<ServiceArticle category="training" slug="formations-elus-cse-agree" />} />
+              <Route path=":slug" element={<ServiceArticle category="training" />} />
             </Route>
             <Route path="/services/pricing" element={<PricingPage />} />
-            <Route path="/services/:slug" element={<ServiceCategory />} />
             <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
             <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
             <Route path="/forgot" element={<ForgotPassword />} />
