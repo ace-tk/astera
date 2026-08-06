@@ -25,7 +25,6 @@ export const NAV_LINKS = [
         href: '/atoopv/ressources/modeles-pv',
         children: [
           { label: 'PV Premium Intégral — Exemple complet', href: '/atoopv/ressources/modele-pv-cse-premium-integral' },
-          { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
         ],
       },
       { label: 'Mentions Obligatoires du PV', href: '/atoopv/ressources/mentions-obligatoires-pv' },
@@ -33,6 +32,7 @@ export const NAV_LINKS = [
         label: 'Actualité Sociale',
         href: '/atoopv/ressources/actualite-sociale',
         children: [
+          { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
           {
             label: 'Jurisprudence sociale',
             href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse',
