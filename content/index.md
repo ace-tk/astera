@@ -107,3 +107,4 @@ https://atoopv.com/guides-livres-blancs-cse/ via `scripts/extract_resources.py`
 - [Congé payé vendredi après 37h lundi-jeudi](./resources/conge-paye-vendredi-37h-decompte-jours-ouvrables.md)
 - [Arrêt maladie : durée légale, LFSS 2026 et droits du salarié](./resources/arret-maladie-duree-legale-lfss-2026-droits-salarie.md)
 - [Canicule au travail : ce que le décret n° 2025-482 change](./resources/canicule-travail-decret-2025-482-obligations-employeur-cse.md)
+- [Veille juridique · 3 arrêts de la Cour de cassation (8 juillet 2026)](./resources/veille-juridique-cse-8-25-juillet-2026.md)

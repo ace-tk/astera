@@ -147,4 +147,5 @@ export const VEILLE_JURIDIQUE_SLUGS = [
   'reglement-interieur-fin-depot-greffe-mai-2026-loi-simplification',
   'tickets-restaurant-teletravail-droit-teletravailleurs',
   'veille-sociale-cse-juin-2026',
+  'veille-juridique-cse-8-25-juillet-2026',
 ]

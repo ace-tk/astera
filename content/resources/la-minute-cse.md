@@ -36,6 +36,14 @@ Non, la rédaction du procès-verbal du CSE n’est pas réservée au secrétair
 
 [Regarder sur YouTube (0:59)](https://www.youtube.com/watch?v=-PwVl3umHn4)
 
+### Le DRH peut-il exiger la modification du PV du CSE ? (Résumé Ép. 3)
+
+Un DRH menace de bloquer le budget du prestataire si la secrétaire du CSE ne retire pas certains propos tenus en séance par un élu. Ce résumé de l’épisode 3 rappelle pourquoi la rédaction et le contrôle du procès-verbal appartiennent exclusivement au secrétaire, pourquoi l’employeur ne peut que faire consigner son désaccord motivé à la réunion suivante, et pourquoi le PV reste valable une fois adopté à la majorité.
+
+*#CasPratiqueCSE #CSE #DroitDuTravail*
+
+[REGARDER SUR YOUTUBE (1:04)](https://www.youtube.com/watch?v=jE7xIv8VQ_A)
+
 **Une nouvelle vidéo chaque semaine**
 
 Cette page est mise à jour à chaque nouvel épisode. Abonnez-vous à la chaîne pour ne rater aucune vidéo sur le droit du CSE et le droit du travail.
