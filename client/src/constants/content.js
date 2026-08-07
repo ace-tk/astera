@@ -3,136 +3,250 @@
  * Each feature owns a semantic color token (see tailwind.config.js).
  */
 
-export const NAV_LINKS = [
+const STORY_NAV = {
+  label: 'Story',
+  href: '#story',
+  children: [
+    { label: 'How it works', href: '#how' },
+    { label: 'Features', href: '#features' },
+    { label: 'Pricing', href: '/atoopv/tarification' },
+  ],
+}
+
+/**
+ * The ATOOPV site's own top-level navigation — six commercial entries plus
+ * the two direct links (AtooSavoir, À propos), reorganized per the
+ * atoopv-navigation-brief: "Services", "Accueil", "Simulateur" and
+ * "Autodiagnostic" no longer appear as standalone top-level items; every
+ * page they used to expose is re-linked from inside these six groups
+ * instead (see each item's `mega.columns`). No route was renamed, moved,
+ * or deleted — only where it's *linked from* changed.
+ *
+ * `mega.columns` drives the desktop mega-menu (MegaNavPanel); `mobileItems`
+ * is a separate, deliberately shorter curated list for the mobile
+ * accordion's one nested level (the brief caps mobile at two levels total,
+ * never three, so the mobile list can't just be "all leaf pages" the way
+ * the desktop columns are).
+ *
+ * Every href here is an EXISTING route. A few brief destinations have no
+ * matching page in this app (no /contact/, no dedicated /simulateur/, no
+ * /blog/ index, no FAQ page, no page for "Rédaction intégrale du PV" /
+ * "Audiotypie & retranscription" / the URSSAF-audit or quitus-financier
+ * guides) — those are pointed at the closest existing equivalent rather
+ * than a new page, and are called out in full in the delivery report.
+ */
+export const ATOOPV_NAV = [
   {
-    label: 'Story',
-    href: '#story',
-    children: [
-      { label: 'How it works', href: '#how' },
-      { label: 'Features', href: '#features' },
-      { label: 'Pricing', href: '/atoopv/tarification' },
-    ],
-  },
-  {
-    label: 'Services',
+    key: 'pv',
+    label: 'Procès-verbal',
     href: '/services',
-    children: [
-      {
-        label: 'Rédaction PV',
-        href: '/services/drafting',
-        children: [
-          { label: 'Rédaction PV CSE', href: '/services/drafting/redaction-pv-cse' },
-          { label: 'Rédaction à l’acte', href: '/services/drafting/redaction-pv-cse-a-lacte' },
-          { label: 'Rédaction PV CSSCT', href: '/services/drafting/redaction-pv-cssct' },
-          { label: 'Externaliser son PV CSE', href: '/services/drafting/externaliser-pv-cse' },
-          { label: 'Rédaction PV IRP', href: '/services/drafting/redaction-pv-irp' },
-          { label: 'Rédaction PV CSEC', href: '/services/drafting/redaction-pv-csec' },
-        ],
+    color: 'royal',
+    mega: {
+      columns: [
+        {
+          heading: 'Nos formules',
+          items: [
+            { label: 'Rédaction intégrale du PV', href: '/services/drafting' },
+            { label: 'PV à l’acte', href: '/services/drafting/redaction-pv-cse-a-lacte' },
+            { label: 'Audiotypie & retranscription', href: '/services/drafting' },
+            { label: 'Externaliser vos PV', href: '/services/drafting/externaliser-pv-cse' },
+          ],
+        },
+        {
+          heading: 'Par instance',
+          items: [
+            { label: 'PV de CSE', href: '/services/drafting/redaction-pv-cse' },
+            { label: 'PV de CSSCT', href: '/services/drafting/redaction-pv-cssct' },
+            { label: 'PV de CSE central', href: '/services/drafting/redaction-pv-csec' },
+            { label: 'PV d’IRP', href: '/services/drafting/redaction-pv-irp' },
+          ],
+        },
+        {
+          heading: 'Tarifs & délais',
+          items: [
+            { label: 'Tarifs & devis', href: '/atoopv/tarification' },
+            { label: 'Simulateur de budget', href: '/atoopv/tarification' },
+            { label: 'Délais de remise', href: '/services/tarifs-infos/delai-redaction-pv-cse' },
+            { label: 'PV par ville — 11 villes', href: '/services/by-city' },
+          ],
+        },
+      ],
+      cta: {
+        tone: 'dark',
+        eyebrow: 'Devis en 24 h',
+        title: 'Votre PV relu et livré sous 5 jours.',
+        buttonLabel: 'Demander un devis',
+        buttonHref: '/atoopv/tarification',
       },
-      {
-        label: 'Par ville',
-        href: '/services/by-city',
-        children: [
-          { label: 'PV CSE Grenoble', href: '/services/by-city/redaction-pv-cse-grenoble' },
-          { label: 'PV CSE Marseille', href: '/services/by-city/redaction-pv-cse-marseille' },
-          { label: 'PV CSE Toulouse', href: '/services/by-city/redaction-pv-cse-toulouse' },
-          { label: 'PV CSE Bordeaux', href: '/services/by-city/redaction-pv-cse-bordeaux' },
-          { label: 'PV CSE Nantes', href: '/services/by-city/redaction-pv-cse-nantes' },
-          { label: 'PV CSE Lille', href: '/services/by-city/redaction-pv-cse-lille' },
-          { label: 'PV CSE Saint-Étienne', href: '/services/by-city/redaction-pv-cse-saint-etienne' },
-          { label: 'PV CSE Clermont-Ferrand', href: '/services/by-city/redaction-pv-cse-clermont-ferrand' },
-          { label: 'Rédaction PV CSE Annecy', href: '/services/by-city/redaction-pv-cse-annecy' },
-          { label: 'Rédaction PV CSE Lyon', href: '/services/by-city/redaction-pv-cse-lyon' },
-          { label: 'Rédaction PV CSE Paris', href: '/services/by-city/redaction-pv-cse-paris' },
-        ],
-      },
-      {
-        label: 'Tarifs & Infos',
-        href: '/services/tarifs-infos',
-        children: [
-          { label: 'PV CSE et Code du travail', href: '/services/tarifs-infos/pv-cse-code-travail' },
-          { label: 'Délai rédaction PV CSE', href: '/services/tarifs-infos/delai-redaction-pv-cse' },
-          { label: 'Rédacteur PV CSE', href: '/services/tarifs-infos/redacteur-pv-cse' },
-        ],
-      },
-      {
-        label: 'Guides pratiques',
-        href: '/services/guides',
-        children: [
-          { label: 'Qui rédige le PV CSE ?', href: '/services/guides/qui-redige-pv-cse' },
-          { label: 'Approbation du PV CSE', href: '/services/guides/approbation-pv-cse' },
-          { label: 'Contenu obligatoire du PV', href: '/services/guides/pv-cse-contenu-obligatoire' },
-          { label: 'PV CSE – moins de 50 salariés', href: '/services/guides/pv-cse-moins-50-salaries' },
-          { label: 'Modèle PV CSE gratuit', href: '/services/guides/modele-pv-cse-gratuit' },
-          { label: 'Guide complet PV de CSE', href: '/services/guides/proces-verbal-cse' },
-          { label: 'Délai du PV de CSE', href: '/services/guides/delai-pv-cse' },
-          { label: 'Contenu du PV de CSE', href: '/services/guides/contenu-pv-cse' },
-          { label: 'PV de CSE et délit d’entrave', href: '/services/guides/pv-cse-delit-entrave' },
-          { label: 'BDESE et PV de CSE', href: '/services/guides/bdese-pv-cse' },
-          { label: 'Information ou consultation CSE', href: '/services/guides/information-consultation-cse' },
-          { label: 'Réunion extraordinaire du CSE', href: '/services/guides/reunion-extraordinaire-cse' },
-          { label: 'PV synthétique ou in extenso', href: '/services/guides/pv-cse-synthetique-ou-integral' },
-        ],
-      },
-      { label: 'Tous nos services', href: '/services' },
-      {
-        label: 'Communication',
-        href: '/services/communication',
-        children: [
-          { label: 'Newsletter ActuCSE', href: '/services/communication/newsletter-actucse' },
-          { label: 'Communication ASC', href: '/services/communication/communication-asc' },
-          { label: 'Guide du comité', href: '/services/communication/guide-du-comite' },
-        ],
-      },
-      {
-        label: 'Formations',
-        href: '/services/training',
-        children: [
-          { label: 'Formation économique — 5 jours', href: '/services/training/formation-economique-elus-cse' },
-          { label: 'Trésorier du CSE', href: '/services/training/formation-cse-tresorier' },
-          { label: 'Rédaction PV CSSCT', href: '/services/training/formation-cssct-roles-missions' },
-          { label: 'Formation Communication', href: '/services/training/formation-pro-communication' },
-          { label: 'Contrat de travail & Rupture', href: '/services/training/formation-droit-social-contrat-travail' },
-        ],
-      },
-      { label: 'Modèle PV CSE gratuit', href: '/services/guides/modele-pv-cse-gratuit' },
+    },
+    mobileItems: [
+      { label: 'Rédaction intégrale', href: '/services/drafting' },
+      { label: 'PV à l’acte', href: '/services/drafting/redaction-pv-cse-a-lacte' },
+      { label: 'Par instance', href: '/services/drafting/redaction-pv-cse' },
+      { label: 'Tarifs & délais', href: '/atoopv/tarification' },
+      { label: 'PV par ville', href: '/services/by-city' },
     ],
   },
-  { label: 'Accueil', href: '/atoopv' },
   {
+    key: 'formations',
+    label: 'Formations',
+    href: '/services/training',
+    color: 'mint',
+    mega: {
+      columns: [
+        {
+          heading: 'Formations des élus',
+          items: [
+            { label: 'Formation économique', href: '/services/training/formation-economique-elus-cse' },
+            { label: 'Trésorier du CSE', href: '/services/training/formation-cse-tresorier' },
+            { label: 'CSSCT — rôles et missions', href: '/services/training/formation-cssct-roles-missions' },
+            { label: 'Toutes nos formations agréées', href: '/services/training' },
+          ],
+        },
+        {
+          heading: 'Droit & pratique',
+          items: [
+            { label: 'Droit social & contrat de travail', href: '/services/training/formation-droit-social-contrat-travail' },
+            { label: 'Communication professionnelle', href: '/services/training/formation-pro-communication' },
+          ],
+        },
+        {
+          heading: 'Communication du CSE',
+          items: [
+            { label: 'Communiquer avec les salariés', href: '/services/communication' },
+            { label: 'Valoriser vos ASC', href: '/services/communication/communication-asc' },
+          ],
+        },
+      ],
+      cta: {
+        tone: 'dark',
+        eyebrow: 'Sur mesure',
+        title: 'Construisons le plan de formation de votre mandat.',
+        buttonLabel: 'Nous contacter',
+        buttonHref: '/atoopv/tarification',
+      },
+    },
+    mobileItems: [
+      { label: 'Formation économique', href: '/services/training/formation-economique-elus-cse' },
+      { label: 'Droit & pratique', href: '/services/training/formation-droit-social-contrat-travail' },
+      { label: 'Communication du CSE', href: '/services/communication' },
+    ],
+  },
+  { label: 'AtooSavoir', href: '/atoopv/atoosavoir' },
+  {
+    key: 'ressources',
     label: 'Ressources',
     href: '/atoopv/ressources',
-    children: [
-      { label: 'Guides Juridiques', href: '/atoopv/ressources/guides-livres-blancs-cse' },
-      {
-        label: 'Modèles de PV',
-        href: '/atoopv/ressources/modeles-pv',
-        children: [
-          { label: 'PV Premium Intégral — Exemple complet', href: '/atoopv/ressources/modele-pv-cse-premium-integral' },
-        ],
+    color: 'sky',
+    mega: {
+      columns: [
+        {
+          heading: 'Outils',
+          items: [
+            { label: 'Autodiagnostic de votre CSE', href: '/atoopv/autodiagnostic' },
+            { label: 'Simulateur de budget PV', href: '/atoopv/tarification' },
+          ],
+        },
+        {
+          heading: 'Modèles de PV',
+          items: [
+            { label: 'Modèle de PV gratuit', href: '/services/guides/modele-pv-cse-gratuit' },
+            { label: 'Bibliothèque de modèles', href: '/atoopv/ressources/modeles-pv' },
+            { label: 'Modèle premium intégral', href: '/atoopv/ressources/modele-pv-cse-premium-integral' },
+          ],
+        },
+        {
+          heading: 'Guides & abonnements',
+          items: [
+            { label: 'Guides & livres blancs', href: '/atoopv/ressources/guides-livres-blancs-cse' },
+            { label: 'Le guide du comité', href: '/services/communication/guide-du-comite' },
+            { label: 'Newsletter ActuCSE', href: '/services/communication/newsletter-actucse' },
+            { label: 'Questions fréquentes', href: '/atoopv/a-propos' },
+          ],
+        },
+      ],
+      cta: {
+        tone: 'light',
+        eyebrow: 'Le plus téléchargé',
+        title: 'Le modèle de PV que vous pouvez utiliser dès lundi.',
+        buttonLabel: 'Télécharger',
+        buttonHref: '/services/guides/modele-pv-cse-gratuit',
       },
-      { label: 'Mentions Obligatoires du PV', href: '/atoopv/ressources/mentions-obligatoires-pv' },
-      {
-        label: 'Actualité Sociale',
-        href: '/atoopv/ressources/actualite-sociale',
-        children: [
-          { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
-          {
-            label: 'Jurisprudence sociale',
-            href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse',
-          },
-          { label: 'Veille juridique CSE', href: '/atoopv/ressources/veille-juridique-cse' },
-        ],
-      },
-      { label: 'Lire un arrêt de la Cour de cassation', href: '/atoopv/ressources/comment-lire-arret-cour-de-cassation' },
-      { label: 'La Minute CSE : le droit du CSE expliqué en vidéo', href: '/atoopv/ressources/la-minute-cse' },
+    },
+    mobileItems: [
+      { label: 'Autodiagnostic de votre CSE', href: '/atoopv/autodiagnostic' },
+      { label: 'Simulateur de budget PV', href: '/atoopv/tarification' },
+      { label: 'Modèles de PV', href: '/atoopv/ressources/modeles-pv' },
+      { label: 'Guides & abonnements', href: '/atoopv/ressources/guides-livres-blancs-cse' },
     ],
   },
-  { label: 'Tarification', href: '/atoopv/tarification' },
+  {
+    key: 'blog',
+    label: 'Blog',
+    href: '/atoopv/ressources',
+    color: 'purple',
+    mega: {
+      columns: [
+        {
+          heading: 'Rubriques',
+          items: [
+            { label: 'Actualité sociale', href: '/atoopv/ressources/actualite-sociale' },
+            { label: 'Jurisprudence', href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse' },
+            { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
+            { label: 'Veille sociale', href: '/atoopv/ressources/veille-juridique-cse' },
+          ],
+        },
+        {
+          heading: 'Le PV en pratique',
+          items: [
+            { label: 'Contenu obligatoire du PV', href: '/services/guides/pv-cse-contenu-obligatoire' },
+            { label: 'Délais, approbation, signature', href: '/services/guides/delai-pv-cse' },
+            { label: 'Synthétique ou intégral ?', href: '/services/guides/pv-cse-synthetique-ou-integral' },
+            { label: 'Délit d’entrave & code du travail', href: '/services/guides/pv-cse-delit-entrave' },
+          ],
+        },
+        {
+          heading: 'Le CSE en pratique',
+          items: [
+            { label: 'Droits & moyens des élus', href: '/atoopv/ressources/droits-elus-cse-guide-juridique' },
+            { label: 'Information-consultation & BDESE', href: '/services/guides/information-consultation-cse' },
+            { label: 'Réunions & fonctionnement', href: '/services/guides/reunion-extraordinaire-cse' },
+            { label: 'Comptes & contrôle URSSAF', href: '/atoopv/ressources' },
+          ],
+        },
+      ],
+      cities: {
+        heading: 'PV par ville',
+        label: 'Lyon · Paris · Marseille · Toulouse · Bordeaux · Nantes · Lille · Grenoble · Saint-Étienne · Clermont-Ferrand · Annecy',
+        linkLabel: 'Voir le hub des 11 villes',
+        href: '/services/by-city',
+      },
+    },
+    mobileItems: [
+      { label: 'Actualité sociale', href: '/atoopv/ressources/actualite-sociale' },
+      { label: 'Jurisprudence', href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse' },
+      { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
+      { label: 'Le PV en pratique', href: '/services/guides/pv-cse-contenu-obligatoire' },
+      { label: 'Le CSE en pratique', href: '/atoopv/ressources/droits-elus-cse-guide-juridique' },
+      { label: 'PV par ville', href: '/services/by-city' },
+    ],
+  },
   { label: 'À propos', href: '/atoopv/a-propos' },
-  { label: 'Autodiagnostic', href: '/atoopv/autodiagnostic' },
-  { label: 'AtooSavoir', href: '/atoopv/atoosavoir' },
 ]
+
+/** Mobile-only: kept as the burger menu's first row (see ATOOPV_NAV's own
+ * comment — desktop drops "Accueil" entirely, reached via the logo instead). */
+export const MOBILE_HOME_LINK = { label: 'Accueil', href: '/atoopv' }
+
+/** No /contact/ route exists in this app — every "Devis PV" / "Demander un
+ * devis" / "Nous contacter" CTA in the brief resolves to the closest
+ * existing equivalent, the quote/pricing page. */
+export const DEVIS_CTA_HREF = '/atoopv/tarification'
+
+/** Full desktop top-level order: Story (unchanged, Astera-only) followed by
+ * the six ATOOPV entries. Mobile renders MOBILE_HOME_LINK first, then this
+ * same array — see Navbar.jsx. */
+export const NAV_LINKS = [STORY_NAV, ...ATOOPV_NAV]
 
 // The animated "journey" a conversation takes through Astera.
 export const JOURNEY = [
