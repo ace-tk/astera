@@ -8,7 +8,7 @@ import { env } from '../config/env.js'
  */
 export function attachSocket(httpServer) {
   const io = new Server(httpServer, {
-    cors: { origin: env.clientUrl, methods: ['GET', 'POST'] },
+    cors: { origin: env.clientUrls, methods: ['GET', 'POST'] },
   })
 
   io.on('connection', (socket) => {

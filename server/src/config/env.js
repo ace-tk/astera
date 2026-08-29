@@ -15,7 +15,22 @@ const INSECURE_DEFAULT = 'dev-insecure-secret-change-me'
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().int().positive().default(5050),
-  CLIENT_URL: z.string().url().default('http://localhost:5173'),
+  // Comma-separated allowlist of frontend origins (e.g. the Vercel prod URL
+  // plus a staging/custom domain). Each entry must be a valid URL — no
+  // wildcards. A trailing slash on any entry is tolerated and stripped.
+  CLIENT_URL: z
+    .string()
+    .default('http://localhost:5173')
+    .refine(
+      (s) => s.split(',').map((u) => u.trim()).filter(Boolean).every((u) => {
+        try {
+          return Boolean(new URL(u))
+        } catch {
+          return false
+        }
+      }),
+      { message: 'CLIENT_URL must be a comma-separated list of valid URLs' },
+    ),
   MONGODB_URI: z.string().min(1).default('mongodb://127.0.0.1:27017/astera'),
   JWT_SECRET: z
     .string()
@@ -46,10 +61,18 @@ if (!parsed.success) {
 
 const e = parsed.data
 
+// Parsed once: the full CORS allowlist (order preserved, trailing slashes
+// stripped so it matches the browser's Origin header exactly) plus a single
+// "primary" URL for building outbound links (verification/reset emails etc).
+const clientUrls = e.CLIENT_URL.split(',')
+  .map((u) => u.trim().replace(/\/+$/, ''))
+  .filter(Boolean)
+
 export const env = {
   nodeEnv: e.NODE_ENV,
   port: e.PORT,
-  clientUrl: e.CLIENT_URL,
+  clientUrl: clientUrls[0],
+  clientUrls,
   mongoUri: e.MONGODB_URI,
   jwtSecret: e.JWT_SECRET,
   jwtExpiresIn: e.JWT_EXPIRES_IN,
