@@ -108,19 +108,39 @@ export default function UploadStudio() {
     setPhase('processing')
     setStage(0)
 
-    // Best-effort real-time progress: the backend emits a `report:stage` event
-    // per pipeline step. If the socket can't connect, the upload still completes
-    // and we advance on the request lifecycle — no fake timers either way.
+    // Live real-time progress: the backend emits a `report:stage` event per
+    // pipeline step, and also persists the current stage against `jobId` (see
+    // GET /reports/progress/:jobId) so that if the socket drops and
+    // reconnects mid-upload, we resync instead of losing stages. The upload
+    // itself never depends on the socket either way — it's driven by the
+    // request lifecycle below regardless of realtime delivery.
+    const jobId = crypto.randomUUID()
+    let connectedOnce = false
     try {
       const socket = io(config.socketUrl, {
         auth: { userId: user?.id },
-        transports: ['websocket', 'polling'],
+        path: config.socketPath,
+        transports: ['websocket'], // Socket.IO's long-polling handshake isn't reliable across serverless instances
+      })
+      socket.on('connect', async () => {
+        if (!connectedOnce) {
+          connectedOnce = true
+          return
+        }
+        // Reconnected mid-upload — recover whatever stage(s) we missed while disconnected.
+        try {
+          const { status } = await api.get(`/reports/progress/${jobId}`)
+          const idx = STAGE_INDEX[status?.stage]
+          if (idx != null) setStage((cur) => Math.max(cur, idx))
+        } catch {
+          /* recovery is best-effort — the request lifecycle still drives completion */
+        }
       })
       socket.on('report:stage', ({ stage: s }) => {
         const idx = STAGE_INDEX[s]
         if (idx != null) setStage((cur) => Math.max(cur, idx))
       })
-      socket.on('connect_error', () => {}) // progress is optional; swallow
+      socket.on('connect_error', () => {}) // a dropped connection still auto-reconnects; nothing to do here
       socketRef.current = socket
     } catch {
       /* progress is best-effort */
@@ -130,6 +150,7 @@ export default function UploadStudio() {
       const form = new FormData()
       form.append('media', f) // backend reads the transcript text server-side
       form.append('title', name.replace(/\.[^.]+$/, ''))
+      form.append('jobId', jobId)
       const { report } = await api.post('/reports', form)
       setStage(STAGES.length) // mark every stage complete
       socketRef.current?.disconnect()

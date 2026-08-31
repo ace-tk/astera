@@ -3,7 +3,7 @@ import multer from 'multer'
 import { asyncHandler, requireAuth, requireAdmin } from '../middleware/index.js'
 import { signup, login, me, verifyEmail, resendVerification } from '../controllers/authController.js'
 import { updateMe } from '../controllers/userController.js'
-import { listReports, getReport, createReport, updateReport, deleteReport } from '../controllers/reportController.js'
+import { listReports, getReport, createReport, updateReport, deleteReport, getProgress } from '../controllers/reportController.js'
 import * as admin from '../controllers/adminController.js'
 import * as reportRequests from '../controllers/reportRequestController.js'
 import * as customers from '../controllers/customerController.js'
@@ -41,6 +41,10 @@ router.post('/auth/resend-verification', asyncHandler(resendVerification))
 // Reports — every route is owner-scoped and REQUIRES auth. Demo data lives on
 // the client; the API only ever serves a user their own persisted reports.
 router.get('/reports', requireAuth, asyncHandler(listReports))
+// Reconnect recovery for the live upload progress bar — registered before
+// "/reports/:id" for clarity, though the extra path segment means there's no
+// actual ambiguity between the two (unlike the bulk-status/:id case below).
+router.get('/reports/progress/:jobId', requireAuth, asyncHandler(getProgress))
 router.get('/reports/:id', requireAuth, asyncHandler(getReport))
 router.post('/reports', requireAuth, uploadMedia, asyncHandler(createReport))
 router.patch('/reports/:id', requireAuth, asyncHandler(updateReport))

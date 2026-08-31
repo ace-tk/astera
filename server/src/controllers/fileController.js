@@ -6,6 +6,7 @@ import { User } from '../models/User.js'
 import { deleteAttachment } from '../services/attachments.js'
 import { logActivity } from '../models/ActivityLog.js'
 import { runReportIngestPipeline } from './reportController.js'
+import { recordStage } from '../services/processingStatus.js'
 import { REPORT_TYPES } from '../constants.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
@@ -312,6 +313,7 @@ export async function bulkDeleteFiles(req, res) {
 const uploadSchema = z.object({
   customerId: z.string().refine((v) => mongoose.isValidObjectId(v), 'Select a valid customer'),
   title: z.string().max(160).optional(),
+  jobId: z.string().uuid().optional(),
 })
 
 /**
@@ -328,16 +330,23 @@ export async function uploadFileForCustomer(req, res) {
 
   const io = req.app.get('io')
   const room = `user:${customer._id}`
-  const emit = (stage) => io?.to(room).emit('report:stage', { stage })
+  const { jobId } = parsed.data
+  await recordStage(jobId, customer._id, 'queued') // awaited once, up front — see processingStatus.js
+  const emit = (stage) => {
+    io?.to(room).emit('report:stage', { stage })
+    recordStage(jobId, customer._id, stage)
+  }
 
   let report
   try {
     report = await runReportIngestPipeline({ file: req.file, title: parsed.data.title, ownerId: customer._id, emit })
   } catch (err) {
+    recordStage(jobId, customer._id, 'error', { error: err.publicMessage || 'Processing failed' })
     return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
   }
 
   io?.to(room).emit('report:ready', { id: report.slug })
+  recordStage(jobId, customer._id, 'ready', { reportId: report._id })
   logActivity(customer._id, 'report_uploaded', req.adminUser?.name || 'Admin', { reportId: report._id, title: report.title })
   await report.populate('owner', 'name email')
   res.status(201).json({ file: reportToFile(report) })

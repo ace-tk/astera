@@ -106,7 +106,7 @@ async function transcribeAudio(buffer, onStage) {
   onStage?.('transcript') // "Transcribing"
   const { DeepgramClient } = await import('@deepgram/sdk')
   const dg = new DeepgramClient({ apiKey: env.deepgramKey })
-  const run = (opts) => withTimeout(dg.listen.v1.media.transcribeFile(buffer, opts), 180_000, 'Transcription')
+  const run = (opts) => withTimeout(dg.listen.v1.media.transcribeFile(buffer, opts), env.transcriptionTimeoutMs, 'Transcription')
 
   let result
   try {

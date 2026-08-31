@@ -48,6 +48,21 @@ const schema = z.object({
   // emails). Optional — the mailer logs instead of sending when unset.
   RESEND_API_KEY: z.string().optional().default(''),
   MAIL_FROM: z.string().optional().default('Astera <onboarding@resend.dev>'),
+  // Deepgram transcription timeout. Vercel Hobby (with Fluid Compute) caps a
+  // function invocation at 300s — this default (170s) restores close to the
+  // original 180s allowance while leaving ~130s of headroom in the same
+  // invocation for receiving the upload, building the analysis, and writing
+  // the report. Raise it on a plan with a higher maxDuration (Pro: up to
+  // 800s GA / 1800s beta) and update vercel.json's functions.maxDuration to
+  // match — the two must stay consistent.
+  TRANSCRIPTION_TIMEOUT_MS: z.coerce.number().int().positive().default(170_000),
+  // Vercel Marketplace Redis (or any Redis) used ONLY for Socket.IO's
+  // cross-instance pub/sub — never for application data. Required in
+  // production for `report:stage`/`report:ready` events to reliably reach a
+  // client whose WebSocket landed on a different function instance than the
+  // one processing the upload; optional in development (falls back to
+  // same-instance-only delivery, which is fine for a single local process).
+  REDIS_URL: z.string().optional().default(''),
 })
 
 const parsed = schema.safeParse(process.env)
@@ -81,6 +96,8 @@ export const env = {
   adminEmails: e.ADMIN_EMAILS.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean),
   resendApiKey: e.RESEND_API_KEY,
   mailFrom: e.MAIL_FROM,
+  transcriptionTimeoutMs: e.TRANSCRIPTION_TIMEOUT_MS,
+  redisUrl: e.REDIS_URL,
   isProd,
 }
 

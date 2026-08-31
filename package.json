@@ -1,0 +1,8 @@
+{
+  "name": "astera",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "20.x"
+  }
+}

@@ -5,6 +5,7 @@ import { generateReport } from '../services/intelligence.js'
 import { ingestFile } from '../services/ingest.js'
 import { buildMeetingAnalysis } from '../services/analysis.js'
 import { logActivity } from '../models/ActivityLog.js'
+import { recordStage, getStage } from '../services/processingStatus.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 const needDB = (res) => {
@@ -74,6 +75,10 @@ const createSchema = z.object({
   subtitle: z.string().max(160).optional(),
   duration: z.string().optional(),
   transcript: z.string().optional(),
+  // Client-generated id (crypto.randomUUID()) for this upload. Optional —
+  // when present, the current stage is persisted against it so a client
+  // whose WebSocket reconnects mid-upload can recover via getProgress below.
+  jobId: z.string().uuid().optional(),
 })
 
 /**
@@ -186,18 +191,38 @@ export async function createReport(req, res) {
 
   const io = req.app.get('io')
   const room = `user:${req.userId}`
-  const emit = (stage) => io?.to(room).emit('report:stage', { stage })
+  const { jobId } = parsed.data
+  await recordStage(jobId, req.userId, 'queued') // awaited once, up front — see processingStatus.js
+  const emit = (stage) => {
+    io?.to(room).emit('report:stage', { stage })
+    recordStage(jobId, req.userId, stage)
+  }
 
   let report
   try {
     report = await runReportIngestPipeline({ ...parsed.data, file: req.file, ownerId: req.userId, emit })
   } catch (err) {
+    recordStage(jobId, req.userId, 'error', { error: err.publicMessage || 'Processing failed' })
     return res.status(err.status || 422).json({ error: err.publicMessage || 'We couldn’t process that file.' })
   }
 
   io?.to(room).emit('report:ready', { id: report.slug })
+  recordStage(jobId, req.userId, 'ready', { reportId: report._id })
   logActivity(req.userId, 'report_uploaded', 'Customer', { reportId: report._id, title: report.title })
   res.status(201).json({ report: withCustomerView(report) })
+}
+
+/**
+ * Recovery endpoint for a WebSocket that dropped mid-upload — returns the
+ * last known stage for a job so the client can resync its progress bar
+ * instead of silently losing stages. Owner-scoped: a job's status is only
+ * readable by the user who started it.
+ */
+export async function getProgress(req, res) {
+  if (needDB(res)) return
+  const status = await getStage(req.params.jobId, req.userId)
+  if (!status) return res.status(404).json({ error: 'No processing status found for that job' })
+  res.json({ status: { stage: status.stage, reportId: status.reportId || null, error: status.error || null } })
 }
 
 const updateSchema = z.object({
