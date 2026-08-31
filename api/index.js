@@ -11,6 +11,17 @@ import { attachSocket } from '../server/src/services/socket.js'
 // by the test suite — no routes, auth, or business logic are duplicated or
 // reimplemented here.
 //
+// Deliberately a concrete filename, not a bracket-named dynamic/catch-all
+// route (e.g. api/[...path].js). Verified via `vercel build`'s generated
+// .vercel/output/config.json: for a plain (non-Next.js) project, Vercel's
+// builder interprets `[...path]` as a SINGLE path segment ([^/]+), not a
+// multi-segment catch-all, and auto-generates a routing rule that hard-404s
+// any nested path (e.g. /api/auth/login) before the function ever runs. All
+// of /api/* is instead routed here explicitly via vercel.json's rewrite
+// ("/api/(.*)" -> "/api"), which preserves the original request path/method
+// so Express (routes/index.js) does its own internal dispatch exactly as it
+// always has — no routing logic is duplicated here.
+//
 // Requires Fluid Compute (see vercel.json's "fluid": true, and a project
 // created before 2025-04-23 where it isn't already the default) and a Redis
 // connection (REDIS_URL) for report:stage/report:ready events to reliably
