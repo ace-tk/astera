@@ -1,0 +1,27 @@
+/*
+  Styles scoped to the /design-test lab. Everything lives under `.design-test`
+  so nothing here can leak into the rest of ATOOPV — this page is an isolated
+  experiment, not a redesign.
+*/
+
+.design-test .dt-viewport {
+  height: 100vh;
+  height: 100svh;
+}
+
+.design-test .dt-blueprint-grid {
+  background-image: linear-gradient(rgb(var(--line) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.design-test .dt-hairline {
+  background: rgb(var(--line) / 0.12);
+}
+
+.design-test .dt-no-scrollbar {
+  scrollbar-width: none;
+}
+.design-test .dt-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

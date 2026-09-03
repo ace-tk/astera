@@ -25,6 +25,7 @@ const AtoosavoirExemple = lazy(() => import('@/pages/atoopv/AtoosavoirExemple'))
 const AtoosavoirCgv = lazy(() => import('@/pages/atoopv/AtoosavoirCgv'))
 const RessourceArticle = lazy(() => import('@/pages/ressources/RessourceArticle'))
 const VeilleJuridique = lazy(() => import('@/pages/ressources/VeilleJuridique'))
+const DesignTest = lazy(() => import('@/pages/DesignTest'))
 const Services = lazy(() => import('@/pages/Services'))
 const ServiceCategoryLayout = lazy(() => import('@/components/services/ServiceCategoryLayout'))
 const ServiceArticle = lazy(() => import('@/pages/services/ServiceArticle'))
@@ -124,6 +125,7 @@ export default function App() {
               <Route path="veille-juridique-cse" element={<VeilleJuridique />} />
               <Route path=":slug" element={<RessourceArticle />} />
             </Route>
+            <Route path="/design-test" element={<DesignTest />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/drafting" element={<ServiceCategoryLayout />}>
               <Route index element={<ServiceArticle category="drafting" slug="nos-services-pv" />} />
