@@ -14,19 +14,21 @@ import {
 
 const EASE = [0.16, 1, 0.3, 1]
 
-// Shared timeline: A (scatter, 0–0.42) → B (labels/links fade over the tail
-// of A) → C (0.42–0.68 move to grouped columns, hold to 0.78) → D (0.78–1
-// converge into the document). Every motion value below reads off this same
-// clock, so the whole scene stays perfectly in sync as one continuous
-// scroll-driven transform — no per-fragment React state.
+// Shared timeline: A (scatter, held 0–0.42) → B (labels/links fade in over
+// the tail of A and stay through C) → C (0.42–0.68 drift into loose
+// thematic clusters — rotation eases down but never fully straightens,
+// hold to 0.78 so the "relationships visible" moment can breathe) → D
+// (0.78–1 converge into the document). Every motion value below reads off
+// this same clock, so the whole scene stays in sync as one continuous
+// scroll-driven transform — no per-fragment React state. Deliberately never
+// resolves into a grid: this is a collage that reorganizes, not a table.
 const CP = [0, 0.22, 0.42, 0.68, 0.78, 1]
-const posSeg = (scatter, grouped, center) => [scatter, scatter, scatter, grouped, grouped, center].map((v) => `${v}%`)
-const rotSeg = (scatter) => [scatter, scatter, scatter, 0, 0, 0]
-const SCALE_SEG = [1, 1, 1, 1, 1, 0.32]
+const posSeg = (scatter, organized, center) => [scatter, scatter, scatter, organized, organized, center].map((v) => `${v}%`)
+const rotSeg = (scatter, organized) => [scatter, scatter, scatter, organized, organized, 0]
+const SCALE_SEG = [1, 1, 1, 1, 1, 0.34]
 const FRAGMENT_OPACITY_CP = [0, 0.78, 0.95, 1]
 const FRAGMENT_OPACITY_OUT = [1, 1, 0, 0]
-const LABEL_WINDOW = [0.18, 0.3, 0.38, 0.44]
-const GROUP_WINDOW = [0.62, 0.72, 0.9, 0.98]
+const LABEL_WINDOW = [0.18, 0.3, 0.72, 0.82]
 const IN_OUT = [0, 1, 1, 0]
 
 // Framer Motion owns the whole `transform` property once any of its
@@ -36,10 +38,18 @@ const IN_OUT = [0, 1, 1, 0]
 // fold that centering back into Framer's own generated transform string.
 const centerTransform = (_props, generated) => `translate(-50%, -50%) ${generated}`
 
+// Quotes carry a full sentence and read as the "primary" fragments — wider.
+// Tag fragments (a decision, a vote, a name) are short — compact by design,
+// not just a smaller version of the same card.
+const FRAGMENT_WIDTH = {
+  quote: 'w-[13.5rem] sm:w-[16rem] lg:w-[21rem]',
+  tag: 'w-[9.5rem] sm:w-[11.5rem] lg:w-[14.5rem]',
+}
+
 function Fragment({ fragment, progress }) {
-  const x = useTransform(progress, CP, posSeg(fragment.scatter.x, fragment.grouped.x, 50))
-  const y = useTransform(progress, CP, posSeg(fragment.scatter.y, fragment.grouped.y, 50))
-  const rotate = useTransform(progress, CP, rotSeg(fragment.scatter.rotate))
+  const x = useTransform(progress, CP, posSeg(fragment.scatter.x, fragment.organized.x, 50))
+  const y = useTransform(progress, CP, posSeg(fragment.scatter.y, fragment.organized.y, 50))
+  const rotate = useTransform(progress, CP, rotSeg(fragment.scatter.rotate, fragment.organized.rotate))
   const scale = useTransform(progress, CP, SCALE_SEG)
   const opacity = useTransform(progress, FRAGMENT_OPACITY_CP, FRAGMENT_OPACITY_OUT)
   const tagOpacity = useTransform(progress, LABEL_WINDOW, IN_OUT)
@@ -48,13 +58,13 @@ function Fragment({ fragment, progress }) {
     <motion.div
       style={{ left: x, top: y, rotate, scale, opacity }}
       transformTemplate={centerTransform}
-      className="absolute w-32 rounded-lg border border-ink/10 bg-card p-3 shadow-soft sm:w-52 sm:p-4 lg:w-56"
+      className={`absolute rounded-lg border border-ink/10 bg-card p-4 shadow-soft ${FRAGMENT_WIDTH[fragment.kind]}`}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50">{fragment.role}</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50 sm:text-[11px]">{fragment.role}</span>
         <motion.span
           style={{ opacity: tagOpacity }}
-          className="rounded-full border border-accent/40 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.12em] text-accent"
+          className="shrink-0 rounded-full border border-accent/40 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.12em] text-accent"
         >
           {fragment.tag}
         </motion.span>
@@ -62,8 +72,8 @@ function Fragment({ fragment, progress }) {
       <p
         className={
           fragment.kind === 'quote'
-            ? 'mt-2 text-sm italic leading-snug text-ink sm:text-base'
-            : 'mt-2 font-display text-lg text-ink sm:text-xl'
+            ? 'mt-2.5 text-sm italic leading-snug text-ink sm:text-base lg:text-lg'
+            : 'mt-2.5 font-display text-lg text-ink sm:text-xl lg:text-2xl'
         }
       >
         {fragment.kind === 'quote' ? `« ${fragment.text} »` : fragment.text}
@@ -88,19 +98,32 @@ function LinkLine({ from, to, progress }) {
   )
 }
 
-function GroupHeader({ group, progress }) {
-  const opacity = useTransform(progress, GROUP_WINDOW, IN_OUT)
+// The document's own content, pulled from the same fragments that just
+// converged into it — the PV visibly inherits what the cards said, rather
+// than displaying unrelated placeholder copy.
+const DOCUMENT_ROWS = [
+  { label: 'Décisions', fragmentId: 'decision' },
+  { label: 'Actions', fragmentId: 'action2' },
+  { label: 'Responsable', fragmentId: 'owner' },
+  { label: 'Vote', fragmentId: 'vote' },
+]
+
+function DocumentRow({ label, text, index, progress }) {
+  const start = 0.8 + index * 0.03
+  const opacity = useTransform(progress, [start, start + 0.04], [0, 1])
+  const y = useTransform(progress, [start, start + 0.04], [8, 0])
   return (
-    <motion.div style={{ left: `${group.x}%`, opacity }} className="absolute top-[6%] -translate-x-1/2 text-center">
-      <TechnicalLabel dot={false}>{group.label}</TechnicalLabel>
+    <motion.div style={{ opacity, y }} className="flex items-baseline justify-between gap-4 py-2.5">
+      <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:text-[11px]">{label}</span>
+      <span className="text-right font-display text-sm text-ink sm:text-base lg:text-lg">{text}</span>
     </motion.div>
   )
 }
 
 function AnnotationRow({ label, index, progress }) {
-  const start = 0.88 + index * 0.03
-  const opacity = useTransform(progress, [start, start + 0.03], [0, 1])
-  const x = useTransform(progress, [start, start + 0.03], [-8, 0])
+  const start = 0.92 + index * 0.02
+  const opacity = useTransform(progress, [start, start + 0.02], [0, 1])
+  const x = useTransform(progress, [start, start + 0.02], [-8, 0])
   return (
     <motion.div style={{ opacity, x }} className="flex items-center gap-2 font-mono text-[11px] text-muted">
       <span className="text-emerald">✓</span> {label}
@@ -109,22 +132,23 @@ function AnnotationRow({ label, index, progress }) {
 }
 
 function DocumentReveal({ progress }) {
-  const scale = useTransform(progress, [0.76, 0.95], [0.35, 1])
-  const opacity = useTransform(progress, [0.76, 0.9], [0, 1])
+  const scale = useTransform(progress, [0.74, 0.94], [0.32, 1])
+  const opacity = useTransform(progress, [0.74, 0.88], [0, 1])
   return (
     <motion.div
       style={{ scale, opacity }}
       transformTemplate={centerTransform}
-      className="absolute left-1/2 top-1/2 w-[min(92%,25rem)] rounded-xl border border-ink/10 bg-card p-6 shadow-float sm:w-[min(78%,30rem)] sm:p-7 lg:w-[34rem] lg:p-8"
+      className="absolute left-1/2 top-1/2 w-[min(92%,27rem)] rounded-xl border border-ink/10 bg-card p-6 shadow-float sm:w-[min(82%,34rem)] sm:p-7 lg:w-[40rem] lg:p-9"
     >
       <div className="flex items-center justify-between border-b border-ink/10 pb-3">
         <TechnicalLabel dot={false}>PROCÈS-VERBAL</TechnicalLabel>
         <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
       </div>
-      <div className="mt-4 space-y-2.5">
-        <div className="h-2.5 w-3/4 rounded-full bg-ink/10" />
-        <div className="h-2.5 w-full rounded-full bg-ink/10" />
-        <div className="h-2.5 w-5/6 rounded-full bg-ink/10" />
+      <div className="mt-2 divide-y divide-ink/10">
+        {DOCUMENT_ROWS.map((row, i) => {
+          const fragment = CONNECTED_FRAGMENTS.find((f) => f.id === row.fragmentId)
+          return <DocumentRow key={row.label} label={row.label} text={fragment.text} index={i} progress={progress} />
+        })}
       </div>
       <div className="mt-5 flex flex-col gap-2 border-t border-ink/10 pt-4">
         {CONNECTED_ANNOTATIONS.map((label, i) => (
@@ -136,8 +160,9 @@ function DocumentReveal({ progress }) {
 }
 
 /**
- * The full four-phase choreography: conversation fragments scatter, ATOOPV
- * classifies and links them, they organize into three columns, then
+ * The full four-phase choreography: conversation fragments scatter with
+ * overlap and rotation, ATOOPV classifies and links them, they drift into
+ * loose thematic clusters (rotation eased down, never a grid), then
  * converge — shrinking and fading right where the document card grows in —
  * so the cards read as becoming the document rather than an unrelated
  * cross-fade. One pinned section, one shared scroll progress value driving
@@ -170,7 +195,7 @@ function ConnectedDocumentScroll() {
               className="mb-6 lg:mb-8"
             />
 
-            <div className="relative min-h-0 flex-1 overflow-hidden lg:min-h-[28rem]">
+            <div className="relative min-h-0 flex-1 overflow-hidden lg:min-h-[32rem]">
               <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                 {CONNECTED_LINKS.map(([fromId, toId]) => {
                   const from = CONNECTED_FRAGMENTS.find((f) => f.id === fromId)
@@ -178,10 +203,6 @@ function ConnectedDocumentScroll() {
                   return <LinkLine key={`${fromId}-${toId}`} from={from} to={to} progress={scrollYProgress} />
                 })}
               </svg>
-
-              {CONNECTED_GROUPS.map((group) => (
-                <GroupHeader key={group.id} group={group} progress={scrollYProgress} />
-              ))}
 
               {CONNECTED_FRAGMENTS.map((fragment) => (
                 <Fragment key={fragment.id} fragment={fragment} progress={scrollYProgress} />

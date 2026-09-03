@@ -126,12 +126,15 @@ export const ORCHESTRATED_PANELS = [
 ]
 
 /**
- * Experiment 06's four-phase scroll story: fragments scatter (A), ATOOPV
- * labels/links them (B), they organize into three columns (C), then
- * converge into the assembled document (D). `scatter` and `grouped` are
- * percent-of-canvas positions the fragment travels between; the final
- * convergence point is shared (the document's own center), computed in
- * the component rather than duplicated per fragment.
+ * Experiment 06's four-phase scroll story: fragments scatter with overlap
+ * and rotation (A), ATOOPV labels/links them (B), they drift into loose
+ * thematic clusters — rotation reduced, not eliminated; still an editorial
+ * collage, never a grid (C) — then converge into the assembled document
+ * (D). `scatter` and `organized` are percent-of-canvas positions + rotation
+ * the fragment travels between; the final convergence point (the
+ * document's own center) is shared, computed in the component rather than
+ * duplicated per fragment. `group` is used only by the reduced-motion
+ * static fallback, which groups fragments into three plain columns.
  */
 export const CONNECTED_PHASES = ['CONVERSATION', 'COMPRÉHENSION', 'STRUCTURE', 'DOCUMENT']
 
@@ -143,8 +146,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Il faut confirmer le budget avant vendredi.',
     tag: 'DISCUSSION',
     group: 'discussion',
-    scatter: { x: 14, y: 20, rotate: -6 },
-    grouped: { x: 25, y: 22 },
+    scatter: { x: 10, y: 14, rotate: -7 },
+    organized: { x: 20, y: 26, rotate: -3 },
   },
   {
     id: 'tresorier',
@@ -153,8 +156,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Le montant reste à valider.',
     tag: 'RISQUE',
     group: 'discussion',
-    scatter: { x: 60, y: 12, rotate: 5 },
-    grouped: { x: 25, y: 48 },
+    scatter: { x: 64, y: 8, rotate: 6 },
+    organized: { x: 30, y: 54, rotate: 2 },
   },
   {
     id: 'secretaire',
@@ -163,8 +166,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Je peux envoyer le document demain.',
     tag: 'ACTION',
     group: 'actions',
-    scatter: { x: 78, y: 30, rotate: -4 },
-    grouped: { x: 75, y: 22 },
+    scatter: { x: 88, y: 32, rotate: -5 },
+    organized: { x: 76, y: 24, rotate: -2 },
   },
   {
     id: 'decision',
@@ -173,8 +176,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Budget approuvé',
     tag: 'DÉCISION',
     group: 'decisions',
-    scatter: { x: 30, y: 46, rotate: 4 },
-    grouped: { x: 50, y: 24 },
+    scatter: { x: 32, y: 44, rotate: 5 },
+    organized: { x: 50, y: 18, rotate: 3 },
   },
   {
     id: 'owner',
@@ -183,8 +186,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Julie — suivi budget',
     tag: 'OWNER',
     group: 'actions',
-    scatter: { x: 8, y: 62, rotate: -3 },
-    grouped: { x: 75, y: 46 },
+    scatter: { x: 6, y: 64, rotate: -4 },
+    organized: { x: 72, y: 56, rotate: -3 },
   },
   {
     id: 'vote',
@@ -193,8 +196,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Adopté à l’unanimité',
     tag: 'VOTE',
     group: 'decisions',
-    scatter: { x: 64, y: 58, rotate: 6 },
-    grouped: { x: 50, y: 48 },
+    scatter: { x: 68, y: 62, rotate: 6 },
+    organized: { x: 52, y: 48, rotate: 2 },
   },
   {
     id: 'action2',
@@ -203,8 +206,8 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Relance fournisseur lundi',
     tag: 'ACTION',
     group: 'actions',
-    scatter: { x: 42, y: 72, rotate: -5 },
-    grouped: { x: 75, y: 70 },
+    scatter: { x: 44, y: 80, rotate: -6 },
+    organized: { x: 64, y: 76, rotate: -2 },
   },
 ]
 
