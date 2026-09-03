@@ -232,6 +232,9 @@ export const ATOOPV_NAV = [
     ],
   },
   { label: 'À propos', href: '/atoopv/a-propos' },
+  // TEMPORARY — client-facing design showcase link; remove once the review
+  // round is done and any adopted directions have shipped to the real site.
+  { label: 'Design Test', href: '/design-test' },
 ]
 
 /** Mobile-only: kept as the burger menu's first row (see ATOOPV_NAV's own
