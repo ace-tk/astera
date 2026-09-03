@@ -15,6 +15,14 @@ export const LAB_META = {
   year: '2026',
 }
 
+/**
+ * `layout` is the scroll choreography target for Experiment 01: where the
+ * numeral + content pair sit on the canvas (percent of the pinned viewport's
+ * free area) and how dominant the numeral is at that stage. Positions trace
+ * a deliberate architectural path — rising left-to-right, a "review" dip
+ * back down for Validation, then settling dominant and centered for the
+ * final Procès-verbal — rather than staying in one fixed template.
+ */
 export const STRUCTURED_STAGES = [
   {
     id: 'reunion',
@@ -22,6 +30,7 @@ export const STRUCTURED_STAGES = [
     name: 'Réunion',
     meta: 'SOURCE / AUDIO + VIDÉO',
     description: 'La conversation brute, captée dans son intégralité — rien ne se perd.',
+    layout: { numX: 6, numY: 46, scale: 0.95, contentX: 6, contentY: 70, width: '20rem' },
   },
   {
     id: 'transcription',
@@ -29,6 +38,7 @@ export const STRUCTURED_STAGES = [
     name: 'Transcription',
     meta: 'PROCESS / SPEECH-TO-TEXT',
     description: 'Chaque intervention posée, horodatée et attribuée au bon interlocuteur.',
+    layout: { numX: 26, numY: 26, scale: 1.0, contentX: 26, contentY: 50, width: '20rem' },
   },
   {
     id: 'analyse',
@@ -36,6 +46,7 @@ export const STRUCTURED_STAGES = [
     name: 'Analyse',
     meta: 'PROCESS / EXTRACTION',
     description: 'Les décisions, actions et points clés extraits du bruit conversationnel.',
+    layout: { numX: 46, numY: 10, scale: 1.02, contentX: 46, contentY: 34, width: '20rem' },
   },
   {
     id: 'validation',
@@ -43,6 +54,7 @@ export const STRUCTURED_STAGES = [
     name: 'Validation',
     meta: 'CHECK / RELECTURE',
     description: 'Relecture, ajustements et vérification avant diffusion.',
+    layout: { numX: 26, numY: 46, scale: 0.96, contentX: 26, contentY: 70, width: '20rem' },
   },
   {
     id: 'proces-verbal',
@@ -50,6 +62,7 @@ export const STRUCTURED_STAGES = [
     name: 'Procès-verbal',
     meta: 'OUTPUT / DOCUMENT FINAL',
     description: 'Le document final, structuré et prêt à être partagé.',
+    layout: { numX: 56, numY: 22, scale: 1.18, contentX: 56, contentY: 46, width: '23rem' },
   },
 ]
 
@@ -105,21 +118,112 @@ export const TYPOGRAPHY_WORDS = {
 }
 
 export const ORCHESTRATED_PANELS = [
-  { number: '01', title: 'Capturer', description: "L'audio et la vidéo saisis intégralement, sans perte.", accent: 'royal' },
-  { number: '02', title: 'Transcrire', description: 'Chaque mot posé et attribué au bon interlocuteur.', accent: 'coral' },
-  { number: '03', title: 'Comprendre', description: 'Le sens extrait au-delà du simple texte.', accent: 'golden' },
-  { number: '04', title: 'Valider', description: 'Une vérification rapide avant diffusion.', accent: 'emerald' },
-  { number: '05', title: 'Livrer', description: 'Le procès-verbal, prêt à être partagé.', accent: 'sky' },
+  { number: '01', title: 'Capturer', description: "L'audio et la vidéo saisis intégralement, sans perte.", accent: 'royal', visual: 'waveform' },
+  { number: '02', title: 'Transcrire', description: 'Chaque mot posé et attribué au bon interlocuteur.', accent: 'coral', visual: 'transcript' },
+  { number: '03', title: 'Comprendre', description: 'Le sens extrait au-delà du simple texte.', accent: 'golden', visual: 'connect' },
+  { number: '04', title: 'Valider', description: 'Une vérification rapide avant diffusion.', accent: 'emerald', visual: 'check' },
+  { number: '05', title: 'Livrer', description: 'Le procès-verbal, prêt à être partagé.', accent: 'sky', visual: 'deliver' },
 ]
+
+/**
+ * Experiment 06's four-phase scroll story: fragments scatter (A), ATOOPV
+ * labels/links them (B), they organize into three columns (C), then
+ * converge into the assembled document (D). `scatter` and `grouped` are
+ * percent-of-canvas positions the fragment travels between; the final
+ * convergence point is shared (the document's own center), computed in
+ * the component rather than duplicated per fragment.
+ */
+export const CONNECTED_PHASES = ['CONVERSATION', 'COMPRÉHENSION', 'STRUCTURE', 'DOCUMENT']
 
 export const CONNECTED_FRAGMENTS = [
-  { id: 'president', role: 'PRÉSIDENT', text: 'Il faut confirmer le budget avant vendredi.', kind: 'quote', x: -90, y: -50, rotate: -7 },
-  { id: 'secretaire', role: 'SECRÉTAIRE', text: 'La prochaine action revient à Julie.', kind: 'quote', x: 100, y: 10, rotate: 5 },
-  { id: 'decision', role: 'DÉCISION', text: 'Approuvé', kind: 'tag', x: -70, y: 90, rotate: 4 },
-  { id: 'action', role: 'ACTION', text: 'Suivi requis', kind: 'tag', x: 80, y: -80, rotate: -5 },
+  {
+    id: 'president',
+    role: 'PRÉSIDENT',
+    kind: 'quote',
+    text: 'Il faut confirmer le budget avant vendredi.',
+    tag: 'DISCUSSION',
+    group: 'discussion',
+    scatter: { x: 14, y: 20, rotate: -6 },
+    grouped: { x: 25, y: 22 },
+  },
+  {
+    id: 'tresorier',
+    role: 'TRÉSORIER',
+    kind: 'quote',
+    text: 'Le montant reste à valider.',
+    tag: 'RISQUE',
+    group: 'discussion',
+    scatter: { x: 60, y: 12, rotate: 5 },
+    grouped: { x: 25, y: 48 },
+  },
+  {
+    id: 'secretaire',
+    role: 'SECRÉTAIRE',
+    kind: 'quote',
+    text: 'Je peux envoyer le document demain.',
+    tag: 'ACTION',
+    group: 'actions',
+    scatter: { x: 78, y: 30, rotate: -4 },
+    grouped: { x: 75, y: 22 },
+  },
+  {
+    id: 'decision',
+    role: 'DÉCISION',
+    kind: 'tag',
+    text: 'Budget approuvé',
+    tag: 'DÉCISION',
+    group: 'decisions',
+    scatter: { x: 30, y: 46, rotate: 4 },
+    grouped: { x: 50, y: 24 },
+  },
+  {
+    id: 'owner',
+    role: 'RESPONSABLE',
+    kind: 'tag',
+    text: 'Julie — suivi budget',
+    tag: 'OWNER',
+    group: 'actions',
+    scatter: { x: 8, y: 62, rotate: -3 },
+    grouped: { x: 75, y: 46 },
+  },
+  {
+    id: 'vote',
+    role: 'VOTE',
+    kind: 'tag',
+    text: 'Adopté à l’unanimité',
+    tag: 'VOTE',
+    group: 'decisions',
+    scatter: { x: 64, y: 58, rotate: 6 },
+    grouped: { x: 50, y: 48 },
+  },
+  {
+    id: 'action2',
+    role: 'ACTION',
+    kind: 'tag',
+    text: 'Relance fournisseur lundi',
+    tag: 'ACTION',
+    group: 'actions',
+    scatter: { x: 42, y: 72, rotate: -5 },
+    grouped: { x: 75, y: 70 },
+  },
 ]
 
-export const CONNECTED_TEASER = ['CONVERSATION BRUTE', 'INTELLIGENCE STRUCTURÉE', 'PROCÈS-VERBAL']
+export const CONNECTED_GROUPS = [
+  { id: 'discussion', label: 'DISCUSSION', x: 25 },
+  { id: 'decisions', label: 'DÉCISIONS', x: 50 },
+  { id: 'actions', label: 'ACTIONS', x: 75 },
+]
+
+// Which fragments visually connect during the "understanding" phase.
+export const CONNECTED_LINKS = [
+  ['president', 'decision'],
+  ['tresorier', 'vote'],
+  ['secretaire', 'action2'],
+]
+
+export const CONNECTED_ANNOTATIONS = ['Décisions détectées', 'Actions assignées', 'Participants identifiés', 'Résumé généré']
+
+export const CONNECTED_STATEMENT = ['74 minutes de conversation.', 'Un document clair.']
 
 export const EXPERIMENTS = [
   { id: 'experiment-01', number: '01', label: 'Structured Intelligence' },
