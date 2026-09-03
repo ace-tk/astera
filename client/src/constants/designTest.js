@@ -117,6 +117,29 @@ export const TYPOGRAPHY_WORDS = {
   ],
 }
 
+/**
+ * Experiment 04's closing scroll moment: scattered transcript words drift
+ * toward the center and resolve into two structured results — language
+ * becoming intelligence, in the same visual grammar as Experiment 06's
+ * fragments converging into a document (position/scale/opacity only).
+ */
+export const KINETIC_WORDS = [
+  { text: 'budget', x: 12, y: 20, rotate: -6 },
+  { text: 'vendredi', x: 78, y: 14, rotate: 5 },
+  { text: 'validation', x: 46, y: 8, rotate: -3 },
+  { text: 'président', x: 8, y: 62, rotate: 4 },
+  { text: 'document', x: 84, y: 58, rotate: -5 },
+  { text: 'vote', x: 30, y: 80, rotate: 6 },
+  { text: 'Marie', x: 62, y: 78, rotate: -4 },
+  { text: 'envoyer', x: 20, y: 42, rotate: 3 },
+  { text: 'décision', x: 68, y: 36, rotate: -2 },
+]
+
+export const KINETIC_RESULTS = [
+  { label: 'DÉCISION', text: 'Budget validé.', x: 32 },
+  { label: 'ACTION', text: 'Marie envoie le document vendredi.', x: 68 },
+]
+
 export const ORCHESTRATED_PANELS = [
   { number: '01', title: 'Capturer', description: "L'audio et la vidéo saisis intégralement, sans perte.", accent: 'royal', visual: 'waveform' },
   { number: '02', title: 'Transcrire', description: 'Chaque mot posé et attribué au bon interlocuteur.', accent: 'coral', visual: 'transcript' },
@@ -227,6 +250,8 @@ export const CONNECTED_LINKS = [
 export const CONNECTED_ANNOTATIONS = ['Décisions détectées', 'Actions assignées', 'Participants identifiés', 'Résumé généré']
 
 export const CONNECTED_STATEMENT = ['74 minutes de conversation.', 'Un document clair.']
+
+export const OUTRO_STATEMENT = ['CONVERSATION', 'BECOMES', 'STRUCTURE.']
 
 export const EXPERIMENTS = [
   { id: 'experiment-01', number: '01', label: 'Structured Intelligence' },

@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 import DesignTestIntro from '@/components/design-test/DesignTestIntro'
+import DesignTestOutro from '@/components/design-test/DesignTestOutro'
 import ExperimentNavigator from '@/components/design-test/ExperimentNavigator'
+import SectionSeam from '@/components/design-test/primitives/SectionSeam'
 import StructuredIntelligence from '@/components/design-test/experiments/StructuredIntelligence'
 import LivingBlueprint from '@/components/design-test/experiments/LivingBlueprint'
 import EditorialProcess from '@/components/design-test/experiments/EditorialProcess'
@@ -44,11 +46,17 @@ export default function DesignTest() {
     <main className="design-test relative bg-paper text-ink">
       <DesignTestIntro />
       <StructuredIntelligence />
+      <SectionSeam from="01" to="02" variant="number" />
       <LivingBlueprint />
+      <SectionSeam from="02" to="03" variant="grid" />
       <EditorialProcess />
+      <SectionSeam from="03" to="04" variant="number" />
       <TypographySystem />
+      <SectionSeam from="04" to="05" variant="grid" />
       <OrchestratedCards />
+      <SectionSeam from="05" to="06" variant="number" />
       <ConnectedDocument />
+      <DesignTestOutro />
       <ExperimentNavigator />
     </main>
   )

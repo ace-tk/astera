@@ -1,11 +1,24 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
 import ExperimentHeader from '../primitives/ExperimentHeader'
 import TechnicalLabel from '../primitives/TechnicalLabel'
+import CursorCoordinates from '../primitives/CursorCoordinates'
 import { BLUEPRINT_NODES } from '@/constants/designTest'
 
 const EASE = [0.16, 1, 0.3, 1]
+
+// Each node arrives from a small off-grid jitter and settles exactly on its
+// coordinate — "off-grid, then snapped to grid" rather than simply fading
+// in already aligned. Alternating so neighbours don't arrive identically.
+const NODE_JITTER = [
+  { x: -16, y: 12 },
+  { x: 14, y: -14 },
+  { x: -12, y: -12 },
+  { x: 16, y: 14 },
+  { x: -14, y: 10 },
+  { x: 12, y: -12 },
+]
 
 /**
  * An interactive technical diagram, not a flowchart: nodes sit on a
@@ -16,6 +29,7 @@ const EASE = [0.16, 1, 0.3, 1]
  */
 export default function LivingBlueprint() {
   const [hovered, setHovered] = useState(null)
+  const diagramRef = useRef(null)
   const hoveredIndex = hovered ? BLUEPRINT_NODES.findIndex((n) => n.id === hovered) : -1
   const activeNode = hoveredIndex >= 0 ? BLUEPRINT_NODES[hoveredIndex] : null
 
@@ -26,7 +40,8 @@ export default function LivingBlueprint() {
       <div className="shell relative">
         <ExperimentHeader index="02" eyebrow="SYSTEM / 02" titleLines={['LIVING', 'BLUEPRINT']} className="mb-14 sm:mb-20" />
 
-        <div className="relative h-[26rem] sm:h-[30rem] lg:h-[34rem]">
+        <div ref={diagramRef} className="relative h-[26rem] sm:h-[30rem] lg:h-[34rem]">
+          <CursorCoordinates containerRef={diagramRef} />
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
             {BLUEPRINT_NODES.slice(0, -1).map((node, i) => {
               const next = BLUEPRINT_NODES[i + 1]
@@ -63,10 +78,10 @@ export default function LivingBlueprint() {
                 onMouseLeave={() => setHovered((h) => (h === node.id ? null : h))}
                 onFocus={() => setHovered(node.id)}
                 onBlur={() => setHovered((h) => (h === node.id ? null : h))}
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
+                initial={{ scale: 0, opacity: 0, x: NODE_JITTER[i].x, y: NODE_JITTER[i].y }}
+                whileInView={{ scale: 1, opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: 0.5 + i * 0.12, ease: EASE }}
+                transition={{ duration: 0.6, delay: 0.5 + i * 0.12, ease: EASE }}
                 aria-label={`${node.label} — ${node.note}`}
                 className={clsx(
                   'flex h-3.5 w-3.5 items-center justify-center rounded-full border transition-colors duration-300',

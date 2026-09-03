@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent, 
 import ExperimentHeader from '../primitives/ExperimentHeader'
 import TechnicalLabel from '../primitives/TechnicalLabel'
 import TechnicalGrid from '../primitives/TechnicalGrid'
+import { centerTransform } from '../primitives/centerTransform'
 import {
   CONNECTED_FRAGMENTS,
   CONNECTED_GROUPS,
@@ -30,13 +31,6 @@ const FRAGMENT_OPACITY_CP = [0, 0.78, 0.95, 1]
 const FRAGMENT_OPACITY_OUT = [1, 1, 0, 0]
 const LABEL_WINDOW = [0.18, 0.3, 0.72, 0.82]
 const IN_OUT = [0, 1, 1, 0]
-
-// Framer Motion owns the whole `transform` property once any of its
-// transform props (rotate, scale, x, y…) are animated via `style` — it
-// silently drops Tailwind's `-translate-x/y-1/2` centering classes rather
-// than composing with them. `transformTemplate` is the documented way to
-// fold that centering back into Framer's own generated transform string.
-const centerTransform = (_props, generated) => `translate(-50%, -50%) ${generated}`
 
 // Quotes carry a full sentence and read as the "primary" fragments — wider.
 // Tag fragments (a decision, a vote, a name) are short — compact by design,
@@ -131,6 +125,12 @@ function AnnotationRow({ label, index, progress }) {
   )
 }
 
+// Registration-mark corner ticks — a printed-document cue, kept graphic
+// (thin border strokes) rather than any photorealistic paper texture.
+function RegistrationMark({ className }) {
+  return <span className={`absolute h-2.5 w-2.5 border-ink/25 ${className}`} aria-hidden="true" />
+}
+
 function DocumentReveal({ progress }) {
   const scale = useTransform(progress, [0.74, 0.94], [0.32, 1])
   const opacity = useTransform(progress, [0.74, 0.88], [0, 1])
@@ -138,22 +138,37 @@ function DocumentReveal({ progress }) {
     <motion.div
       style={{ scale, opacity }}
       transformTemplate={centerTransform}
-      className="absolute left-1/2 top-1/2 w-[min(92%,27rem)] rounded-xl border border-ink/10 bg-card p-6 shadow-float sm:w-[min(82%,34rem)] sm:p-7 lg:w-[40rem] lg:p-9"
+      className="absolute left-1/2 top-1/2 w-[min(92%,27rem)] sm:w-[min(82%,34rem)] lg:w-[40rem]"
     >
-      <div className="flex items-center justify-between border-b border-ink/10 pb-3">
-        <TechnicalLabel dot={false}>PROCÈS-VERBAL</TechnicalLabel>
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
-      </div>
-      <div className="mt-2 divide-y divide-ink/10">
-        {DOCUMENT_ROWS.map((row, i) => {
-          const fragment = CONNECTED_FRAGMENTS.find((f) => f.id === row.fragmentId)
-          return <DocumentRow key={row.label} label={row.label} text={fragment.text} index={i} progress={progress} />
-        })}
-      </div>
-      <div className="mt-5 flex flex-col gap-2 border-t border-ink/10 pt-4">
-        {CONNECTED_ANNOTATIONS.map((label, i) => (
-          <AnnotationRow key={label} label={label} index={i} progress={progress} />
-        ))}
+      {/* A second sheet peeking out behind — the document reads as an
+          assembled artifact, not a single flat SaaS card. */}
+      <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-xl border border-ink/10 bg-card/70" aria-hidden="true" />
+
+      <div className="relative rounded-xl border border-ink/10 bg-card p-6 shadow-float sm:p-7 lg:p-9">
+        <RegistrationMark className="left-2 top-2 border-l border-t" />
+        <RegistrationMark className="right-2 top-2 border-r border-t" />
+        <RegistrationMark className="bottom-2 left-2 border-b border-l" />
+        <RegistrationMark className="bottom-2 right-2 border-b border-r" />
+
+        <div className="flex items-center justify-between border-b border-ink/10 pb-3">
+          <TechnicalLabel dot={false}>PROCÈS-VERBAL</TechnicalLabel>
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
+        </div>
+        <div className="mt-2 divide-y divide-ink/10">
+          {DOCUMENT_ROWS.map((row, i) => {
+            const fragment = CONNECTED_FRAGMENTS.find((f) => f.id === row.fragmentId)
+            return <DocumentRow key={row.label} label={row.label} text={fragment.text} index={i} progress={progress} />
+          })}
+        </div>
+        <div className="mt-5 flex flex-col gap-2 border-t border-ink/10 pt-4">
+          {CONNECTED_ANNOTATIONS.map((label, i) => (
+            <AnnotationRow key={label} label={label} index={i} progress={progress} />
+          ))}
+        </div>
+        <div className="mt-5 flex items-center justify-between border-t border-ink/10 pt-3 font-mono text-[9px] uppercase tracking-[0.16em] text-muted/50">
+          <span>ATOOPV / PV-2026-001</span>
+          <span>PAGE 1 / 1</span>
+        </div>
       </div>
     </motion.div>
   )

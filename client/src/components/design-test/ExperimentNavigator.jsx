@@ -52,8 +52,8 @@ export default function ExperimentNavigator() {
             aria-current={isActive}
             aria-label={`Aller à l'expérience ${exp.number} — ${exp.label}`}
             className={clsx(
-              'relative flex h-6 w-6 items-center justify-center transition-colors duration-300',
-              isActive ? 'text-ink' : 'text-muted/40 hover:text-muted',
+              'group relative flex h-6 w-6 items-center justify-center transition-all duration-300',
+              isActive ? 'scale-110 font-semibold text-ink' : 'text-muted/40 hover:text-muted',
             )}
           >
             <span
@@ -64,6 +64,12 @@ export default function ExperimentNavigator() {
               aria-hidden="true"
             />
             {exp.number}
+            <span
+              className="pointer-events-none absolute right-full top-1/2 hidden -translate-y-1/2 whitespace-nowrap pr-3 font-mono text-[10px] normal-case tracking-[0.08em] text-muted opacity-0 transition-opacity duration-200 group-hover:opacity-100 lg:block"
+              aria-hidden="true"
+            >
+              {exp.label}
+            </span>
           </button>
         )
       })}
