@@ -36,7 +36,12 @@ function useIsDesktop(breakpoint = 1024) {
 //   0.85–1.00 CONVERGE    — each card travels toward its own place in the document
 // Position/rotation/scale are transform-only and derived with useTransform,
 // so nothing here triggers a React re-render as the user scrolls.
-const CP = [0, 0.18, 0.35, 0.7, 0.85, 1]
+// The initial STACKED hold is deliberately brief (4%, not the 18% this
+// shipped with) — measured with a live debug overlay, 18% of a 440vh
+// section is ~713px of scroll that produces zero visible movement, which
+// is well within a single normal scroll gesture. Users were reasonably
+// concluding the section was frozen. Every other boundary is untouched.
+const CP = [0, 0.04, 0.35, 0.7, 0.85, 1]
 const posSeg = (stacked, readable, organized, converge) => [stacked, stacked, readable, readable, organized, converge].map((v) => `${v}%`)
 const rotSeg = (stacked, readable) => [stacked, stacked, readable, readable, 0, 0]
 const SCALE_SEG = [1, 1, 1, 1, 1, 0.34]
@@ -201,7 +206,7 @@ function DocumentReveal({ progress }) {
   )
 }
 
-const PHASE_THRESHOLDS = [0.18, 0.35, 0.52, 0.7, 0.85]
+const PHASE_THRESHOLDS = [0.04, 0.35, 0.52, 0.7, 0.85]
 
 /**
  * The full six-state choreography (stacked → separating → readable →
