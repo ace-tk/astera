@@ -149,17 +149,24 @@ export const ORCHESTRATED_PANELS = [
 ]
 
 /**
- * Experiment 06's four-phase scroll story: fragments scatter with overlap
- * and rotation (A), ATOOPV labels/links them (B), they drift into loose
- * thematic clusters — rotation reduced, not eliminated; still an editorial
- * collage, never a grid (C) — then converge into the assembled document
- * (D). `scatter` and `organized` are percent-of-canvas positions + rotation
- * the fragment travels between; the final convergence point (the
- * document's own center) is shared, computed in the component rather than
- * duplicated per fragment. `group` is used only by the reduced-motion
- * static fallback, which groups fragments into three plain columns.
+ * Experiment 06's six-state scroll story, one waypoint set per fragment:
+ *
+ *   stacked   — a loose central pile (state 1: raw, chaotic conversation)
+ *   readable  — an editorial two-row spread where every card can be read
+ *               at once (state 3); `readableMobile` is the vertical-list
+ *               equivalent for narrow screens, reused for BOTH the
+ *               "readable" and "organized" states there (see the brief's
+ *               simplified mobile sequence — it merges those two beats)
+ *   organized — thematic clusters, rotation settled to 0 (state 5)
+ *   converge  — where the card visually travels into the assembled
+ *               document (state 6): the two discussion quotes head for the
+ *               summary area above the fields, each semantic card for
+ *               roughly where its own field row sits
+ *
+ * `group` is used only by the reduced-motion static fallback, which
+ * groups fragments into three plain columns instead of animating them.
  */
-export const CONNECTED_PHASES = ['CONVERSATION', 'COMPRÉHENSION', 'STRUCTURE', 'DOCUMENT']
+export const CONNECTED_PHASES = ['CONVERSATION', 'SÉPARATION', 'LECTURE', 'COMPRÉHENSION', 'STRUCTURE', 'DOCUMENT']
 
 export const CONNECTED_FRAGMENTS = [
   {
@@ -169,8 +176,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Il faut confirmer le budget avant vendredi.',
     tag: 'DISCUSSION',
     group: 'discussion',
-    scatter: { x: 10, y: 14, rotate: -7 },
-    organized: { x: 20, y: 26, rotate: -3 },
+    stacked: { x: 42, y: 40, rotate: -8 },
+    readable: { x: 14, y: 30, rotate: 2 },
+    readableMobile: { x: 50, y: 4, rotate: 0 },
+    organized: { x: 20, y: 26, rotate: 0 },
+    converge: { x: 50, y: 34 },
   },
   {
     id: 'tresorier',
@@ -179,8 +189,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Le montant reste à valider.',
     tag: 'RISQUE',
     group: 'discussion',
-    scatter: { x: 64, y: 8, rotate: 6 },
-    organized: { x: 30, y: 54, rotate: 2 },
+    stacked: { x: 58, y: 35, rotate: 6 },
+    readable: { x: 38, y: 30, rotate: -2 },
+    readableMobile: { x: 50, y: 18, rotate: 0 },
+    organized: { x: 30, y: 54, rotate: 0 },
+    converge: { x: 50, y: 38 },
   },
   {
     id: 'secretaire',
@@ -189,8 +202,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Je peux envoyer le document demain.',
     tag: 'ACTION',
     group: 'actions',
-    scatter: { x: 88, y: 32, rotate: -5 },
-    organized: { x: 76, y: 24, rotate: -2 },
+    stacked: { x: 54, y: 58, rotate: -5 },
+    readable: { x: 22, y: 62, rotate: -2 },
+    readableMobile: { x: 50, y: 32, rotate: 0 },
+    organized: { x: 76, y: 24, rotate: 0 },
+    converge: { x: 50, y: 48 },
   },
   {
     id: 'decision',
@@ -199,8 +215,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Budget approuvé',
     tag: 'DÉCISION',
     group: 'decisions',
-    scatter: { x: 32, y: 44, rotate: 5 },
-    organized: { x: 50, y: 18, rotate: 3 },
+    stacked: { x: 38, y: 55, rotate: 5 },
+    readable: { x: 62, y: 30, rotate: 2 },
+    readableMobile: { x: 50, y: 46, rotate: 0 },
+    organized: { x: 50, y: 18, rotate: 0 },
+    converge: { x: 50, y: 44 },
   },
   {
     id: 'owner',
@@ -209,8 +228,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Julie — suivi budget',
     tag: 'OWNER',
     group: 'actions',
-    scatter: { x: 6, y: 64, rotate: -4 },
-    organized: { x: 72, y: 56, rotate: -3 },
+    stacked: { x: 46, y: 48, rotate: -4 },
+    readable: { x: 50, y: 62, rotate: 2 },
+    readableMobile: { x: 50, y: 60, rotate: 0 },
+    organized: { x: 72, y: 56, rotate: 0 },
+    converge: { x: 50, y: 52 },
   },
   {
     id: 'vote',
@@ -219,8 +241,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Adopté à l’unanimité',
     tag: 'VOTE',
     group: 'decisions',
-    scatter: { x: 68, y: 62, rotate: 6 },
-    organized: { x: 52, y: 48, rotate: 2 },
+    stacked: { x: 62, y: 50, rotate: 7 },
+    readable: { x: 78, y: 62, rotate: -2 },
+    readableMobile: { x: 50, y: 74, rotate: 0 },
+    organized: { x: 52, y: 48, rotate: 0 },
+    converge: { x: 50, y: 56 },
   },
   {
     id: 'action2',
@@ -229,8 +254,11 @@ export const CONNECTED_FRAGMENTS = [
     text: 'Relance fournisseur lundi',
     tag: 'ACTION',
     group: 'actions',
-    scatter: { x: 44, y: 80, rotate: -6 },
-    organized: { x: 64, y: 76, rotate: -2 },
+    stacked: { x: 50, y: 62, rotate: -6 },
+    readable: { x: 86, y: 30, rotate: -2 },
+    readableMobile: { x: 50, y: 90, rotate: 0 },
+    organized: { x: 64, y: 76, rotate: 0 },
+    converge: { x: 50, y: 48 },
   },
 ]
 

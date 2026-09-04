@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent, useReducedMotion } from 'framer-motion'
 import ExperimentHeader from '../primitives/ExperimentHeader'
 import TechnicalLabel from '../primitives/TechnicalLabel'
@@ -15,35 +15,59 @@ import {
 
 const EASE = [0.16, 1, 0.3, 1]
 
-// Shared timeline: A (scatter, held 0–0.42) → B (labels/links fade in over
-// the tail of A and stay through C) → C (0.42–0.68 drift into loose
-// thematic clusters — rotation eases down but never fully straightens,
-// hold to 0.78 so the "relationships visible" moment can breathe) → D
-// (0.78–1 converge into the document). Every motion value below reads off
-// this same clock, so the whole scene stays in sync as one continuous
-// scroll-driven transform — no per-fragment React state. Deliberately never
-// resolves into a grid: this is a collage that reorganizes, not a table.
-const CP = [0, 0.22, 0.42, 0.68, 0.78, 1]
-const posSeg = (scatter, organized, center) => [scatter, scatter, scatter, organized, organized, center].map((v) => `${v}%`)
-const rotSeg = (scatter, organized) => [scatter, scatter, scatter, organized, organized, 0]
+function useIsDesktop(breakpoint = 1024) {
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' && window.innerWidth >= breakpoint)
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${breakpoint}px)`)
+    const onChange = () => setIsDesktop(mq.matches)
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [breakpoint])
+  return isDesktop
+}
+
+// Six states, one shared clock every motion value below reads from:
+//   0.00–0.18 STACKED     — a loose central pile (untouched raw conversation)
+//   0.18–0.35 SEPARATING  — the pile visibly unfolds (interpolated, no waypoint of its own)
+//   0.35–0.70 READABLE    — an editorial spread; holds here through...
+//   ...0.52–0.70          — CLASSIFICATION: same positions, tags/links switch on
+//   0.70–0.85 ORGANIZED   — thematic clusters, rotation settles to 0
+//   0.85–1.00 CONVERGE    — each card travels toward its own place in the document
+// Position/rotation/scale are transform-only and derived with useTransform,
+// so nothing here triggers a React re-render as the user scrolls.
+const CP = [0, 0.18, 0.35, 0.7, 0.85, 1]
+const posSeg = (stacked, readable, organized, converge) => [stacked, stacked, readable, readable, organized, converge].map((v) => `${v}%`)
+const rotSeg = (stacked, readable) => [stacked, stacked, readable, readable, 0, 0]
 const SCALE_SEG = [1, 1, 1, 1, 1, 0.34]
-const FRAGMENT_OPACITY_CP = [0, 0.78, 0.95, 1]
+const FRAGMENT_OPACITY_CP = [0, 0.85, 0.97, 1]
 const FRAGMENT_OPACITY_OUT = [1, 1, 0, 0]
-const LABEL_WINDOW = [0.18, 0.3, 0.72, 0.82]
+const LABEL_WINDOW = [0.48, 0.56, 0.8, 0.86]
 const IN_OUT = [0, 1, 1, 0]
 
 // Quotes carry a full sentence and read as the "primary" fragments — wider.
 // Tag fragments (a decision, a vote, a name) are short — compact by design,
 // not just a smaller version of the same card.
 const FRAGMENT_WIDTH = {
-  quote: 'w-[13.5rem] sm:w-[16rem] lg:w-[21rem]',
-  tag: 'w-[9.5rem] sm:w-[11.5rem] lg:w-[14.5rem]',
+  quote: 'w-[15rem] sm:w-[16rem] lg:w-[21rem]',
+  tag: 'w-[11rem] sm:w-[11.5rem] lg:w-[14.5rem]',
 }
 
-function Fragment({ fragment, progress }) {
-  const x = useTransform(progress, CP, posSeg(fragment.scatter.x, fragment.organized.x, 50))
-  const y = useTransform(progress, CP, posSeg(fragment.scatter.y, fragment.organized.y, 50))
-  const rotate = useTransform(progress, CP, rotSeg(fragment.scatter.rotate, fragment.organized.rotate))
+// Below `sm`, seven full multi-line cards can't fit non-overlapping in one
+// pinned mobile screen (measured: 90–136px tall each vs. ~500px of canvas) —
+// so mobile content is a single truncated line. From `sm` up there's room,
+// and the full sentence returns exactly as on desktop.
+const TRUNCATE_MOBILE = 'overflow-hidden text-ellipsis whitespace-nowrap sm:overflow-visible sm:whitespace-normal'
+
+function Fragment({ fragment, progress, isDesktop }) {
+  const readable = isDesktop ? fragment.readable : fragment.readableMobile
+  // Mobile has no distinct "organized" beat (the brief merges it with
+  // "readable" there), so the vertical list simply holds in place.
+  const organized = isDesktop ? fragment.organized : readable
+
+  const x = useTransform(progress, CP, posSeg(fragment.stacked.x, readable.x, organized.x, fragment.converge.x))
+  const y = useTransform(progress, CP, posSeg(fragment.stacked.y, readable.y, organized.y, fragment.converge.y))
+  const rotate = useTransform(progress, CP, rotSeg(fragment.stacked.rotate, readable.rotate))
   const scale = useTransform(progress, CP, SCALE_SEG)
   const opacity = useTransform(progress, FRAGMENT_OPACITY_CP, FRAGMENT_OPACITY_OUT)
   const tagOpacity = useTransform(progress, LABEL_WINDOW, IN_OUT)
@@ -52,7 +76,7 @@ function Fragment({ fragment, progress }) {
     <motion.div
       style={{ left: x, top: y, rotate, scale, opacity }}
       transformTemplate={centerTransform}
-      className={`absolute rounded-lg border border-ink/10 bg-card p-4 shadow-soft ${FRAGMENT_WIDTH[fragment.kind]}`}
+      className={`absolute rounded-lg border border-ink/10 bg-card p-3 shadow-soft sm:p-4 ${FRAGMENT_WIDTH[fragment.kind]}`}
     >
       <div className="flex items-center justify-between gap-2">
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50 sm:text-[11px]">{fragment.role}</span>
@@ -66,8 +90,8 @@ function Fragment({ fragment, progress }) {
       <p
         className={
           fragment.kind === 'quote'
-            ? 'mt-2.5 text-sm italic leading-snug text-ink sm:text-base lg:text-lg'
-            : 'mt-2.5 font-display text-lg text-ink sm:text-xl lg:text-2xl'
+            ? `mt-2 text-sm italic leading-snug text-ink sm:mt-2.5 sm:text-base lg:text-lg ${TRUNCATE_MOBILE}`
+            : `mt-2 font-display text-base text-ink sm:mt-2.5 sm:text-xl lg:text-2xl ${TRUNCATE_MOBILE}`
         }
       >
         {fragment.kind === 'quote' ? `« ${fragment.text} »` : fragment.text}
@@ -76,14 +100,17 @@ function Fragment({ fragment, progress }) {
   )
 }
 
+// Desktop only — connects fragments at their READABLE spread position (the
+// moment they're linked is the moment they're laid out and legible, not
+// while still buried in the opening pile).
 function LinkLine({ from, to, progress }) {
   const opacity = useTransform(progress, LABEL_WINDOW, IN_OUT)
   return (
     <motion.line
-      x1={from.scatter.x}
-      y1={from.scatter.y}
-      x2={to.scatter.x}
-      y2={to.scatter.y}
+      x1={from.readable.x}
+      y1={from.readable.y}
+      x2={to.readable.x}
+      y2={to.readable.y}
       stroke="rgb(var(--accent) / 0.4)"
       strokeWidth={0.25}
       vectorEffect="non-scaling-stroke"
@@ -103,9 +130,9 @@ const DOCUMENT_ROWS = [
 ]
 
 function DocumentRow({ label, text, index, progress }) {
-  const start = 0.8 + index * 0.03
-  const opacity = useTransform(progress, [start, start + 0.04], [0, 1])
-  const y = useTransform(progress, [start, start + 0.04], [8, 0])
+  const start = 0.87 + index * 0.025
+  const opacity = useTransform(progress, [start, start + 0.03], [0, 1])
+  const y = useTransform(progress, [start, start + 0.03], [8, 0])
   return (
     <motion.div style={{ opacity, y }} className="flex items-baseline justify-between gap-4 py-2.5">
       <span className="shrink-0 font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:text-[11px]">{label}</span>
@@ -115,9 +142,9 @@ function DocumentRow({ label, text, index, progress }) {
 }
 
 function AnnotationRow({ label, index, progress }) {
-  const start = 0.92 + index * 0.02
-  const opacity = useTransform(progress, [start, start + 0.02], [0, 1])
-  const x = useTransform(progress, [start, start + 0.02], [-8, 0])
+  const start = 0.955 + index * 0.011
+  const opacity = useTransform(progress, [start, start + 0.011], [0, 1])
+  const x = useTransform(progress, [start, start + 0.011], [-8, 0])
   return (
     <motion.div style={{ opacity, x }} className="flex items-center gap-2 font-mono text-[11px] text-muted">
       <span className="text-emerald">✓</span> {label}
@@ -132,8 +159,8 @@ function RegistrationMark({ className }) {
 }
 
 function DocumentReveal({ progress }) {
-  const scale = useTransform(progress, [0.74, 0.94], [0.32, 1])
-  const opacity = useTransform(progress, [0.74, 0.88], [0, 1])
+  const scale = useTransform(progress, [0.83, 0.96], [0.32, 1])
+  const opacity = useTransform(progress, [0.83, 0.9], [0, 1])
   return (
     <motion.div
       style={{ scale, opacity }}
@@ -174,31 +201,32 @@ function DocumentReveal({ progress }) {
   )
 }
 
+const PHASE_THRESHOLDS = [0.18, 0.35, 0.52, 0.7, 0.85]
+
 /**
- * The full four-phase choreography: conversation fragments scatter with
- * overlap and rotation, ATOOPV classifies and links them, they drift into
- * loose thematic clusters (rotation eased down, never a grid), then
- * converge — shrinking and fading right where the document card grows in —
- * so the cards read as becoming the document rather than an unrelated
- * cross-fade. One pinned section, one shared scroll progress value driving
- * every motion value above.
+ * The full six-state choreography (stacked → separating → readable →
+ * classification → organized → converge). Conversation fragments open as a
+ * loose central pile, unfold into an editorial spread where every card can
+ * be read at once, show their semantic roles, drift into thematic
+ * clusters, then travel toward — and shrink into — the assembled document.
+ * One pinned section, one shared scroll progress value driving every
+ * motion value above; only the phase label and the desktop/mobile branch
+ * are React state, and both change only a handful of times per scroll.
  */
 function ConnectedDocumentScroll() {
   const sectionRef = useRef(null)
   const [phaseIndex, setPhaseIndex] = useState(0)
+  const isDesktop = useIsDesktop()
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    let idx = 0
-    if (v >= 0.78) idx = 3
-    else if (v >= 0.42) idx = 2
-    else if (v >= 0.18) idx = 1
+    const idx = PHASE_THRESHOLDS.filter((t) => v >= t).length
     setPhaseIndex((prev) => (prev === idx ? prev : idx))
   })
 
   return (
     <>
-      <section id="experiment-06" ref={sectionRef} className="relative" style={{ height: '380vh' }}>
+      <section id="experiment-06" ref={sectionRef} className="relative" style={{ height: '440vh' }}>
         <div className="dt-viewport sticky top-0 flex flex-col overflow-hidden bg-paper">
           <TechnicalGrid showTicks />
 
@@ -210,17 +238,19 @@ function ConnectedDocumentScroll() {
               className="mb-6 lg:mb-8"
             />
 
-            <div className="relative min-h-0 flex-1 overflow-hidden lg:min-h-[32rem]">
-              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                {CONNECTED_LINKS.map(([fromId, toId]) => {
-                  const from = CONNECTED_FRAGMENTS.find((f) => f.id === fromId)
-                  const to = CONNECTED_FRAGMENTS.find((f) => f.id === toId)
-                  return <LinkLine key={`${fromId}-${toId}`} from={from} to={to} progress={scrollYProgress} />
-                })}
-              </svg>
+            <div className="relative min-h-[24rem] flex-1 overflow-hidden lg:min-h-[32rem]">
+              {isDesktop && (
+                <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  {CONNECTED_LINKS.map(([fromId, toId]) => {
+                    const from = CONNECTED_FRAGMENTS.find((f) => f.id === fromId)
+                    const to = CONNECTED_FRAGMENTS.find((f) => f.id === toId)
+                    return <LinkLine key={`${fromId}-${toId}`} from={from} to={to} progress={scrollYProgress} />
+                  })}
+                </svg>
+              )}
 
               {CONNECTED_FRAGMENTS.map((fragment) => (
-                <Fragment key={fragment.id} fragment={fragment} progress={scrollYProgress} />
+                <Fragment key={fragment.id} fragment={fragment} progress={scrollYProgress} isDesktop={isDesktop} />
               ))}
 
               <DocumentReveal progress={scrollYProgress} />
@@ -232,7 +262,7 @@ function ConnectedDocumentScroll() {
                   key={CONNECTED_PHASES[phaseIndex]}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
+                  exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }}
                   transition={{ duration: 0.3 }}
                 >
                   PHASE / {CONNECTED_PHASES[phaseIndex]}
@@ -264,11 +294,11 @@ function ConnectedDocumentScroll() {
 }
 
 /**
- * Reduced-motion fallback: the same four-phase story told as a plain static
- * sequence — grouped fragments, then the assembled document with its
+ * Reduced-motion fallback: the same story simplified to its meaningful end
+ * states — grouped fragments, then the assembled document with its
  * annotations, then the closing line — with only gentle whileInView fades
  * (which Framer's reduced-motion handling collapses to an instant reveal).
- * No scroll-scrubbing, no scatter, no pinned section.
+ * No scroll-scrubbing, no six-state trajectory, no pinned section.
  */
 function ConnectedDocumentStatic() {
   return (
