@@ -66,13 +66,75 @@ export const STRUCTURED_STAGES = [
   },
 ]
 
+export const BLUEPRINT_META = {
+  tagline: 'IDEAS TO IMPACT. A CLEARER WAY FORWARD.',
+  description:
+    'From ideas to implementation — a living system that helps you capture, transcribe, understand, structure, validate and deliver.',
+}
+
+/**
+ * `accent` keys into the shared Tailwind color tokens (see tailwind.config.js)
+ * — chosen so the six-stage signal reads as one deliberate progression
+ * (blue → violet → green → amber → coral → cyan) rather than a random
+ * palette. `tagline` is the short architectural-annotation copy shown next
+ * to a node on hover/active; `note` (existing) stays the longer descriptive
+ * line shown in the bottom metadata bar.
+ */
 export const BLUEPRINT_NODES = [
-  { id: 'capture', label: 'CAPTURE', x: 0.08, y: 0.78, note: 'Audio et vidéo enregistrés sans perte de contexte.' },
-  { id: 'transcribe', label: 'TRANSCRIBE', x: 0.27, y: 0.28, note: 'Chaque mot transcrit et horodaté automatiquement.' },
-  { id: 'understand', label: 'UNDERSTAND', x: 0.46, y: 0.72, note: "Le sens et l'intention derrière chaque échange." },
-  { id: 'structure', label: 'STRUCTURE', x: 0.65, y: 0.24, note: 'Sections, décisions et actions organisées.' },
-  { id: 'validate', label: 'VALIDATE', x: 0.82, y: 0.7, note: 'Vérifié et conforme avant diffusion.' },
-  { id: 'deliver', label: 'DELIVER', x: 0.94, y: 0.22, note: 'Le PV livré, prêt à être partagé.' },
+  {
+    id: 'capture',
+    label: 'CAPTURE',
+    x: 0.08,
+    y: 0.78,
+    accent: 'royal',
+    tagline: 'Bring every conversation to life.',
+    note: 'Audio et vidéo enregistrés sans perte de contexte.',
+  },
+  {
+    id: 'transcribe',
+    label: 'TRANSCRIBE',
+    x: 0.27,
+    y: 0.28,
+    accent: 'purple',
+    tagline: 'Turn speech into structured content.',
+    note: 'Chaque mot transcrit et horodaté automatiquement.',
+  },
+  {
+    id: 'understand',
+    label: 'UNDERSTAND',
+    x: 0.46,
+    y: 0.72,
+    accent: 'emerald',
+    tagline: 'Find what matters, faster.',
+    note: "Le sens et l'intention derrière chaque échange.",
+  },
+  {
+    id: 'structure',
+    label: 'STRUCTURE',
+    x: 0.65,
+    y: 0.24,
+    accent: 'golden',
+    tagline: 'Organize ideas into clarity.',
+    note: 'Sections, décisions et actions organisées.',
+  },
+  {
+    id: 'validate',
+    label: 'VALIDATE',
+    x: 0.82,
+    y: 0.7,
+    accent: 'coral',
+    tagline: 'Ensure accuracy and compliance.',
+    note: 'Vérifié et conforme avant diffusion.',
+  },
+  {
+    id: 'deliver',
+    label: 'DELIVER',
+    x: 0.94,
+    y: 0.22,
+    accent: 'sky',
+    tagline: 'Turn insights into real change.',
+    note: 'Le PV livré, prêt à être partagé.',
+  },
 ]
 
 export const EDITORIAL_PROCESS_STAGES = [

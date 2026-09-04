@@ -44,6 +44,12 @@ export default function ExperimentNavigator() {
     >
       {EXPERIMENTS.map((exp) => {
         const isActive = active === exp.id
+        // Living Blueprint (02) is the one experiment with its own accent
+        // system; when it's active the navigator picks up a single, quiet
+        // nod to that system's "capture" blue — everything else here stays
+        // monochrome, and every other experiment's dot is unaffected.
+        const isBlueprint = exp.id === 'experiment-02'
+        const blueprintColor = isBlueprint && isActive ? 'rgb(var(--royal))' : undefined
         return (
           <button
             key={exp.id}
@@ -55,12 +61,14 @@ export default function ExperimentNavigator() {
               'group relative flex h-6 w-6 items-center justify-center transition-all duration-300',
               isActive ? 'scale-110 font-semibold text-ink' : 'text-muted/40 hover:text-muted',
             )}
+            style={blueprintColor ? { color: blueprintColor } : undefined}
           >
             <span
               className={clsx(
                 'absolute -left-2 hidden h-px bg-ink transition-all duration-300 lg:block',
                 isActive ? 'w-2 opacity-100' : 'w-0 opacity-0',
               )}
+              style={blueprintColor ? { backgroundColor: blueprintColor } : undefined}
               aria-hidden="true"
             />
             {exp.number}
