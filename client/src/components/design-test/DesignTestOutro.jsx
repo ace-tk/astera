@@ -45,7 +45,7 @@ export default function DesignTestOutro() {
         >
           <TechnicalLabel dot={false}>ATOOPV</TechnicalLabel>
           <TechnicalLabel dot={false}>{LAB_META.titleLines.join(' ')}</TechnicalLabel>
-          <TechnicalLabel dot={false}>06 / 06</TechnicalLabel>
+          <TechnicalLabel dot={false}>10 / 10</TechnicalLabel>
         </motion.div>
 
         <motion.button

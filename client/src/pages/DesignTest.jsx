@@ -11,6 +11,10 @@ import EditorialProcess from '@/components/design-test/experiments/EditorialProc
 import TypographySystem from '@/components/design-test/experiments/TypographySystem'
 import OrchestratedCards from '@/components/design-test/experiments/OrchestratedCards'
 import ConnectedDocument from '@/components/design-test/experiments/ConnectedDocument'
+import TrainingExplorer from '@/components/design-test/experiments/TrainingExplorer'
+import BlogTimeline from '@/components/design-test/experiments/BlogTimeline'
+import ComplianceBookShop from '@/components/design-test/experiments/ComplianceBookShop'
+import ReportPageFlip from '@/components/design-test/experiments/ReportPageFlip'
 import '@/styles/design-test.css'
 
 /**
@@ -56,6 +60,14 @@ export default function DesignTest() {
       <OrchestratedCards />
       <SectionSeam from="05" to="06" variant="number" />
       <ConnectedDocument />
+      <SectionSeam from="06" to="07" variant="grid" />
+      <TrainingExplorer />
+      <SectionSeam from="07" to="08" variant="number" />
+      <BlogTimeline />
+      <SectionSeam from="08" to="09" variant="grid" />
+      <ComplianceBookShop />
+      <SectionSeam from="09" to="10" variant="number" />
+      <ReportPageFlip />
       <DesignTestOutro />
       <ExperimentNavigator />
     </main>
