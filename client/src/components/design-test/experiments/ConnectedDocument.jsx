@@ -28,26 +28,33 @@ function useIsDesktop(breakpoint = 1024) {
 }
 
 // Six states, one shared clock every motion value below reads from:
-//   0.00–0.18 STACKED     — a loose central pile (untouched raw conversation)
-//   0.18–0.35 SEPARATING  — the pile visibly unfolds (interpolated, no waypoint of its own)
-//   0.35–0.70 READABLE    — an editorial spread; holds here through...
-//   ...0.52–0.70          — CLASSIFICATION: same positions, tags/links switch on
-//   0.70–0.85 ORGANIZED   — thematic clusters, rotation settles to 0
-//   0.85–1.00 CONVERGE    — each card travels toward its own place in the document
+//   0.00–0.04 STACKED     — a brief, tight central pile (raw conversation)
+//   0.04–0.28 SEPARATING  — the BIG move: cards fly outward to their spread
+//   0.28–0.68 READABLE    — holds position here through...
+//   ...0.48–0.68          — CLASSIFICATION: same positions, tags/links switch on
+//   0.68–0.84 ORGANIZED   — thematic clusters, rotation settles to 0
+//   0.84–1.00 CONVERGE    — each card travels toward its own place in the document
 // Position/rotation/scale are transform-only and derived with useTransform,
 // so nothing here triggers a React re-render as the user scrolls.
-// The initial STACKED hold is deliberately brief (4%, not the 18% this
-// shipped with) — measured with a live debug overlay, 18% of a 440vh
-// section is ~713px of scroll that produces zero visible movement, which
-// is well within a single normal scroll gesture. Users were reasonably
-// concluding the section was frozen. Every other boundary is untouched.
-const CP = [0, 0.04, 0.35, 0.7, 0.85, 1]
+//
+// The 0.04–0.28 window carries almost the entire perceptual weight of this
+// experiment: it's deliberately the single biggest, fastest-arriving move
+// in the whole sequence (see the stacked/readable waypoint amplitude in
+// constants/designTest.js — outer cards travel 300–500px on a 1440px
+// canvas), because a prior pass proved x/y values were changing correctly
+// but the actual pixel distance was too small to register as "the cards
+// are moving" to a real viewer. Distance, not opacity or rotation, is the
+// primary readable signal; the CP=0.04 dead-zone fix from the pass before
+// this one is preserved unchanged.
+const CP = [0, 0.04, 0.28, 0.68, 0.84, 1]
 const posSeg = (stacked, readable, organized, converge) => [stacked, stacked, readable, readable, organized, converge].map((v) => `${v}%`)
 const rotSeg = (stacked, readable) => [stacked, stacked, readable, readable, 0, 0]
-const SCALE_SEG = [1, 1, 1, 1, 1, 0.34]
-const FRAGMENT_OPACITY_CP = [0, 0.85, 0.97, 1]
+// A restrained supporting cue alongside the position move: cards settle
+// very slightly larger once spread out, then normalize before organizing.
+const SCALE_SEG = [0.94, 0.94, 1.04, 1.04, 1, 0.34]
+const FRAGMENT_OPACITY_CP = [0, 0.84, 0.96, 1]
 const FRAGMENT_OPACITY_OUT = [1, 1, 0, 0]
-const LABEL_WINDOW = [0.48, 0.56, 0.8, 0.86]
+const LABEL_WINDOW = [0.46, 0.54, 0.8, 0.88]
 const IN_OUT = [0, 1, 1, 0]
 
 // Quotes carry a full sentence and read as the "primary" fragments — wider.
@@ -164,8 +171,8 @@ function RegistrationMark({ className }) {
 }
 
 function DocumentReveal({ progress }) {
-  const scale = useTransform(progress, [0.83, 0.96], [0.32, 1])
-  const opacity = useTransform(progress, [0.83, 0.9], [0, 1])
+  const scale = useTransform(progress, [0.84, 0.96], [0.32, 1])
+  const opacity = useTransform(progress, [0.84, 0.9], [0, 1])
   return (
     <motion.div
       style={{ scale, opacity }}
@@ -206,7 +213,7 @@ function DocumentReveal({ progress }) {
   )
 }
 
-const PHASE_THRESHOLDS = [0.04, 0.35, 0.52, 0.7, 0.85]
+const PHASE_THRESHOLDS = [0.04, 0.28, 0.48, 0.68, 0.84]
 
 /**
  * The full six-state choreography (stacked → separating → readable →
