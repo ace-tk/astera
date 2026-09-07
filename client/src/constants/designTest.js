@@ -10,7 +10,7 @@ export const LAB_META = {
   eyebrow: 'ATOOPV / EXPERIMENTAL INTERFACE',
   titleLines: ['DESIGN &', 'MOTION LAB'],
   lead: 'Exploring new ways to transform meetings into structured intelligence.',
-  count: '12 EXPERIMENTS',
+  count: '13 EXPERIMENTS',
   scrollCue: 'SCROLL TO EXPLORE',
   year: '2026',
 }
@@ -356,6 +356,118 @@ export const EXPERIMENTS = [
   { id: 'experiment-10', number: '10', label: 'Report Page Flip' },
   { id: 'experiment-11', number: '11', label: 'Common Questions' },
   { id: 'experiment-12', number: '12', label: 'Interactive Library' },
+  { id: 'experiment-13', number: '13', label: 'Resource Library' },
+]
+
+/**
+ * Experiment 13 — a resource-platform app shell (icon rail + search +
+ * categories + carousel + featured/recommendations), modeled on a supplied
+ * reference screenshot. NOTE: the reference has no chat panel — kept
+ * strictly to what the screenshot actually shows. A third, independent
+ * book dataset (see Experiments 09 and 12 for the other two) so none of the
+ * three can affect each other.
+ */
+export const RESOURCE_CATEGORIES = [
+  { id: 'tous', label: 'Tous' },
+  { id: 'guides', label: 'Guides' },
+  { id: 'actualites', label: 'Actualités' },
+  { id: 'populaires', label: 'Populaires' },
+  { id: 'modeles', label: 'Modèles' },
+  { id: 'methodologie', label: 'Méthodologie' },
+  { id: 'dialogue', label: 'Dialogue social' },
+  { id: 'formation', label: 'Formation' },
+  { id: 'fiches', label: 'Fiches pratiques' },
+  { id: 'contentieux', label: 'Contentieux' },
+]
+
+export const RESOURCE_LIBRARY_BOOKS = [
+  {
+    id: 'guide-cse',
+    title: 'Guide du CSE',
+    author: 'ATOOPV Éditions',
+    accent: 'golden',
+    categories: ['guides', 'populaires'],
+    excerpt:
+      "Le CSE occupe une place centrale dans le dialogue social de l'entreprise. Ce guide retrace ses attributions économiques, sociales et culturelles.",
+  },
+  {
+    id: 'tresorier-cse',
+    title: 'Trésorier du CSE',
+    author: 'ATOOPV Éditions',
+    accent: 'emerald',
+    categories: ['guides', 'modeles'],
+    excerpt:
+      "Budget de fonctionnement, budget ASC, obligations comptables : les bases indispensables à une gestion saine et transparente.",
+  },
+  {
+    id: 'cssct-roles',
+    title: 'CSSCT — Rôles & Missions',
+    author: 'Marc Dubreuil',
+    accent: 'coral',
+    categories: ['fiches', 'formation'],
+    excerpt: 'De la mise en place de la commission à la conduite des enquêtes accident du travail, le périmètre complet de la CSSCT.',
+  },
+  {
+    id: 'pv-efficace',
+    title: 'Procès-verbal efficace',
+    author: 'ATOOPV Éditions',
+    accent: 'royal',
+    categories: ['methodologie', 'modeles'],
+    excerpt: 'Rédiger un procès-verbal clair, complet et opposable, sous contrainte de temps : la méthode ATOOPV condensée.',
+  },
+  {
+    id: 'referentiel-conformite',
+    title: 'Référentiel conformité',
+    author: 'ATOOPV Éditions',
+    accent: 'sky',
+    categories: ['contentieux', 'actualites'],
+    excerpt: 'Les obligations légales du CSE par thème, avec leurs textes de référence à jour et le risque en cas de non-conformité.',
+  },
+  {
+    id: 'comprendre-cse',
+    title: 'Comprendre le CSE',
+    author: 'ATOOPV Éditions',
+    accent: 'purple',
+    categories: ['formation', 'dialogue'],
+    excerpt: "Une introduction accessible au fonctionnement du CSE, pensée pour les élus qui découvrent leur mandat.",
+  },
+  {
+    id: 'elections-pro',
+    title: 'Élections professionnelles',
+    author: 'ATOOPV Éditions',
+    accent: 'rose',
+    categories: ['guides', 'actualites'],
+    excerpt: "Protocole d'accord préélectoral, collèges, calendrier : sécuriser chaque étape du scrutin du CSE.",
+  },
+  {
+    id: 'negociation-collective',
+    title: 'Négociation collective',
+    author: 'ATOOPV Éditions',
+    accent: 'mint',
+    categories: ['dialogue', 'formation'],
+    excerpt: 'Préparer, mener et conclure une négociation avec la direction : méthode, postures et suivi de l’accord.',
+  },
+  {
+    id: 'contentieux-prudhomal',
+    title: 'Contentieux prud’homal',
+    author: 'Marc Dubreuil',
+    accent: 'orange',
+    categories: ['contentieux', 'fiches'],
+    excerpt: 'Les étapes clés d’un contentieux prud’homal et le rôle que peut y jouer le CSE aux côtés du salarié.',
+  },
+]
+
+export const RESOURCE_FEATURED = {
+  year: '2026',
+  heading: 'Les ressources essentielles',
+  description: 'Les ressources les plus utiles pour comprendre, préparer et structurer vos réunions CSE.',
+  cta: 'Voir les ressources',
+}
+
+export const RESOURCE_RECOMMENDATIONS = [
+  { id: 'top-cse', title: 'Top 50 ressources CSE', description: 'Les documents les plus consultés.', filter: 'populaires' },
+  { id: 'top-outils', title: 'Top 50 outils', description: 'Découvrez les outils les plus utiles.', filter: 'modeles' },
+  { id: 'top-conformite', title: 'Top 50 conformité', description: 'Les ressources essentielles pour rester conforme.', filter: 'contentieux' },
 ]
 
 /**
