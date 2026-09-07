@@ -10,7 +10,7 @@ export const LAB_META = {
   eyebrow: 'ATOOPV / EXPERIMENTAL INTERFACE',
   titleLines: ['DESIGN &', 'MOTION LAB'],
   lead: 'Exploring new ways to transform meetings into structured intelligence.',
-  count: '10 EXPERIMENTS',
+  count: '11 EXPERIMENTS',
   scrollCue: 'SCROLL TO EXPLORE',
   year: '2026',
 }
@@ -354,6 +354,48 @@ export const EXPERIMENTS = [
   { id: 'experiment-08', number: '08', label: 'Blog Timeline' },
   { id: 'experiment-09', number: '09', label: 'Compliance Books' },
   { id: 'experiment-10', number: '10', label: 'Report Page Flip' },
+  { id: 'experiment-11', number: '11', label: 'Common Questions' },
+]
+
+/**
+ * Experiment 11 — a close visual reproduction of a supplied FAQ/accordion
+ * reference (dark frame around a soft white panel). The five questions and
+ * item 2's answer are given verbatim by the brief; the other four answers
+ * are original ATOOPV-relevant copy written to match that same register.
+ * Kept in English throughout for internal consistency with the reference's
+ * exact given text, in the same spirit as the lab's English meta-labels.
+ */
+export const FAQ_ITEMS = [
+  {
+    id: 'industries',
+    question: 'What industries do you work with?',
+    answer:
+      'We work with CSE, CSSCT and IRP instances of any size — from local SMEs to CAC 40 groups — across construction, hospitality, social housing, industry, logistics, healthcare and financial services.',
+  },
+  {
+    id: 'implementation',
+    question: 'How long does implementation take?',
+    answer:
+      'Project timelines typically range from 2 to 6 weeks, depending on complexity.\nSmaller automation systems — such as AI chatbots with CRM integration — can often be deployed within 2–3 weeks.\nMore advanced projects involving multi-platform integrations, custom AI logic, internal workflow automation, and reporting dashboards may take 4–6 weeks or longer.',
+  },
+  {
+    id: 'technical',
+    question: 'Do we need technical knowledge to work with you?',
+    answer:
+      'No. You bring the meeting — we bring the structure. Join in person or send a recording; there is no software to install and nothing technical required on your side.',
+  },
+  {
+    id: 'security',
+    question: 'Is AI automation secure?',
+    answer:
+      'Every recording and transcript is covered by an NDA and handled exclusively by our own team. Nothing is retained beyond delivery, and no client content is ever used to train a model.',
+  },
+  {
+    id: 'roi',
+    question: 'What kind of ROI can we expect?',
+    answer:
+      'Most CSE secretaries reclaim several hours per meeting cycle no longer spent drafting or chasing corrections — with a compliant, opposable procès-verbal delivered in 48 to 72 hours.',
+  },
 ]
 
 /**
