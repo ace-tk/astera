@@ -7,6 +7,7 @@ import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
 import AtoopvTicker from '@/components/atoopv/AtoopvTicker'
 import ProcessRecomposed from '@/components/atoopv/ProcessRecomposed'
 import OrchestratedIntelligence from '@/components/atoopv/OrchestratedIntelligence'
+import ComplianceBooksTeaser from '@/components/atoopv/ComplianceBooksTeaser'
 import VideoSection from '@/components/atoopv/VideoSection'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
@@ -122,6 +123,13 @@ export default function Accueil() {
           <ArticleGrid eyebrow={resources.eyebrow} heading={resources.heading} lead={resources.lead} items={resources.items} color="golden" columns={2} />
         </div>
       </section>
+
+      {/* Small teaser into the planned Compliance Books shop — placed next
+          to the existing "ressources gratuites" block since both are about
+          guides/knowledge for CSE elus. See constants/atoopvHome.js:
+          COMPLIANCE_BOOKS_TEASER (shopHref is an interim target — no
+          dedicated Shop route exists in production yet). */}
+      <ComplianceBooksTeaser />
 
       <Footer />
     </motion.main>

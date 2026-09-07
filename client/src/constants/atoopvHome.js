@@ -50,6 +50,34 @@ export const HOMEPAGE_ORCHESTRATED = {
 }
 
 /**
+ * The homepage's "Compliance Books" teaser — a small glimpse into the
+ * planned Shop/Compliance Books experience, not the shop itself.
+ *
+ * `shopHref`: no dedicated Shop/Compliance Books route exists in production
+ * yet (confirmed against src/App.jsx — the only implementation today is the
+ * isolated /design-test sandbox, Experiment 09, which is noindex'd and not
+ * a real destination). Pointed at the closest real existing page,
+ * /atoopv/ressources, as an interim target — update this single value once
+ * a dedicated Shop route ships; nothing else in the teaser needs to change.
+ */
+export const COMPLIANCE_BOOKS_TEASER = {
+  eyebrow: 'RESSOURCES / 06',
+  heading: ['COMPLIANCE', 'BOOKS.'],
+  lead: 'Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE.',
+  categories: ['Tous', 'CSE', 'Juridique', 'Finance', 'Santé', 'Management', 'Procès-verbal'],
+  shopHref: '/atoopv/ressources',
+  featured: {
+    category: 'CSE',
+    badge: 'EN VEDETTE',
+    title: 'Guide pratique du CSE',
+    author: 'ATOOPV Éditions',
+    description:
+      "Le manuel de référence pour comprendre les attributions, le fonctionnement et les moyens du comité social et économique.",
+    accent: 'golden',
+  },
+}
+
+/**
  * The homepage hero's horizontal ticker — real ATOOPV service/section terms
  * (drawn from `ACCUEIL.expertise`/`veille`/`garanties` below), each linking
  * to the matching in-page section where one exists. `anchor: null` items are
