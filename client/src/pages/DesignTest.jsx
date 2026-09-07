@@ -16,6 +16,7 @@ import BlogTimeline from '@/components/design-test/experiments/BlogTimeline'
 import ComplianceBookShop from '@/components/design-test/experiments/ComplianceBookShop'
 import ReportPageFlip from '@/components/design-test/experiments/ReportPageFlip'
 import FaqAccordion from '@/components/design-test/experiments/FaqAccordion'
+import InteractiveLibrary from '@/components/design-test/experiments/InteractiveLibrary'
 import '@/styles/design-test.css'
 
 /**
@@ -71,6 +72,8 @@ export default function DesignTest() {
       <ReportPageFlip />
       <SectionSeam from="10" to="11" variant="grid" />
       <FaqAccordion />
+      <SectionSeam from="11" to="12" variant="number" />
+      <InteractiveLibrary />
       <DesignTestOutro />
       <ExperimentNavigator />
     </main>

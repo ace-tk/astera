@@ -10,7 +10,7 @@ export const LAB_META = {
   eyebrow: 'ATOOPV / EXPERIMENTAL INTERFACE',
   titleLines: ['DESIGN &', 'MOTION LAB'],
   lead: 'Exploring new ways to transform meetings into structured intelligence.',
-  count: '11 EXPERIMENTS',
+  count: '12 EXPERIMENTS',
   scrollCue: 'SCROLL TO EXPLORE',
   year: '2026',
 }
@@ -355,7 +355,105 @@ export const EXPERIMENTS = [
   { id: 'experiment-09', number: '09', label: 'Compliance Books' },
   { id: 'experiment-10', number: '10', label: 'Report Page Flip' },
   { id: 'experiment-11', number: '11', label: 'Common Questions' },
+  { id: 'experiment-12', number: '12', label: 'Interactive Library' },
 ]
+
+/**
+ * Experiment 12 — a horizontal editorial book collection whose selected
+ * cover physically morphs (shared `layoutId`) into a full detail spread,
+ * modeled on a supplied reference storyboard. Deliberately separate from
+ * Experiment 09's own book-shop dataset (`BOOKS`) — different interaction,
+ * different content, kept independent so neither can break the other.
+ */
+export const LIBRARY_BOOKS = [
+  {
+    id: 'guide-cse',
+    title: 'Guide du CSE',
+    meta: 'Référence · CSE',
+    author: 'ATOOPV Éditions',
+    accent: 'golden',
+    rating: '4.8',
+    reviews: '1 204 avis',
+    pages: 168,
+    format: 'PDF · EPUB',
+    excerpt:
+      "Le CSE occupe une place centrale dans le dialogue social de l'entreprise. Ce guide retrace ses attributions économiques, sociales et culturelles, ainsi que les moyens dont dispose chaque élu pour les exercer pleinement.",
+    excerptMore: [
+      "Chaque chapitre s'appuie sur des situations réelles rencontrées par nos experts depuis 2017, de la PME au groupe coté au CAC 40.",
+      'Un chapitre entier est consacré à la BDESE et à son bon usage lors des trois consultations obligatoires annuelles.',
+    ],
+  },
+  {
+    id: 'tresorier-cse',
+    title: 'Trésorier du CSE',
+    meta: 'Finance · CSE',
+    author: 'ATOOPV Éditions',
+    accent: 'emerald',
+    rating: '4.6',
+    reviews: '812 avis',
+    pages: 144,
+    format: 'PDF · EPUB',
+    excerpt:
+      "Budget de fonctionnement, budget ASC, obligations comptables : le trésorier engage sa responsabilité à chaque clôture d'exercice. Ce guide pose les bases indispensables à une gestion saine et transparente.",
+    excerptMore: [
+      'Les règles de transfert entre budgets et leurs limites légales sont détaillées avec des exemples chiffrés.',
+      'Un modèle de rapport de gestion annuel, prêt à adapter, complète cette édition.',
+    ],
+  },
+  {
+    id: 'cssct-roles',
+    title: 'CSSCT — Rôles & Missions',
+    meta: 'Santé & sécurité',
+    author: 'Marc Dubreuil',
+    accent: 'coral',
+    rating: '4.9',
+    reviews: '956 avis',
+    pages: 188,
+    format: 'PDF · EPUB',
+    excerpt:
+      'De la mise en place de la commission à la conduite des enquêtes accident du travail, ce guide couvre le périmètre complet de la CSSCT et son articulation avec le CSE.',
+    excerptMore: [
+      'La partie "droit d’alerte" détaille, étape par étape, la procédure à suivre en cas de danger grave et imminent.',
+      "Une check-list d'inspection trimestrielle est fournie en annexe, prête à l'emploi.",
+    ],
+  },
+  {
+    id: 'pv-efficace',
+    title: 'Procès-verbal efficace',
+    meta: 'Méthode · Rédaction',
+    author: 'ATOOPV Éditions',
+    accent: 'royal',
+    rating: '4.7',
+    reviews: '1 340 avis',
+    pages: 96,
+    format: 'PDF · EPUB',
+    excerpt:
+      'Rédiger un procès-verbal clair, complet et opposable, sous contrainte de temps : la méthode ATOOPV condensée en un seul guide, structure type incluse.',
+    excerptMore: [
+      "Un chapitre compare trois formats de PV — synthétique, intégral, mixte — et leurs cas d'usage respectifs.",
+      'Les erreurs les plus fréquentes relevées sur nos relectures sont listées avec leur correction.',
+    ],
+  },
+  {
+    id: 'referentiel-conformite',
+    title: 'Référentiel conformité CSE',
+    meta: 'Conformité · Juridique',
+    author: 'ATOOPV Éditions',
+    accent: 'sky',
+    rating: '4.5',
+    reviews: '689 avis',
+    pages: 212,
+    format: 'PDF · EPUB',
+    excerpt:
+      "Un référentiel unique regroupant les obligations légales du CSE par thème — économique, social, santé-sécurité — avec leurs textes de référence à jour.",
+    excerptMore: [
+      'Chaque fiche indique le texte de loi, le délai applicable et le risque encouru en cas de non-conformité.',
+      'Mis à jour chaque année pour suivre les évolutions du Code du travail.',
+    ],
+  },
+]
+
+export const LIBRARY_LAST_READ = { book: 'CSSCT — Rôles & Missions', chapter: 'Chapitre 4 — Le droit d’alerte', progress: 0.62 }
 
 /**
  * Experiment 11 — a close visual reproduction of a supplied FAQ/accordion

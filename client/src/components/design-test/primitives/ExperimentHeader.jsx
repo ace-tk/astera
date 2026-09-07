@@ -9,7 +9,7 @@ import MotionReveal from './MotionReveal'
  * opens with this so the set reads as one document rather than six
  * unrelated demos.
  */
-export default function ExperimentHeader({ index, total = '11', eyebrow, titleLines = [], titleClassName, className }) {
+export default function ExperimentHeader({ index, total = '12', eyebrow, titleLines = [], titleClassName, className }) {
   return (
     <header className={clsx('relative', className)}>
       <div className="flex items-end justify-between gap-6">
