@@ -5,6 +5,8 @@ import Footer from '@/components/landing/sections/Footer'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
 import AtoopvTicker from '@/components/atoopv/AtoopvTicker'
+import ProcessRecomposed from '@/components/atoopv/ProcessRecomposed'
+import OrchestratedIntelligence from '@/components/atoopv/OrchestratedIntelligence'
 import VideoSection from '@/components/atoopv/VideoSection'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
@@ -60,6 +62,15 @@ export default function Accueil() {
           <FeatureGrid eyebrow={expertise.eyebrow} heading={expertise.heading} lead={expertise.lead} items={expertise.items} color="sky" columns={3} />
         </div>
       </section>
+
+      {/* New editorial sections — placeholder content pending final copy
+          (see constants/atoopvHome.js: HOMEPAGE_PROCESS / HOMEPAGE_ORCHESTRATED).
+          Placed between the existing "expertise" intro and the existing
+          "process" RichTextSection below, which is intentionally left
+          untouched — consolidating the two process sections is a content
+          decision for later, not made here. */}
+      <ProcessRecomposed />
+      <OrchestratedIntelligence />
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">

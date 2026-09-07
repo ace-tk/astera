@@ -16,6 +16,40 @@
 import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Lock } from 'lucide-react'
 
 /**
+ * PLACEHOLDER CONTENT — NOT FINAL.
+ *
+ * Config for the two new editorial homepage sections ("The Process,
+ * Recomposed" and "Orchestrated Intelligence"). The five-stage structure and
+ * copy mirror the Design & Motion Lab reference (/design-test, Experiments
+ * 03 and 05) purely as placeholder art direction — title/description/number/
+ * accent are all data here specifically so the real copy can replace this
+ * later without touching ProcessRecomposed.jsx / OrchestratedIntelligence.jsx.
+ */
+export const HOMEPAGE_PROCESS = {
+  eyebrow: 'PROCESS / 01',
+  heading: ['THE PROCESS,', 'RECOMPOSED.'],
+  stages: [
+    { number: '01', title: 'Capturer la réunion', description: "L'enregistrement démarre en un clic, sans matériel supplémentaire ni friction." },
+    { number: '02', title: 'Transcrire la conversation', description: 'La parole devient texte structuré, interlocuteur par interlocuteur.' },
+    { number: '03', title: "Comprendre l'essentiel", description: 'Décisions, actions et échéances identifiées automatiquement.' },
+    { number: '04', title: 'Valider les informations', description: 'Une relecture rapide confirme la fidélité du compte-rendu.' },
+    { number: '05', title: 'Livrer le PV', description: 'Un document prêt à diffuser, dans le format attendu.' },
+  ],
+}
+
+export const HOMEPAGE_ORCHESTRATED = {
+  eyebrow: 'SYSTEM / 02',
+  heading: ['ORCHESTRATED', 'INTELLIGENCE'],
+  panels: [
+    { number: '01', title: 'Capturer', description: "L'audio et la vidéo saisis intégralement, sans perte.", accent: 'royal' },
+    { number: '02', title: 'Transcrire', description: 'Chaque mot posé et attribué au bon interlocuteur.', accent: 'coral' },
+    { number: '03', title: 'Comprendre', description: 'Le sens extrait au-delà du simple texte.', accent: 'golden' },
+    { number: '04', title: 'Valider', description: 'Une vérification rapide avant diffusion.', accent: 'emerald' },
+    { number: '05', title: 'Livrer', description: 'Le procès-verbal, prêt à être partagé.', accent: 'sky' },
+  ],
+}
+
+/**
  * The homepage hero's horizontal ticker — real ATOOPV service/section terms
  * (drawn from `ACCUEIL.expertise`/`veille`/`garanties` below), each linking
  * to the matching in-page section where one exists. `anchor: null` items are
