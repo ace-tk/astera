@@ -122,8 +122,8 @@ function HeroCopy({ hero, phase, animated }) {
             actual rendered height against the container while tuning this). */}
         <Reveal delay={0.14} className="mt-4 overflow-hidden">
           <h1
-            className="font-display font-medium leading-[1.12] tracking-tight text-ink text-balance"
-            style={{ fontSize: 'clamp(1.5rem, 0.85rem + 1.9vw, 2.35rem)' }}
+            className="font-display font-semibold leading-[1.08] tracking-tight text-ink text-balance"
+            style={{ fontSize: 'clamp(1.6rem, 0.75rem + 2.2vw, 2.7rem)' }}
           >
             {renderEmphasis(hero.title)}
           </h1>
@@ -170,7 +170,7 @@ function StaticHero({ hero }) {
             transition={{ duration: 1, ease: EASE }}
             className="h-64 w-full overflow-hidden sm:h-80 lg:h-auto"
           >
-            <img src={hero.image.src} alt={hero.image.alt} className="h-full w-full object-cover" style={{ objectPosition: 'center 42%' }} />
+            <img src={hero.image.src} alt={hero.image.alt} className="h-full w-full object-cover" style={{ objectPosition: 'center 32%' }} />
           </motion.div>
           <div className="border-t border-ink/10 lg:border-l lg:border-t-0">
             <HeroCopy hero={hero} phase={0} animated={false} />
@@ -200,12 +200,12 @@ function PinnedHero({ hero }) {
     <section ref={sectionRef} className="relative border-b border-ink/10" style={{ height: '230vh' }}>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pt-20">
         <div className="shell w-full">
-          <div className="grid grid-cols-2 overflow-hidden border border-ink/10" style={{ height: 'min(42rem, calc(100vh - 11rem))' }}>
+          <div className="grid grid-cols-2 overflow-hidden border border-ink/10" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
             <div className="relative h-full w-full overflow-hidden border-r border-ink/10">
               <motion.img
                 src={hero.image.src}
                 alt={hero.image.alt}
-                style={{ scale: imageScale, objectPosition: 'center 42%' }}
+                style={{ scale: imageScale, objectPosition: 'center 32%' }}
                 className="h-full w-full object-cover"
               />
             </div>
