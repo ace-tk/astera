@@ -87,6 +87,25 @@
   .link-underline:hover::after {
     @apply scale-x-100;
   }
+
+  /* ATOOPV homepage hero ticker (see AtoopvTicker.jsx): a plain CSS keyframe
+     loop, not a per-frame animation, so it costs nothing while off-screen.
+     The track is rendered twice back-to-back and slides exactly -50% so the
+     seam between the two copies is never visible. */
+  .atoopv-ticker-track {
+    animation: atoopv-ticker-scroll 32s linear infinite;
+  }
+  .atoopv-ticker:hover .atoopv-ticker-track {
+    animation-play-state: paused;
+  }
+  @keyframes atoopv-ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer utilities {

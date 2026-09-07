@@ -15,6 +15,22 @@
  */
 import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Lock } from 'lucide-react'
 
+/**
+ * The homepage hero's horizontal ticker — real ATOOPV service/section terms
+ * (drawn from `ACCUEIL.expertise`/`veille`/`garanties` below), each linking
+ * to the matching in-page section where one exists. `anchor: null` items are
+ * decorative only, per the brief's "do not create fake navigation."
+ */
+export const HOME_TICKER = [
+  { label: 'PROCÈS-VERBAL', anchor: '#expertise' },
+  { label: 'CSSCT', anchor: '#expertise' },
+  { label: 'RETRANSCRIPTION', anchor: '#expertise' },
+  { label: 'FORMATION DES ÉLUS', anchor: '#expertise' },
+  { label: 'VEILLE JURIDIQUE', anchor: '#veille' },
+  { label: 'CONFORMITÉ', anchor: '#garanties' },
+  { label: 'CSE · CSSCT · IRP', anchor: null },
+]
+
 export const ATOOPV_STATS = [
   { value: '2017', label: 'Création ALC SAS' },
   { value: '48 à 72h', label: 'Délai de livraison' },

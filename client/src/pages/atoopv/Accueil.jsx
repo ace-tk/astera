@@ -3,7 +3,8 @@ import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import Testimonials from '@/components/landing/sections/Testimonials'
-import AtoopvHero from '@/components/atoopv/AtoopvHero'
+import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
+import AtoopvTicker from '@/components/atoopv/AtoopvTicker'
 import VideoSection from '@/components/atoopv/VideoSection'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
@@ -42,16 +43,19 @@ export default function Accueil() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero {...hero} />
+      <AtoopvHomeHero hero={hero} />
+      <AtoopvTicker />
 
-      <StatsSection stats={ATOOPV_STATS} />
+      <div id="stats">
+        <StatsSection stats={ATOOPV_STATS} />
+      </div>
       <div className="shell">
         <Reveal className="mt-6 text-center text-sm leading-relaxed text-muted">
           <p>{renderEmphasis(statsCaption)}</p>
         </Reveal>
       </div>
 
-      <section className="relative py-14 sm:py-16">
+      <section id="expertise" className="relative py-14 sm:py-16">
         <div className="shell">
           <FeatureGrid eyebrow={expertise.eyebrow} heading={expertise.heading} lead={expertise.lead} items={expertise.items} color="sky" columns={3} />
         </div>
@@ -71,7 +75,7 @@ export default function Accueil() {
 
       <VideoSection {...video} />
 
-      <section className="relative py-14 sm:py-16">
+      <section id="veille" className="relative py-14 sm:py-16">
         <div className="shell">
           <ArticleGrid {...veille} color="sky" columns={3} />
         </div>
@@ -79,7 +83,7 @@ export default function Accueil() {
 
       <CTASection eyebrow={devis.eyebrow} heading={devis.heading} body={devis.body} primaryCta={devis.primaryCta} />
 
-      <section className="relative py-14 sm:py-16">
+      <section id="garanties" className="relative py-14 sm:py-16">
         <div className="shell">
           <FeatureGrid eyebrow={garanties.eyebrow} heading={garanties.heading} items={garanties.items} color="sky" columns={3} />
         </div>
