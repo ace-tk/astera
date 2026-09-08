@@ -17,6 +17,7 @@ import { useA11y } from '@/context/A11yContext'
 const Landing = lazy(() => import('@/pages/Landing'))
 const BlogPost = lazy(() => import('@/pages/BlogPost'))
 const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
+const Boutique = lazy(() => import('@/pages/atoopv/Boutique'))
 const Tarification = lazy(() => import('@/pages/atoopv/Tarification'))
 const APropos = lazy(() => import('@/pages/atoopv/APropos'))
 const Autodiagnostic = lazy(() => import('@/pages/atoopv/Autodiagnostic'))
@@ -114,6 +115,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/atoopv" element={<Accueil />} />
+            <Route path="/atoopv/boutique" element={<Boutique />} />
             <Route path="/atoopv/tarification" element={<Tarification />} />
             <Route path="/atoopv/a-propos" element={<APropos />} />
             <Route path="/atoopv/autodiagnostic" element={<Autodiagnostic />} />

@@ -50,22 +50,20 @@ export const HOMEPAGE_ORCHESTRATED = {
 }
 
 /**
- * The homepage's "Compliance Books" teaser — a small glimpse into the
- * planned Shop/Compliance Books experience, not the shop itself.
+ * The homepage's "Compliance Books" teaser — a small glimpse into the real
+ * Shop/Compliance Books experience at /atoopv/boutique, not the shop itself.
  *
- * `shopHref`: no dedicated Shop/Compliance Books route exists in production
- * yet (confirmed against src/App.jsx — the only implementation today is the
- * isolated /design-test sandbox, Experiment 09, which is noindex'd and not
- * a real destination). Pointed at the closest real existing page,
- * /atoopv/ressources, as an interim target — update this single value once
- * a dedicated Shop route ships; nothing else in the teaser needs to change.
+ * `shopHref` originally pointed at /atoopv/ressources as an interim target,
+ * back when no dedicated Shop route existed. Now that /atoopv/boutique is a
+ * real page (see pages/atoopv/Boutique.jsx), this points there instead —
+ * still the only value that needed to change.
  */
 export const COMPLIANCE_BOOKS_TEASER = {
   eyebrow: 'RESSOURCES / 06',
   heading: ['COMPLIANCE', 'BOOKS.'],
   lead: 'Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE.',
   categories: ['Tous', 'CSE', 'Juridique', 'Finance', 'Santé', 'Management', 'Procès-verbal'],
-  shopHref: '/atoopv/ressources',
+  shopHref: '/atoopv/boutique',
   featured: {
     category: 'CSE',
     badge: 'EN VEDETTE',

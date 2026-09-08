@@ -116,6 +116,15 @@
     text-wrap: pretty;
   }
 
+  /* Hides the scrollbar on an intentionally-scrollable strip (category
+     pills, horizontal card rows) without disabling scroll itself. */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Warm paper + faint grid + drifting color halos = "alive" background. */
   .bg-canvas {
     background-color: rgb(var(--paper));
