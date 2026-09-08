@@ -45,7 +45,7 @@ export default function GuideModelHero({ badge, title, breadcrumbs, introBody, t
           </motion.nav>
         )}
 
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16 lg:divide-x lg:divide-ink/10">
           <div>
             {badge && (
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="chip mb-5">
@@ -104,9 +104,17 @@ export default function GuideModelHero({ badge, title, breadcrumbs, introBody, t
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.7 }}
-              className="lg:pt-2"
+              className="border-l-2 border-accent/25 pl-6 lg:border-l-0 lg:pl-12 lg:pt-2"
             >
-              <MarkdownArticle body={introBody} color={color} />
+              {/* Pull-quote treatment: the left border is the mobile/tablet
+                  version of the divider (the lg:divide-x above takes over on
+                  desktop), and [&_p] bumps just this nested paragraph's size/
+                  color a step above MarkdownArticle's default body text —
+                  giving it presence next to the h1 instead of reading as
+                  leftover prose that happened to land in the hero. */}
+              <div className="[&_p]:text-lg [&_p]:leading-relaxed [&_p]:text-ink/85">
+                <MarkdownArticle body={introBody} color={color} />
+              </div>
             </motion.div>
           )}
         </div>
