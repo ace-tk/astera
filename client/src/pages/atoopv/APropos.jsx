@@ -1,10 +1,10 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
-import RichTextSection from '@/components/services/RichTextSection'
-import FeatureGrid from '@/components/services/FeatureGrid'
+import AProposStory from '@/components/atoopv/AProposStory'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
@@ -24,6 +24,26 @@ import {
  * self-contained page (the source has no sibling pages), built entirely
  * from existing components: no new component was needed here.
  */
+// The existing footer string is "04 12 10 06 06 · contact@atoopv.com · ALC
+// SAS — SIREN 833 781 248" — split apart here only so the email segment can
+// become a real <Link> to the existing /atoopv/contact route instead of
+// plain text (CTASection's `footer` prop already just renders whatever it's
+// given, string or node, so no change to that shared component is needed).
+// Built in this .jsx page rather than the .js constants file since JSX
+// isn't set up to compile there.
+function CtaFooterWithContactLink({ footer }) {
+  const [phone, email, company] = footer.split(' · ')
+  return (
+    <>
+      {phone} ·{' '}
+      <Link to="/atoopv/contact" className="link-underline text-ink/70 hover:text-ink">
+        {email}
+      </Link>{' '}
+      · {company}
+    </>
+  )
+}
+
 export default function APropos() {
   usePageMeta({ title: stripEmphasis(A_PROPOS_HERO.title), description: A_PROPOS_HERO.lead })
 
@@ -40,36 +60,11 @@ export default function APropos() {
 
       <AtoopvHero {...A_PROPOS_HERO} />
 
-      <div className="shell py-14 sm:py-16">
-        <div className="mx-auto max-w-3xl">
-          <RichTextSection eyebrow={A_PROPOS_MISSION.eyebrow} heading={A_PROPOS_MISSION.heading} blocks={A_PROPOS_MISSION.blocks} color="royal" />
-        </div>
+      <AProposStory mission={A_PROPOS_MISSION} values={A_PROPOS_VALUES} approach={A_PROPOS_APPROACH} founder={A_PROPOS_FOUNDER} sirus={A_PROPOS_SIRUS} />
 
-        {/* Freed from the mx-auto max-w-3xl prose column above: that narrow
-            reading width (768px) is right for long-form paragraphs, but it's
-            what was squeezing this 4-column card grid down to ~170px cards
-            with heavily-wrapped text. Accueil's own FeatureGrid usages (see
-            pages/atoopv/Accueil.jsx) sit directly in a plain `.shell` with no
-            extra max-width — matching that existing, correct precedent here
-            instead of inventing a new width value. */}
-        <div className="mt-14">
-          <FeatureGrid eyebrow={A_PROPOS_VALUES.eyebrow} heading={A_PROPOS_VALUES.heading} items={A_PROPOS_VALUES.items} color="royal" columns={4} />
-        </div>
-
-        <div className="mx-auto mt-14 max-w-3xl space-y-14">
-          <RichTextSection eyebrow={A_PROPOS_APPROACH.eyebrow} heading={A_PROPOS_APPROACH.heading} blocks={A_PROPOS_APPROACH.blocks} color="royal" />
-          <RichTextSection
-            eyebrow={A_PROPOS_FOUNDER.eyebrow}
-            heading={A_PROPOS_FOUNDER.heading}
-            lead={A_PROPOS_FOUNDER.lead}
-            blocks={A_PROPOS_FOUNDER.blocks}
-            color="royal"
-          />
-          <RichTextSection eyebrow={A_PROPOS_SIRUS.eyebrow} heading={A_PROPOS_SIRUS.heading} blocks={A_PROPOS_SIRUS.blocks} color="royal" />
-        </div>
-      </div>
-
-      <CTASection {...A_PROPOS_CTA} />
+      {/* Untouched per the brief: same component, same props, same content —
+          only the footer's plain-text email becomes a real link. */}
+      <CTASection {...A_PROPOS_CTA} footer={<CtaFooterWithContactLink footer={A_PROPOS_CTA.footer} />} />
       <Footer />
     </motion.main>
   )
