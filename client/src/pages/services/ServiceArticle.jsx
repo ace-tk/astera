@@ -1,6 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { Eye, Send } from 'lucide-react'
 import ServiceHero from '@/components/services/ServiceHero'
+import GuideModelHero from '@/components/atoopv/GuideModelHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import GuideModelInfoPanel from '@/components/atoopv/GuideModelInfoPanel'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
@@ -39,40 +40,45 @@ export default function ServiceArticle({ category, slug: slugProp }) {
   if (!page) return <Navigate to={`/services/${category}`} replace />
 
   const enhanced = slug === ENHANCED_INFO_SLUG ? parseModelePvGratuitBody(page.body) : null
+  const breadcrumbs = [{ label: 'Services', to: '/services' }, { label: CATEGORY_LABEL[category], to: `/services/${category}` }]
+  const heroCtas = {
+    secondaryCta: enhanced?.secondaryCta && {
+      to: resolveServiceHref(enhanced.secondaryCta.href).href,
+      label: (
+        <>
+          <Eye className="h-4 w-4" /> {enhanced.secondaryCta.label}
+        </>
+      ),
+    },
+    primaryCta: enhanced?.primaryCta && {
+      to: resolveServiceHref(enhanced.primaryCta.href).href,
+      label: (
+        <>
+          {enhanced.primaryCta.label} <Send className="h-4 w-4" />
+        </>
+      ),
+    },
+  }
 
   return (
     <>
-      <ServiceHero
-        badge={page.breadcrumb}
-        title={page.title}
-        breadcrumbs={[{ label: 'Services', to: '/services' }, { label: CATEGORY_LABEL[category], to: `/services/${category}` }]}
-        tags={enhanced?.tags}
-        secondaryCta={
-          enhanced?.secondaryCta && {
-            to: resolveServiceHref(enhanced.secondaryCta.href).href,
-            label: (
-              <>
-                <Eye className="h-4 w-4" /> {enhanced.secondaryCta.label}
-              </>
-            ),
-          }
-        }
-        primaryCta={
-          enhanced?.primaryCta && {
-            to: resolveServiceHref(enhanced.primaryCta.href).href,
-            label: (
-              <>
-                {enhanced.primaryCta.label} <Send className="h-4 w-4" />
-              </>
-            ),
-          }
-        }
-      />
+      {enhanced ? (
+        <GuideModelHero
+          badge={page.breadcrumb}
+          title={page.title}
+          breadcrumbs={breadcrumbs}
+          introBody={enhanced.introBody}
+          tags={enhanced.tags}
+          color={CATEGORY_COLOR[category]}
+          {...heroCtas}
+        />
+      ) : (
+        <ServiceHero badge={page.breadcrumb} title={page.title} breadcrumbs={breadcrumbs} />
+      )}
 
       <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
         {enhanced ? (
           <>
-            <MarkdownArticle body={enhanced.introBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
             <GuideModelInfoPanel headingBody={enhanced.headingBody} stats={enhanced.stats} contact={enhanced.contact} color={CATEGORY_COLOR[category]} />
             <MarkdownArticle body={enhanced.restBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
           </>
