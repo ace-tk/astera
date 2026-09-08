@@ -1,12 +1,23 @@
 import { useParams, Navigate } from 'react-router-dom'
+import { Eye, Send } from 'lucide-react'
 import ServiceHero from '@/components/services/ServiceHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
+import GuideModelInfoPanel from '@/components/atoopv/GuideModelInfoPanel'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
 import { resolveServiceHref } from '@/constants/servicesLinks'
 import { stripEmphasis } from '@/utils/richText'
+import { parseModelePvGratuitBody } from '@/utils/modelePvGratuitContent'
+
+// The one article whose source markdown has a "raw stats/CTA/tag-list" info
+// block that renders far better through components already built for this
+// exact shape (ServiceHero's own primaryCta/secondaryCta/tags) than through
+// the generic markdown-to-paragraph path every other Services article uses.
+// Scoped to this single slug on purpose — see GuideModelInfoPanel.jsx and
+// utils/modelePvGratuitContent.js for the rest of the story.
+const ENHANCED_INFO_SLUG = 'modele-pv-cse-gratuit'
 
 /**
  * Renders one extracted content/<category>/<slug>.md file. A single
@@ -27,16 +38,47 @@ export default function ServiceArticle({ category, slug: slugProp }) {
 
   if (!page) return <Navigate to={`/services/${category}`} replace />
 
+  const enhanced = slug === ENHANCED_INFO_SLUG ? parseModelePvGratuitBody(page.body) : null
+
   return (
     <>
       <ServiceHero
         badge={page.breadcrumb}
         title={page.title}
         breadcrumbs={[{ label: 'Services', to: '/services' }, { label: CATEGORY_LABEL[category], to: `/services/${category}` }]}
+        tags={enhanced?.tags}
+        secondaryCta={
+          enhanced?.secondaryCta && {
+            to: resolveServiceHref(enhanced.secondaryCta.href).href,
+            label: (
+              <>
+                <Eye className="h-4 w-4" /> {enhanced.secondaryCta.label}
+              </>
+            ),
+          }
+        }
+        primaryCta={
+          enhanced?.primaryCta && {
+            to: resolveServiceHref(enhanced.primaryCta.href).href,
+            label: (
+              <>
+                {enhanced.primaryCta.label} <Send className="h-4 w-4" />
+              </>
+            ),
+          }
+        }
       />
 
       <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
-        <MarkdownArticle body={page.body} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
+        {enhanced ? (
+          <>
+            <MarkdownArticle body={enhanced.introBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
+            <GuideModelInfoPanel headingBody={enhanced.headingBody} stats={enhanced.stats} contact={enhanced.contact} color={CATEGORY_COLOR[category]} />
+            <MarkdownArticle body={enhanced.restBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
+          </>
+        ) : (
+          <MarkdownArticle body={page.body} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
+        )}
       </ServiceCategoryContent>
     </>
   )
