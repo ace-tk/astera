@@ -46,31 +46,47 @@ export const TARIFICATION_OPTIONS = {
   ],
 }
 
+/**
+ * `tagline`/`features` weren't in the original source transcription (only
+ * the hourly rate was ever disclosed — see the file header) but match, tier
+ * for tier, the equivalent English PRICING_TIERS (constants/pricing.js),
+ * which added the same kind of per-tier description beyond the strict
+ * source data. Added here so the two locales stay at parity for the output
+ * preview (PricingCalculator) that reads from this field.
+ */
 export const TARIFICATION_TIERS = [
   {
     id: 'essentiel',
     name: 'Essentiel',
     rate: 90,
     note: 'Tranche 50 à 300 salariés',
+    tagline: 'Résumé décisionnel',
+    features: ['3 à 5 pages par heure', 'Décisions, votes et résultats', 'Rédaction à la troisième personne', 'Livraison sous 48 à 72h ouvrées'],
   },
   {
     id: 'scope',
     name: 'Scope',
     rate: 130,
     note: 'Tranche 50 à 300 salariés',
+    tagline: 'Résumé enrichi',
+    badge: 'Le plus choisi',
+    featured: true,
+    features: ['6 à 10 pages par heure', 'Échanges clés restitués avec attribution', 'Votes nominatifs détaillés', 'Déclarations syndicales restituées'],
   },
   {
     id: 'premium',
     name: 'Premium',
     rate: 150,
     note: 'Tranche 50 à 300 salariés',
+    tagline: 'Verbatim intégral',
+    features: ['11 à 20 pages par heure', 'Restitution intégrale de chaque intervention', 'Valeur probante maximale', 'Idéal en contexte contentieux ou PSE'],
   },
 ]
 
 export const TARIFICATION_CALCULATOR = {
   disclaimer: 'Estimation non contractuelle, hors taxes (+20% TVA) • Devis personnalisé gratuit sous 24h',
   cta: { label: 'Demander un devis gratuit →', to: '/atoopv/contact' },
-  labels: { format: 'Format', duration: 'Durée de la réunion', estimate: 'Estimation indicative', currency: 'HT' },
+  labels: { format: 'Format', duration: 'Durée de la réunion', estimate: 'Estimation indicative', currency: 'HT', instance: 'Instance', preview: 'Aperçu de l’extrait' },
 }
 
 export const TARIFICATION_WHY = {

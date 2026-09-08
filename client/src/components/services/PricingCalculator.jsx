@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { accent } from '@/utils/accent'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
+import FicheCard from '@/components/atoopv/FicheCard'
+import { INSTANCE_TYPES } from '@/constants/pricing'
 import { cn } from '@/utils/cn'
 
 /**
@@ -11,6 +13,12 @@ import { cn } from '@/utils/cn'
  * the source material actually specifies (billing is per meeting hour) —
  * it does not invent a formula for the complexity/agenda-size dimensions
  * the original simulator mentioned but never disclosed a rule for.
+ *
+ * The instance selector and output preview added alongside this are driven
+ * entirely by the tier's own existing `features` — no new per-tier preview
+ * content was authored, so there's exactly one preview implementation
+ * (via the existing FicheCard "what the output looks like" component)
+ * rather than one per tier.
  */
 export default function PricingCalculator({
   tiers,
@@ -21,14 +29,30 @@ export default function PricingCalculator({
   cta,
   color = 'golden',
   labels = {},
+  instances = INSTANCE_TYPES,
 }) {
   const [tierId, setTierId] = useState(tiers[0]?.id)
   const [duration, setDuration] = useState(durationDefault)
+  const [instance, setInstance] = useState(instances[0])
   const tier = tiers.find((t) => t.id === tierId) || tiers[0]
   const a = accent(color)
-  const { format = 'Format', duration: durationLabel = 'Meeting duration', estimate: estimateLabel = 'Estimate', currency = 'HT' } = labels
+  const {
+    format = 'Format',
+    duration: durationLabel = 'Meeting duration',
+    estimate: estimateLabel = 'Estimate',
+    currency = 'HT',
+    instance: instanceLabel = 'Instance',
+    preview: previewLabel = 'Preview',
+  } = labels
 
   const estimate = useMemo(() => Math.round(duration * tier.rate), [duration, tier.rate])
+
+  const previewFields = useMemo(
+    () => [
+      { label: previewLabel, value: tier.features.join(' • ') },
+    ],
+    [tier, previewLabel],
+  )
 
   return (
     <Reveal>
@@ -51,6 +75,22 @@ export default function PricingCalculator({
               ))}
             </div>
             {tier.note && <p className="mt-2 text-xs text-muted">{tier.note}</p>}
+
+            <label className="mt-7 block text-xs font-semibold uppercase tracking-[0.18em] text-muted" htmlFor="pricing-instance">
+              {instanceLabel}
+            </label>
+            <select
+              id="pricing-instance"
+              value={instance}
+              onChange={(e) => setInstance(e.target.value)}
+              className="input mt-3 w-full sm:w-auto"
+            >
+              {instances.map((i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </select>
 
             <p className="mt-7 text-xs font-semibold uppercase tracking-[0.18em] text-muted">
               {durationLabel} — {duration}h
@@ -87,6 +127,10 @@ export default function PricingCalculator({
               </Button>
             )}
           </div>
+        </div>
+
+        <div className="mt-8">
+          <FicheCard eyebrow={tier.name} number={instance} title={tier.tagline} fields={previewFields} color={color} />
         </div>
       </div>
     </Reveal>

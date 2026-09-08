@@ -67,6 +67,10 @@ export const PRICING_CALCULATOR = {
   cta: { label: 'Request a free quote →', to: '/app' },
 }
 
+/** The staff representative body types PricingCalculator's instance
+ * selector offers — official French CSE-law acronyms, not translated. */
+export const INSTANCE_TYPES = ['CSE', 'CSEE', 'CSEC', 'CSSCT', 'CECO', 'QVCT']
+
 export const PRICING_WHY = {
   eyebrow: 'Why use it',
   heading: 'Why use the pricing simulator?',
