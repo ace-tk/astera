@@ -41,9 +41,22 @@ export default function APropos() {
       <AtoopvHero {...A_PROPOS_HERO} />
 
       <div className="shell py-14 sm:py-16">
-        <div className="mx-auto max-w-3xl space-y-14">
+        <div className="mx-auto max-w-3xl">
           <RichTextSection eyebrow={A_PROPOS_MISSION.eyebrow} heading={A_PROPOS_MISSION.heading} blocks={A_PROPOS_MISSION.blocks} color="royal" />
+        </div>
+
+        {/* Freed from the mx-auto max-w-3xl prose column above: that narrow
+            reading width (768px) is right for long-form paragraphs, but it's
+            what was squeezing this 4-column card grid down to ~170px cards
+            with heavily-wrapped text. Accueil's own FeatureGrid usages (see
+            pages/atoopv/Accueil.jsx) sit directly in a plain `.shell` with no
+            extra max-width — matching that existing, correct precedent here
+            instead of inventing a new width value. */}
+        <div className="mt-14">
           <FeatureGrid eyebrow={A_PROPOS_VALUES.eyebrow} heading={A_PROPOS_VALUES.heading} items={A_PROPOS_VALUES.items} color="royal" columns={4} />
+        </div>
+
+        <div className="mx-auto mt-14 max-w-3xl space-y-14">
           <RichTextSection eyebrow={A_PROPOS_APPROACH.eyebrow} heading={A_PROPOS_APPROACH.heading} blocks={A_PROPOS_APPROACH.blocks} color="royal" />
           <RichTextSection
             eyebrow={A_PROPOS_FOUNDER.eyebrow}
