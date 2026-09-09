@@ -21,6 +21,100 @@ const REST_MARKER = 'VOTRE MODÈLE, EN LIGNE'
 const LINK_RE = /^\[(.+?)\]\((.+?)\)$/
 const TAG_RE = /^(.+)✦$/
 
+// The exact icon glyphs this page's source markdown uses for its
+// "En-tête réglementaire / Approbation / Délibérations / Questions diverses"
+// and "Verbatim / Conformité / Temps récupéré / Réunions complexes" groups.
+// An allowlist (rather than a generic emoji regex) on purpose: this parser
+// is deliberately scoped to this one article's known content, so matching
+// the handful of glyphs it actually uses is simpler and more predictable
+// than a Unicode emoji pattern, and it fails safe the same way the rest of
+// this file does — an unmatched line is just left as ordinary prose.
+const KNOWN_ICONS = new Set(['📋', '⚖️', '🗳️', '📅'])
+const HEADING_RE = /^(#{2,4})\s+(.+)$/
+
+function slugify(text) {
+  let out = ''
+  for (const ch of text.normalize('NFD')) {
+    const code = ch.codePointAt(0)
+    if (code >= 0x300 && code <= 0x36f) continue // combining diacritical mark, drop it
+    out += ch
+  }
+  return out
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+/** True for a bare short-label line like "BESOIN D’UN EXPERT ?" that sits
+ * between a paragraph and the next heading in this source's markdown —
+ * distinguished from a normal sentence by being fully uppercase. */
+function isLabelLine(line) {
+  return line !== '' && line === line.toUpperCase() && line !== line.toLowerCase()
+}
+
+/**
+ * Splits a markdown body into a sequence of render segments: plain prose
+ * (rendered exactly as MarkdownArticle already renders everything today)
+ * and "icon" sections — the bare-emoji-paragraph immediately followed by a
+ * heading that this page's crawled content repeats for its two four-part
+ * lists — pulled apart so the page can put the icon and heading on one row
+ * instead of two stacked, disconnected blocks. Every character of every
+ * heading/paragraph is reused verbatim; this only changes how they're
+ * grouped for layout.
+ */
+export function splitIconSections(body) {
+  const lines = body.split('\n')
+  const segments = []
+  let prose = []
+
+  const flushProse = () => {
+    const text = prose.join('\n').trim()
+    if (text) segments.push({ type: 'prose', md: text })
+    prose = []
+  }
+
+  const nextNonBlank = (from) => {
+    const offset = lines.slice(from).findIndex((l) => l.trim() !== '')
+    return offset === -1 ? null : from + offset
+  }
+
+  let i = 0
+  while (i < lines.length) {
+    const trimmed = lines[i].trim()
+    const headingAt = nextNonBlank(i + 1)
+    const headingMatch = headingAt !== null && lines[headingAt].match(HEADING_RE)
+
+    if (KNOWN_ICONS.has(trimmed) && headingMatch) {
+      flushProse()
+      const icon = trimmed
+      const heading = headingMatch[2].trim()
+      let j = nextNonBlank(headingAt + 1) ?? lines.length
+      // Content for this section runs until the next heading, the next
+      // icon+heading pair, or a bare label line that precedes one — all
+      // three mark the start of the next block, not this one's content.
+      while (j < lines.length) {
+        const l = lines[j].trim()
+        if (HEADING_RE.test(l)) break
+        const la = nextNonBlank(j + 1)
+        const followsHeading = la !== null && HEADING_RE.test(lines[la])
+        if ((KNOWN_ICONS.has(l) || isLabelLine(l)) && followsHeading) break
+        j++
+      }
+      const content = lines.slice(nextNonBlank(headingAt + 1) ?? j, j).join('\n').trim()
+      let id = slugify(heading)
+      if (segments.some((s) => s.id === id)) id = `${id}-2`
+      segments.push({ type: 'icon', icon, heading, id, md: content })
+      i = j
+      continue
+    }
+
+    prose.push(lines[i])
+    i++
+  }
+  flushProse()
+  return segments
+}
+
 function findLine(lines, text) {
   return lines.findIndex((l) => l.trim() === text)
 }

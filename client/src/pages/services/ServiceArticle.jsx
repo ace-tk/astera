@@ -4,13 +4,15 @@ import ServiceHero from '@/components/services/ServiceHero'
 import GuideModelHero from '@/components/atoopv/GuideModelHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import GuideModelInfoPanel from '@/components/atoopv/GuideModelInfoPanel'
+import GuideModelArticleBody from '@/components/atoopv/GuideModelArticleBody'
+import GuideModelRail from '@/components/atoopv/GuideModelRail'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
 import { resolveServiceHref } from '@/constants/servicesLinks'
 import { stripEmphasis } from '@/utils/richText'
-import { parseModelePvGratuitBody } from '@/utils/modelePvGratuitContent'
+import { parseModelePvGratuitBody, splitIconSections } from '@/utils/modelePvGratuitContent'
 
 // The one article whose source markdown has a "raw stats/CTA/tag-list" info
 // block that renders far better through components already built for this
@@ -40,6 +42,8 @@ export default function ServiceArticle({ category, slug: slugProp }) {
   if (!page) return <Navigate to={`/services/${category}`} replace />
 
   const enhanced = slug === ENHANCED_INFO_SLUG ? parseModelePvGratuitBody(page.body) : null
+  const articleSegments = enhanced ? splitIconSections(enhanced.restBody) : null
+  const railItems = articleSegments?.filter((s) => s.type === 'icon') || []
   const breadcrumbs = [{ label: 'Services', to: '/services' }, { label: CATEGORY_LABEL[category], to: `/services/${category}` }]
   const heroCtas = {
     secondaryCta: enhanced?.secondaryCta && {
@@ -76,11 +80,15 @@ export default function ServiceArticle({ category, slug: slugProp }) {
         <ServiceHero badge={page.breadcrumb} title={page.title} breadcrumbs={breadcrumbs} />
       )}
 
-      <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
+      <ServiceCategoryContent
+        navItems={CATEGORY_NAV[category]}
+        navLabel={CATEGORY_NAV_LABEL[category]}
+        rail={railItems.length > 0 ? <GuideModelRail items={railItems} /> : undefined}
+      >
         {enhanced ? (
           <>
             <GuideModelInfoPanel headingBody={enhanced.headingBody} stats={enhanced.stats} contact={enhanced.contact} color={CATEGORY_COLOR[category]} />
-            <MarkdownArticle body={enhanced.restBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
+            <GuideModelArticleBody segments={articleSegments} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
           </>
         ) : (
           <MarkdownArticle body={page.body} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
