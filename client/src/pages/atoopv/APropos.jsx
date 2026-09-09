@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
-import AtoopvHero from '@/components/atoopv/AtoopvHero'
-import AProposStory from '@/components/atoopv/AProposStory'
+import AProposHero from '@/components/atoopv/AProposHero'
+import AProposStory, { buildChapters } from '@/components/atoopv/AProposStory'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
@@ -47,6 +47,14 @@ function CtaFooterWithContactLink({ footer }) {
 export default function APropos() {
   usePageMeta({ title: stripEmphasis(A_PROPOS_HERO.title), description: A_PROPOS_HERO.lead })
 
+  const chapters = buildChapters({
+    mission: A_PROPOS_MISSION,
+    values: A_PROPOS_VALUES,
+    approach: A_PROPOS_APPROACH,
+    founder: A_PROPOS_FOUNDER,
+    sirus: A_PROPOS_SIRUS,
+  })
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -58,7 +66,7 @@ export default function APropos() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero {...A_PROPOS_HERO} />
+      <AProposHero {...A_PROPOS_HERO} chapters={chapters} />
 
       <AProposStory mission={A_PROPOS_MISSION} values={A_PROPOS_VALUES} approach={A_PROPOS_APPROACH} founder={A_PROPOS_FOUNDER} sirus={A_PROPOS_SIRUS} />
 

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import RichTextSection from '@/components/services/RichTextSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
+import { cn } from '@/utils/cn'
 
 const EASE = [0.16, 1, 0.3, 1]
 
@@ -20,8 +21,10 @@ function useIsDesktop(breakpoint = 1024) {
 /** Builds the five numbered "chapters" straight from the page's own
  * existing content objects — nothing here is new copy, just a different
  * shape for the same eyebrow/heading/body/items/list fields already used
- * by RichTextSection and FeatureGrid elsewhere on this page. */
-function buildChapters({ mission, values, approach, founder, sirus }) {
+ * by RichTextSection and FeatureGrid elsewhere on this page. Exported so
+ * AProposHero can reuse the same eyebrow/number list as its index panel
+ * without duplicating the copy. */
+export function buildChapters({ mission, values, approach, founder, sirus }) {
   return [
     { number: '01', eyebrow: mission.eyebrow, heading: mission.heading, kind: 'text', body: mission.blocks.map((b) => b.text) },
     { number: '02', eyebrow: values.eyebrow, heading: values.heading, kind: 'values', items: values.items },
@@ -41,27 +44,38 @@ function ChapterNumeral({ index, count, progress, label }) {
   return (
     <motion.span
       style={{ opacity, scale, y }}
-      className="absolute inset-0 flex items-center font-display text-[5rem] leading-none text-ink sm:text-[7rem] lg:text-[8.5rem]"
+      className="absolute inset-0 flex items-center font-display text-[5rem] leading-none text-ink lg:text-[7rem] xl:text-[8.5rem]"
     >
       {label}
     </motion.span>
   )
 }
 
-/** Its own component (not an inline `.map()` callback) so `useTransform`
- * is called once per mounted instance, in a stable order — calling a hook
- * inside a loop within a single component's render body would break the
- * Rules of Hooks even though the array length here happens to be fixed. */
-function TrackerTick({ index, count, progress }) {
-  const scaleX = useTransform(progress, [index / count, (index + 1) / count], [0, 1])
+/** Persistent right-hand rail listing every chapter's number + eyebrow, the
+ * active one highlighted — this both replaces the old standalone progress
+ * ticks (the left edge fills as you scroll) and fills the wide desktop
+ * column with a real, functional index instead of empty space. Reuses the
+ * same eyebrow labels as AProposHero's "Sur cette page" panel. */
+function ChapterRail({ chapters, active, progress }) {
   return (
-    <span className="relative h-1 flex-1 overflow-hidden rounded-full bg-ink/8">
-      <motion.span className="absolute inset-y-0 left-0 origin-left rounded-full bg-royal" style={{ scaleX }} />
-    </span>
+    <div className="relative hidden pl-7 lg:block">
+      <span className="absolute inset-y-0 left-0 w-px bg-ink/8" />
+      <motion.span className="absolute left-0 top-0 h-full w-px origin-top bg-royal" style={{ scaleY: progress }} />
+      <ul className="space-y-4">
+        {chapters.map((c, i) => (
+          <li key={c.number} className={cn('flex items-baseline gap-3 transition-colors duration-300', i === active ? 'text-ink' : 'text-ink/30')}>
+            <span className="font-display text-xs tabular-nums">{c.number}</span>
+            <span className={cn('text-sm leading-snug', i === active ? 'font-medium' : 'font-normal')}>{c.eyebrow}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
 function ChapterBody({ chapter }) {
+  const twoUp = chapter.kind === 'text' && chapter.body.length > 1
+
   return (
     <motion.div
       key={chapter.number}
@@ -71,12 +85,12 @@ function ChapterBody({ chapter }) {
       className="absolute inset-0"
     >
       <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">{chapter.eyebrow}</span>
-      <h3 className="mt-3 max-w-lg font-display text-2xl font-medium leading-tight tracking-tight text-balance sm:text-3xl">{chapter.heading}</h3>
+      <h3 className="mt-3 max-w-2xl font-display text-2xl font-medium leading-tight tracking-tight text-balance lg:text-3xl">{chapter.heading}</h3>
 
       {chapter.kind === 'text' && (
-        <div className="mt-4 max-w-lg space-y-3">
+        <div className={cn('mt-5', twoUp ? 'grid max-w-2xl grid-cols-2 gap-x-8 gap-y-3' : 'max-w-xl space-y-3')}>
           {chapter.body.map((p, i) => (
-            <p key={i} className="text-sm leading-relaxed text-muted sm:text-base">
+            <p key={i} className="text-sm leading-relaxed text-muted lg:text-base">
               {p}
             </p>
           ))}
@@ -84,11 +98,11 @@ function ChapterBody({ chapter }) {
       )}
 
       {chapter.kind === 'values' && (
-        <div className="mt-5 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="mt-5 grid max-w-2xl grid-cols-2 gap-3">
           {chapter.items.map((item) => {
             const Icon = item.icon
             return (
-              <div key={item.title} className="rounded-xl border border-ink/8 bg-card/60 p-4">
+              <div key={item.title} className="rounded-xl border border-ink/8 bg-card/60 p-5">
                 <Icon className="h-4 w-4 text-royal" strokeWidth={1.75} />
                 <p className="mt-2 font-display text-sm font-medium tracking-tight">{item.title}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted">{item.body}</p>
@@ -99,8 +113,8 @@ function ChapterBody({ chapter }) {
       )}
 
       {chapter.kind === 'founder' && (
-        <div className="mt-4 max-w-lg">
-          {chapter.lead && <p className="text-sm leading-relaxed text-ink/80 sm:text-base">{chapter.lead}</p>}
+        <div className="mt-5 max-w-2xl">
+          {chapter.lead && <p className="text-sm leading-relaxed text-ink/80 lg:text-base">{chapter.lead}</p>}
           <ul className="mt-3 space-y-2">
             {chapter.list.map((item) => (
               <li key={item} className="flex gap-2 text-sm leading-relaxed text-muted">
@@ -118,7 +132,9 @@ function ChapterBody({ chapter }) {
 /** Desktop path: a pinned vertical scroll drives the numeral crossfade and
  * the content swap — same mechanic as the Design Lab's Structured
  * Intelligence experiment (useScroll + per-index transforms), rebuilt here
- * independently for production rather than importing the sandbox component. */
+ * independently for production rather than importing the sandbox component.
+ * Three-column grid (numeral / content / index rail) so the section uses the
+ * shell's full width instead of a narrow text column floating in it. */
 function PinnedStory({ chapters }) {
   const sectionRef = useRef(null)
   const [active, setActive] = useState(0)
@@ -134,14 +150,14 @@ function PinnedStory({ chapters }) {
     <section ref={sectionRef} className="relative border-t border-ink/8" style={{ height: `${count * 90}vh` }}>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
         <div className="shell">
-          <div className="grid grid-cols-[8rem_1fr] items-center gap-8 lg:grid-cols-[10rem_1fr] lg:gap-16">
-            <div className="relative h-24 sm:h-28 lg:h-32">
+          <div className="grid grid-cols-[10rem_minmax(0,1fr)] items-center gap-10 lg:grid-cols-[11rem_minmax(0,1fr)_15rem] xl:grid-cols-[12rem_minmax(0,1fr)_17rem] xl:gap-14">
+            <div className="relative h-24 lg:h-32 xl:h-36">
               {chapters.map((c, i) => (
                 <ChapterNumeral key={c.number} index={i} count={count} progress={scrollYProgress} label={c.number} />
               ))}
             </div>
 
-            <div className="relative min-h-[16rem] sm:min-h-[14rem]">
+            <div className="relative min-h-[15rem]">
               {/* Default (non-"wait") mode on purpose — matches the Design
                   Lab's Structured Intelligence precedent. "wait" mode blocks
                   the next chapter's mount until the previous one's exit
@@ -153,12 +169,8 @@ function PinnedStory({ chapters }) {
                 <ChapterBody key={chapters[active].number} chapter={chapters[active]} />
               </AnimatePresence>
             </div>
-          </div>
 
-          <div className="mt-10 flex items-center gap-2 sm:mt-14">
-            {chapters.map((c, i) => (
-              <TrackerTick key={c.number} index={i} count={count} progress={scrollYProgress} />
-            ))}
+            <ChapterRail chapters={chapters} active={active} progress={scrollYProgress} />
           </div>
         </div>
       </div>
