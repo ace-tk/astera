@@ -31,6 +31,7 @@ const TAG_RE = /^(.+)✦$/
 // this file does — an unmatched line is just left as ordinary prose.
 const KNOWN_ICONS = new Set(['📋', '⚖️', '🗳️', '📅'])
 const HEADING_RE = /^(#{2,4})\s+(.+)$/
+const PDF_LINK_RE = /^\[(.+?)\]\((\S+?\.pdf)\)$/i
 
 function slugify(text) {
   let out = ''
@@ -54,13 +55,16 @@ function isLabelLine(line) {
 
 /**
  * Splits a markdown body into a sequence of render segments: plain prose
- * (rendered exactly as MarkdownArticle already renders everything today)
- * and "icon" sections — the bare-emoji-paragraph immediately followed by a
+ * (rendered exactly as MarkdownArticle already renders everything today),
+ * "icon" sections — the bare-emoji-paragraph immediately followed by a
  * heading that this page's crawled content repeats for its two four-part
  * lists — pulled apart so the page can put the icon and heading on one row
- * instead of two stacked, disconnected blocks. Every character of every
- * heading/paragraph is reused verbatim; this only changes how they're
- * grouped for layout.
+ * instead of two stacked, disconnected blocks, and "pdf" segments — a
+ * standalone markdown link whose target is a .pdf file (e.g. "Télécharger
+ * le modèle PDF gratuit"), pulled out so it can render as a real download
+ * button with an icon instead of MarkdownArticle's plain inline text link.
+ * Every character of every heading/paragraph/link label is reused verbatim;
+ * this only changes how they're grouped for layout.
  */
 export function splitIconSections(body) {
   const lines = body.split('\n')
@@ -81,6 +85,15 @@ export function splitIconSections(body) {
   let i = 0
   while (i < lines.length) {
     const trimmed = lines[i].trim()
+
+    const pdfMatch = trimmed.match(PDF_LINK_RE)
+    if (pdfMatch) {
+      flushProse()
+      segments.push({ type: 'pdf', label: pdfMatch[1], href: pdfMatch[2] })
+      i++
+      continue
+    }
+
     const headingAt = nextNonBlank(i + 1)
     const headingMatch = headingAt !== null && lines[headingAt].match(HEADING_RE)
 

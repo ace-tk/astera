@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Download } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
@@ -6,6 +7,7 @@ import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import FicheCard from '@/components/atoopv/FicheCard'
 import RichTextSection from '@/components/services/RichTextSection'
 import CTASection from '@/components/services/CTASection'
+import Button from '@/components/ui/Button'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import {
   ATOOSAVOIR_EXEMPLE_HERO,
@@ -54,14 +56,17 @@ export default function AtoosavoirExemple() {
               color="sky"
               footer={
                 <div className="flex flex-col gap-3">
-                  <a
+                  <Button
+                    as="a"
                     href={ATOOSAVOIR_EXEMPLE_CARD.downloadHref}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm font-medium text-sky link-underline"
+                    variant="soft"
+                    size="sm"
+                    className="w-fit"
                   >
-                    {ATOOSAVOIR_EXEMPLE_CARD.downloadLabel}
-                  </a>
+                    <Download className="h-4 w-4" /> {ATOOSAVOIR_EXEMPLE_CARD.downloadLabel}
+                  </Button>
                   <p className="text-xs text-muted">
                     Une question à traiter ?{' '}
                     <a href={ATOOSAVOIR_CONTACT.emailHref} className="link-underline">
