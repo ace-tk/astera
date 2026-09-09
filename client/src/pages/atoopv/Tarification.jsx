@@ -4,7 +4,7 @@ import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import RichTextSection from '@/components/services/RichTextSection'
-import PricingCalculator from '@/components/services/PricingCalculator'
+import PVSimulator from '@/components/atoopv/PVSimulator'
 import FAQSection from '@/components/services/FAQSection'
 import CTASection from '@/components/services/CTASection'
 import Pricing from '@/components/landing/sections/Pricing'
@@ -44,10 +44,21 @@ export default function Tarification() {
 
       <AtoopvHero {...TARIFICATION_HERO} />
 
+      {/* The interactive simulator needs the full shell width for its
+          three-column console + live preview, so it sits outside the
+          narrower max-w-3xl column the rest of this page's prose uses. */}
       <div className="shell py-14 sm:py-16">
+        <PVSimulator
+          tiers={TARIFICATION_TIERS}
+          badge={TARIFICATION_HERO.badge}
+          intro={TARIFICATION_INTRO.blocks[0]?.text}
+          {...TARIFICATION_CALCULATOR}
+          color="royal"
+        />
+      </div>
+
+      <div className="shell pb-14 sm:pb-16">
         <div className="mx-auto max-w-3xl space-y-14">
-          <RichTextSection blocks={TARIFICATION_INTRO.blocks} color="golden" />
-          <PricingCalculator tiers={TARIFICATION_TIERS} {...TARIFICATION_CALCULATOR} color="golden" />
           <RichTextSection eyebrow={TARIFICATION_OPTIONS.eyebrow} heading={TARIFICATION_OPTIONS.heading} blocks={TARIFICATION_OPTIONS.blocks} color="golden" />
           <RichTextSection eyebrow={TARIFICATION_WHY.eyebrow} heading={TARIFICATION_WHY.heading} blocks={TARIFICATION_WHY.blocks} color="golden" />
           <RichTextSection eyebrow={TARIFICATION_HOW.eyebrow} heading={TARIFICATION_HOW.heading} blocks={TARIFICATION_HOW.blocks} color="golden" />
