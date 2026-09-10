@@ -4,22 +4,36 @@ import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import ServiceHero from '@/components/services/ServiceHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
+import CTASection from '@/components/services/CTASection'
+import ServicesHomeIntro from '@/components/services/ServicesHomeIntro'
+import ServicesGroupSection from '@/components/services/ServicesGroupSection'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { resolveServiceHref } from '@/constants/servicesLinks'
 import { stripEmphasis } from '@/utils/richText'
+import { parseServicesHomeBody } from '@/utils/servicesHomeContent'
+
+function closingCta(cta) {
+  return cta && { label: cta.label, to: resolveServiceHref(cta.href).href }
+}
 
 /**
  * The Services landing page — same source as atoopv.com/services/ (the
- * "Tous nos services" link in the live nav points straight at it), rendered
- * the same way every other Services page is: real extracted markdown
- * through MarkdownArticle, no hand-typed copy. Browsing into a specific
- * category (Rédaction PV, Par ville, Tarifs & Infos, Guides pratiques,
- * Communication, Formations) happens via the navbar's own "Services"
- * dropdown, which mirrors the live nav's nested flyouts.
+ * "Tous nos services" link in the live nav points straight at it). Its
+ * markdown body has the same "bare icon/label line, then heading" shape as
+ * every other Services page, but this one is dense enough (an intro, four
+ * stats, three service groups, a resources list, a closing CTA) that
+ * running it wholesale through the generic MarkdownArticle renderer left
+ * icons stranded above their headings and stats stacked into one long
+ * column — see utils/servicesHomeContent.js for the scoped parser and
+ * ServicesHomeIntro/ServicesGroupSection for the layout built from it.
+ * MarkdownArticle itself is untouched, and still renders the resources
+ * paragraph below plus the full body as a fallback if the source content
+ * ever changes shape enough that the parser can't find its markers.
  */
 export default function Services() {
   const page = getServicePage('services')
+  const parsed = page ? parseServicesHomeBody(page.body) : null
 
   usePageMeta({ title: page ? stripEmphasis(page.title) : 'Services', description: page ? excerpt(page.body, 160) : undefined })
 
@@ -36,11 +50,45 @@ export default function Services() {
 
       {page && <ServiceHero badge={page.breadcrumb} title={page.title} />}
 
-      <div className="shell py-14 sm:py-16">
-        <div className="mx-auto max-w-3xl">
-          {page && <MarkdownArticle body={page.body} color="royal" resolveHref={resolveServiceHref} />}
-        </div>
-      </div>
+      {page &&
+        (parsed ? (
+          <>
+            <div className="shell pb-14 sm:pb-16">
+              <div className="mx-auto max-w-5xl">
+                <ServicesHomeIntro {...parsed.intro} />
+              </div>
+            </div>
+
+            <div id="services" className="shell pb-16 sm:pb-20">
+              <div className="mx-auto max-w-5xl space-y-16 sm:space-y-20">
+                {parsed.groups.map((g) => (
+                  <ServicesGroupSection key={g.label} {...g} color="royal" />
+                ))}
+              </div>
+            </div>
+
+            <div className="shell pb-14 sm:pb-16">
+              <div className="mx-auto max-w-3xl">
+                <MarkdownArticle body={parsed.resourcesProse} color="royal" resolveHref={resolveServiceHref} />
+              </div>
+            </div>
+
+            <CTASection
+              eyebrow={parsed.closing.eyebrow}
+              heading={parsed.closing.heading}
+              body={parsed.closing.body}
+              primaryCta={closingCta(parsed.closing.ctas[0])}
+              secondaryCta={closingCta(parsed.closing.ctas[1])}
+              footer={parsed.closing.contact}
+            />
+          </>
+        ) : (
+          <div className="shell py-14 sm:py-16">
+            <div className="mx-auto max-w-3xl">
+              <MarkdownArticle body={page.body} color="royal" resolveHref={resolveServiceHref} />
+            </div>
+          </div>
+        ))}
 
       <Footer />
     </motion.main>
