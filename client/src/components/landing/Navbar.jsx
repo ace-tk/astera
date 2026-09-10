@@ -9,6 +9,7 @@ import Wordmark from '@/components/common/Wordmark'
 import NavDropdown from '@/components/landing/NavDropdown'
 import MegaMenuPanel from '@/components/landing/MegaMenuPanel'
 import HashAwareLink from '@/components/landing/HashAwareLink'
+import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
 import { cn } from '@/utils/cn'
 
 const CLOSE_DELAY_MS = 150
@@ -65,16 +66,22 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
             transition={{ duration: 0.25 }}
             className="overflow-hidden pl-4"
           >
-            {subItems.map((child) => (
-              <HashAwareLink
-                key={child.href}
-                href={child.href}
-                onClick={onNavigate}
-                className="block min-h-[48px] rounded-xl px-4 py-3 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]"
-              >
-                {child.label}
-              </HashAwareLink>
-            ))}
+            {subItems.map((child) =>
+              child.href.startsWith('#') ? (
+                <HashAwareLink
+                  key={child.href}
+                  href={child.href}
+                  onClick={onNavigate}
+                  className="block min-h-[48px] rounded-xl px-4 py-3 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]"
+                >
+                  {child.label}
+                </HashAwareLink>
+              ) : (
+                <EditorialMenuItem key={child.href} to={child.href} onClick={onNavigate} className="min-h-[48px] px-1">
+                  {child.label}
+                </EditorialMenuItem>
+              ),
+            )}
           </motion.div>
         )}
       </AnimatePresence>

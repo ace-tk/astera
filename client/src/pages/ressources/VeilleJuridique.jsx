@@ -1,5 +1,7 @@
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
+import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
+import EditorialDivider from '@/components/atoopv/EditorialDivider'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getResource, excerpt, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
@@ -26,9 +28,18 @@ export default function VeilleJuridique() {
     <>
       <AtoopvHero badge="Ressources" title="Veille juridique CSE" lead="Publications LinkedIn du président d’ALC SAS — jurisprudence sociale et actualité juridique pour les élus CSE." />
 
-      <ServiceCategoryContent navItems={RESSOURCES_NAV} navLabel="Ressources pages">
-        <ArticleGrid items={items} color="royal" columns={3} />
-      </ServiceCategoryContent>
+      <div className="relative">
+        {/* No `lines` here — AmbientBackground already paints the page-wide
+            grid; only the depth blocks are additive on top of it. */}
+        <EditorialGridBackground className="-z-10" />
+
+        <ServiceCategoryContent navItems={RESSOURCES_NAV} navLabel="Ressources pages">
+          <div>
+            <EditorialDivider className="mb-8" />
+            <ArticleGrid items={items} color="royal" columns={3} />
+          </div>
+        </ServiceCategoryContent>
+      </div>
     </>
   )
 }

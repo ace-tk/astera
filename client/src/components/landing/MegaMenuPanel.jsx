@@ -2,10 +2,9 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import MegaMenuVisual from '@/components/landing/MegaMenuVisual'
+import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
-
-const itemClass = 'block rounded-xl px-3 py-2 text-sm leading-snug text-ink/80 transition-colors hover:bg-ink/[0.04] hover:text-ink'
 
 /**
  * The shared panel for the ATOOPV mega-nav (Procès-verbal, Formations,
@@ -27,11 +26,17 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
       id={`mega-panel-${item.key}`}
       role="region"
       aria-label={item.label}
-      className="w-[min(58rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-ink/10 bg-card shadow-float"
+      className="relative w-[min(58rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-ink/10 bg-card shadow-float"
       {...handlers}
     >
+      {/* Extremely low-contrast technical grid behind the columns — same
+          bg-grid-faint utility AmbientBackground uses, just tighter and
+          fainter here so it reads as an editorial layout guide rather than
+          decoration competing with the links. */}
+      <div className="pointer-events-none absolute inset-0 bg-grid-faint opacity-40 [background-size:28px_28px]" aria-hidden="true" />
+
       <div
-        className="grid divide-x divide-ink/8"
+        className="relative grid divide-x divide-ink/8"
         style={{ gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))${trailingCount ? ' 17rem' : ''}` }}
       >
         {columns.map((col) => (
@@ -39,11 +44,11 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
             <span className="eyebrow">
               <span className="h-px w-6 bg-ink/25" /> {col.heading}
             </span>
-            <div className="mt-4 space-y-0.5">
+            <div className="mt-3">
               {col.items.map((link) => (
-                <Link key={link.label} to={link.href} onClick={onNavigate} className={itemClass}>
+                <EditorialMenuItem key={link.label} to={link.href} onClick={onNavigate} dense>
                   {link.label}
-                </Link>
+                </EditorialMenuItem>
               ))}
             </div>
           </div>
@@ -76,8 +81,9 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
               <span className="h-px w-6 bg-ink/25" /> {cities.heading}
             </span>
             <p className="mt-4 text-sm leading-relaxed text-ink/70">{cities.label}</p>
-            <Link to={cities.href} onClick={onNavigate} className={cn('mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
-              {cities.linkLabel} <ArrowRight className="h-3.5 w-3.5" />
+            <Link to={cities.href} onClick={onNavigate} className={cn('group/cities mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
+              {cities.linkLabel}
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover/cities:translate-x-0.5" />
             </Link>
             <div className="mt-4 flex-1">
               <MegaMenuVisual variant={item.key} color={item.color} />
