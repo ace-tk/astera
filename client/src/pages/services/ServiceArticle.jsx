@@ -73,12 +73,7 @@ export default function ServiceArticle({ category, slug: slugProp }) {
           breadcrumbs={breadcrumbs}
           introBody={enhanced.introBody}
           tags={enhanced.tags}
-          // Overrides the category's purple accent (CATEGORY_COLOR.guides)
-          // for just this hero's intro-link color, per explicit request —
-          // ATOOPV's own navy/royal blue instead. Scoped to GuideModelHero
-          // only (used exclusively on this one page); every other element
-          // on this page and every other guides page keeps its color as-is.
-          color="royal"
+          color={CATEGORY_COLOR[category]}
           {...heroCtas}
         />
       ) : (

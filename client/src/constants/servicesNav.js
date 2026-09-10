@@ -96,7 +96,7 @@ export const CATEGORY_COLOR = {
   drafting: 'royal',
   'by-city': 'sky',
   'tarifs-infos': 'golden',
-  guides: 'purple',
+  guides: 'royal',
   communication: 'coral',
   training: 'mint',
 }
