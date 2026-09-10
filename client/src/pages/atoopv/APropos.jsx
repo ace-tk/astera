@@ -4,7 +4,8 @@ import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import AProposHero from '@/components/atoopv/AProposHero'
-import AProposStory, { buildChapters } from '@/components/atoopv/AProposStory'
+import AProposSections, { buildChapters } from '@/components/atoopv/AProposSections'
+import { AProposNavSticky, AProposNavMobile } from '@/components/atoopv/AProposNav'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
@@ -66,9 +67,34 @@ export default function APropos() {
       <AmbientBackground />
       <Navbar />
 
-      <AProposHero {...A_PROPOS_HERO} chapters={chapters} />
+      {/* One shared grid for the hero AND all five story sections, with the
+          "Sur cette page" rail as its second column — that's what lets the
+          rail stay sticky across the whole story instead of only the hero. */}
+      <section className="relative pt-36 pb-16 sm:pt-40 sm:pb-20 lg:pt-44">
+        <div className="shell">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_16rem] lg:gap-14 xl:grid-cols-[1fr_18rem]">
+            <div>
+              <AProposHero {...A_PROPOS_HERO} />
 
-      <AProposStory mission={A_PROPOS_MISSION} values={A_PROPOS_VALUES} approach={A_PROPOS_APPROACH} founder={A_PROPOS_FOUNDER} sirus={A_PROPOS_SIRUS} />
+              <div className="mt-8">
+                <AProposNavMobile chapters={chapters} />
+              </div>
+
+              <div className="mt-16 sm:mt-20">
+                <AProposSections
+                  mission={A_PROPOS_MISSION}
+                  values={A_PROPOS_VALUES}
+                  approach={A_PROPOS_APPROACH}
+                  founder={A_PROPOS_FOUNDER}
+                  sirus={A_PROPOS_SIRUS}
+                />
+              </div>
+            </div>
+
+            <AProposNavSticky chapters={chapters} />
+          </div>
+        </div>
+      </section>
 
       {/* Untouched per the brief: same component, same props, same content —
           only the footer's plain-text email becomes a real link. */}
