@@ -30,7 +30,7 @@ export default function RessourceArticle({ slug: slugProp }) {
       <AtoopvHero badge={resource.breadcrumb} title={resource.title} />
 
       <ServiceCategoryContent navItems={RESSOURCES_NAV} navLabel="Ressources pages">
-        <MarkdownArticle body={resource.body} color="sky" />
+        <MarkdownArticle body={resource.body} color="royal" />
       </ServiceCategoryContent>
     </>
   )

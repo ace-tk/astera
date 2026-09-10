@@ -94,11 +94,11 @@ export const CATEGORY_NAV_LABEL = {
  * color each category already had in the old English SERVICE_CATEGORIES. */
 export const CATEGORY_COLOR = {
   drafting: 'royal',
-  'by-city': 'sky',
+  'by-city': 'royal',
   'tarifs-infos': 'golden',
   guides: 'royal',
   communication: 'coral',
-  training: 'mint',
+  training: 'royal',
 }
 
 export const CATEGORY_LABEL = {

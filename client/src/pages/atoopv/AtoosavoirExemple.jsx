@@ -43,7 +43,7 @@ export default function AtoosavoirExemple() {
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_EXEMPLE_INTRO} color="sky" />
+            <RichTextSection {...ATOOSAVOIR_EXEMPLE_INTRO} color="royal" />
           </div>
         </div>
       </section>
@@ -53,7 +53,7 @@ export default function AtoosavoirExemple() {
           <div className="mx-auto max-w-2xl">
             <FicheCard
               {...ATOOSAVOIR_EXEMPLE_CARD}
-              color="sky"
+              color="royal"
               footer={
                 <div className="flex flex-col gap-3">
                   <Button

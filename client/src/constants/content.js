@@ -91,7 +91,7 @@ export const ATOOPV_NAV = [
     key: 'formations',
     label: 'Formations',
     href: '/services/training',
-    color: 'mint',
+    color: 'royal',
     mega: {
       columns: [
         {
@@ -137,7 +137,7 @@ export const ATOOPV_NAV = [
     key: 'ressources',
     label: 'Ressources',
     href: '/atoopv/ressources',
-    color: 'sky',
+    color: 'royal',
     mega: {
       columns: [
         {

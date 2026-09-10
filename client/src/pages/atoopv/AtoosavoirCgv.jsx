@@ -42,7 +42,7 @@ export default function AtoosavoirCgv() {
             <Link to="/atoopv/atoosavoir" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted link-underline">
               <ArrowLeft className="h-3.5 w-3.5" /> Retour à atoosavoir
             </Link>
-            <div className="mt-8">{page && <MarkdownArticle body={page.body} color="sky" />}</div>
+            <div className="mt-8">{page && <MarkdownArticle body={page.body} color="royal" />}</div>
           </div>
         </div>
       </section>

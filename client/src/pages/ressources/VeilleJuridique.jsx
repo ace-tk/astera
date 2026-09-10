@@ -27,7 +27,7 @@ export default function VeilleJuridique() {
       <AtoopvHero badge="Ressources" title="Veille juridique CSE" lead="Publications LinkedIn du président d’ALC SAS — jurisprudence sociale et actualité juridique pour les élus CSE." />
 
       <ServiceCategoryContent navItems={RESSOURCES_NAV} navLabel="Ressources pages">
-        <ArticleGrid items={items} color="sky" columns={3} />
+        <ArticleGrid items={items} color="royal" columns={3} />
       </ServiceCategoryContent>
     </>
   )

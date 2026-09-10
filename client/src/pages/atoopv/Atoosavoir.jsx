@@ -73,21 +73,21 @@ export default function Atoosavoir() {
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_CONSTAT} color="sky" />
+            <RichTextSection {...ATOOSAVOIR_CONSTAT} color="royal" />
           </div>
         </div>
       </section>
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">
-          <RichTextSection {...ATOOSAVOIR_EXAMPLES} color="sky" />
+          <RichTextSection {...ATOOSAVOIR_EXAMPLES} color="royal" />
         </div>
       </section>
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_WHAT_IS} color="sky" />
+            <RichTextSection {...ATOOSAVOIR_WHAT_IS} color="royal" />
           </div>
           <div className="mt-14">
             <ChipCloud heading={ATOOSAVOIR_QUESTIONS.heading} items={ATOOSAVOIR_QUESTIONS.items} />
@@ -97,7 +97,7 @@ export default function Atoosavoir() {
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">
-          <RichTextSection {...ATOOSAVOIR_STEPS} color="sky" />
+          <RichTextSection {...ATOOSAVOIR_STEPS} color="royal" />
         </div>
       </section>
 
@@ -105,7 +105,7 @@ export default function Atoosavoir() {
         <div className="shell">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
             <div>
-              <RichTextSection {...ATOOSAVOIR_FICHE_INTRO} color="sky" />
+              <RichTextSection {...ATOOSAVOIR_FICHE_INTRO} color="royal" />
               <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
                 {ATOOSAVOIR_FICHE_STATS.map((s) => (
                   <div key={s.label}>
@@ -117,7 +117,7 @@ export default function Atoosavoir() {
             </div>
             <FicheCard
               {...ATOOSAVOIR_FICHE_TEASER}
-              color="sky"
+              color="royal"
               footer={
                 <Button as={Link} to="/atoopv/atoosavoir/exemple" variant="soft" size="sm">
                   Voir un exemple complet
@@ -131,21 +131,21 @@ export default function Atoosavoir() {
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_COMPARISON} color="sky" />
+            <RichTextSection {...ATOOSAVOIR_COMPARISON} color="royal" />
           </div>
         </div>
       </section>
 
       <section id="tarifs" className="relative py-14 sm:py-16">
         <div className="shell">
-          <PricingTiers {...ATOOSAVOIR_PRICING} color="sky" />
+          <PricingTiers {...ATOOSAVOIR_PRICING} color="royal" />
         </div>
       </section>
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_ANALYSIS} color="sky" />
+            <RichTextSection {...ATOOSAVOIR_ANALYSIS} color="royal" />
           </div>
         </div>
       </section>
