@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -5,6 +6,15 @@ import { ExternalLink } from 'lucide-react'
 import { resolveResourceHref } from '@/constants/resourcesLinks'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
+import { slugify } from '@/utils/slugify'
+
+function textFrom(node) {
+  if (node == null) return ''
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(textFrom).join('')
+  if (node.props?.children) return textFrom(node.props.children)
+  return ''
+}
 
 /**
  * Renders one extracted markdown body (Ressources or Services) with
@@ -15,9 +25,19 @@ import { cn } from '@/utils/cn'
  * `resolveHref` (resolveResourceHref by default, resolveServiceHref for the
  * Services section) so a link that pointed at atoopv.com/some-page in the
  * source markdown lands on the matching page in this app instead.
+ *
+ * `editorialNumbers` is opt-in and off by default — every existing caller
+ * keeps today's plain heading exactly as it renders now. Where a page turns
+ * it on (Ressources/Blog articles with a real multi-section shape), each
+ * `##` heading gets a large index number (counted from the headings that
+ * actually exist in this document, nothing invented) plus an anchor id, so
+ * a rail built from the same headings (see EditorialSectionRail) can jump
+ * straight to them.
  */
-export default function MarkdownArticle({ body, color = 'sky', resolveHref = resolveResourceHref }) {
+export default function MarkdownArticle({ body, color = 'sky', resolveHref = resolveResourceHref, editorialNumbers = false }) {
   const a = accent(color)
+  const h2Index = useRef(0)
+  h2Index.current = 0
 
   return (
     <div className="markdown-article max-w-none space-y-5">
@@ -27,9 +47,27 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           h1: ({ children }) => (
             <h2 className="mt-10 font-display text-2xl font-medium leading-tight tracking-tight text-balance first:mt-0">{children}</h2>
           ),
-          h2: ({ children }) => (
-            <h2 className="mt-10 font-display text-2xl font-medium leading-tight tracking-tight text-balance first:mt-0">{children}</h2>
-          ),
+          h2: ({ children }) => {
+            const id = slugify(textFrom(children)) || undefined
+            if (!editorialNumbers) {
+              return (
+                <h2 id={id} className="mt-10 scroll-mt-28 font-display text-2xl font-medium leading-tight tracking-tight text-balance first:mt-0">
+                  {children}
+                </h2>
+              )
+            }
+            h2Index.current += 1
+            const number = String(h2Index.current).padStart(2, '0')
+            return (
+              <div id={id} className="mt-14 scroll-mt-28 first:mt-0">
+                <div className="flex items-baseline gap-4">
+                  <span className="shrink-0 font-display text-4xl font-semibold leading-none text-ink/15 sm:text-5xl">{number}</span>
+                  <h2 className="font-display text-2xl font-medium leading-tight tracking-tight text-balance sm:text-3xl">{children}</h2>
+                </div>
+                <div className="mt-4 h-px w-full bg-gradient-to-r from-ink/15 via-ink/8 to-transparent" aria-hidden="true" />
+              </div>
+            )
+          },
           h3: ({ children }) => <h3 className="mt-8 font-display text-lg font-medium tracking-tight">{children}</h3>,
           h4: ({ children }) => <h4 className="mt-6 font-display text-base font-medium tracking-tight">{children}</h4>,
           p: ({ children }) => <p className="text-base leading-relaxed text-ink/80 text-pretty">{children}</p>,

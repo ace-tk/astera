@@ -5,6 +5,8 @@ import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import AtoosavoirHero from '@/components/atoopv/AtoosavoirHero'
 import AtoosavoirConstat from '@/components/atoopv/AtoosavoirConstat'
+import AtoosavoirExamples from '@/components/atoopv/AtoosavoirExamples'
+import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ChipCloud from '@/components/atoopv/ChipCloud'
 import FicheCard from '@/components/atoopv/FicheCard'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -62,14 +64,16 @@ export default function Atoosavoir() {
       <AtoosavoirHero {...ATOOSAVOIR_HERO} trustBadges={ATOOSAVOIR_TRUST_BADGES} />
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
+        <EditorialGridBackground className="-z-10" />
         <div className="shell">
           <AtoosavoirConstat {...ATOOSAVOIR_CONSTAT} />
         </div>
       </section>
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
+        <EditorialGridBackground className="-z-10" />
         <div className="shell">
-          <RichTextSection {...ATOOSAVOIR_EXAMPLES} color="royal" />
+          <AtoosavoirExamples {...ATOOSAVOIR_EXAMPLES} />
         </div>
       </section>
 

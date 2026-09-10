@@ -12,14 +12,39 @@ function stripTrailingArrow(label) {
   return label.replace(/\s*(→|->)\s*$/, '')
 }
 
+function CardChrome({ children, className, large }) {
+  return (
+    <div
+      className={cn(
+        'group relative flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-ink/8 bg-card/95 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-royal/25 hover:shadow-lift',
+        large ? 'p-8 sm:p-10' : 'p-6',
+        className,
+      )}
+    >
+      <div
+        className="pointer-events-none absolute inset-0 bg-grid-faint opacity-0 transition-opacity duration-300 [background-size:20px_20px] group-hover:opacity-30"
+        aria-hidden="true"
+      />
+      {children}
+    </div>
+  )
+}
+
 /**
  * A grid of article/guide preview cards — small badge, title, body, link.
- * Used for the Accueil "veille juridique" and "ressources" blocks; kept
- * generic (no ATOOPV-specific copy) so future Ressources/Atoosavoir pages
- * can reuse it instead of duplicating this card markup.
+ * Used across Accueil, Ressources/Blog and Services category directories;
+ * kept generic (no ATOOPV-specific copy) so every one of those pages can
+ * reuse it instead of duplicating this card markup.
+ *
+ * `featureFirst` is opt-in and off by default (existing Accueil call sites
+ * are unaffected): when on, the first item renders as a larger, full-width
+ * "featured" card instead of an equal-size grid cell — the same existing
+ * title/body/cta, just given more visual weight, so a Blog-style listing
+ * doesn't read as N identical boxes.
  */
-export default function ArticleGrid({ eyebrow, heading, lead, items, color = 'sky', columns = 3, footerCta }) {
+export default function ArticleGrid({ eyebrow, heading, lead, items, color = 'sky', columns = 3, footerCta, featureFirst = false }) {
   const a = accent(color)
+  const [featured, ...rest] = featureFirst && items.length > 1 ? items : [null, ...items]
 
   return (
     <div>
@@ -40,29 +65,46 @@ export default function ArticleGrid({ eyebrow, heading, lead, items, color = 'sk
       )}
 
       <div className={cn('mx-auto mt-8 grid grid-cols-1 gap-4', columns === 2 ? 'sm:grid-cols-2 max-w-2xl' : 'sm:grid-cols-2 lg:grid-cols-3')}>
-        {items.map((item, i) => (
-          <Reveal key={item.title} delay={(i % 3) * 0.06}>
-            <Link
-              to={item.to}
-              className="group relative flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-royal/25 hover:shadow-lift"
-            >
-              <div
-                className="pointer-events-none absolute inset-0 bg-grid-faint opacity-0 transition-opacity duration-300 [background-size:20px_20px] group-hover:opacity-30"
-                aria-hidden="true"
-              />
-              {item.badge && (
-                <span className={cn('relative w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide', a.softBg, a.text)}>
-                  {item.badge}
+        {featured && (
+          <Reveal className={cn(columns === 2 ? 'sm:col-span-2' : 'sm:col-span-2 lg:col-span-3')}>
+            <Link to={featured.to} className="block h-full">
+              <CardChrome large>
+                {featured.badge && (
+                  <span className={cn('relative w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide', a.softBg, a.text)}>
+                    {featured.badge}
+                  </span>
+                )}
+                <h3 className="relative mt-4 max-w-2xl font-display text-2xl font-medium tracking-tight transition-colors duration-300 group-hover:text-royal sm:text-3xl">
+                  {featured.title}
+                </h3>
+                <p className="relative mt-3 max-w-xl text-sm leading-relaxed text-muted sm:text-base">{featured.body}</p>
+                <span className={cn('relative mt-5 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
+                  {stripTrailingArrow(featured.cta || 'Lire')}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </span>
-              )}
-              <h3 className="relative mt-4 font-display text-lg font-medium tracking-tight transition-colors duration-300 group-hover:text-royal">
-                {item.title}
-              </h3>
-              <p className="relative mt-2 flex-1 text-sm leading-relaxed text-muted">{item.body}</p>
-              <span className={cn('relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
-                {stripTrailingArrow(item.cta || 'Lire')}
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </span>
+              </CardChrome>
+            </Link>
+          </Reveal>
+        )}
+
+        {rest.map((item, i) => (
+          <Reveal key={item.title} delay={(i % 3) * 0.06}>
+            <Link to={item.to} className="block h-full">
+              <CardChrome>
+                {item.badge && (
+                  <span className={cn('relative w-fit rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide', a.softBg, a.text)}>
+                    {item.badge}
+                  </span>
+                )}
+                <h3 className="relative mt-4 font-display text-lg font-medium tracking-tight transition-colors duration-300 group-hover:text-royal">
+                  {item.title}
+                </h3>
+                <p className="relative mt-2 flex-1 text-sm leading-relaxed text-muted">{item.body}</p>
+                <span className={cn('relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
+                  {stripTrailingArrow(item.cta || 'Lire')}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+              </CardChrome>
             </Link>
           </Reveal>
         ))}

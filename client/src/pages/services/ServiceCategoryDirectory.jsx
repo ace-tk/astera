@@ -1,5 +1,6 @@
 import ServiceHero from '@/components/services/ServiceHero'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
+import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePagesByCategory, excerpt } from '@/services/servicesContent'
@@ -48,9 +49,12 @@ export default function ServiceCategoryDirectory({ category }) {
         breadcrumbs={[{ label: 'Services', to: '/services' }, { label: CATEGORY_LABEL[category] }]}
       />
 
-      <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
-        <ArticleGrid items={items} color={CATEGORY_COLOR[category]} columns={3} />
-      </ServiceCategoryContent>
+      <div className="relative">
+        <EditorialGridBackground lines />
+        <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
+          <ArticleGrid items={items} color={CATEGORY_COLOR[category]} columns={3} featureFirst />
+        </ServiceCategoryContent>
+      </div>
     </>
   )
 }

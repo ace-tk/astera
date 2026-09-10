@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Sparkles } from 'lucide-react'
 import Button from '@/components/ui/Button'
+import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import { renderEmphasis } from '@/utils/richText'
 
 /**
@@ -15,6 +16,7 @@ import { renderEmphasis } from '@/utils/richText'
 export default function AtoosavoirHero({ badge, title, lead, primaryCta, secondaryCta, trustBadges = [], image }) {
   return (
     <section className="relative pt-36 pb-12 sm:pt-40 sm:pb-14 lg:pt-44">
+      <EditorialGridBackground className="-z-10" />
       <div className="shell">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14">
           <div>

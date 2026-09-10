@@ -29,14 +29,12 @@ export default function VeilleJuridique() {
       <AtoopvHero badge="Ressources" title="Veille juridique CSE" lead="Publications LinkedIn du président d’ALC SAS — jurisprudence sociale et actualité juridique pour les élus CSE." />
 
       <div className="relative">
-        {/* No `lines` here — AmbientBackground already paints the page-wide
-            grid; only the depth blocks are additive on top of it. */}
-        <EditorialGridBackground className="-z-10" />
+        <EditorialGridBackground lines />
 
         <ServiceCategoryContent navItems={RESSOURCES_NAV} navLabel="Ressources pages">
           <div>
             <EditorialDivider className="mb-8" />
-            <ArticleGrid items={items} color="royal" columns={3} />
+            <ArticleGrid items={items} color="royal" columns={3} featureFirst />
           </div>
         </ServiceCategoryContent>
       </div>
