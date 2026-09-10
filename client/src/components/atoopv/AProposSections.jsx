@@ -166,7 +166,7 @@ function ApproachSection({ eyebrow, heading, blocks, number }) {
 function FounderSection({ eyebrow, heading, lead, list, number }) {
   return (
     <div>
-      <span className="font-display text-xs tabular-nums text-ink/30">{number}</span>
+      <SectionNumber number={number} />
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-14">
         <Reveal>
           <span className="eyebrow">
