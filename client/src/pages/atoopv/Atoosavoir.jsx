@@ -3,7 +3,8 @@ import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
-import AtoopvHero from '@/components/atoopv/AtoopvHero'
+import AtoosavoirHero from '@/components/atoopv/AtoosavoirHero'
+import AtoosavoirConstat from '@/components/atoopv/AtoosavoirConstat'
 import ChipCloud from '@/components/atoopv/ChipCloud'
 import FicheCard from '@/components/atoopv/FicheCard'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -58,50 +59,38 @@ export default function Atoosavoir() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero {...ATOOSAVOIR_HERO} />
+      <AtoosavoirHero {...ATOOSAVOIR_HERO} trustBadges={ATOOSAVOIR_TRUST_BADGES} />
 
-      <div className="shell">
-        <Reveal className="mt-6 flex flex-wrap justify-center gap-2.5">
-          {ATOOSAVOIR_TRUST_BADGES.map((b) => (
-            <span key={b} className="chip text-sm text-ink/70">
-              {b}
-            </span>
-          ))}
-        </Reveal>
-      </div>
-
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
-          <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_CONSTAT} color="royal" />
-          </div>
+          <AtoosavoirConstat {...ATOOSAVOIR_CONSTAT} />
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <RichTextSection {...ATOOSAVOIR_EXAMPLES} color="royal" />
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
             <RichTextSection {...ATOOSAVOIR_WHAT_IS} color="royal" />
           </div>
-          <div className="mt-14">
+          <div className="mt-10">
             <ChipCloud heading={ATOOSAVOIR_QUESTIONS.heading} items={ATOOSAVOIR_QUESTIONS.items} />
           </div>
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <RichTextSection {...ATOOSAVOIR_STEPS} color="royal" />
         </div>
       </section>
 
-      <section id="fiche" className="relative py-14 sm:py-16">
+      <section id="fiche" className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
             <div>
@@ -115,20 +104,22 @@ export default function Atoosavoir() {
                 ))}
               </div>
             </div>
-            <FicheCard
-              {...ATOOSAVOIR_FICHE_TEASER}
-              color="royal"
-              footer={
-                <Button as={Link} to="/atoopv/atoosavoir/exemple" variant="soft" size="sm">
-                  Voir un exemple complet
-                </Button>
-              }
-            />
+            <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
+              <FicheCard
+                {...ATOOSAVOIR_FICHE_TEASER}
+                color="royal"
+                footer={
+                  <Button as={Link} to="/atoopv/atoosavoir/exemple" variant="soft" size="sm">
+                    Voir un exemple complet
+                  </Button>
+                }
+              />
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
             <RichTextSection {...ATOOSAVOIR_COMPARISON} color="royal" />
@@ -136,13 +127,13 @@ export default function Atoosavoir() {
         </div>
       </section>
 
-      <section id="tarifs" className="relative py-14 sm:py-16">
+      <section id="tarifs" className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <PricingTiers {...ATOOSAVOIR_PRICING} color="royal" />
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
             <RichTextSection {...ATOOSAVOIR_ANALYSIS} color="royal" />
@@ -150,7 +141,7 @@ export default function Atoosavoir() {
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
             <FAQSection eyebrow="Questions fréquentes" heading="FAQ" items={ATOOSAVOIR_FAQ} />
@@ -158,9 +149,9 @@ export default function Atoosavoir() {
         </div>
       </section>
 
-      <section className="relative pb-14 sm:pb-16">
+      <section className="relative pb-10 sm:pb-12">
         <div className="shell">
-          <Reveal className="mx-auto max-w-3xl rounded-3xl border border-ink/8 bg-card p-6 text-center shadow-soft sm:p-8">
+          <Reveal className="mx-auto max-w-3xl rounded-3xl border border-ink/8 bg-card p-6 text-center shadow-soft transition-shadow duration-300 hover:shadow-lift sm:p-8">
             <p className="font-display text-base font-medium tracking-tight">{ATOOSAVOIR_BROCHURE.label}</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">{ATOOSAVOIR_BROCHURE.text}</p>
           </Reveal>

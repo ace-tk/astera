@@ -35,7 +35,7 @@ export default function PricingTiers({ eyebrow, heading, lead, tiers, note, cta,
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {tiers.map((t, i) => (
           <Reveal key={t.id} delay={i * 0.06} className="h-full">
-            <div className="flex h-full flex-col rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft">
+            <div className="flex h-full flex-col rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
               <div className="flex items-center gap-2">
                 <span className={cn('h-2.5 w-2.5 rounded-full', a.bg)} />
                 <h3 className="font-display text-sm font-medium tracking-tight text-ink/80">{t.segment}</h3>

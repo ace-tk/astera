@@ -15,6 +15,7 @@ export const ATOOSAVOIR_HERO = {
   lead: 'Recherche dans le Code du travail, la jurisprudence et les accords de branche. Fiche structurée, sourcée, livrée en 5 jours ouvrés. Exploitable en réunion.',
   primaryCta: { label: 'Recevoir mon audit PV gratuit', to: '/atoopv/contact' },
   secondaryCta: { label: 'Voir les tarifs', to: '#tarifs' },
+  image: { src: '/atoopv-media/atoosavoir-hero.jpg', alt: 'Bureau d’un juriste avec documents et statuette de la Justice' },
 }
 
 export const ATOOSAVOIR_TRUST_BADGES = ['9 ans d’expertise IRP', 'Formateur agréé', 'CAC 40 · PME → Groupes cotés']
