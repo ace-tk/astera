@@ -30,6 +30,8 @@ export default function AtoosavoirHero({ badge, title, lead, primaryCta, seconda
               <img
                 src={image.src}
                 alt={image.alt}
+                fetchPriority="high"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
               />
               <div className="pointer-events-none absolute inset-0 bg-royal/0 transition-colors duration-500 group-hover:bg-royal/[0.06]" aria-hidden="true" />

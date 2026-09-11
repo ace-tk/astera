@@ -26,11 +26,21 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Deliberate code-splitting: keep the animation/vendor weight
-        // out of the initial paint so the landing hero streams fast.
+        // Deliberate code-splitting: keep the animation/vendor weight out of
+        // the initial paint so the landing hero streams fast.
+        //
+        // `recharts` (~115kB gzipped, the single largest dependency in the
+        // app) is used by exactly one route — the admin-only Analytics page,
+        // itself already behind a `lazy()` boundary in App.jsx — so it does
+        // NOT get a manual chunk here. Pinning it to a named chunk earlier
+        // caused Vite to emit it as a `<link rel="modulepreload">` in the
+        // root index.html, fetched eagerly on every single page (including
+        // the homepage) regardless of whether that page ever reaches
+        // AdminAnalytics. Leaving it to automatic chunking keeps it bundled
+        // with (or in a chunk reachable only from) that one lazy import, so
+        // it downloads only for the visitors who actually open it.
         manualChunks: {
           motion: ['framer-motion', 'lenis'],
-          charts: ['recharts'],
           vendor: ['react', 'react-dom', 'react-router-dom'],
         },
       },
