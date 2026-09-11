@@ -17,7 +17,8 @@ import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from
 import { resolveServiceHref } from '@/constants/servicesLinks'
 import { stripEmphasis } from '@/utils/richText'
 import { parseModelePvGratuitBody, splitIconSections } from '@/utils/modelePvGratuitContent'
-import { extractLeadTopics, extractFaq, extractCarteLinks } from '@/utils/formationContent'
+import FormationStatStrip from '@/components/atoopv/FormationStatStrip'
+import { extractLeadTopics, extractFaq, extractCarteLinks, extractStatStrip } from '@/utils/formationContent'
 
 // The one article whose source markdown has a "raw stats/CTA/tag-list" info
 // block that renders far better through components already built for this
@@ -86,9 +87,14 @@ export default function ServiceArticle({ category, slug: slugProp }) {
   const faqItems = faqResult?.items || []
   const faqAfterBody = faqResult?.after || ''
 
+  const statResult = isFormationPage ? extractStatStrip(bodyBeforeFaq) : null
+  const introBody = statResult ? statResult.before : ''
+  const stats = statResult?.stats || []
+  const bodyAfterStats = statResult ? statResult.after : bodyBeforeFaq
+
   const topicsLayout = FORMATION_TOPIC_LAYOUT[slug]
-  const topicsResult = isFormationPage && topicsLayout ? extractLeadTopics(bodyBeforeFaq) : null
-  const mainBody = topicsResult ? topicsResult.before : bodyBeforeFaq
+  const topicsResult = isFormationPage && topicsLayout ? extractLeadTopics(bodyAfterStats) : null
+  const mainBody = topicsResult ? topicsResult.before : bodyAfterStats
   const topics = topicsResult?.topics || []
   const afterTopicsBody = topicsResult?.after || ''
 
@@ -154,7 +160,9 @@ export default function ServiceArticle({ category, slug: slugProp }) {
             </>
           ) : isFormationPage ? (
             <>
-              <MarkdownArticle body={mainBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />
+              {introBody && <MarkdownArticle body={introBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
+              {stats.length > 0 && <FormationStatStrip stats={stats} />}
+              {mainBody && <MarkdownArticle body={mainBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
               {topics.length > 0 && <FormationTopics topics={topics} layout={topicsLayout} />}
               {afterTopicsBody && <MarkdownArticle body={afterTopicsBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
               {indexItems.length > 0 && <FormationIndex items={indexItems} />}

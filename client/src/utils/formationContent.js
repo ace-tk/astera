@@ -64,6 +64,41 @@ export function extractLeadTopics(body) {
   }
 }
 
+// The same four company stats (2017 / 48 à 72h / 3 / 15) recur, verbatim,
+// as eight stacked plain paragraphs on every one of these pages. The four
+// label strings are the stable anchor — matched literally because they're
+// the real, observed, constant boilerplate on every page, not a guess.
+const STAT_LABELS = ['Année de création', 'Délai moyen de livraison', 'Formats de PV au choix', 'Guides juridiques publiés']
+
+export function extractStatStrip(body) {
+  const lines = body.split('\n')
+  const firstLabelIdx = lines.findIndex((l) => l.trim() === STAT_LABELS[0])
+  if (firstLabelIdx <= 0) return null
+
+  let valueIdx = firstLabelIdx - 1
+  while (valueIdx >= 0 && lines[valueIdx].trim() === '') valueIdx--
+  if (valueIdx < 0) return null
+  const startIdx = valueIdx
+
+  let cursor = startIdx
+  const stats = []
+  for (const label of STAT_LABELS) {
+    const at = nextNonBlank(lines, cursor)
+    if (at === null) return null
+    const value = lines[at].trim()
+    const labelAt = nextNonBlank(lines, at + 1)
+    if (labelAt === null || lines[labelAt].trim() !== label) return null
+    stats.push({ value, label })
+    cursor = labelAt + 1
+  }
+
+  return {
+    stats,
+    before: lines.slice(0, startIdx).join('\n').trim(),
+    after: lines.slice(cursor).join('\n').trim(),
+  }
+}
+
 const LINK_RE = /\[(.+?)\]\((.+?)\)/g
 
 /** The first line at or after `markerLine` that contains 2+ markdown

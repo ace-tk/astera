@@ -62,15 +62,15 @@ En premier lieu, définissez les objectifs de votre communication CSE newsletter
 
 ⚖️
 
-### � Newsletter ActuCSE
+### Newsletter ActuCSE
 
 🛡️
 
-### � Communication ASC
+### Communication ASC
 
 📅
 
-### � Guide du comité
+### Guide du comité
 
 POURQUOI ATOOPV
 
