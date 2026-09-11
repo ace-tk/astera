@@ -12,7 +12,7 @@ import { cn } from '@/utils/cn'
  * with one, so this variant exists for reuse across the rest of the ported
  * ATOOPV site rather than bolting an image prop onto ServiceHero's contract.
  */
-export default function AtoopvHero({ badge, title, lead, primaryCta, secondaryCta, image }) {
+export default function AtoopvHero({ badge, title, lead, primaryCta, secondaryCta, image, hideTitle = false }) {
   return (
     <section className="relative pt-36 sm:pt-40 lg:pt-44">
       <div className="shell">
@@ -29,14 +29,16 @@ export default function AtoopvHero({ badge, title, lead, primaryCta, secondaryCt
             </motion.div>
           )}
 
-          <motion.h1
-            initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={cn('mx-auto font-display text-display-sm font-medium leading-[1.06] tracking-tight text-balance', badge && 'mt-6')}
-          >
-            {renderEmphasis(title)}
-          </motion.h1>
+          {!hideTitle && (
+            <motion.h1
+              initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className={cn('mx-auto font-display text-display-sm font-medium leading-[1.06] tracking-tight text-balance', badge && 'mt-6')}
+            >
+              {renderEmphasis(title)}
+            </motion.h1>
+          )}
 
           {lead && (
             <motion.p

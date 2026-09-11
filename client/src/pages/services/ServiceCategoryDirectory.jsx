@@ -50,10 +50,10 @@ export default function ServiceCategoryDirectory({ category }) {
       />
 
       <div className="relative">
-        {/* "by-city" belongs to the Procès-verbal mega menu, which shouldn't
-            show the decorative background blocks — "guides" doesn't belong
-            to Procès-verbal or Formations and keeps the default. */}
-        <EditorialGridBackground lines blocks={category === 'guides'} />
+        {/* "by-city" belongs to the Procès-verbal mega menu, which wants a
+            fully clean background — no grid, no blocks. "guides" doesn't
+            belong to Procès-verbal or Formations and keeps the default. */}
+        {category === 'guides' && <EditorialGridBackground lines blocks />}
         <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
           <ArticleGrid items={items} color={CATEGORY_COLOR[category]} columns={3} featureFirst />
         </ServiceCategoryContent>

@@ -3,6 +3,7 @@ import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import EditorialDivider from '@/components/atoopv/EditorialDivider'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
+import RessourcesEditorialNav from '@/components/atoopv/RessourcesEditorialNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getResource, excerpt, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
 import { RESSOURCES_NAV } from '@/constants/resourcesNav'
@@ -31,7 +32,13 @@ export default function VeilleJuridique() {
       <div className="relative">
         <EditorialGridBackground lines />
 
-        <ServiceCategoryContent navItems={RESSOURCES_NAV} navLabel="Ressources pages">
+        <ServiceCategoryContent
+          navItems={RESSOURCES_NAV}
+          navLabel="Ressources pages"
+          nav={<RessourcesEditorialNav items={RESSOURCES_NAV} label="Ressources pages" />}
+          stickyColumns
+          compact
+        >
           <div>
             <EditorialDivider className="mb-8" />
             <ArticleGrid items={items} color="royal" columns={3} featureFirst />

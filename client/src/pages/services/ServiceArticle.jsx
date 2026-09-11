@@ -30,17 +30,20 @@ import { extractLeadTopics, extractFaq, extractCarteLinks, extractStatStrip } fr
 // utils/modelePvGratuitContent.js for the rest of the story.
 const ENHANCED_INFO_SLUG = 'modele-pv-cse-gratuit'
 
-// Formations menu pages (training + communication categories) — every one
-// of these repeats the same short icon+heading "program" list right after
-// its intro (see utils/formationContent.js). Giving each its own
-// FormationTopics layout is what makes "an individual training", "a
-// specialized/multi-facet training" and "a topic to browse" read
-// differently instead of all sharing one template. One page per category
-// is left out on purpose: newsletter-actucse's list is a mis-scraped run of
-// truncated sentence fragments, not real short titles — forcing it into a
-// visual layout would draw attention to the truncation rather than hide it,
-// so it just renders through the normal MarkdownArticle path instead.
-const FORMATION_TOPIC_LAYOUT = {
+// Every Services page outside "guides" (drafting/by-city/tarifs-infos —
+// the Procès-verbal menu — plus training/communication — the Formations
+// menu) shares the same editorial system: no grid/block background, a
+// compact stat strip, an H2-derived right rail, and — only where a page's
+// own icon+heading "program" list has no body text between pairs (so lifting
+// it into a title-only visual can't drop content) — a FormationTopics
+// layout. Most drafting/by-city pages interleave a paragraph after each
+// icon+heading instead, so extractLeadTopics correctly finds nothing there
+// and they fall back to the plain (still icon-heading-merged) render —
+// safe by construction, not a page-by-page judgment call. "guides" is
+// reached only from the Ressources/Blog menus, not these two, and keeps
+// its original treatment untouched.
+const TOPIC_LAYOUT = {
+  // Formations
   'formation-economique-elus-cse': 'explorer',
   'formation-cse-tresorier': 'journey',
   'formation-cssct-roles-missions': 'modules',
@@ -49,6 +52,13 @@ const FORMATION_TOPIC_LAYOUT = {
   'communication-cse': 'modules',
   'communication-asc': 'journey',
   'guide-du-comite': 'modules',
+  // Procès-verbal — only the three tarifs-infos pages whose icon+heading
+  // list has no interleaved body text (verified with extractLeadTopics);
+  // every drafting/by-city page's own list has a paragraph after each
+  // pair, so it renders through the normal path instead.
+  'tarif-redaction-pv-cse': 'modules',
+  'delai-redaction-pv-cse': 'journey',
+  'pv-cse-code-travail': 'explorer',
 }
 
 // The Formations landing page (/services/training's hub) links its four
@@ -83,19 +93,31 @@ export default function ServiceArticle({ category, slug: slugProp }) {
   const railItems = articleSegments?.filter((s) => s.type === 'icon') || []
   const breadcrumbs = [{ label: 'Services', to: '/services' }, { label: CATEGORY_LABEL[category], to: `/services/${category}` }]
 
-  const isFormationPage = !enhanced && (category === 'training' || category === 'communication')
-  const faqResult = isFormationPage ? extractFaq(page.body) : null
+  // Every category except "guides" (drafting/by-city/tarifs-infos —
+  // Procès-verbal — and training/communication — Formations) uses the
+  // shared editorial system: no grid background, compact stat strip,
+  // H2-derived right rail, and (where safe) a FormationTopics layout.
+  const usesEditorialSystem = !enhanced && category !== 'guides'
+  // Formations only: the left nav and right rail's `sticky` was landing in
+  // a grid column sized to its own short content (see ServiceCategoryContent's
+  // `stickyColumns` doc) instead of the full row height, so it had almost no
+  // room to actually stick and just scrolled with the page. Scoped to
+  // training/communication only, per an explicit "Formations pages only,
+  // nothing else" request — Procès-verbal pages have the same underlying
+  // layout and would benefit from the same fix, but are left untouched here.
+  const isFormationCategory = category === 'training' || category === 'communication'
+  const faqResult = usesEditorialSystem ? extractFaq(page.body) : null
   const bodyBeforeFaq = faqResult ? faqResult.before : page.body
   const faqItems = faqResult?.items || []
   const faqAfterBody = faqResult?.after || ''
 
-  const statResult = isFormationPage ? extractStatStrip(bodyBeforeFaq) : null
+  const statResult = usesEditorialSystem ? extractStatStrip(bodyBeforeFaq) : null
   const introBody = statResult ? statResult.before : ''
   const stats = statResult?.stats || []
   const bodyAfterStats = statResult ? statResult.after : bodyBeforeFaq
 
-  const topicsLayout = FORMATION_TOPIC_LAYOUT[slug]
-  const topicsResult = isFormationPage && topicsLayout ? extractLeadTopics(bodyAfterStats) : null
+  const topicsLayout = TOPIC_LAYOUT[slug]
+  const topicsResult = usesEditorialSystem && topicsLayout ? extractLeadTopics(bodyAfterStats) : null
   const mainBody = topicsResult ? topicsResult.before : bodyAfterStats
   const topics = topicsResult?.topics || []
   const afterTopicsBody = topicsResult?.after || ''
@@ -110,13 +132,13 @@ export default function ServiceArticle({ category, slug: slugProp }) {
           .filter(Boolean)
       : []
 
-  // The right-side editorial rail for Formations pages — built from the
-  // page's own real `##` headings (its actual section structure), the same
-  // machinery Ressources/Blog articles already use, so it lists 2, 3, 4 or
-  // 5 items purely depending on how many distinct sections that one page
-  // genuinely has. Fills the previously-empty right column with real,
-  // clickable navigation instead of a background block.
-  const formationSections = isFormationPage ? extractH2Sections(page.body) : []
+  // The right-side editorial rail — built from the page's own real `##`
+  // headings (its actual section structure), the same machinery Ressources/
+  // Blog articles already use, so it lists however many items that one page
+  // genuinely has (2 through 5+ observed across Procès-verbal/Formations).
+  // Fills the previously-empty right column with real, clickable navigation
+  // instead of a background block.
+  const editorialSections = usesEditorialSystem ? extractH2Sections(page.body) : []
 
   const heroCtas = {
     secondaryCta: enhanced?.secondaryCta && {
@@ -154,21 +176,22 @@ export default function ServiceArticle({ category, slug: slugProp }) {
       )}
 
       <div className="relative">
-        {/* Formations (training/communication) pages want a fully clean,
+        {/* Procès-verbal (drafting/by-city/tarifs-infos) and Formations
+            (training/communication) pages all want a fully clean,
             continuous page background — no grid, no tint wash, no blocks —
-            per an explicit "zero block backgrounds" request. drafting/
-            by-city/tarifs-infos keep the faint grid lines (no blocks); only
-            "guides" (reached from Ressources/Blog, not these two menus)
-            keeps the original grid+blocks. */}
-        {!isFormationPage && <EditorialGridBackground lines blocks={category === 'guides'} />}
+            per an explicit "zero block backgrounds" request. Only "guides"
+            (reached from Ressources/Blog, not these menus) keeps the
+            original grid+blocks. */}
+        {!usesEditorialSystem && <EditorialGridBackground lines blocks={category === 'guides'} />}
         <ServiceCategoryContent
           navItems={CATEGORY_NAV[category]}
           navLabel={CATEGORY_NAV_LABEL[category]}
+          stickyColumns={isFormationCategory}
           rail={
             railItems.length > 0 ? (
               <GuideModelRail items={railItems} />
-            ) : formationSections.length >= 2 ? (
-              <EditorialSectionRail items={formationSections} />
+            ) : editorialSections.length >= 2 ? (
+              <EditorialSectionRail items={editorialSections} />
             ) : undefined
           }
         >
@@ -177,7 +200,7 @@ export default function ServiceArticle({ category, slug: slugProp }) {
               <GuideModelInfoPanel headingBody={enhanced.headingBody} stats={enhanced.stats} contact={enhanced.contact} color={CATEGORY_COLOR[category]} />
               <GuideModelArticleBody segments={articleSegments} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
             </>
-          ) : isFormationPage ? (
+          ) : usesEditorialSystem ? (
             <>
               {introBody && <MarkdownArticle body={introBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
               {stats.length > 0 && <FormationStatStrip stats={stats} />}

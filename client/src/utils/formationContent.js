@@ -68,33 +68,163 @@ export function extractLeadTopics(body) {
 // as eight stacked plain paragraphs on every one of these pages. The four
 // label strings are the stable anchor — matched literally because they're
 // the real, observed, constant boilerplate on every page, not a guess.
-const STAT_LABELS = ['Année de création', 'Délai moyen de livraison', 'Formats de PV au choix', 'Guides juridiques publiés']
+// The second label has two verbatim variants across the ported pages
+// ("Délai moyen de livraison" on Formations/most Procès-verbal pages,
+// "Délai de livraison" on a handful of drafting/tarifs-infos pages) — both
+// are accepted so this strip still extracts (same number, same meaning)
+// instead of silently leaking the raw stat lines into the article body.
+const STAT_LABEL_VARIANTS = [
+  ['Année de création'],
+  ['Délai moyen de livraison', 'Délai de livraison'],
+  ['Formats de PV au choix'],
+  ['Guides juridiques publiés'],
+]
+
+/** A handful of pages (e.g. nos-services-pv.md) run the value straight into
+ * the label with no separator on one line ("2017Année de création" instead
+ * of "2017" / blank / "Année de création") — still the same two pieces of
+ * real text, just concatenated by the original crawl. Matched only when the
+ * line ends with one of the known label variants and has a non-empty
+ * prefix, so this can't misfire on unrelated text. */
+function matchConcatenatedStat(line, variants) {
+  for (const label of variants) {
+    if (line.endsWith(label) && line.length > label.length) {
+      return { value: line.slice(0, line.length - label.length).trim(), label }
+    }
+  }
+  return null
+}
 
 export function extractStatStrip(body) {
   const lines = body.split('\n')
-  const firstLabelIdx = lines.findIndex((l) => l.trim() === STAT_LABELS[0])
-  if (firstLabelIdx <= 0) return null
+  const firstLabelIdx = lines.findIndex((l) => {
+    const t = l.trim()
+    return STAT_LABEL_VARIANTS[0].includes(t) || matchConcatenatedStat(t, STAT_LABEL_VARIANTS[0])
+  })
+  if (firstLabelIdx < 0) return null
 
-  let valueIdx = firstLabelIdx - 1
-  while (valueIdx >= 0 && lines[valueIdx].trim() === '') valueIdx--
-  if (valueIdx < 0) return null
-  const startIdx = valueIdx
+  let startIdx = firstLabelIdx
+  if (STAT_LABEL_VARIANTS[0].includes(lines[firstLabelIdx].trim())) {
+    let valueIdx = firstLabelIdx - 1
+    while (valueIdx >= 0 && lines[valueIdx].trim() === '') valueIdx--
+    if (valueIdx < 0) return null
+    startIdx = valueIdx
+  }
 
   let cursor = startIdx
   const stats = []
-  for (const label of STAT_LABELS) {
+  for (const variants of STAT_LABEL_VARIANTS) {
     const at = nextNonBlank(lines, cursor)
     if (at === null) return null
-    const value = lines[at].trim()
+    const t = lines[at].trim()
+
+    const concatenated = matchConcatenatedStat(t, variants)
+    if (concatenated) {
+      stats.push(concatenated)
+      cursor = at + 1
+      continue
+    }
+
     const labelAt = nextNonBlank(lines, at + 1)
-    if (labelAt === null || lines[labelAt].trim() !== label) return null
-    stats.push({ value, label })
+    if (labelAt === null || !variants.includes(lines[labelAt].trim())) return null
+    stats.push({ value: t, label: lines[labelAt].trim() })
     cursor = labelAt + 1
   }
 
   return {
     stats,
     before: lines.slice(0, startIdx).join('\n').trim(),
+    after: lines.slice(cursor).join('\n').trim(),
+  }
+}
+
+// Every Procès-verbal/Formations page repeats the same short list of
+// instance-type tags (CSE, CSEC, CSSCT, ...) three times back-to-back right
+// after the hero CTAs — the raw text of a CSS marquee loop from the source
+// site (three copies so the loop never shows a seam), not three distinct
+// pieces of content. Verifying the three runs are identical before using
+// just the first is what makes this safe: a page whose text doesn't repeat
+// exactly returns null and falls back to the untouched render.
+export function extractTagMarquee(body) {
+  const lines = body.split('\n')
+  const firstIdx = lines.findIndex((l) => l.includes('✦'))
+  if (firstIdx === -1) return null
+
+  let start = firstIdx
+  while (start > 0 && lines[start - 1].trim() !== '') start--
+
+  let end = firstIdx
+  while (end < lines.length && lines[end].trim() !== '') end++
+
+  const tokens = lines
+    .slice(start, end)
+    .join('␟')
+    .split('✦')
+    .map((t) => t.replace(/␟/g, ' ').trim())
+    .filter(Boolean)
+
+  if (tokens.length === 0 || tokens.length % 3 !== 0) return null
+  const third = tokens.length / 3
+  const [g1, g2, g3] = [tokens.slice(0, third), tokens.slice(third, 2 * third), tokens.slice(2 * third)]
+  if (JSON.stringify(g1) !== JSON.stringify(g2) || JSON.stringify(g2) !== JSON.stringify(g3)) return null
+
+  return {
+    tags: g1,
+    before: lines.slice(0, start).join('\n').trim(),
+    after: lines.slice(end).join('\n').trim(),
+  }
+}
+
+/** A bare digit line ("1"), then an H3 heading, then its body paragraph —
+ * the numbered "process" section several drafting pages repeat (e.g.
+ * nos-services-pv.md's "Notre processus", redaction-pv-cssct.md's numbered
+ * expertise steps). Only the first such run in the document is considered,
+ * and it must count up from 1 with no gaps — so an unrelated digit later in
+ * the page (a stat value, a bullet) can never extend or fake a second run.
+ * Requires 3+ steps so a single stray digit+heading isn't mistaken for a
+ * "journey". Returns null (safe fallback to the untouched render) otherwise. */
+export function extractProcessSteps(body) {
+  const lines = body.split('\n')
+
+  function matchStepAt(at) {
+    if (at === null || !/^\d+$/.test(lines[at].trim())) return null
+    const hAt = nextNonBlank(lines, at + 1)
+    const hMatch = hAt !== null && lines[hAt].match(/^###\s+(.+)$/)
+    if (!hMatch) return null
+    const bodyAt = nextNonBlank(lines, hAt + 1)
+    if (bodyAt === null || /^#{1,6}\s/.test(lines[bodyAt].trim()) || /^\d+$/.test(lines[bodyAt].trim())) return null
+    let bodyEnd = bodyAt
+    while (bodyEnd < lines.length && lines[bodyEnd].trim() !== '') bodyEnd++
+    return { number: lines[at].trim(), title: hMatch[1].trim(), body: lines.slice(bodyAt, bodyEnd).join(' ').trim(), end: bodyEnd }
+  }
+
+  let cursor = 0
+  let runStart = null
+  const steps = []
+  while (cursor < lines.length) {
+    const at = nextNonBlank(lines, cursor)
+    if (at === null) break
+    const step = matchStepAt(at)
+    if (!step) {
+      if (steps.length > 0) break
+      cursor = at + 1
+      continue
+    }
+    if (Number(step.number) !== steps.length + 1) {
+      if (steps.length > 0) break
+      cursor = at + 1
+      continue
+    }
+    if (runStart === null) runStart = at
+    steps.push(step)
+    cursor = step.end
+  }
+
+  if (steps.length < 3) return null
+
+  return {
+    steps,
+    before: lines.slice(0, runStart).join('\n').trim(),
     after: lines.slice(cursor).join('\n').trim(),
   }
 }

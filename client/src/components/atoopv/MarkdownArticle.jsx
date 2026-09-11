@@ -43,7 +43,9 @@ function textFrom(node) {
 export default function MarkdownArticle({ body, color = 'sky', resolveHref = resolveResourceHref, editorialNumbers = false, iconHeadings = false }) {
   const a = accent(color)
   const h2Index = useRef(0)
+  const seenH2Ids = useRef(new Set())
   h2Index.current = 0
+  seenH2Ids.current = new Set()
   const source = iconHeadings ? mergeIconHeadings(body) : body
 
   // Icon-headings: an icon-bearing h2/h3/h4 becomes a flex row (icon column
@@ -74,10 +76,24 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           ),
           h2: ({ children }) => {
             const id = slugify(textFrom(children)) || undefined
-            if (!editorialNumbers) {
+            // A second heading with the exact same text (several pages repeat
+            // their own H2 verbatim, e.g. a "content" pass over the same
+            // source further down the page) would otherwise still get its
+            // own number and its own `id="..."` -- two DOM nodes sharing one
+            // id, and the reader sees the same section title (and, with
+            // editorialNumbers on, a second large number) reappear right
+            // after the first. extractH2Sections already skips these for the
+            // section rail; mirroring that here keeps the in-content numbers
+            // and the rail in lockstep and stops the repeat from rendering as
+            // a second numbered heading. The text itself is untouched --
+            // still rendered, just via the plain (unnumbered) heading style
+            // used everywhere editorialNumbers is off.
+            const isRepeat = Boolean(id) && seenH2Ids.current.has(id)
+            if (id) seenH2Ids.current.add(id)
+            if (!editorialNumbers || isRepeat) {
               return iconRow(
                 children,
-                (p) => <h2 id={id} {...p} />,
+                (p) => <h2 id={isRepeat ? undefined : id} {...p} />,
                 'font-display text-2xl font-medium leading-tight tracking-tight text-balance',
                 'mt-10 scroll-mt-28 first:mt-0',
               )

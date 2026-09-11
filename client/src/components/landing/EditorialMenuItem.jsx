@@ -11,21 +11,35 @@ import { cn } from '@/utils/cn'
  * arrow nudge, rule brightening) without duplicating the treatment.
  * Purely presentational — every label/href it renders comes from the
  * existing ATOOPV_NAV data, unchanged.
+ *
+ * `active` is opt-in and off by default (mega-menu/mobile-accordion callers
+ * never pass it, so their rendering is unchanged) — a persistent sidebar nav
+ * (Ressources/Blog) passes it for whichever item matches the current route,
+ * giving it the resting blue/marker state this same hover language implies
+ * rather than a large filled block.
  */
-export default function EditorialMenuItem({ to, onClick, children, className, dense = false }) {
+export default function EditorialMenuItem({ to, onClick, children, className, dense = false, active = false }) {
   return (
     <Link
       to={to}
       onClick={onClick}
       className={cn(
-        'group/item flex items-center justify-between gap-3 border-b border-dashed border-ink/12',
-        'transition-colors duration-200 hover:border-royal/40',
+        'group/item flex items-center justify-between gap-3 border-b border-dashed transition-colors duration-200',
+        active ? 'border-royal/40' : 'border-ink/12 hover:border-royal/40',
         dense ? 'py-2.5' : 'py-3',
         className,
       )}
     >
-      <span className="text-sm leading-snug text-ink/80 transition-colors duration-200 group-hover/item:text-royal">{children}</span>
-      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-ink/25 transition-all duration-200 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 group-hover/item:text-royal" />
+      <span className={cn('flex items-center gap-2 text-sm leading-snug transition-colors duration-200', active ? 'font-medium text-royal' : 'text-ink/80 group-hover/item:text-royal')}>
+        {active && <span className="h-1 w-1 shrink-0 rounded-full bg-royal" aria-hidden="true" />}
+        {children}
+      </span>
+      <ArrowUpRight
+        className={cn(
+          'h-3.5 w-3.5 shrink-0 transition-all duration-200',
+          active ? 'text-royal' : 'text-ink/25 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 group-hover/item:text-royal',
+        )}
+      />
     </Link>
   )
 }
