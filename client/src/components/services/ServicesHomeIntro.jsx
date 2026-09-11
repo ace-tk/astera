@@ -2,62 +2,71 @@ import { Link } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
-import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { resolveServiceHref } from '@/constants/servicesLinks'
+import { renderEmphasis } from '@/utils/richText'
 
 /**
- * The /services hub's intro block: eyebrow, existing lead paragraph, the
- * two existing CTA links, and the four existing stats as a compact grid
- * (same value/label shape as StatsSection, reused inline rather than via
- * that component since it carries its own `.shell` wrapper). Scoped to
- * this one page — see utils/servicesHomeContent.js for how this content is
- * lifted, verbatim, out of the source markdown.
+ * The /services hub's compact hero: existing breadcrumb badge, existing
+ * eyebrow, existing title, existing lead paragraph and the two existing CTA
+ * links on the left, one image on the right — the only image anywhere in
+ * the Services section (every other Services page stays text/layout only).
+ * Scoped to this one page — see utils/servicesHomeContent.js for how the
+ * text content is lifted, verbatim, out of the source markdown, and
+ * ServicesStatsStrip.jsx for the stats row that used to live inside this
+ * same block and now sits below the hero as its own full-width strip.
  */
-export default function ServicesHomeIntro({ eyebrow, paragraph, ctas = [], stats = [], note }) {
+export default function ServicesHomeIntro({ badge, title, eyebrow, paragraph, ctas = [], image }) {
   return (
-    <div>
-      <Reveal>
-        {eyebrow && (
-          <span className="chip w-fit gap-2 text-ink/70">
-            <Sparkles className="h-3.5 w-3.5 text-accent" />
-            {eyebrow}
-          </span>
-        )}
-        {paragraph && <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted text-pretty">{paragraph}</p>}
-
-        {ctas.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-3">
-            {ctas.map((c, i) =>
-              c.href.startsWith('#') ? (
-                <Button key={c.href} as="a" href={c.href} size="lg" variant={i === 0 ? 'accent' : 'soft'}>
-                  {c.label}
-                </Button>
-              ) : (
-                <Button key={c.href} as={Link} to={resolveServiceHref(c.href).href} size="lg" variant={i === 0 ? 'accent' : 'soft'}>
-                  {c.label}
-                </Button>
-              ),
-            )}
-          </div>
-        )}
-      </Reveal>
-
-      {stats.length > 0 && (
-        <Reveal delay={0.1} className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-ink/8 pt-8 lg:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <div className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{s.value}</div>
-              <p className="mt-1.5 max-w-[12rem] text-xs leading-relaxed text-muted">{s.label}</p>
+    <section className="relative pt-28 sm:pt-32 lg:pt-36">
+      <div className="shell">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <Reveal>
+            <div className="flex flex-wrap items-center gap-2">
+              {badge && (
+                <span className="chip w-fit gap-2 text-ink/70">
+                  <Sparkles className="h-3.5 w-3.5 text-accent" />
+                  {badge}
+                </span>
+              )}
+              {eyebrow && <span className="chip w-fit gap-2 text-ink/70">{eyebrow}</span>}
             </div>
-          ))}
-        </Reveal>
-      )}
 
-      {note && (
-        <div className="mt-6 [&_.markdown-article]:space-y-0 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-muted">
-          <MarkdownArticle body={note} />
+            {title && (
+              <h1 className="mt-6 font-display text-display-sm font-medium leading-[1.06] tracking-tight text-balance">{renderEmphasis(title)}</h1>
+            )}
+
+            {paragraph && <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted text-pretty">{paragraph}</p>}
+
+            {ctas.length > 0 && (
+              <div className="mt-8 flex flex-wrap gap-3">
+                {ctas.map((c, i) =>
+                  c.href.startsWith('#') ? (
+                    <Button key={c.href} as="a" href={c.href} size="lg" variant={i === 0 ? 'accent' : 'soft'}>
+                      {c.label}
+                    </Button>
+                  ) : (
+                    <Button key={c.href} as={Link} to={resolveServiceHref(c.href).href} size="lg" variant={i === 0 ? 'accent' : 'soft'}>
+                      {c.label}
+                    </Button>
+                  ),
+                )}
+              </div>
+            )}
+          </Reveal>
+
+          {image && (
+            <Reveal delay={0.1} direction="right">
+              <div className="overflow-hidden rounded-[2rem] border border-ink/8 shadow-float">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  className="aspect-[6/5] w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
+                />
+              </div>
+            </Reveal>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </section>
   )
 }

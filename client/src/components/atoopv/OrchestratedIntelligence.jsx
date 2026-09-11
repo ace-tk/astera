@@ -42,9 +42,9 @@ export default function OrchestratedIntelligence({ data = HOMEPAGE_ORCHESTRATED 
   const reduceMotion = useReducedMotion()
 
   return (
-    <section className="relative border-t border-ink/10 bg-paper py-20 sm:py-28">
+    <section className="relative border-t border-ink/10 bg-paper py-16 sm:py-20">
       <div className="shell">
-        <div className="mb-14 sm:mb-20">
+        <div className="mb-10 sm:mb-14">
           <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">{data.eyebrow}</span>
           <h2 className="mt-4 font-display text-4xl font-semibold leading-[0.96] tracking-tight text-ink sm:text-5xl lg:text-6xl">
             {data.heading.map((line) => (

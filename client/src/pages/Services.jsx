@@ -6,7 +6,9 @@ import ServiceHero from '@/components/services/ServiceHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import CTASection from '@/components/services/CTASection'
 import ServicesHomeIntro from '@/components/services/ServicesHomeIntro'
+import ServicesStatsStrip from '@/components/services/ServicesStatsStrip'
 import ServicesGroupSection from '@/components/services/ServicesGroupSection'
+import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { resolveServiceHref } from '@/constants/servicesLinks'
@@ -48,28 +50,38 @@ export default function Services() {
       <AmbientBackground />
       <Navbar />
 
-      {page && <ServiceHero badge={page.breadcrumb} title={page.title} />}
-
       {page &&
         (parsed ? (
           <>
-            <div className="shell pb-14 sm:pb-16">
-              <div className="mx-auto max-w-5xl">
-                <ServicesHomeIntro {...parsed.intro} />
-              </div>
-            </div>
+            <ServicesHomeIntro
+              badge={page.breadcrumb}
+              title={page.title}
+              eyebrow={parsed.intro.eyebrow}
+              paragraph={parsed.intro.paragraph}
+              ctas={parsed.intro.ctas}
+              image={{
+                src: '/atoopv-media/services-hero.jpg',
+                alt: 'Équipe au travail autour de comptes-rendus et de documents de réunion',
+              }}
+            />
 
-            <div id="services" className="shell pb-16 sm:pb-20">
-              <div className="mx-auto max-w-5xl space-y-16 sm:space-y-20">
-                {parsed.groups.map((g) => (
-                  <ServicesGroupSection key={g.label} {...g} color="royal" />
-                ))}
-              </div>
-            </div>
+            <ServicesStatsStrip stats={parsed.intro.stats} note={parsed.intro.note} />
 
-            <div className="shell pb-14 sm:pb-16">
-              <div className="mx-auto max-w-3xl">
-                <MarkdownArticle body={parsed.resourcesProse} color="royal" resolveHref={resolveServiceHref} />
+            <div className="relative">
+              <EditorialGridBackground lines />
+
+              <div id="services" className="shell pb-16 sm:pb-20">
+                <div className="mx-auto max-w-5xl space-y-14 sm:space-y-16">
+                  {parsed.groups.map((g) => (
+                    <ServicesGroupSection key={g.label} {...g} color="royal" />
+                  ))}
+                </div>
+              </div>
+
+              <div className="shell pb-14 sm:pb-16">
+                <div className="mx-auto max-w-3xl">
+                  <MarkdownArticle body={parsed.resourcesProse} color="royal" resolveHref={resolveServiceHref} />
+                </div>
               </div>
             </div>
 
@@ -83,11 +95,14 @@ export default function Services() {
             />
           </>
         ) : (
-          <div className="shell py-14 sm:py-16">
-            <div className="mx-auto max-w-3xl">
-              <MarkdownArticle body={page.body} color="royal" resolveHref={resolveServiceHref} />
+          <>
+            <ServiceHero badge={page.breadcrumb} title={page.title} />
+            <div className="shell py-14 sm:py-16">
+              <div className="mx-auto max-w-3xl">
+                <MarkdownArticle body={page.body} color="royal" resolveHref={resolveServiceHref} />
+              </div>
             </div>
-          </div>
+          </>
         ))}
 
       <Footer />

@@ -11,7 +11,7 @@ import { cn } from '@/utils/cn'
  */
 export default function ServiceCategoryContent({ navItems, navLabel, rail, children }) {
   return (
-    <div className="shell py-14 sm:py-16">
+    <div className="shell py-10 sm:py-12">
       <div
         className={cn(
           'grid gap-10 lg:items-start',

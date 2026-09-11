@@ -13,11 +13,11 @@ const VARIANTS = {
   primary:
     'bg-ink text-paper shadow-lift hover:shadow-float border border-ink',
   accent:
-    'bg-accent text-white shadow-glow border border-transparent',
+    'bg-accent text-white shadow-glow border border-transparent hover:shadow-float hover:brightness-[1.06]',
   ghost:
-    'bg-transparent text-ink border border-ink/12 hover:border-ink/25 hover:bg-ink/[0.03]',
+    'bg-transparent text-ink border border-ink/12 hover:border-royal/30 hover:bg-royal/[0.05] hover:text-royal',
   soft:
-    'bg-card text-ink border border-ink/8 shadow-soft hover:shadow-lift',
+    'bg-card text-ink border border-ink/8 shadow-soft hover:border-royal/25 hover:shadow-lift',
 }
 
 const SIZES = {

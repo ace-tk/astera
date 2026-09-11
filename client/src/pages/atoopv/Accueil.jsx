@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
+import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
 import AtoopvTicker from '@/components/atoopv/AtoopvTicker'
@@ -46,6 +47,14 @@ export default function Accueil() {
       <AmbientBackground />
       <Navbar />
 
+      {/* The theme toggle used to live inside the shared Navbar (every
+          page); it's since been scoped to just this page, so it's rendered
+          here instead — a small fixed pill tucked under the nav so it never
+          competes with the nav's own controls at any viewport width. */}
+      <div className="fixed right-4 top-20 z-40 hidden sm:block sm:right-6 sm:top-24">
+        <ThemeSwitcher />
+      </div>
+
       <AtoopvHomeHero hero={hero} />
       <AtoopvTicker />
 
@@ -58,7 +67,7 @@ export default function Accueil() {
         </Reveal>
       </div>
 
-      <section id="expertise" className="relative py-14 sm:py-16">
+      <section id="expertise" className="relative py-10 sm:py-12">
         <div className="shell">
           <FeatureGrid eyebrow={expertise.eyebrow} heading={expertise.heading} lead={expertise.lead} items={expertise.items} color="sky" columns={3} />
         </div>
@@ -73,7 +82,7 @@ export default function Accueil() {
       <ProcessRecomposed />
       <OrchestratedIntelligence />
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative py-10 sm:py-12">
         <div className="shell">
           <RichTextSection
             eyebrow={process.eyebrow}
@@ -87,7 +96,7 @@ export default function Accueil() {
 
       <VideoSection {...video} />
 
-      <section id="veille" className="relative py-14 sm:py-16">
+      <section id="veille" className="relative py-10 sm:py-12">
         <div className="shell">
           <ArticleGrid {...veille} color="sky" columns={3} />
         </div>
@@ -95,13 +104,13 @@ export default function Accueil() {
 
       <CTASection eyebrow={devis.eyebrow} heading={devis.heading} body={devis.body} primaryCta={devis.primaryCta} />
 
-      <section id="garanties" className="relative py-14 sm:py-16">
+      <section id="garanties" className="relative py-10 sm:py-12">
         <div className="shell">
           <FeatureGrid eyebrow={garanties.eyebrow} heading={garanties.heading} items={garanties.items} color="sky" columns={3} />
         </div>
       </section>
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative py-10 sm:py-12">
         <div className="shell">
           <ChipCloud eyebrow={sectors.eyebrow} heading={sectors.heading} items={sectors.items} />
         </div>
@@ -118,7 +127,7 @@ export default function Accueil() {
         footer={cta.legal}
       />
 
-      <section className="relative py-14 sm:py-16">
+      <section className="relative py-10 sm:py-12">
         <div className="shell">
           <ArticleGrid eyebrow={resources.eyebrow} heading={resources.heading} lead={resources.lead} items={resources.items} color="golden" columns={2} />
         </div>

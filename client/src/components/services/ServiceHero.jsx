@@ -12,7 +12,7 @@ import { renderEmphasis } from '@/utils/richText'
  */
 export default function ServiceHero({ badge, title, lead, tags, primaryCta, secondaryCta, breadcrumbs }) {
   return (
-    <section className="relative pt-36 sm:pt-40 lg:pt-44">
+    <section className="relative pt-28 sm:pt-32 lg:pt-36">
       <div className="shell">
         {breadcrumbs?.length > 0 && (
           <motion.nav

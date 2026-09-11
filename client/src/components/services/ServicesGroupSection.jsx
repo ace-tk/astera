@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 import { resolveServiceHref } from '@/constants/servicesLinks'
 import { accent } from '@/utils/accent'
@@ -7,6 +8,10 @@ import { cn } from '@/utils/cn'
 const COLS = {
   3: 'sm:grid-cols-2 lg:grid-cols-3',
   4: 'sm:grid-cols-2 lg:grid-cols-4',
+}
+
+function stripTrailingArrow(label) {
+  return label.replace(/\s*(→|->)\s*$/, '')
 }
 
 /**
@@ -36,15 +41,22 @@ export default function ServicesGroupSection({ label, heading, body, items, colo
       <div className={cn('mt-8 grid grid-cols-1 gap-4', COLS[items.length] || COLS[4])}>
         {items.map((item, i) => {
           const card = (
-            <div className="group flex h-full flex-col rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
+            <div className="group flex h-full flex-col rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-royal/25 hover:shadow-lift">
               <div className="flex items-center gap-3">
-                <span className="text-xl leading-none" aria-hidden="true">
+                <span className="text-xl leading-none transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
                   {item.icon}
                 </span>
-                <h3 className="font-display text-base font-medium tracking-tight">{item.heading}</h3>
+                <h3 className="font-display text-base font-medium tracking-tight transition-colors duration-300 group-hover:text-royal">
+                  {item.heading}
+                </h3>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-muted">{item.body}</p>
-              {item.cta && <span className={cn('mt-4 inline-block text-sm font-medium', a.text)}>{item.cta.label}</span>}
+              {item.cta && (
+                <span className={cn('mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
+                  {stripTrailingArrow(item.cta.label)}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+              )}
             </div>
           )
 

@@ -6,6 +6,7 @@ import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import GuideModelInfoPanel from '@/components/atoopv/GuideModelInfoPanel'
 import GuideModelArticleBody from '@/components/atoopv/GuideModelArticleBody'
 import GuideModelRail from '@/components/atoopv/GuideModelRail'
+import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePage, excerpt } from '@/services/servicesContent'
@@ -80,20 +81,23 @@ export default function ServiceArticle({ category, slug: slugProp }) {
         <ServiceHero badge={page.breadcrumb} title={page.title} breadcrumbs={breadcrumbs} />
       )}
 
-      <ServiceCategoryContent
-        navItems={CATEGORY_NAV[category]}
-        navLabel={CATEGORY_NAV_LABEL[category]}
-        rail={railItems.length > 0 ? <GuideModelRail items={railItems} /> : undefined}
-      >
-        {enhanced ? (
-          <>
-            <GuideModelInfoPanel headingBody={enhanced.headingBody} stats={enhanced.stats} contact={enhanced.contact} color={CATEGORY_COLOR[category]} />
-            <GuideModelArticleBody segments={articleSegments} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
-          </>
-        ) : (
-          <MarkdownArticle body={page.body} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
-        )}
-      </ServiceCategoryContent>
+      <div className="relative">
+        <EditorialGridBackground lines />
+        <ServiceCategoryContent
+          navItems={CATEGORY_NAV[category]}
+          navLabel={CATEGORY_NAV_LABEL[category]}
+          rail={railItems.length > 0 ? <GuideModelRail items={railItems} /> : undefined}
+        >
+          {enhanced ? (
+            <>
+              <GuideModelInfoPanel headingBody={enhanced.headingBody} stats={enhanced.stats} contact={enhanced.contact} color={CATEGORY_COLOR[category]} />
+              <GuideModelArticleBody segments={articleSegments} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} />
+            </>
+          ) : (
+            <MarkdownArticle body={page.body} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />
+          )}
+        </ServiceCategoryContent>
+      </div>
     </>
   )
 }

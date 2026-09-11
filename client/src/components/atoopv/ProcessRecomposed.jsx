@@ -112,7 +112,7 @@ function StageRow({ stage }) {
  * order rather than scroll choreography. */
 function VerticalProcess({ data }) {
   return (
-    <section className="relative overflow-hidden border-t border-ink/10 bg-paper py-20 sm:py-28">
+    <section className="relative overflow-hidden border-t border-ink/10 bg-paper py-16 sm:py-20">
       <TechnicalGrid />
       <div className="shell relative grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
         <div className="lg:sticky lg:top-28 lg:self-start">

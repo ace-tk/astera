@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Menu, X, ArrowUpRight, ChevronDown } from 'lucide-react'
+import { Menu, X, ArrowUpRight, ChevronDown, BookOpen } from 'lucide-react'
 import { NAV_LINKS, ATOOPV_NAV, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
-import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
 import NavDropdown from '@/components/landing/NavDropdown'
@@ -13,6 +12,30 @@ import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
 import { cn } from '@/utils/cn'
 
 const CLOSE_DELAY_MS = 150
+
+/**
+ * Reserved placement for a future "Shop Books" entry point — content and
+ * final destination to follow later; for now this links to the existing
+ * /atoopv/boutique route (the same target ComplianceBooksTeaser's "Découvrir
+ * la boutique" button already uses further down the homepage), styled as a
+ * compact utility pill matching ThemeSwitcher's visual weight so the two
+ * read as one paired control rather than a second primary CTA.
+ */
+function ShopBooksButton({ className, onClick }) {
+  return (
+    <Link
+      to="/atoopv/boutique"
+      onClick={onClick}
+      className={cn(
+        'flex h-9 items-center gap-1.5 rounded-full border border-ink/8 bg-card/50 px-2.5 text-xs font-medium text-ink/70 backdrop-blur-md transition-colors hover:border-ink/20 hover:text-ink',
+        className,
+      )}
+    >
+      <BookOpen className="h-3.5 w-3.5 text-muted" />
+      Shop Books
+    </Link>
+  )
+}
 
 const triggerClass =
   'flex items-center gap-1 rounded-full px-2.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
@@ -201,7 +224,7 @@ export default function Navbar() {
             Devis PV
           </Button>
           <div className="hidden sm:block">
-            <ThemeSwitcher />
+            <ShopBooksButton />
           </div>
           <Button as={Link} to="/app" size="sm" variant="primary" className="hidden sm:inline-flex">
             Open app <ArrowUpRight className="h-4 w-4" />
@@ -278,7 +301,7 @@ export default function Navbar() {
                 />
               ))}
               <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
-                <ThemeSwitcher align="left" />
+                <ShopBooksButton onClick={() => setOpen(false)} />
                 <Button as={Link} to="/app" size="sm" onClick={() => setOpen(false)}>
                   Open app
                 </Button>

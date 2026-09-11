@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, FileText } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
@@ -10,6 +10,15 @@ import { cn } from '@/utils/cn'
 // word itself (what the text actually says) is untouched.
 function stripTrailingArrow(label) {
   return label.replace(/\s*(→|->)\s*$/, '')
+}
+
+// A small visual cue for the one existing cta shape that says "read the
+// article" (Accueil's veille section: "Lire l'article →") — purely a
+// document icon next to that exact existing label, not a rewrite of it.
+// Matched by content, not by page, so this never touches any other cta
+// (Ressources/Services cards say "Lire →", "Voir les tarifs →", etc.).
+function isArticleCta(label) {
+  return /article/i.test(label || '')
 }
 
 function CardChrome({ children, className, large }) {
@@ -79,6 +88,9 @@ export default function ArticleGrid({ eyebrow, heading, lead, items, color = 'sk
                 </h3>
                 <p className="relative mt-3 max-w-xl text-sm leading-relaxed text-muted sm:text-base">{featured.body}</p>
                 <span className={cn('relative mt-5 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
+                  {isArticleCta(featured.cta) && (
+                    <FileText className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5" />
+                  )}
                   {stripTrailingArrow(featured.cta || 'Lire')}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </span>
@@ -101,6 +113,9 @@ export default function ArticleGrid({ eyebrow, heading, lead, items, color = 'sk
                 </h3>
                 <p className="relative mt-2 flex-1 text-sm leading-relaxed text-muted">{item.body}</p>
                 <span className={cn('relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
+                  {isArticleCta(item.cta) && (
+                    <FileText className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5" />
+                  )}
                   {stripTrailingArrow(item.cta || 'Lire')}
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </span>

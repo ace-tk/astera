@@ -14,16 +14,15 @@ export default function ThemeSwitcher({ align = 'right' }) {
     <div className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex h-10 items-center gap-2 rounded-full border border-ink/10 bg-card/70 px-3 text-sm font-medium backdrop-blur-md transition-colors hover:border-ink/20"
+        className="flex h-9 items-center gap-1.5 rounded-full border border-ink/8 bg-card/50 px-2.5 text-xs font-medium text-ink/70 backdrop-blur-md transition-colors hover:border-ink/20 hover:text-ink"
         aria-label={`Theme: ${active?.name}. Change theme`}
         aria-expanded={open}
         aria-haspopup="menu"
       >
-        <Palette className="h-4 w-4 text-muted" />
-        <span className="hidden sm:inline">{active?.name}</span>
+        <Palette className="h-3.5 w-3.5 text-muted" />
         <span className="flex -space-x-1">
           {active?.swatch.map((c) => (
-            <span key={c} className="h-3 w-3 rounded-full ring-1 ring-black/10" style={{ background: c }} />
+            <span key={c} className="h-2.5 w-2.5 rounded-full ring-1 ring-black/10" style={{ background: c }} />
           ))}
         </span>
       </button>

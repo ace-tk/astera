@@ -7,6 +7,7 @@ import { resolveResourceHref } from '@/constants/resourcesLinks'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
 import { slugify } from '@/utils/slugify'
+import { mergeIconHeadings, splitIconHeading } from '@/utils/mergeIconHeadings'
 
 function textFrom(node) {
   if (node == null) return ''
@@ -33,11 +34,35 @@ function textFrom(node) {
  * actually exist in this document, nothing invented) plus an anchor id, so
  * a rail built from the same headings (see EditorialSectionRail) can jump
  * straight to them.
+ *
+ * `iconHeadings` is opt-in and off by default too — Services content is the
+ * only source with the "bare icon line, then heading" shape (see
+ * mergeIconHeadings.js), so this only changes anything for callers that
+ * explicitly turn it on.
  */
-export default function MarkdownArticle({ body, color = 'sky', resolveHref = resolveResourceHref, editorialNumbers = false }) {
+export default function MarkdownArticle({ body, color = 'sky', resolveHref = resolveResourceHref, editorialNumbers = false, iconHeadings = false }) {
   const a = accent(color)
   const h2Index = useRef(0)
   h2Index.current = 0
+  const source = iconHeadings ? mergeIconHeadings(body) : body
+
+  // Icon-headings: an icon-bearing h2/h3/h4 becomes a flex row (icon column
+  // + heading, which wraps on its own within its own column) instead of a
+  // plain heading. `wrapClass` carries the vertical rhythm that would
+  // otherwise sit on the heading itself, since the heading is no longer the
+  // outermost element.
+  function iconRow(children, Tag, headingClass, wrapClass) {
+    const split = iconHeadings ? splitIconHeading(textFrom(children)) : null
+    if (!split) return <Tag className={cn(wrapClass, headingClass)}>{children}</Tag>
+    return (
+      <div className={cn('flex items-start gap-2.5', wrapClass)}>
+        <span className="shrink-0 text-[1.15em] leading-[1.3]" aria-hidden="true">
+          {split.icon}
+        </span>
+        <Tag className={headingClass}>{split.text}</Tag>
+      </div>
+    )
+  }
 
   return (
     <div className="markdown-article max-w-none space-y-5">
@@ -50,10 +75,11 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           h2: ({ children }) => {
             const id = slugify(textFrom(children)) || undefined
             if (!editorialNumbers) {
-              return (
-                <h2 id={id} className="mt-10 scroll-mt-28 font-display text-2xl font-medium leading-tight tracking-tight text-balance first:mt-0">
-                  {children}
-                </h2>
+              return iconRow(
+                children,
+                (p) => <h2 id={id} {...p} />,
+                'font-display text-2xl font-medium leading-tight tracking-tight text-balance',
+                'mt-10 scroll-mt-28 first:mt-0',
               )
             }
             h2Index.current += 1
@@ -68,8 +94,8 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
               </div>
             )
           },
-          h3: ({ children }) => <h3 className="mt-8 font-display text-lg font-medium tracking-tight">{children}</h3>,
-          h4: ({ children }) => <h4 className="mt-6 font-display text-base font-medium tracking-tight">{children}</h4>,
+          h3: ({ children }) => iconRow(children, 'h3', 'font-display text-lg font-medium tracking-tight', 'mt-8'),
+          h4: ({ children }) => iconRow(children, 'h4', 'font-display text-base font-medium tracking-tight', 'mt-6'),
           p: ({ children }) => <p className="text-base leading-relaxed text-ink/80 text-pretty">{children}</p>,
           strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
           ul: ({ children }) => <ul className={cn('list-disc space-y-2 pl-5 marker:text-base', a.text)}>{children}</ul>,
@@ -115,7 +141,7 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           code: ({ children }) => <code className="rounded bg-card px-1.5 py-0.5 font-mono text-[0.85em] text-ink">{children}</code>,
         }}
       >
-        {body}
+        {source}
       </ReactMarkdown>
     </div>
   )
