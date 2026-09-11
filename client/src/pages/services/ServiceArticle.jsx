@@ -20,7 +20,21 @@ import { stripEmphasis } from '@/utils/richText'
 import { parseModelePvGratuitBody, splitIconSections } from '@/utils/modelePvGratuitContent'
 import { extractH2Sections } from '@/utils/markdownSections'
 import FormationStatStrip from '@/components/atoopv/FormationStatStrip'
+import PvKineticIntro from '@/components/atoopv/PvKineticIntro'
+import FragmentsToDocument from '@/components/atoopv/FragmentsToDocument'
 import { extractLeadTopics, extractFaq, extractCarteLinks, extractStatStrip } from '@/utils/formationContent'
+import { FORMATION_ECONOMIQUE_FRAGMENTS, COMMUNICATION_FRAGMENTS } from '@/constants/fragmentsIntros'
+
+// Kinetic brand intro (adapted from the Design Lab's Experiment 04) and the
+// fragments-to-document intro (adapted from Experiment 06) — each scoped to
+// one specific real slug, same "slug-keyed, additive" pattern as
+// ENHANCED_INFO_SLUG/TOPIC_LAYOUT above, so every other Services page is
+// completely unaffected.
+const PV_KINETIC_INTRO_SLUG = 'redaction-pv-cse'
+const FRAGMENTS_INTRO = {
+  'formation-economique-elus-cse': FORMATION_ECONOMIQUE_FRAGMENTS,
+  'communication-cse': COMMUNICATION_FRAGMENTS,
+}
 
 // The one article whose source markdown has a "raw stats/CTA/tag-list" info
 // block that renders far better through components already built for this
@@ -161,6 +175,9 @@ export default function ServiceArticle({ category, slug: slugProp }) {
 
   return (
     <>
+      {slug === PV_KINETIC_INTRO_SLUG && <PvKineticIntro />}
+      {FRAGMENTS_INTRO[slug] && <FragmentsToDocument {...FRAGMENTS_INTRO[slug]} />}
+
       {enhanced ? (
         <GuideModelHero
           badge={page.breadcrumb}

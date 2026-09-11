@@ -38,11 +38,11 @@ export default function GuideModelRail({ items }) {
   if (!items.length) return null
 
   return (
-    <nav aria-label="Sections de l'article" className="hidden xl:sticky xl:top-28 xl:block">
-      <span className="eyebrow px-4">
+    <nav aria-label="Sections de l'article" className="hidden xl:sticky xl:top-28 xl:flex xl:max-h-[calc(100vh-8rem)] xl:flex-col">
+      <span className="eyebrow shrink-0 px-4">
         <span className="h-px w-6 bg-ink/25" /> Dans cet article
       </span>
-      <ul className="mt-4 space-y-1">
+      <ul className="mt-4 min-h-0 flex-1 space-y-1 overflow-y-auto [scrollbar-width:thin]">
         {items.map((item, i) => {
           const isActive = item.id === activeId
           return (

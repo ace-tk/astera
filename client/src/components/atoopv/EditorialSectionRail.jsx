@@ -58,11 +58,19 @@ export default function EditorialSectionRail({ items }) {
 
   return (
     <nav aria-label="Sections de l'article" className="hidden xl:block">
-      <div className="xl:sticky xl:top-28">
-        <span className="eyebrow">
+      <div className="xl:sticky xl:top-28 xl:flex xl:max-h-[calc(100vh-8rem)] xl:flex-col">
+        <span className="eyebrow shrink-0">
           <span className="h-px w-6 bg-ink/25" /> Dans cet article
         </span>
-        <ul className="mt-4 space-y-3">
+        {/* A long article (a multi-chapter guide can easily list 20+
+            sections) made this box taller than the viewport, and since it
+            only sticks — it isn't itself a scroll container — everything
+            past the fold was reachable only by scrolling the whole page
+            until the box scrolled out from under it. Capping the height to
+            the visible viewport and scrolling inside this list instead
+            keeps the box itself pinned in place while every item, however
+            many there are, stays reachable. */}
+        <ul className="mt-4 -mr-2 min-h-0 flex-1 space-y-3 overflow-y-auto pr-2 [scrollbar-width:thin]">
           {items.map((item, i) => {
             const isActive = item.id === activeId
             return (

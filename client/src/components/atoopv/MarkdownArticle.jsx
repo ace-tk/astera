@@ -116,7 +116,35 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
           ul: ({ children }) => <ul className={cn('list-disc space-y-2 pl-5 marker:text-base', a.text)}>{children}</ul>,
           ol: ({ children }) => <ol className={cn('list-decimal space-y-2 pl-5 marker:font-semibold', a.text)}>{children}</ol>,
-          li: ({ children }) => <li className="pl-1 text-base leading-relaxed text-ink/80 marker:text-sm">{children}</li>,
+          li: ({ children }) => {
+            // Some ordered lists (e.g. a guide's own "Sommaire"/table of
+            // contents) carry a bare chapter number as the item's own first
+            // line, on top of the `<ol>` marker this renderer already draws
+            // — "1." from the list, then a literal "1" from the content,
+            // both showing the same real number. Detected narrowly (first
+            // child renders down to nothing but digits) so a normal list
+            // item that merely starts with a number in its own sentence is
+            // never affected. Nothing is removed: the number this shows is
+            // the content's own digit, just carrying the marker instead of
+            // duplicating it above the marker.
+            // react-markdown inserts whitespace-only text nodes ("\n")
+            // between a loose list item's block children, so the real first
+            // child (the bare-number paragraph) isn't always kids[0].
+            const rawKids = Array.isArray(children) ? children : [children]
+            const kids = rawKids.filter((k) => typeof k !== 'string' || k.trim() !== '')
+            const firstText = textFrom(kids[0]).trim()
+            if (kids.length > 1 && /^\d+$/.test(firstText)) {
+              return (
+                <li className="flex items-start gap-3 pl-1 text-base leading-relaxed text-ink/80" style={{ listStyleType: 'none' }}>
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-royal/10 font-mono text-xs font-medium text-royal">
+                    {firstText}
+                  </span>
+                  <span className="flex-1 space-y-2 [&>p]:m-0">{kids.slice(1)}</span>
+                </li>
+              )
+            }
+            return <li className="pl-1 text-base leading-relaxed text-ink/80 marker:text-sm">{children}</li>
+          },
           a: ({ href, children }) => {
             const resolved = resolveHref(href || '')
             if (resolved.external) {
