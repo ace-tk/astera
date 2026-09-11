@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion'
 import { ArrowDown, Sparkles } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
+import HeroVisual from '@/components/landing/HeroVisual'
 import { renderEmphasis } from '@/utils/richText'
 
 const EASE = [0.16, 1, 0.3, 1]
@@ -157,24 +158,27 @@ function HeroCopy({ hero, phase, animated }) {
 }
 
 /** Static path: mobile, tablet, laptop below the pin breakpoint, and
- * reduced-motion — a simple load-in, image stacked above content, no
+ * reduced-motion — a simple load-in, content stacked above the Roadmap
+ * Alignment visual (badge/heading/description/CTA first, card below), no
  * scroll-pinning. Same composition building blocks as the desktop pin. */
 function StaticHero({ hero }) {
   return (
     <section className="relative border-b border-ink/10 pt-24 sm:pt-28 lg:pt-32">
       <div className="shell">
-        <div className="overflow-hidden rounded-none border border-ink/10 lg:grid lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: EASE }}
-            className="h-64 w-full overflow-hidden sm:h-80 lg:h-auto"
-          >
-            <img src={hero.image.src} alt={hero.image.alt} className="h-full w-full object-cover" style={{ objectPosition: 'center 32%' }} />
-          </motion.div>
-          <div className="border-t border-ink/10 lg:border-l lg:border-t-0">
+        <div className="rounded-none border border-ink/10 lg:grid lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="border-b border-ink/10 lg:border-b-0 lg:border-r">
             <HeroCopy hero={hero} phase={0} animated={false} />
           </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: EASE }}
+            className="flex items-center justify-center p-6 sm:p-8"
+          >
+            <div className="w-full max-w-[27rem]">
+              <HeroVisual />
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -182,13 +186,12 @@ function StaticHero({ hero }) {
 }
 
 /** Desktop path: a pinned 230vh scroll range drives the six-state
- * annotation story (§13) while the image/content split itself stays put —
- * only a subtle image scale (§20) and the annotation slot actually move. */
+ * annotation story (§13) on the left while the Roadmap Alignment visual on
+ * the right runs its own independent hover/float/parallax animations. */
 function PinnedHero({ hero }) {
   const sectionRef = useRef(null)
   const [phase, setPhase] = useState(0)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.045, 1])
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
     const thresholds = [0.14, 0.32, 0.5, 0.68, 0.86]
@@ -200,16 +203,20 @@ function PinnedHero({ hero }) {
     <section ref={sectionRef} className="relative border-b border-ink/10" style={{ height: '230vh' }}>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pt-20">
         <div className="shell w-full">
-          <div className="grid grid-cols-2 overflow-hidden border border-ink/10" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
-            <div className="relative h-full w-full overflow-hidden border-r border-ink/10">
-              <motion.img
-                src={hero.image.src}
-                alt={hero.image.alt}
-                style={{ scale: imageScale, objectPosition: 'center 32%' }}
-                className="h-full w-full object-cover"
-              />
+          <div className="grid grid-cols-[1.1fr_0.9fr] border border-ink/10" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
+            <div className="border-r border-ink/10">
+              <HeroCopy hero={hero} phase={phase} animated />
             </div>
-            <HeroCopy hero={hero} phase={phase} animated />
+            <div className="relative flex items-center justify-center p-6">
+              {/* HeroVisual's floating chips are positioned by percentage
+                  against its own square box, tuned for the ~27rem width it
+                  renders at on the Astera hero — a wider box here would wrap
+                  its fixed-size text less, shrink the card, and let the
+                  chips drift onto content they're meant to sit beside. */}
+              <div className="w-full max-w-[27rem]">
+                <HeroVisual />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -218,11 +225,14 @@ function PinnedHero({ hero }) {
 }
 
 /**
- * ATOOPV homepage hero — the editorial image|content split from the
- * approved reference, built on the existing `ACCUEIL.hero` content (real
- * badge/title/lead/CTA copy, real hero image) rather than new marketing
- * copy. Desktop (≥1024px) with motion allowed gets the pinned scroll
- * choreography; everything else gets the same composition without the pin.
+ * ATOOPV homepage hero — content/visual split built on the existing
+ * `ACCUEIL.hero` content (real badge/title/lead/CTA copy). The right side
+ * reuses HeroVisual, the same "Q3 Roadmap alignment" component that anchors
+ * the Astera marketing hero (components/landing/sections/Hero.jsx) — one
+ * component, one source of data, rendered a second time here rather than a
+ * separate hero image. Desktop (≥1024px) with motion allowed gets the
+ * pinned scroll choreography for the left-side annotation story; everything
+ * else gets the same composition without the pin.
  */
 export default function AtoopvHomeHero({ hero }) {
   const isDesktop = useIsDesktop(1024)

@@ -143,11 +143,13 @@ export default function ServiceArticle({ category, slug: slugProp }) {
       )}
 
       <div className="relative">
-        {/* drafting/by-city/tarifs-infos belong to the Procès-verbal mega
-            menu and training/communication belong to Formations — neither
-            wants the decorative background blocks. Only "guides" (reached
-            from Ressources/Blog, not these two menus) keeps the default. */}
-        <EditorialGridBackground lines blocks={category === 'guides'} />
+        {/* Formations (training/communication) pages want a fully clean,
+            continuous page background — no grid, no tint wash, no blocks —
+            per an explicit "zero block backgrounds" request. drafting/
+            by-city/tarifs-infos keep the faint grid lines (no blocks); only
+            "guides" (reached from Ressources/Blog, not these two menus)
+            keeps the original grid+blocks. */}
+        {!isFormationPage && <EditorialGridBackground lines blocks={category === 'guides'} />}
         <ServiceCategoryContent
           navItems={CATEGORY_NAV[category]}
           navLabel={CATEGORY_NAV_LABEL[category]}
