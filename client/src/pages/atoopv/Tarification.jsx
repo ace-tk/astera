@@ -5,7 +5,6 @@ import Footer from '@/components/landing/sections/Footer'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import RichTextSection from '@/components/services/RichTextSection'
 import PVSimulator from '@/components/atoopv/PVSimulator'
-import { renderEmphasis } from '@/utils/richText'
 import FAQSection from '@/components/services/FAQSection'
 import CTASection from '@/components/services/CTASection'
 import Pricing from '@/components/landing/sections/Pricing'
@@ -43,25 +42,19 @@ export default function Tarification() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero {...TARIFICATION_HERO} hideTitle />
+      {/* Only the badge chip renders here — the lead paragraph and CTA
+          button that used to sit below it were removed so the card starts
+          higher on the page, and the page heading now lives inside the
+          card itself (see PVSimulator's own `title`) instead of floating
+          above it. */}
+      <AtoopvHero badge={TARIFICATION_HERO.badge} hideTitle />
 
       {/* The interactive simulator needs the full shell width for its
           three-column console + live preview, so it sits outside the
-          narrower max-w-3xl column the rest of this page's prose uses.
-          The page heading (hidden above, in the hero) is re-slotted here,
-          aligned over the simulator's own right-hand preview column —
-          same grid fractions as PVSimulator's internal layout — so the
-          card can sit higher on the page without an empty hero gap. */}
+          narrower max-w-3xl column the rest of this page's prose uses. */}
       <div className="shell pt-2 pb-14 sm:pt-4 sm:pb-16">
-        <div className="grid lg:grid-cols-[0.9fr_2fr_1.15fr]">
-          <div className="hidden lg:col-span-2 lg:block" aria-hidden="true" />
-          <div className="pb-5 lg:pb-6">
-            <h2 className="font-display text-2xl font-medium leading-tight tracking-tight text-balance text-ink sm:text-3xl">
-              {renderEmphasis(TARIFICATION_HERO.title)}
-            </h2>
-          </div>
-        </div>
         <PVSimulator
+          title={TARIFICATION_HERO.title}
           tiers={TARIFICATION_TIERS}
           badge={TARIFICATION_HERO.badge}
           intro={TARIFICATION_INTRO.blocks[0]?.text}

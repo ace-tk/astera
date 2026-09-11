@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Sparkles } from 'lucide-react'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
+import { renderEmphasis } from '@/utils/richText'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
 import PVPreviewDocument from '@/components/atoopv/PVPreviewDocument'
@@ -31,6 +32,7 @@ function stylesAllowedFor(tierId) {
  * PricingPage still use it as-is.
  */
 export default function PVSimulator({
+  title,
   tiers,
   badge,
   intro,
@@ -71,6 +73,13 @@ export default function PVSimulator({
   return (
     <Reveal>
       <div className="overflow-hidden rounded-[2rem] border border-ink/8 bg-card shadow-soft">
+        {title && (
+          <div className="border-b border-ink/8 p-7 sm:p-8">
+            <h2 className="font-display text-2xl font-medium leading-tight tracking-tight text-balance text-ink sm:text-3xl">
+              {renderEmphasis(title)}
+            </h2>
+          </div>
+        )}
         <div className="grid lg:grid-cols-[0.9fr_2fr_1.15fr]">
           {/* LEFT — compact context panel */}
           <div className="flex flex-col gap-6 border-b border-ink/8 p-7 lg:border-b-0 lg:border-r lg:border-ink/8 sm:p-8">
