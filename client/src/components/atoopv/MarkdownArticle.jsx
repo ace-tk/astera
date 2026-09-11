@@ -112,7 +112,15 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           },
           h3: ({ children }) => iconRow(children, 'h3', 'font-display text-lg font-medium tracking-tight', 'mt-8'),
           h4: ({ children }) => iconRow(children, 'h4', 'font-display text-base font-medium tracking-tight', 'mt-6'),
-          p: ({ children }) => <p className="text-base leading-relaxed text-ink/80 text-pretty">{children}</p>,
+          // `break-words`: a small number of pages have one long run of
+          // "Word✦Word✦Word✦..." tags with no actual space characters (the
+          // raw text of a marquee loop from the source site), which browsers
+          // by default can only wrap at whitespace — on a narrow viewport
+          // that single unbroken run is wider than the screen and forces
+          // horizontal overflow. This only changes where a line CAN break
+          // when it must; it never touches or reflows text that already
+          // fits normally.
+          p: ({ children }) => <p className="break-words text-base leading-relaxed text-ink/80 text-pretty">{children}</p>,
           strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
           ul: ({ children }) => <ul className={cn('list-disc space-y-2 pl-5 marker:text-base', a.text)}>{children}</ul>,
           ol: ({ children }) => <ol className={cn('list-decimal space-y-2 pl-5 marker:font-semibold', a.text)}>{children}</ol>,

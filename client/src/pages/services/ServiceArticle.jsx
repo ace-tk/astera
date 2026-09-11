@@ -9,6 +9,7 @@ import GuideModelRail from '@/components/atoopv/GuideModelRail'
 import FormationTopics from '@/components/atoopv/FormationTopics'
 import FormationIndex from '@/components/atoopv/FormationIndex'
 import EditorialSectionRail from '@/components/atoopv/EditorialSectionRail'
+import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import FAQSection from '@/components/services/FAQSection'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
@@ -120,6 +121,12 @@ export default function ServiceArticle({ category, slug: slugProp }) {
   // nothing else" request — Procès-verbal pages have the same underlying
   // layout and would benefit from the same fix, but are left untouched here.
   const isFormationCategory = category === 'training' || category === 'communication'
+  // Procès-verbal: same sticky-right-panel behavior as À propos, the same
+  // dashed-rule/arrow left nav already used for Ressources/Blog, tighter
+  // section spacing, and numbered section headings (MarkdownArticle's
+  // `editorialNumbers`) — all opt-in props on shared components, so every
+  // other category (Formations, guides) keeps its current, untouched look.
+  const isPVCategory = category === 'drafting' || category === 'by-city' || category === 'tarifs-infos'
   const faqResult = usesEditorialSystem ? extractFaq(page.body) : null
   const bodyBeforeFaq = faqResult ? faqResult.before : page.body
   const faqItems = faqResult?.items || []
@@ -203,7 +210,9 @@ export default function ServiceArticle({ category, slug: slugProp }) {
         <ServiceCategoryContent
           navItems={CATEGORY_NAV[category]}
           navLabel={CATEGORY_NAV_LABEL[category]}
-          stickyColumns={isFormationCategory}
+          nav={isPVCategory ? <EditorialCategoryNav items={CATEGORY_NAV[category]} label={CATEGORY_NAV_LABEL[category]} /> : undefined}
+          stickyColumns={isFormationCategory || isPVCategory}
+          compact={isPVCategory}
           rail={
             railItems.length > 0 ? (
               <GuideModelRail items={railItems} />
@@ -221,7 +230,15 @@ export default function ServiceArticle({ category, slug: slugProp }) {
             <>
               {introBody && <MarkdownArticle body={introBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
               {stats.length > 0 && <FormationStatStrip stats={stats} />}
-              {mainBody && <MarkdownArticle body={mainBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
+              {mainBody && (
+                <MarkdownArticle
+                  body={mainBody}
+                  color={CATEGORY_COLOR[category]}
+                  resolveHref={resolveServiceHref}
+                  iconHeadings
+                  editorialNumbers={isPVCategory && editorialSections.length >= 2}
+                />
+              )}
               {topics.length > 0 && <FormationTopics topics={topics} layout={topicsLayout} />}
               {afterTopicsBody && <MarkdownArticle body={afterTopicsBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
               {indexItems.length > 0 && <FormationIndex items={indexItems} />}

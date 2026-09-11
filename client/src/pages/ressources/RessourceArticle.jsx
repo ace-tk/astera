@@ -4,7 +4,7 @@ import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import EditorialSectionRail from '@/components/atoopv/EditorialSectionRail'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
-import RessourcesEditorialNav from '@/components/atoopv/RessourcesEditorialNav'
+import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getResource } from '@/services/resourcesContent'
 import { RESSOURCES_NAV } from '@/constants/resourcesNav'
@@ -46,7 +46,7 @@ export default function RessourceArticle({ slug: slugProp }) {
         <ServiceCategoryContent
           navItems={RESSOURCES_NAV}
           navLabel="Ressources pages"
-          nav={<RessourcesEditorialNav items={RESSOURCES_NAV} label="Ressources pages" />}
+          nav={<EditorialCategoryNav items={RESSOURCES_NAV} label="Ressources pages" />}
           rail={hasSections ? <EditorialSectionRail items={sections} /> : undefined}
           stickyColumns
           compact

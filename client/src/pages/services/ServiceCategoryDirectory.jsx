@@ -2,6 +2,7 @@ import ServiceHero from '@/components/services/ServiceHero'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
+import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePagesByCategory, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
@@ -30,6 +31,10 @@ const COPY = {
 export default function ServiceCategoryDirectory({ category }) {
   const pages = getServicePagesByCategory(category)
   const copy = COPY[category]
+  // "by-city" belongs to Procès-verbal — same dashed-rule/arrow left nav and
+  // sticky/compact treatment as the rest of that menu; "guides" belongs to
+  // neither Procès-verbal nor Formations and keeps its current look.
+  const isPVCategory = category === 'by-city'
 
   usePageMeta({ title: copy.title, description: copy.lead })
 
@@ -54,7 +59,13 @@ export default function ServiceCategoryDirectory({ category }) {
             fully clean background — no grid, no blocks. "guides" doesn't
             belong to Procès-verbal or Formations and keeps the default. */}
         {category === 'guides' && <EditorialGridBackground lines blocks />}
-        <ServiceCategoryContent navItems={CATEGORY_NAV[category]} navLabel={CATEGORY_NAV_LABEL[category]}>
+        <ServiceCategoryContent
+          navItems={CATEGORY_NAV[category]}
+          navLabel={CATEGORY_NAV_LABEL[category]}
+          nav={isPVCategory ? <EditorialCategoryNav items={CATEGORY_NAV[category]} label={CATEGORY_NAV_LABEL[category]} /> : undefined}
+          stickyColumns={isPVCategory}
+          compact={isPVCategory}
+        >
           <ArticleGrid items={items} color={CATEGORY_COLOR[category]} columns={3} featureFirst />
         </ServiceCategoryContent>
       </div>
