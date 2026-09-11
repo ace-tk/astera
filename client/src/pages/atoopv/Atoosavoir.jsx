@@ -6,6 +6,7 @@ import Footer from '@/components/landing/sections/Footer'
 import AtoosavoirHero from '@/components/atoopv/AtoosavoirHero'
 import AtoosavoirConstat from '@/components/atoopv/AtoosavoirConstat'
 import AtoosavoirExamples from '@/components/atoopv/AtoosavoirExamples'
+import AtoosavoirProcessSteps from '@/components/atoopv/AtoosavoirProcessSteps'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ChipCloud from '@/components/atoopv/ChipCloud'
 import FicheCard from '@/components/atoopv/FicheCard'
@@ -90,7 +91,7 @@ export default function Atoosavoir() {
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
-          <RichTextSection {...ATOOSAVOIR_STEPS} color="royal" />
+          <AtoosavoirProcessSteps eyebrow={ATOOSAVOIR_STEPS.eyebrow} heading={ATOOSAVOIR_STEPS.heading} items={ATOOSAVOIR_STEPS.blocks[0].items} />
         </div>
       </section>
 
