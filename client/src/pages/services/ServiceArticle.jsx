@@ -8,6 +8,7 @@ import GuideModelArticleBody from '@/components/atoopv/GuideModelArticleBody'
 import GuideModelRail from '@/components/atoopv/GuideModelRail'
 import FormationTopics from '@/components/atoopv/FormationTopics'
 import FormationIndex from '@/components/atoopv/FormationIndex'
+import EditorialSectionRail from '@/components/atoopv/EditorialSectionRail'
 import FAQSection from '@/components/services/FAQSection'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
@@ -17,6 +18,7 @@ import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from
 import { resolveServiceHref } from '@/constants/servicesLinks'
 import { stripEmphasis } from '@/utils/richText'
 import { parseModelePvGratuitBody, splitIconSections } from '@/utils/modelePvGratuitContent'
+import { extractH2Sections } from '@/utils/markdownSections'
 import FormationStatStrip from '@/components/atoopv/FormationStatStrip'
 import { extractLeadTopics, extractFaq, extractCarteLinks, extractStatStrip } from '@/utils/formationContent'
 
@@ -107,6 +109,15 @@ export default function ServiceArticle({ category, slug: slugProp }) {
           })
           .filter(Boolean)
       : []
+
+  // The right-side editorial rail for Formations pages — built from the
+  // page's own real `##` headings (its actual section structure), the same
+  // machinery Ressources/Blog articles already use, so it lists 2, 3, 4 or
+  // 5 items purely depending on how many distinct sections that one page
+  // genuinely has. Fills the previously-empty right column with real,
+  // clickable navigation instead of a background block.
+  const formationSections = isFormationPage ? extractH2Sections(page.body) : []
+
   const heroCtas = {
     secondaryCta: enhanced?.secondaryCta && {
       to: resolveServiceHref(enhanced.secondaryCta.href).href,
@@ -153,7 +164,13 @@ export default function ServiceArticle({ category, slug: slugProp }) {
         <ServiceCategoryContent
           navItems={CATEGORY_NAV[category]}
           navLabel={CATEGORY_NAV_LABEL[category]}
-          rail={railItems.length > 0 ? <GuideModelRail items={railItems} /> : undefined}
+          rail={
+            railItems.length > 0 ? (
+              <GuideModelRail items={railItems} />
+            ) : formationSections.length >= 2 ? (
+              <EditorialSectionRail items={formationSections} />
+            ) : undefined
+          }
         >
           {enhanced ? (
             <>

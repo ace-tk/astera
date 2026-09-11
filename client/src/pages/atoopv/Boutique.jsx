@@ -7,6 +7,7 @@ import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import BookCover from '@/components/atoopv/BookCover'
 import BookReader from '@/components/atoopv/BookReader'
+import ReportPageFlip from '@/components/design-test/experiments/ReportPageFlip'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { COMPLIANCE_BOOKS, BOOK_CATEGORIES } from '@/constants/complianceBooks'
 
@@ -267,6 +268,8 @@ export default function Boutique() {
           </LayoutGroup>
         </div>
       </section>
+
+      {view === 'shelf' && <ReportPageFlip />}
 
       {view !== 'reader' && <Footer />}
     </motion.main>

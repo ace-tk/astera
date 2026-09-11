@@ -20,7 +20,18 @@ function useScrollSpy(ids) {
         const [topId] = Object.entries(ratios.current).sort((a, b) => b[1] - a[1])[0] || []
         if (topId) setActiveId(topId)
       },
-      { rootMargin: '-15% 0% -55% 0%', threshold: [0, 0.25, 0.5, 0.75, 1] },
+      // Top margin is a fixed pixel value, not a percentage: MarkdownArticle's
+      // headings carry `scroll-mt-28` (112px) so `scrollIntoView` clears the
+      // fixed navbar, landing a heading's top right around y=112. A
+      // percentage-based top margin (the previous `-15%`) shrinks by a
+      // viewport-height-dependent amount that can land ABOVE that 112px —
+      // e.g. 150px on a 1000px-tall viewport — so a short heading scrolled
+      // to its own anchor point would sit just above the "active" zone and
+      // never register, even though it's the exact section just navigated
+      // to. Matching the margin to the same 112px scroll-mt anchor (with a
+      // few px of slack) means a just-clicked heading is inside the active
+      // zone immediately, regardless of viewport height.
+      { rootMargin: '-96px 0% -55% 0%', threshold: [0, 0.25, 0.5, 0.75, 1] },
     )
     elements.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
