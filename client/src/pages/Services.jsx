@@ -68,7 +68,7 @@ export default function Services() {
             <ServicesStatsStrip stats={parsed.intro.stats} note={parsed.intro.note} />
 
             <div className="relative">
-              <EditorialGridBackground lines />
+              <EditorialGridBackground lines blocks={false} />
 
               <div id="services" className="shell pb-16 sm:pb-20">
                 <div className="mx-auto max-w-5xl space-y-14 sm:space-y-16">

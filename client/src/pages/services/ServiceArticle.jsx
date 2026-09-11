@@ -82,7 +82,11 @@ export default function ServiceArticle({ category, slug: slugProp }) {
       )}
 
       <div className="relative">
-        <EditorialGridBackground lines />
+        {/* drafting/by-city/tarifs-infos belong to the Procès-verbal mega
+            menu and training/communication belong to Formations — neither
+            wants the decorative background blocks. Only "guides" (reached
+            from Ressources/Blog, not these two menus) keeps the default. */}
+        <EditorialGridBackground lines blocks={category === 'guides'} />
         <ServiceCategoryContent
           navItems={CATEGORY_NAV[category]}
           navLabel={CATEGORY_NAV_LABEL[category]}
