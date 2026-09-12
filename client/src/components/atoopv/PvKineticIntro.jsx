@@ -88,7 +88,7 @@ function KineticTranscript() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
 
   return (
-    <div ref={sectionRef} className="relative mt-20 sm:mt-28" style={{ height: '240vh' }}>
+    <div ref={sectionRef} className="relative mt-12 sm:mt-16" style={{ height: '90vh' }}>
       <div className="sticky top-20 h-[26rem] overflow-hidden rounded-2xl border border-ink/10 bg-paper sm:h-[30rem] lg:top-24 lg:h-[34rem]">
         <div
           className="pointer-events-none absolute inset-0 mask-fade-b"
@@ -115,7 +115,7 @@ function KineticTranscript() {
 
 function KineticTranscriptStatic() {
   return (
-    <div className="relative mt-20 rounded-2xl border border-ink/10 bg-paper p-7 sm:mt-28 sm:p-9">
+    <div className="relative mt-12 rounded-2xl border border-ink/10 bg-paper p-7 sm:mt-16 sm:p-9">
       <TechnicalLabel dot={false} className="mb-6">
         PREUVE → DOCUMENT
       </TechnicalLabel>
@@ -144,7 +144,7 @@ export default function PvKineticIntro() {
     // kinetic transcript block must sit outside any overflow-hidden
     // ancestor or `position: sticky` breaks (see KineticTranscript below).
     <div className="relative bg-paper">
-      <section className="relative overflow-hidden pt-16 sm:pt-20">
+      <section className="relative overflow-hidden pt-10 sm:pt-14">
         <span
           className="pointer-events-none absolute -left-6 top-8 select-none font-display text-[16rem] leading-none text-ink/[0.03] sm:text-[22rem]"
           aria-hidden="true"
@@ -153,12 +153,12 @@ export default function PvKineticIntro() {
         </span>
 
         <div className="shell relative">
-          <header className="relative mb-16 sm:mb-24">
+          <header className="relative mb-8 sm:mb-12">
             <div className="flex items-end justify-between gap-6">
               <SectionNumber value="01" size="lg" />
               <TechnicalLabel className="mb-2 hidden sm:inline-flex">SERVICE PHARE — DEPUIS 2017</TechnicalLabel>
             </div>
-            <h2 className="mt-4 font-display leading-[0.96] tracking-tight text-ink text-display-sm sm:text-display">
+            <h2 className="mt-4 font-display leading-[0.96] tracking-tight text-ink text-3xl sm:text-5xl lg:text-6xl">
               {['RÉDACTION DU PV', 'DE CSE.'].map((line, i) => (
                 <MotionReveal key={line} delay={i * 0.08}>
                   <span className="block">{line}</span>
@@ -168,14 +168,14 @@ export default function PvKineticIntro() {
           </header>
 
           <MotionReveal duration={1.1} className="border-b border-ink/10 pb-4">
-            <h3 className="font-display text-[16vw] leading-[0.85] tracking-tight text-ink sm:text-[13vw] lg:text-[10vw]">{WORDS.brand}</h3>
+            <h3 className="font-display text-[11vw] leading-[0.85] tracking-tight text-ink sm:text-[9vw] lg:text-[7vw]">{WORDS.brand}</h3>
           </MotionReveal>
 
-          <div className="mt-14 grid grid-cols-1 items-end gap-8 border-b border-ink/10 pb-14 sm:mt-20 sm:pb-20 lg:grid-cols-[auto_1fr] lg:gap-16">
+          <div className="mt-8 grid grid-cols-1 items-end gap-8 border-b border-ink/10 pb-8 sm:mt-12 sm:pb-12 lg:grid-cols-[auto_1fr] lg:gap-16">
             <div className="relative">
               <DrawLine axis="x" origin="left" duration={1} className="absolute bottom-[0.22em] left-0 -z-10 w-[120%]" />
               <MotionReveal duration={1}>
-                <span className="font-display text-[9rem] leading-none text-ink sm:text-[11rem] lg:text-[13rem]">{WORDS.document}</span>
+                <span className="font-display text-[6rem] leading-none text-ink sm:text-[7.5rem] lg:text-[9rem]">{WORDS.document}</span>
               </MotionReveal>
             </div>
             <motion.div
@@ -189,20 +189,20 @@ export default function PvKineticIntro() {
             </motion.div>
           </div>
 
-          <div className="mt-14 flex flex-col gap-4 sm:mt-20 sm:flex-row sm:items-baseline sm:justify-between">
+          <div className="mt-8 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:items-baseline sm:justify-between">
             <MotionReveal duration={1}>
-              <span className="font-display text-6xl tracking-tight text-accent sm:text-7xl lg:text-8xl">{STAT}</span>
+              <span className="font-display text-5xl tracking-tight text-accent sm:text-6xl lg:text-7xl">{STAT}</span>
             </MotionReveal>
             <TechnicalLabel dot={false} className="sm:pb-2">
               {STAT_CAPTION}
             </TechnicalLabel>
           </div>
 
-          <div className="mt-16 grid grid-cols-1 gap-10 border-t border-ink/10 pt-10 sm:mt-24 sm:grid-cols-3 sm:gap-6 sm:pt-14">
+          <div className="mt-10 grid grid-cols-1 gap-10 border-t border-ink/10 pt-6 sm:mt-14 sm:grid-cols-3 sm:gap-6 sm:pt-8">
             {FIELDS.map((field, i) => (
               <div key={field.word}>
                 <MotionReveal delay={i * 0.1} duration={0.8}>
-                  <span className="block font-display text-4xl tracking-tight text-ink sm:text-5xl">{field.word}</span>
+                  <span className="block font-display text-3xl tracking-tight text-ink sm:text-4xl">{field.word}</span>
                 </MotionReveal>
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -219,7 +219,7 @@ export default function PvKineticIntro() {
         </div>
       </section>
 
-      <div className="shell relative bg-paper pb-16 sm:pb-20">{reduceMotion ? <KineticTranscriptStatic /> : <KineticTranscript />}</div>
+      <div className="shell relative bg-paper pb-10 sm:pb-12">{reduceMotion ? <KineticTranscriptStatic /> : <KineticTranscript />}</div>
     </div>
   )
 }

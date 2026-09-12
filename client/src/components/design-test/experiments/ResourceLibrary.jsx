@@ -421,8 +421,14 @@ function Toast({ message }) {
  * category strip, a working carousel, and a featured/recommendations pair.
  * The reference has no chat panel, so none was built — scope follows the
  * screenshot, not assumptions about what a "resource platform" usually has.
+ *
+ * `hideEyebrow` is opt-in and off by default (the /design-test lab itself
+ * never passes it, so its own "EXPERIMENT / 13" label is unchanged) — the
+ * production Shop page (Boutique.jsx), which reuses this component, passes
+ * it true to drop just that internal-lab label without touching the
+ * chapter numeral or the "ATOOPV RESOURCE LIBRARY" title.
  */
-export default function ResourceLibrary() {
+export default function ResourceLibrary({ hideEyebrow = false }) {
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('tous')
   const [selectedId, setSelectedId] = useState(RESOURCE_LIBRARY_BOOKS[0].id)
@@ -468,7 +474,7 @@ export default function ResourceLibrary() {
   return (
     <section id="experiment-13" className="relative border-t border-ink/10 bg-paper py-24 sm:py-32">
       <div className="shell">
-        <ExperimentHeader index="13" eyebrow="EXPERIMENT / 13" titleLines={['ATOOPV RESOURCE', 'LIBRARY']} className="mb-14 sm:mb-20" />
+        <ExperimentHeader index="13" eyebrow="EXPERIMENT / 13" hideEyebrow={hideEyebrow} titleLines={['ATOOPV RESOURCE', 'LIBRARY']} className="mb-14 sm:mb-20" />
         <TechnicalLabel dot={false} className="mb-6 text-muted/50">
           SEARCH / FILTER / SELECT
         </TechnicalLabel>

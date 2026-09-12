@@ -66,8 +66,12 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
 
   return (
     <div>
-      <div className="flex items-center">
-        <HashAwareLink href={item.href} onClick={onNavigate} className={linkClass}>
+      {/* Same "this opens a menu" dashed-rule signal as the desktop
+          triggers, scoped to items that actually have a sub-list — a plain
+          item (AtooSavoir, À propos, Design Test) has no chevron above and
+          gets no line here either. */}
+      <div className="mx-4 flex items-center border-b border-dashed border-ink/15">
+        <HashAwareLink href={item.href} onClick={onNavigate} className={cn(linkClass, 'px-0')}>
           {item.label}
         </HashAwareLink>
         <button
@@ -198,7 +202,7 @@ export default function Navbar() {
                   triggerRefs.current[item.key] = el
                 }}
                 to={item.href}
-                className={triggerClass}
+                className={cn(triggerClass, 'group')}
                 onMouseEnter={() => openMegaNow(item.key)}
                 onFocus={() => openMegaNow(item.key)}
                 onMouseLeave={closeMegaSoon}
@@ -208,8 +212,22 @@ export default function Navbar() {
                 aria-expanded={openMegaKey === item.key}
                 aria-controls={`mega-panel-${item.key}`}
               >
-                {item.label}
-                <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', openMegaKey === item.key && 'rotate-180')} />
+                {/* The dashed rule + arrow-nudge language every dropdown's
+                    own contents already use (see EditorialMenuItem), applied
+                    here to the trigger itself so the navbar signals "this
+                    opens a menu" before it's even open. Lives on this inner
+                    span, not the padded rounded-full `Link` around it, so
+                    the dashed line sits right under the label instead of
+                    following the pill's own rounded bottom edge. */}
+                <span className="flex items-center gap-1 border-b border-dashed border-ink/15 pb-0.5 transition-colors duration-200 group-hover:border-royal/40">
+                  {item.label}
+                  <ChevronDown
+                    className={cn(
+                      'h-3.5 w-3.5 shrink-0 transition-all duration-200 group-hover:translate-y-0.5',
+                      openMegaKey === item.key && 'rotate-180',
+                    )}
+                  />
+                </span>
               </Link>
             )
           })}

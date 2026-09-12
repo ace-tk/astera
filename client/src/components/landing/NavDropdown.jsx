@@ -167,9 +167,15 @@ export default function NavDropdown({ label, href, items }) {
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
     >
-      <HashAwareLink ref={triggerRef} href={href} className={linkClass} aria-haspopup="true" aria-expanded={open}>
-        {label}
-        <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', open && 'rotate-180')} />
+      <HashAwareLink ref={triggerRef} href={href} className={cn(linkClass, 'group')} aria-haspopup="true" aria-expanded={open}>
+        {/* Same dashed-rule + arrow-nudge trigger language as every other
+            navbar dropdown (see Navbar.jsx's own ATOOPV_NAV triggers) — kept
+            on this inner span rather than the rounded-full `HashAwareLink`
+            itself so the line sits under the label, not the pill's curve. */}
+        <span className="flex items-center gap-1 border-b border-dashed border-ink/15 pb-0.5 transition-colors duration-200 group-hover:border-royal/40">
+          {label}
+          <ChevronDown className={cn('h-3.5 w-3.5 shrink-0 transition-all duration-200 group-hover:translate-y-0.5', open && 'rotate-180')} />
+        </span>
       </HashAwareLink>
 
       <AnimatePresence>

@@ -16,6 +16,10 @@ import '@/styles/design-test.css'
  * class, so that wrapper is kept here too — without it, ResourceLibrary's
  * `dt-no-scrollbar` rule wouldn't apply and its horizontal book scroller
  * would show a visible scrollbar it doesn't in the lab.
+ *
+ * `hideEyebrow` on both: this is a live shop page, not the internal lab, so
+ * their "EXPERIMENT / 13" / "EXPERIMENT / 10" labels are dropped here —
+ * opt-in on each component, so /design-test itself is unaffected.
  */
 export default function Boutique() {
   usePageMeta({
@@ -29,8 +33,8 @@ export default function Boutique() {
       <Navbar />
 
       <div className="design-test pt-24 sm:pt-28">
-        <ResourceLibrary />
-        <ReportPageFlip />
+        <ResourceLibrary hideEyebrow />
+        <ReportPageFlip hideEyebrow />
       </div>
 
       <Footer />

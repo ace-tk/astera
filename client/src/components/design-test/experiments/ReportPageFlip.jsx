@@ -440,15 +440,21 @@ function StaticFlip() {
  * back), both hinged at the same left edge like a bound document, with a
  * dynamic shadow overlay standing in for the paper's own shading as it
  * turns. See `InteractiveFlip` above for the full mechanic.
+ *
+ * `hideEyebrow` is opt-in and off by default (the /design-test lab itself
+ * never passes it, so its own "EXPERIMENT / 10" label is unchanged) — the
+ * production Shop page (Boutique.jsx), which reuses this component, passes
+ * it true to drop just that internal-lab label without touching the
+ * chapter numeral or the "THE PAPER IS TURNING." title.
  */
-export default function ReportPageFlip() {
+export default function ReportPageFlip({ hideEyebrow = false }) {
   const reduceMotion = useReducedMotion()
 
   return (
     <section id="experiment-10" className="relative border-t border-ink/10 bg-paper py-24 sm:py-32">
       <div className="shell">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
-          <ExperimentHeader index="10" eyebrow="EXPERIMENT / 10" titleLines={['THE PAPER', 'IS TURNING.']} />
+          <ExperimentHeader index="10" eyebrow="EXPERIMENT / 10" hideEyebrow={hideEyebrow} titleLines={['THE PAPER', 'IS TURNING.']} />
           <TechnicalLabel dot={false} className="text-muted/50">
             {reduceMotion ? 'CLICK' : 'DRAG / SWIPE / FLÈCHES'}
           </TechnicalLabel>
