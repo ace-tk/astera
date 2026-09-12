@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useLocation } from 'react-router-dom'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import HashAwareLink from '@/components/landing/HashAwareLink'
 import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
@@ -21,6 +22,7 @@ function DropdownItem({ item, onNavigate }) {
   const [open, setOpen] = useState(false)
   const closeTimer = useRef(null)
   const triggerRef = useRef(null)
+  const { pathname } = useLocation()
   // Escape closes the flyout and moves focus back onto its own trigger —
   // but that trigger sits inside this same onFocus-to-open wrapper, so the
   // programmatic .focus() call would immediately reopen it. This flag tells
@@ -29,8 +31,12 @@ function DropdownItem({ item, onNavigate }) {
   const hasChildren = Boolean(item.children?.length)
 
   if (!hasChildren) {
+    // A `#anchor` item (Story's own "How it works"/"Features") has no
+    // "current page" to be active for — only a real route (e.g. "Pricing")
+    // can match the current pathname.
+    const isActive = !item.href.startsWith('#') && pathname === item.href
     return (
-      <EditorialMenuItem href={item.href} onClick={onNavigate} dense className="px-3">
+      <EditorialMenuItem href={item.href} onClick={onNavigate} active={isActive} dense className="px-3">
         {item.label}
       </EditorialMenuItem>
     )
@@ -98,7 +104,14 @@ function DropdownItem({ item, onNavigate }) {
             className="absolute left-full top-0 z-50 ml-1 w-64 overflow-hidden rounded-2xl border border-ink/10 bg-card p-1.5 shadow-float"
           >
             {item.children.map((child) => (
-              <EditorialMenuItem key={child.href} href={child.href} onClick={onNavigate} dense className="px-3">
+              <EditorialMenuItem
+                key={child.href}
+                href={child.href}
+                onClick={onNavigate}
+                active={!child.href.startsWith('#') && pathname === child.href}
+                dense
+                className="px-3"
+              >
                 {child.label}
               </EditorialMenuItem>
             ))}

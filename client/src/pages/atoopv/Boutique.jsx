@@ -3,18 +3,19 @@ import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import Footer from '@/components/landing/sections/Footer'
 import ResourceLibrary from '@/components/design-test/experiments/ResourceLibrary'
+import ReportPageFlip from '@/components/design-test/experiments/ReportPageFlip'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import '@/styles/design-test.css'
 
 /**
  * ATOOPV Shop (/atoopv/boutique) — previously the "Compliance Books" shelf/
  * detail/reader flow (BookCover/BookReader + COMPLIANCE_BOOKS), now the
- * /design-test lab's Experiment 13 (ResourceLibrary) transplanted onto this
- * production route in its place, unmodified. `design-test.css` is scoped
- * under a `.design-test` root class, so that wrapper is kept here too —
- * without it, ResourceLibrary's `dt-no-scrollbar` rule wouldn't apply and
- * its horizontal book scroller would show a visible scrollbar it doesn't in
- * the lab.
+ * /design-test lab's Experiment 13 (ResourceLibrary) followed by Experiment
+ * 10 (ReportPageFlip), transplanted onto this production route in their
+ * place, unmodified. `design-test.css` is scoped under a `.design-test` root
+ * class, so that wrapper is kept here too — without it, ResourceLibrary's
+ * `dt-no-scrollbar` rule wouldn't apply and its horizontal book scroller
+ * would show a visible scrollbar it doesn't in the lab.
  */
 export default function Boutique() {
   usePageMeta({
@@ -29,6 +30,7 @@ export default function Boutique() {
 
       <div className="design-test pt-24 sm:pt-28">
         <ResourceLibrary />
+        <ReportPageFlip />
       </div>
 
       <Footer />

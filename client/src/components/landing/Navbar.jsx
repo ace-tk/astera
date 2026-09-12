@@ -51,6 +51,7 @@ const plainLinkClass = 'rounded-full px-2.5 py-2 text-sm font-medium text-ink/70
  * a thumb).
  */
 function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
+  const { pathname } = useLocation()
   const subItems = item.children || item.mobileItems
   const isExpanded = expandedKey === (item.key || item.href)
   const linkClass = 'block flex-1 rounded-2xl px-4 py-3.5 text-lg font-medium hover:bg-ink/[0.04]'
@@ -94,6 +95,7 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
                 key={child.href}
                 {...(child.href.startsWith('#') ? { href: child.href } : { to: child.href })}
                 onClick={onNavigate}
+                active={!child.href.startsWith('#') && pathname === child.href}
                 className="min-h-[48px] px-1"
               >
                 {child.label}

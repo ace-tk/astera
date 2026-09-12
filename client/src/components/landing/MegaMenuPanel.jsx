@@ -1,25 +1,27 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import MegaMenuVisual from '@/components/landing/MegaMenuVisual'
 import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
+import MegaMenuCategory from '@/components/landing/MegaMenuCategory'
 import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
 
 /**
  * The shared panel for the ATOOPV mega-nav (Procès-verbal, Formations,
  * Ressources, Blog) — same visual family as NavDropdown's flyout (bg-card,
- * border-ink/10, shadow-float, rounded corners, .eyebrow headings) just
- * wide enough for several columns side by side. One instance is reused for
- * whichever top-level item is currently open (see MegaMenuPanel's caller in
- * Navbar.jsx), so switching between items swaps this panel's content
- * instead of closing/reopening a new one — that's what keeps the
- * hover/focus transition between top-level entries flicker-free.
+ * border-ink/10, shadow-float, rounded corners) just wide enough for several
+ * columns side by side. One instance is reused for whichever top-level item
+ * is currently open (see MegaMenuPanel's caller in Navbar.jsx), so switching
+ * between items swaps this panel's content instead of closing/reopening a
+ * new one — that's what keeps the hover/focus transition between top-level
+ * entries flicker-free.
  */
 export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
   const { columns, cta, cities } = item.mega
   const a = accent(item.color)
   const trailingCount = cta || cities ? 1 : 0
+  const { pathname } = useLocation()
 
   return (
     <div
@@ -41,12 +43,10 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
       >
         {columns.map((col) => (
           <div key={col.heading} className="p-6">
-            <span className="eyebrow">
-              <span className="h-px w-6 bg-ink/25" /> {col.heading}
-            </span>
+            <MegaMenuCategory>{col.heading}</MegaMenuCategory>
             <div className="mt-3">
               {col.items.map((link) => (
-                <EditorialMenuItem key={link.label} to={link.href} onClick={onNavigate} dense>
+                <EditorialMenuItem key={link.label} to={link.href} onClick={onNavigate} active={pathname === link.href} dense>
                   {link.label}
                 </EditorialMenuItem>
               ))}
@@ -77,9 +77,7 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
 
         {cities && (
           <div className={cn('flex h-full flex-col p-6', a.softBg)}>
-            <span className="eyebrow">
-              <span className="h-px w-6 bg-ink/25" /> {cities.heading}
-            </span>
+            <MegaMenuCategory>{cities.heading}</MegaMenuCategory>
             <p className="mt-4 text-sm leading-relaxed text-ink/70">{cities.label}</p>
             <Link to={cities.href} onClick={onNavigate} className={cn('group/cities mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
               {cities.linkLabel}
