@@ -2,10 +2,8 @@ import { useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import HashAwareLink from '@/components/landing/HashAwareLink'
+import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
 import { cn } from '@/utils/cn'
-
-const itemClass =
-  'block rounded-xl px-3 py-2.5 text-sm leading-snug text-ink/80 transition-colors hover:bg-ink/[0.04] hover:text-ink'
 
 /**
  * One row inside a dropdown panel. Items that carry their own `children`
@@ -13,6 +11,11 @@ const itemClass =
  * the side on hover/focus, mirroring the original ATOOPV nested submenu —
  * the label itself stays a real link (click navigates immediately; hover or
  * focus reveals the flyout first), same grammar as the top-level dropdown.
+ *
+ * A leaf row (no children) uses EditorialMenuItem — the same dashed-rule +
+ * arrow treatment as every other navbar dropdown/mega-menu — via its `href`
+ * prop so a same-page `#anchor` (Story's own items) still gets HashAwareLink's
+ * Lenis-scroll handling underneath.
  */
 function DropdownItem({ item, onNavigate }) {
   const [open, setOpen] = useState(false)
@@ -27,9 +30,9 @@ function DropdownItem({ item, onNavigate }) {
 
   if (!hasChildren) {
     return (
-      <HashAwareLink href={item.href} onClick={onNavigate} className={itemClass}>
+      <EditorialMenuItem href={item.href} onClick={onNavigate} dense className="px-3">
         {item.label}
-      </HashAwareLink>
+      </EditorialMenuItem>
     )
   }
 
@@ -77,10 +80,12 @@ function DropdownItem({ item, onNavigate }) {
         onClick={onNavigate}
         aria-haspopup="true"
         aria-expanded={open}
-        className={cn(itemClass, 'flex items-center justify-between gap-2')}
+        className={cn(
+          'group/item flex items-center justify-between gap-2 border-b border-dashed border-ink/12 px-3 py-2.5 text-sm leading-snug text-ink/80 transition-colors duration-200 hover:border-royal/40 hover:text-royal',
+        )}
       >
         {item.label}
-        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-ink/40" />
+        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-ink/40 transition-all duration-200 group-hover/item:translate-x-0.5 group-hover/item:text-royal" />
       </HashAwareLink>
 
       <AnimatePresence>
@@ -93,9 +98,9 @@ function DropdownItem({ item, onNavigate }) {
             className="absolute left-full top-0 z-50 ml-1 w-64 overflow-hidden rounded-2xl border border-ink/10 bg-card p-1.5 shadow-float"
           >
             {item.children.map((child) => (
-              <HashAwareLink key={child.href} href={child.href} onClick={onNavigate} className={itemClass}>
+              <EditorialMenuItem key={child.href} href={child.href} onClick={onNavigate} dense className="px-3">
                 {child.label}
-              </HashAwareLink>
+              </EditorialMenuItem>
             ))}
           </motion.div>
         )}

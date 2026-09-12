@@ -89,22 +89,16 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
             transition={{ duration: 0.25 }}
             className="overflow-hidden pl-4"
           >
-            {subItems.map((child) =>
-              child.href.startsWith('#') ? (
-                <HashAwareLink
-                  key={child.href}
-                  href={child.href}
-                  onClick={onNavigate}
-                  className="block min-h-[48px] rounded-xl px-4 py-3 text-base leading-snug text-ink/70 hover:bg-ink/[0.04]"
-                >
-                  {child.label}
-                </HashAwareLink>
-              ) : (
-                <EditorialMenuItem key={child.href} to={child.href} onClick={onNavigate} className="min-h-[48px] px-1">
-                  {child.label}
-                </EditorialMenuItem>
-              ),
-            )}
+            {subItems.map((child) => (
+              <EditorialMenuItem
+                key={child.href}
+                {...(child.href.startsWith('#') ? { href: child.href } : { to: child.href })}
+                onClick={onNavigate}
+                className="min-h-[48px] px-1"
+              >
+                {child.label}
+              </EditorialMenuItem>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
