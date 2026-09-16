@@ -57,9 +57,20 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
   const linkClass = 'block flex-1 rounded-2xl px-4 py-3.5 text-lg font-medium hover:bg-ink/[0.04]'
 
   if (!subItems?.length) {
+    // No sub-list here either (AtooSavoir, À propos, Design Test) — same
+    // dashed-rule row as a dropdown item, but with ArrowUpRight instead of
+    // a chevron since there's nothing to expand. Built by hand rather than
+    // via EditorialMenuItem: that component's label is hardcoded to
+    // text-sm, which would read visibly smaller than these rows' existing
+    // text-lg sibling items (Story, Procès-verbal, ...).
     return (
-      <HashAwareLink href={item.href} onClick={onNavigate} className={cn(linkClass, 'block')}>
+      <HashAwareLink
+        href={item.href}
+        onClick={onNavigate}
+        className="group mx-4 flex items-center justify-between gap-2 border-b border-dashed border-ink/15 py-3.5 text-lg font-medium transition-colors duration-200 hover:border-royal/40"
+      >
         {item.label}
+        <ArrowUpRight className="h-4 w-4 shrink-0 text-ink/40 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-royal" />
       </HashAwareLink>
     )
   }
@@ -189,9 +200,17 @@ export default function Navbar() {
 
           {ATOOPV_NAV.map((item) => {
             if (!item.mega) {
+              // No dropdown here (AtooSavoir, À propos, Design Test) — same
+              // dashed-rule trigger language as the dropdown items below,
+              // but with EditorialMenuItem's own diagonal ArrowUpRight
+              // instead of a ChevronDown, so it reads as "goes to a page"
+              // rather than falsely promising a menu that isn't there.
               return (
-                <Link key={item.href} to={item.href} className={plainLinkClass} onMouseEnter={closeMegaNow} onFocus={closeMegaNow}>
-                  {item.label}
+                <Link key={item.href} to={item.href} className={cn(plainLinkClass, 'group')} onMouseEnter={closeMegaNow} onFocus={closeMegaNow}>
+                  <span className="flex items-center gap-1 border-b border-dashed border-ink/15 pb-0.5 transition-colors duration-200 group-hover:border-royal/40">
+                    {item.label}
+                    <ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
                 </Link>
               )
             }
