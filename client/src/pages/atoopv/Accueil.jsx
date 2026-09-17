@@ -19,6 +19,7 @@ import InfoCardSection from '@/components/atoopv/InfoCardSection'
 import NotreConviction from '@/components/atoopv/NotreConviction'
 import CommentCaMarche from '@/components/atoopv/CommentCaMarche'
 import AtoopvOffersTimeline from '@/components/atoopv/AtoopvOffersTimeline'
+import AtoopvFaqSection from '@/components/atoopv/AtoopvFaqSection'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -167,6 +168,7 @@ export default function Accueil() {
       <AtoopvOffersTimeline />
 
       <AtoopvFinalCta />
+      <AtoopvFaqSection />
       <AtoopvFooter />
     </motion.main>
   )
