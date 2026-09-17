@@ -18,31 +18,48 @@ const SLIDE_COUNT = 3
  * a CSS-percentage transform — see that hook's comment for why (this
  * column's `justify-center` flex wrapper is exactly the case where a
  * percentage transform fails to resolve against a definite width).
+ *
+ * The clip boundary (`overflow-hidden`, needed to hide the other two
+ * off-screen slides) sits on an INNER div that intentionally bleeds wider
+ * than the visible card via a negative margin + matching padding — measured
+ * at 432px card width, HeroVisual's own floating chips (`left-[-6%]`,
+ * `right-[-5%]`) render ~26px/~22px past the card edge, and a same-width
+ * clip boundary was cutting them off. `trackRef` stays on the OUTER,
+ * un-clipped div so the width measurement itself is never affected by this
+ * bleed (and stays immune to the ResizeObserver feedback loop fixed
+ * earlier — see useTrackWidth's own comment). Panels keep the exact same
+ * width/position; only what's visible *around* them changes.
  */
 export default function RoadmapCarousel({ active, onSwipe }) {
   const [trackRef, width] = useTrackWidth()
+  // Measured chip overflow is ~6% of card width (left-[-6%]/right-[-5%]);
+  // 6.5% covers both with a few px of safety without bleeding so far that
+  // it reveals the adjacent (off-screen) slide's own mirrored overflow.
+  const bleed = Math.ceil(width * 0.065)
 
   return (
     <div className="w-full">
-      <div ref={trackRef} className="w-full min-w-0 overflow-hidden">
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.12}
-          onDragEnd={(_, info) => {
-            if (info.offset.x < -SLIDE_DRAG_THRESHOLD) onSwipe(1)
-            else if (info.offset.x > SLIDE_DRAG_THRESHOLD) onSwipe(-1)
-          }}
-          animate={{ x: -active * width }}
-          transition={SLIDE_TRANSITION}
-          className="flex cursor-grab active:cursor-grabbing"
-        >
-          {Array.from({ length: SLIDE_COUNT }).map((_, i) => (
-            <div key={i} className="shrink-0" style={{ width }}>
-              <HeroVisual />
-            </div>
-          ))}
-        </motion.div>
+      <div ref={trackRef} className="w-full min-w-0">
+        <div className="overflow-hidden" style={{ margin: `0 -${bleed}px`, padding: `0 ${bleed}px` }}>
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.12}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -SLIDE_DRAG_THRESHOLD) onSwipe(1)
+              else if (info.offset.x > SLIDE_DRAG_THRESHOLD) onSwipe(-1)
+            }}
+            animate={{ x: -active * width }}
+            transition={SLIDE_TRANSITION}
+            className="flex cursor-grab active:cursor-grabbing"
+          >
+            {Array.from({ length: SLIDE_COUNT }).map((_, i) => (
+              <div key={i} className="shrink-0" style={{ width }}>
+                <HeroVisual />
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </div>
 
       {/* Compact shared indicator — sits right under the card, no extra
