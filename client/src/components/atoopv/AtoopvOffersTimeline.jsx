@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Download, Eye } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { InfoCard } from '@/components/atoopv/InfoCardSection'
+import BlogTimeline from '@/components/design-test/experiments/BlogTimeline'
 import { ATOOPV_OFFERS, COMPLIANCE_NAMES } from '@/constants/atoopvHome'
 
 const EASE = [0.16, 1, 0.3, 1]
@@ -149,14 +151,17 @@ export default function AtoopvOffersTimeline() {
           ))}
         </div>
 
+        <Reveal delay={0.15} className="mt-10 sm:mt-14">
+          <BlogTimeline embedded />
+        </Reveal>
+
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          {/* No "Live preview" / "Download sample report" destinations exist
-              in the reference index.html (confirmed by search) — visually
-              implemented, intentionally inert rather than linking to an
-              invented URL. */}
-          <Button as="button" type="button" variant="soft" size="md" magnetic={false} disabled className="pointer-events-none opacity-50">
+          <Button as={Link} to="/atoopv/tarification" variant="soft" size="md" magnetic={false}>
             <Eye className="h-4 w-4" /> Live preview
           </Button>
+          {/* No "Download sample report" destination exists in the reference
+              index.html (confirmed by search) — visually implemented,
+              intentionally inert rather than linking to an invented URL. */}
           <Button as="button" type="button" variant="soft" size="md" magnetic={false} disabled className="pointer-events-none opacity-50">
             <Download className="h-4 w-4" /> Download sample report
           </Button>
