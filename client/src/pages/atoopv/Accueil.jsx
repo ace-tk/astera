@@ -93,6 +93,13 @@ export default function Accueil() {
 
       <InfoCardSection eyebrow={NOS_INSTANCES.eyebrow} heading={NOS_INSTANCES.heading} lead={NOS_INSTANCES.lead} items={NOS_INSTANCES.items} columns={4} />
 
+      {/* "Nos formats" (offers + the merged Design-Test-style timeline)
+          moved here per request — between "Nos instances" and "Portail
+          SIRUS" (OrchestratedIntelligence) rather than its previous spot
+          near the bottom of the page. Component/content unchanged, only
+          its position in this file moved. */}
+      <AtoopvOffersTimeline />
+
       {/* New editorial sections — placeholder content pending final copy
           (see constants/atoopvHome.js: HOMEPAGE_PROCESS / HOMEPAGE_ORCHESTRATED).
           Placed between the existing "expertise" intro and the existing
@@ -165,8 +172,6 @@ export default function Accueil() {
           COMPLIANCE_BOOKS_TEASER (shopHref is an interim target — no
           dedicated Shop route exists in production yet). */}
       <ComplianceBooksTeaser />
-
-      <AtoopvOffersTimeline />
 
       <AtoopvFinalCta />
       <AtoopvFaqSection />
