@@ -9,6 +9,7 @@ import NavDropdown from '@/components/landing/NavDropdown'
 import MegaMenuPanel from '@/components/landing/MegaMenuPanel'
 import HashAwareLink from '@/components/landing/HashAwareLink'
 import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
+import { useIsAtTop } from '@/hooks/useIsAtTop'
 import { cn } from '@/utils/cn'
 
 const CLOSE_DELAY_MS = 150
@@ -134,6 +135,7 @@ export default function Navbar() {
   const triggerRefs = useRef({})
   const { scrollY } = useScroll()
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 24))
+  const atTop = useIsAtTop()
 
   // The ATOOPV homepage ("Accueil") isn't a top-level nav item any more —
   // it's reached via the logo, so the logo needs to know which "home" it's
@@ -145,9 +147,12 @@ export default function Navbar() {
   // The ATOOPV homepage floats a slim announcement bar above the navbar
   // (AtoopvAnnouncementBar, rendered in Accueil.jsx) — since this header is
   // `fixed top-0`, making room for it means nudging this header's own top
-  // offset down by exactly the bar's height, and only on this one route so
-  // every other page's navbar is untouched.
+  // offset down by exactly the bar's height, only on this one route, and
+  // only while that bar is actually visible: it hides itself past the very
+  // top of the page (see useIsAtTop), so once scrolled this header should
+  // collapse back up to `top-0` rather than leave a gap where the bar was.
   const isAtoopvHome = location.pathname === '/atoopv'
+  const makeRoomForAnnouncement = isAtoopvHome && atTop
 
   const toggleMobile = (key) => setExpandedKey((prev) => (prev === key ? null : key))
 
@@ -179,7 +184,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={cn('fixed inset-x-0 z-50 flex justify-center px-4 pt-4 sm:pt-5', isAtoopvHome ? 'top-8' : 'top-0')}
+      className={cn(
+        'fixed inset-x-0 z-50 flex justify-center px-4 pt-4 transition-[top] duration-300 ease-out sm:pt-5',
+        makeRoomForAnnouncement ? 'top-8' : 'top-0',
+      )}
       onKeyDown={handleNavKeyDown}
     >
       <motion.nav
