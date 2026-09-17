@@ -103,6 +103,35 @@ export const NOTRE_CONVICTION = {
 }
 
 /**
+ * "Comment ça marche" — verbatim from the reference index.html's two
+ * parallel-tracks section. Rendered directly below Notre conviction.
+ */
+export const COMMENT_CA_MARCHE = {
+  eyebrow: 'Comment ça marche',
+  heading: "Deux façons de travailler, un même niveau d'exigence.",
+  tracks: [
+    {
+      title: 'Parcours ALC — rédaction humaine',
+      steps: [
+        { title: 'Prise de rendez-vous', description: 'Réunion planifiée avec votre CSE.' },
+        { title: 'Présence en réunion', description: 'Physique ou visio, selon votre organisation.' },
+        { title: 'Rédaction et relecture', description: 'Par un expert ALC, dans le respect du débat réel.' },
+        { title: 'Validation et livraison', description: 'Dans le délai convenu avec votre secrétaire.' },
+      ],
+    },
+    {
+      title: 'Parcours SIRUS — génération assistée par IA',
+      steps: [
+        { title: "Dépôt de l'enregistrement", description: 'Audio ou vidéo de la réunion.' },
+        { title: 'Traitement SIRUS', description: 'Transcription et structuration automatisées.' },
+        { title: 'Relecture qualité', description: 'Contrôle avant diffusion.' },
+        { title: 'Livraison et validation', description: 'Par le secrétaire, avant approbation.' },
+      ],
+    },
+  ],
+}
+
+/**
  * "Ce que nous garantissons, sur les deux offres." — verbatim from the
  * reference index.html's value-pillars section. Fed into the existing,
  * unmodified `ProcessRecomposed` component (same `{eyebrow, heading,
@@ -198,10 +227,10 @@ export const ANNOUNCEMENT_MESSAGES = [
 ]
 
 export const ATOOPV_STATS = [
-  { value: '2017', label: 'Création ALC SAS' },
-  { value: '48 à 72h', label: 'Délai de livraison' },
-  { value: 'CSE · CSSCT · IRP', label: 'Instances couvertes' },
-  { value: '15', label: 'Guides juridiques publiés' },
+  { value: '48 h', label: 'Projet de PV remis' },
+  { value: '3 → 1', label: 'Formats livrés, un seul facturé' },
+  { value: 'Incluse', label: 'Newsletter aux salariés' },
+  { value: 'PME → CAC 40', label: 'Instances suivies' },
 ]
 
 export const ACCUEIL = {

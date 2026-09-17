@@ -17,6 +17,7 @@ import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
 import InfoCardSection from '@/components/atoopv/InfoCardSection'
 import NotreConviction from '@/components/atoopv/NotreConviction'
+import CommentCaMarche from '@/components/atoopv/CommentCaMarche'
 import AtoopvOffersTimeline from '@/components/atoopv/AtoopvOffersTimeline'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
@@ -99,6 +100,7 @@ export default function Accueil() {
           renders first, Process second (reversed from original order). */}
       <OrchestratedIntelligence />
       <NotreConviction />
+      <CommentCaMarche />
       {/* Same ProcessRecomposed component/animation, new data — "Ce que
           nous garantissons, sur les deux offres." replaces the original
           "Capturer la réunion → Livrer le PV" content at this position. */}
