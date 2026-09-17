@@ -79,7 +79,7 @@ function HeroAnnotation({ phase }) {
   )
 }
 
-function ScrollStrip({ phase, animated }) {
+function ScrollStrip({ phase }) {
   return (
     <a
       href="#stats"
@@ -87,11 +87,9 @@ function ScrollStrip({ phase, animated }) {
     >
       <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted transition-colors group-hover:text-ink">Scroll down</span>
       <span className="flex items-center gap-2.5">
-        {animated && (
-          <span className="font-mono text-[11px] tabular-nums text-muted/60">
-            {String(phase + 1).padStart(2, '0')} / {String(PHASE_COUNT).padStart(2, '0')}
-          </span>
-        )}
+        <span className="font-mono text-[11px] tabular-nums text-muted/60">
+          {String(phase + 1).padStart(2, '0')} / {String(PHASE_COUNT).padStart(2, '0')}
+        </span>
         <ArrowDown className="h-3.5 w-3.5 text-muted transition-transform duration-300 group-hover:translate-y-1 group-hover:text-ink" />
       </span>
     </a>
@@ -152,7 +150,7 @@ function HeroCopy({ hero, phase, animated }) {
 
       <HeroAnnotation phase={animated ? phase : 0} />
 
-      <ScrollStrip phase={phase} animated={animated} />
+      <ScrollStrip phase={phase} />
     </div>
   )
 }
