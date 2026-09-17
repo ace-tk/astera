@@ -67,7 +67,13 @@ export default function OrchestratedIntelligence({ data = HOMEPAGE_ORCHESTRATED 
                 role="button"
                 tabIndex={0}
                 aria-expanded={isActive}
-                aria-label={panel.title ? `${panel.title} — ${panel.description}` : undefined}
+                aria-label={
+                  panel.title
+                    ? `${panel.title}${panel.description ? ` — ${panel.description}` : ''}${
+                        panel.points ? ` — ${panel.points.map((p) => `${p.title}, ${p.metric}`).join(' ; ')}` : ''
+                      }`
+                    : undefined
+                }
                 onClick={activate}
                 onFocus={activate}
                 onKeyDown={(e) => {
@@ -118,14 +124,35 @@ export default function OrchestratedIntelligence({ data = HOMEPAGE_ORCHESTRATED 
                     </span>
                   </div>
 
-                  <p
-                    className={clsx(
-                      'max-w-[22rem] text-sm leading-relaxed text-muted transition-opacity duration-300',
-                      isActive ? 'opacity-100 delay-100' : 'opacity-0 lg:hidden',
-                    )}
-                  >
-                    {panel.description}
-                  </p>
+                  {panel.description && (
+                    <p
+                      className={clsx(
+                        'max-w-[22rem] text-sm leading-relaxed text-muted transition-opacity duration-300',
+                        isActive ? 'opacity-100 delay-100' : 'opacity-0 lg:hidden',
+                      )}
+                    >
+                      {panel.description}
+                    </p>
+                  )}
+
+                  {panel.points && (
+                    <ul
+                      className={clsx(
+                        'max-w-[22rem] space-y-3 transition-opacity duration-300',
+                        isActive ? 'opacity-100 delay-100' : 'opacity-0 lg:hidden',
+                      )}
+                    >
+                      {panel.points.map((point) => (
+                        <li key={point.number} className="flex items-baseline gap-3">
+                          <span className="font-mono text-xs text-muted/50">{point.number}</span>
+                          <div>
+                            <p className="text-sm font-medium text-ink">{point.title}</p>
+                            <p className="text-xs text-muted">{point.metric}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             )

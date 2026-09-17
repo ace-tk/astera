@@ -80,10 +80,21 @@ export const HOMEPAGE_ORCHESTRATED = {
     { number: 'DÉPÔT', title: 'Un enregistrement, un clic', description: 'Audio ou vidéo de votre réunion, déposé directement sur la plateforme.', accent: 'royal' },
     { number: 'TRAITEMENT', title: 'Structuration automatisée', description: "SIRUS transcrit, identifie les intervenants et organise le PV par point d'ordre du jour.", accent: 'coral' },
     { number: 'VALIDATION', title: 'Relecture avant diffusion', description: 'Une relecture qualité intégrée, puis validation par votre secrétaire avant envoi.', accent: 'golden' },
-    // Intentionally blank per the brief — the fourth slot stays present
-    // (border/background/hover) to keep the 4-column structure, with no
-    // content invented for it.
-    { number: '', title: '', description: '', accent: 'emerald' },
+    // Previously blank per an earlier brief; now filled per the follow-up
+    // request. English by request (matches how it was typed), same as
+    // other one-off English additions elsewhere on this otherwise-French
+    // page. Ordered by page density (most → least detailed).
+    {
+      number: '',
+      title: 'The same session, three depths',
+      description: '',
+      accent: 'emerald',
+      points: [
+        { number: '01', title: 'Full transcript', metric: '10 to 12 pages / hour of debate' },
+        { number: '02', title: 'Structured report', metric: '4 to 6 pages / hour of debate' },
+        { number: '03', title: 'Record of decisions', metric: '1 to 2 pages / hour of debate' },
+      ],
+    },
   ],
 }
 
