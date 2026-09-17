@@ -25,6 +25,65 @@ import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Loc
  * accent are all data here specifically so the real copy can replace this
  * later without touching ProcessRecomposed.jsx / OrchestratedIntelligence.jsx.
  */
+/**
+ * "Our institutions" and "SIRUS portal" — two new homepage sections
+ * rendered via InfoCardSection, placed directly below the existing
+ * "Nos expertises" FeatureGrid. English by request, matching a supplied
+ * reference screenshot verbatim (same content as the equivalent French
+ * "Nos instances" / "Portail SIRUS" sections already established
+ * elsewhere in the ATOOPV content set, translated).
+ */
+export const OUR_INSTITUTIONS = {
+  eyebrow: 'Our institutions',
+  heading: 'All instances, all formats.',
+  lead: 'From the CSE to the establishment council, support tailored to each body.',
+  items: [
+    {
+      tag: 'CSE',
+      title: 'Ordinary and extraordinary meetings',
+      body: 'Accurate drafting, respecting the legal deadline and internal regulations.',
+    },
+    {
+      tag: 'CSSCT',
+      title: 'Health, safety, working conditions',
+      body: 'A technical and precise report, which transcribes the exchanges without distorting them.',
+    },
+    {
+      tag: 'CSEC',
+      title: 'Coordination bodies',
+      body: "Neutral presentation of each institution's positions.",
+    },
+    {
+      tag: 'Training',
+      title: 'Economic training for the Works Council',
+      body: 'Educational support for elected officials, in addition to the writing process.',
+    },
+  ],
+}
+
+export const SIRUS_PORTAL = {
+  eyebrow: 'SIRUS portal',
+  heading: 'Track your tickets, from submission to validation.',
+  lead: 'Submit your recordings, track the progress of the writing and approve each report before publication.',
+  items: [
+    {
+      tag: 'Deposit',
+      title: 'One registration, one click',
+      body: 'Audio or video of your meeting, uploaded directly to the platform.',
+    },
+    {
+      tag: 'Treatment',
+      title: 'Automated structuring',
+      body: 'SIRUS transcribes, identifies the speakers and organizes the minutes by agenda item.',
+    },
+    {
+      tag: 'Validation',
+      title: 'Proofreading before distribution',
+      body: 'An integrated quality review, then validation by your secretary before sending.',
+    },
+  ],
+}
+
 export const HOMEPAGE_PROCESS = {
   eyebrow: 'PROCESS / 01',
   heading: ['THE PROCESS,', 'RECOMPOSED.'],

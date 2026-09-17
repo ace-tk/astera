@@ -15,6 +15,7 @@ import ComplianceBooksTeaser from '@/components/atoopv/ComplianceBooksTeaser'
 import VideoSection from '@/components/atoopv/VideoSection'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
+import InfoCardSection from '@/components/atoopv/InfoCardSection'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -22,7 +23,7 @@ import CTASection from '@/components/services/CTASection'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis, renderEmphasis } from '@/utils/richText'
-import { ACCUEIL, ATOOPV_STATS } from '@/constants/atoopvHome'
+import { ACCUEIL, ATOOPV_STATS, OUR_INSTITUTIONS, SIRUS_PORTAL } from '@/constants/atoopvHome'
 
 /**
  * Ported ATOOPV Accueil (home) page — content extracted verbatim in French
@@ -84,6 +85,9 @@ export default function Accueil() {
           <FeatureGrid eyebrow={expertise.eyebrow} heading={expertise.heading} lead={expertise.lead} items={expertise.items} color="sky" columns={3} />
         </div>
       </section>
+
+      <InfoCardSection eyebrow={OUR_INSTITUTIONS.eyebrow} heading={OUR_INSTITUTIONS.heading} lead={OUR_INSTITUTIONS.lead} items={OUR_INSTITUTIONS.items} columns={4} />
+      <InfoCardSection eyebrow={SIRUS_PORTAL.eyebrow} heading={SIRUS_PORTAL.heading} lead={SIRUS_PORTAL.lead} items={SIRUS_PORTAL.items} columns={3} />
 
       {/* New editorial sections — placeholder content pending final copy
           (see constants/atoopvHome.js: HOMEPAGE_PROCESS / HOMEPAGE_ORCHESTRATED).
