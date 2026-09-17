@@ -76,7 +76,7 @@ function SectionHeading({ eyebrow, heading, reveal = true }) {
   )
 }
 
-function StageRow({ stage }) {
+function StageRow({ stage, count }) {
   return (
     <div className="relative py-7 first:pt-0">
       <motion.div
@@ -89,7 +89,9 @@ function StageRow({ stage }) {
         aria-hidden="true"
       />
       <div className="grid grid-cols-[3rem_1fr] gap-4 pt-7 sm:grid-cols-[4.5rem_1fr] sm:gap-8">
-        <span className="pt-1 font-mono text-xs text-ink/35">{stage.number}</span>
+        <span className="pt-1 font-mono text-xs text-ink/35">
+          {stage.number} / {String(count).padStart(2, '0')}
+        </span>
         <div>
           <h3 className="font-display text-xl leading-tight text-ink sm:text-2xl">{stage.title}</h3>
           <motion.p
@@ -120,7 +122,7 @@ function VerticalProcess({ data }) {
         </div>
         <div>
           {data.stages.map((s) => (
-            <StageRow key={s.number} stage={s} />
+            <StageRow key={s.number} stage={s} count={data.stages.length} />
           ))}
         </div>
       </div>

@@ -4,6 +4,7 @@ import Navbar from '@/components/landing/Navbar'
 import AtoopvAnnouncementBar from '@/components/atoopv/AtoopvAnnouncementBar'
 import AtoopvScrollControl from '@/components/atoopv/AtoopvScrollControl'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
+import AtoopvFinalCta from '@/components/atoopv/AtoopvFinalCta'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
@@ -151,6 +152,7 @@ export default function Accueil() {
           dedicated Shop route exists in production yet). */}
       <ComplianceBooksTeaser />
 
+      <AtoopvFinalCta />
       <AtoopvFooter />
     </motion.main>
   )

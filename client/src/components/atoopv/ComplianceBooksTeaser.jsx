@@ -1,16 +1,40 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowUpRight, Sparkles } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 import { accent } from '@/utils/accent'
 import { COMPLIANCE_BOOKS_TEASER } from '@/constants/atoopvHome'
 import { cn } from '@/utils/cn'
+
+/** Small corner ribbon flagging that the shop isn't live yet (shopHref is
+ * an interim target — see the component-level note below). A slow light
+ * sweep gives it the "premium, not just a static label" feel asked for;
+ * skipped under prefers-reduced-motion, leaving the plain badge. */
+function ComingSoonTag() {
+  const reduceMotion = useReducedMotion()
+  return (
+    <span className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 overflow-hidden rounded-full border border-royal/20 bg-royal px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-white shadow-lift">
+      <Sparkles className="h-2.5 w-2.5" />
+      Coming soon
+      {!reduceMotion && (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
+          animate={{ x: ['-120%', '220%'] }}
+          transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 1.6, ease: 'easeInOut' }}
+        />
+      )}
+    </span>
+  )
+}
 
 /** An original, in-app cover — accent edge + title/author, no external
  * artwork — sized to the brief's 180–220px desktop width. */
 function BookCover({ title, author, a }) {
   return (
     <div className="relative h-[15.5rem] w-40 shrink-0 overflow-hidden rounded-xl border border-ink/8 bg-paper shadow-soft sm:h-[17rem] sm:w-48">
+      <ComingSoonTag />
       <div className={cn('absolute inset-y-0 left-0 w-1.5', a.bg)} aria-hidden="true" />
       <div className="flex h-full flex-col justify-between p-4 pl-6">
         <span className={cn('h-2 w-2 rounded-full', a.bg)} aria-hidden="true" />
