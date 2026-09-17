@@ -62,7 +62,9 @@ Dans le cas général, le PV doit donc être transmis dans les 15 jours suivant 
 
 ⚖️
 
-### Délais raccourcis : avant la réunion suivante, 3 jours, 1 jour
+### Délais raccourcis
+
+Selon la procédure concernée, ce délai peut être réduit : avant la réunion suivante, ou dans un délai de 3 jours, voire 1 jour.
 
 🛡️
 
