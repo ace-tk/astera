@@ -142,6 +142,13 @@ export default function Navbar() {
   const inAtoopv = location.pathname.startsWith('/atoopv') || location.pathname.startsWith('/services')
   const logoHref = inAtoopv ? '/atoopv' : '/'
 
+  // The ATOOPV homepage floats a slim announcement bar above the navbar
+  // (AtoopvAnnouncementBar, rendered in Accueil.jsx) — since this header is
+  // `fixed top-0`, making room for it means nudging this header's own top
+  // offset down by exactly the bar's height, and only on this one route so
+  // every other page's navbar is untouched.
+  const isAtoopvHome = location.pathname === '/atoopv'
+
   const toggleMobile = (key) => setExpandedKey((prev) => (prev === key ? null : key))
 
   const openMegaNow = (key) => {
@@ -172,7 +179,7 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5"
+      className={cn('fixed inset-x-0 z-50 flex justify-center px-4 pt-4 sm:pt-5', isAtoopvHome ? 'top-8' : 'top-0')}
       onKeyDown={handleNavKeyDown}
     >
       <motion.nav

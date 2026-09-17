@@ -91,6 +91,15 @@ export const HOME_TICKER = [
   { label: 'CSE · CSSCT · IRP', anchor: null },
 ]
 
+/** Rotating text for the slim announcement bar above the homepage navbar
+ * (AtoopvAnnouncementBar). Kept as a plain string array so it's trivial to
+ * replace/extend later without touching the component. */
+export const ANNOUNCEMENT_MESSAGES = [
+  'Nouveau : autodiagnostic gratuit de conformité CSE en 2 minutes.',
+  'Délai de livraison : 48 à 72h sur vos procès-verbaux.',
+  'Formation économique des élus du CSE — session Région AURA.',
+]
+
 export const ATOOPV_STATS = [
   { value: '2017', label: 'Création ALC SAS' },
   { value: '48 à 72h', label: 'Délai de livraison' },

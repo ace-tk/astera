@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion'
-import { ArrowDown, Sparkles } from 'lucide-react'
 import Button from '@/components/ui/Button'
-import Reveal from '@/components/ui/Reveal'
-import HeroVisual from '@/components/landing/HeroVisual'
-import { renderEmphasis } from '@/utils/richText'
+import HeroTextTrack from '@/components/atoopv/HeroTextTrack'
+import RoadmapCarousel from '@/components/atoopv/RoadmapCarousel'
+import { useSlideCarousel } from '@/hooks/useSlideCarousel'
 
 const EASE = [0.16, 1, 0.3, 1]
-const PHASE_COUNT = 6
 
 function useIsDesktop(breakpoint = 1024) {
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' && window.innerWidth >= breakpoint)
@@ -30,6 +28,10 @@ function useIsDesktop(breakpoint = 1024) {
  * (same register as a real ATOOPV meeting: a budget quote, a decision, an
  * action, an owner), not a factual claim, so it doesn't need to match any
  * specific approved copy — it exists to make CAPTURE → PV feel physical.
+ *
+ * Entirely independent of the hero's slide carousel below: this is driven
+ * by scroll position (`phase`), the carousel by drag/swipe (`active`) — the
+ * two never interact.
  */
 function HeroAnnotation({ phase }) {
   return (
@@ -79,78 +81,33 @@ function HeroAnnotation({ phase }) {
   )
 }
 
-function ScrollStrip({ phase }) {
+/**
+ * Left column: the draggable slide-text track (eyebrow/badge/h1/lead, one
+ * panel per carousel slide) followed by the two CTA buttons and the
+ * scroll-phase annotation — both fully static, never part of the carousel,
+ * per the brief ("the two existing CTA buttons ... MUST remain STATIC").
+ */
+function HeroCopy({ heroSlides, active, onSwipe, hero, phase, animated }) {
   return (
-    <a
-      href="#stats"
-      className="group -mx-6 flex shrink-0 items-center justify-between border-t border-ink/10 px-6 pt-3 sm:-mx-9 sm:px-9 lg:-mx-11 lg:px-11"
-    >
-      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted transition-colors group-hover:text-ink">Scroll down</span>
-      <span className="flex items-center gap-2.5">
-        <span className="font-mono text-[11px] tabular-nums text-muted/60">
-          {String(phase + 1).padStart(2, '0')} / {String(PHASE_COUNT).padStart(2, '0')}
-        </span>
-        <ArrowDown className="h-3.5 w-3.5 text-muted transition-transform duration-300 group-hover:translate-y-1 group-hover:text-ink" />
-      </span>
-    </a>
-  )
-}
+    <div className="flex h-full flex-col overflow-y-auto px-6 py-6 sm:px-9 sm:py-7 lg:px-11 lg:py-8">
+      <HeroTextTrack slides={heroSlides} active={active} onSwipe={onSwipe} />
 
-function HeroCopy({ hero, phase, animated }) {
-  return (
-    <div className="flex h-full flex-col justify-between overflow-y-auto px-6 py-6 sm:px-9 sm:py-7 lg:px-11 lg:py-8">
-      <div>
-        <Reveal>
-          <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-muted">ATOOPV / Intelligence</span>
-        </Reveal>
-
-        {hero.badge && (
-          <Reveal delay={0.06} className="mt-3">
-            <span className="chip py-1 text-xs sm:text-sm">
-              <Sparkles className="h-3.5 w-3.5 shrink-0 text-accent" />
-              <span className="text-ink/70">{hero.badge}</span>
-            </span>
-          </Reveal>
+      <div className="mt-5 flex flex-wrap gap-2.5">
+        {hero.primaryCta && (
+          <Button as={Link} to={hero.primaryCta.to} size="md" variant="accent">
+            {hero.primaryCta.label}
+          </Button>
         )}
-
-        {/* This headline is the ACCUEIL page's real, approved sentence-length
-            copy — not a punchy 2-3 word phrase — so its clamp max is
-            deliberately smaller than a short headline would use: at the
-            reference's scale, a full sentence would blow well past the
-            pinned hero's viewport-height budget (confirmed by measuring
-            actual rendered height against the container while tuning this). */}
-        <Reveal delay={0.14} className="mt-4 overflow-hidden">
-          <h1
-            className="font-display font-semibold leading-[1.08] tracking-tight text-ink text-balance"
-            style={{ fontSize: 'clamp(1.6rem, 0.75rem + 2.2vw, 2.7rem)' }}
-          >
-            {renderEmphasis(hero.title)}
-          </h1>
-        </Reveal>
-
-        {hero.lead && (
-          <Reveal delay={0.24} className="mt-3 max-w-md">
-            <p className="text-sm leading-relaxed text-muted text-pretty">{hero.lead}</p>
-          </Reveal>
+        {hero.secondaryCta && (
+          <Button as={Link} to={hero.secondaryCta.to} size="md" variant="soft">
+            {hero.secondaryCta.label}
+          </Button>
         )}
-
-        <Reveal delay={0.34} className="mt-5 flex flex-wrap gap-2.5">
-          {hero.primaryCta && (
-            <Button as={Link} to={hero.primaryCta.to} size="md" variant="accent">
-              {hero.primaryCta.label}
-            </Button>
-          )}
-          {hero.secondaryCta && (
-            <Button as={Link} to={hero.secondaryCta.to} size="md" variant="soft">
-              {hero.secondaryCta.label}
-            </Button>
-          )}
-        </Reveal>
       </div>
 
-      <HeroAnnotation phase={animated ? phase : 0} />
-
-      <ScrollStrip phase={phase} />
+      <div className="mt-6">
+        <HeroAnnotation phase={animated ? phase : 0} />
+      </div>
     </div>
   )
 }
@@ -159,22 +116,28 @@ function HeroCopy({ hero, phase, animated }) {
  * reduced-motion — a simple load-in, content stacked above the Roadmap
  * Alignment visual (badge/heading/description/CTA first, card below), no
  * scroll-pinning. Same composition building blocks as the desktop pin. */
-function StaticHero({ hero }) {
+function StaticHero({ hero, heroSlides }) {
+  const { active, step } = useSlideCarousel(heroSlides.length)
+
   return (
-    <section className="relative border-b border-ink/10 pt-24 sm:pt-28 lg:pt-32">
+    <section className="relative border-b border-ink/10 pt-32 sm:pt-36 lg:pt-40">
       <div className="shell">
         <div className="rounded-none border border-ink/10 lg:grid lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="border-b border-ink/10 lg:border-b-0 lg:border-r">
-            <HeroCopy hero={hero} phase={0} animated={false} />
+          {/* min-w-0 on both cells — see the matching comment in
+              PinnedHero: prevents the carousel tracks' non-shrinkable
+              slide panels from feeding a runaway width back into these
+              grid tracks' auto min-size. */}
+          <div className="min-w-0 border-b border-ink/10 lg:border-b-0 lg:border-r">
+            <HeroCopy heroSlides={heroSlides} active={active} onSwipe={step} hero={hero} phase={0} animated={false} />
           </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: EASE }}
-            className="flex items-center justify-center p-6 sm:p-8"
+            className="flex min-w-0 items-center justify-center p-6 sm:p-8"
           >
             <div className="w-full max-w-[27rem]">
-              <HeroVisual />
+              <RoadmapCarousel active={active} onSwipe={step} />
             </div>
           </motion.div>
         </div>
@@ -185,11 +148,14 @@ function StaticHero({ hero }) {
 
 /** Desktop path: a pinned 230vh scroll range drives the six-state
  * annotation story (§13) on the left while the Roadmap Alignment visual on
- * the right runs its own independent hover/float/parallax animations. */
-function PinnedHero({ hero }) {
+ * the right runs its own independent hover/float/parallax animations. The
+ * slide carousel (drag/swipe) is a separate, orthogonal interaction layered
+ * on top of both sides via one shared `active` index. */
+function PinnedHero({ hero, heroSlides }) {
   const sectionRef = useRef(null)
   const [phase, setPhase] = useState(0)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
+  const { active, step } = useSlideCarousel(heroSlides.length)
 
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
     const thresholds = [0.14, 0.32, 0.5, 0.68, 0.86]
@@ -199,20 +165,27 @@ function PinnedHero({ hero }) {
 
   return (
     <section ref={sectionRef} className="relative border-b border-ink/10" style={{ height: '230vh' }}>
-      <div className="sticky top-0 flex h-screen flex-col justify-start overflow-hidden pt-20">
+      <div className="sticky top-0 flex h-screen flex-col justify-start overflow-hidden pt-28">
         <div className="shell w-full">
           <div className="grid grid-cols-[1.1fr_0.9fr] border border-ink/10" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
-            <div className="border-r border-ink/10">
-              <HeroCopy hero={hero} phase={phase} animated />
+            {/* min-w-0 on both grid cells: without it, the carousel
+                tracks' non-shrinkable (shrink-0) slide panels feed their
+                combined width back into these 1.1fr/0.9fr tracks' auto
+                min-size, which — since the panels' own width is itself
+                measured from this cell — creates a runaway feedback loop
+                (confirmed empirically: it multiplied by the slide count on
+                every tick until hitting the browser's max layout size). */}
+            <div className="min-w-0 border-r border-ink/10">
+              <HeroCopy heroSlides={heroSlides} active={active} onSwipe={step} hero={hero} phase={phase} animated />
             </div>
-            <div className="relative flex items-center justify-center p-6">
+            <div className="relative flex min-w-0 items-center justify-center p-6">
               {/* HeroVisual's floating chips are positioned by percentage
                   against its own square box, tuned for the ~27rem width it
                   renders at on the Astera hero — a wider box here would wrap
                   its fixed-size text less, shrink the card, and let the
                   chips drift onto content they're meant to sit beside. */}
               <div className="w-full max-w-[27rem]">
-                <HeroVisual />
+                <RoadmapCarousel active={active} onSwipe={step} />
               </div>
             </div>
           </div>
@@ -225,16 +198,25 @@ function PinnedHero({ hero }) {
 /**
  * ATOOPV homepage hero — content/visual split built on the existing
  * `ACCUEIL.hero` content (real badge/title/lead/CTA copy). The right side
- * reuses HeroVisual, the same "Q3 Roadmap alignment" component that anchors
- * the Astera marketing hero (components/landing/sections/Hero.jsx) — one
- * component, one source of data, rendered a second time here rather than a
- * separate hero image. Desktop (≥1024px) with motion allowed gets the
- * pinned scroll choreography for the left-side annotation story; everything
- * else gets the same composition without the pin.
+ * reuses HeroVisual (via RoadmapCarousel), the same "Q3 Roadmap alignment"
+ * component that anchors the Astera marketing hero
+ * (components/landing/sections/Hero.jsx) — one component, one source of
+ * data, rendered a second time here rather than a separate hero image.
+ * Desktop (≥1024px) with motion allowed gets the pinned scroll choreography
+ * for the left-side annotation story; everything else gets the same
+ * composition without the pin. Both paths share the same 3-slide
+ * left-text/right-Roadmap carousel (see HeroTextTrack/RoadmapCarousel),
+ * built for now from the single existing `hero` object duplicated 3× —
+ * intentional per the brief, trivial to diversify later.
  */
 export default function AtoopvHomeHero({ hero }) {
   const isDesktop = useIsDesktop(1024)
   const reduceMotion = useReducedMotion()
+  const heroSlides = [hero, hero, hero]
 
-  return isDesktop && !reduceMotion ? <PinnedHero hero={hero} /> : <StaticHero hero={hero} />
+  return isDesktop && !reduceMotion ? (
+    <PinnedHero hero={hero} heroSlides={heroSlides} />
+  ) : (
+    <StaticHero hero={hero} heroSlides={heroSlides} />
+  )
 }
