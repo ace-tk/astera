@@ -73,8 +73,9 @@ export const HOMEPAGE_PROCESS = {
 }
 
 export const HOMEPAGE_ORCHESTRATED = {
-  eyebrow: 'SYSTEM / 02',
-  heading: ['ORCHESTRATED', 'INTELLIGENCE'],
+  eyebrow: 'Portail SIRUS',
+  heading: ['Suivez vos PV, du dépôt à la validation.'],
+  lead: "Déposez vos enregistrements, suivez l'avancement de la rédaction et validez chaque PV avant diffusion.",
   panels: [
     { number: 'DÉPÔT', title: 'Un enregistrement, un clic', description: 'Audio ou vidéo de votre réunion, déposé directement sur la plateforme.', accent: 'royal' },
     { number: 'TRAITEMENT', title: 'Structuration automatisée', description: "SIRUS transcrit, identifie les intervenants et organise le PV par point d'ordre du jour.", accent: 'coral' },
