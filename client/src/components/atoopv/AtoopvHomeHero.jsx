@@ -201,7 +201,7 @@ function PinnedHero({ hero }) {
 
   return (
     <section ref={sectionRef} className="relative border-b border-ink/10" style={{ height: '230vh' }}>
-      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pt-20">
+      <div className="sticky top-0 flex h-screen flex-col justify-start overflow-hidden pt-20">
         <div className="shell w-full">
           <div className="grid grid-cols-[1.1fr_0.9fr] border border-ink/10" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
             <div className="border-r border-ink/10">
