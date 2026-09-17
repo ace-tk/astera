@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
@@ -140,7 +140,7 @@ export default function Accueil() {
           dedicated Shop route exists in production yet). */}
       <ComplianceBooksTeaser />
 
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }
