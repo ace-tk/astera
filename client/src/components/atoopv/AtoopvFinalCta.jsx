@@ -13,9 +13,10 @@ import { DEVIS_CTA_HREF } from '@/constants/content'
  * footer line), and CTASection is still used twice elsewhere on this page
  * and must stay untouched.
  *
- * "Request a quote" reuses the same route every other "Demander un
+ * "Demander un devis" reuses the same route every other "Demander un
  * devis"/quote CTA on this page points to (DEVIS_CTA_HREF) rather than a
- * new destination.
+ * new destination. Heading/button copy is French, matching the reference
+ * mockup's own final-CTA text verbatim.
  */
 export default function AtoopvFinalCta() {
   return (
@@ -30,14 +31,14 @@ export default function AtoopvFinalCta() {
 
             <div className="relative">
               <h2 className="mx-auto max-w-xl font-display text-2xl font-medium leading-tight tracking-tight text-balance sm:text-3xl">
-                Give us your next meeting minutes to draft, and we&rsquo;ll give you a document that your elected officials won&rsquo;t have to correct.
+                Donnez-nous votre prochain PV à rédiger, nous vous rendons un document que vos élus n&rsquo;auront pas à corriger.
               </h2>
 
               <p className="mt-4 text-sm text-muted">contact@atoopv.com · 04 12 10 06 06</p>
 
               <div className="mt-8 flex justify-center">
                 <Button as={Link} to={DEVIS_CTA_HREF} size="lg" variant="accent">
-                  Request a quote
+                  Demander un devis
                 </Button>
               </div>
             </div>

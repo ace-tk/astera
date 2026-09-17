@@ -23,7 +23,7 @@ import CTASection from '@/components/services/CTASection'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis, renderEmphasis } from '@/utils/richText'
-import { ACCUEIL, ATOOPV_STATS, OUR_INSTITUTIONS, SIRUS_PORTAL } from '@/constants/atoopvHome'
+import { ACCUEIL, ATOOPV_STATS, NOS_INSTANCES } from '@/constants/atoopvHome'
 
 /**
  * Ported ATOOPV Accueil (home) page — content extracted verbatim in French
@@ -86,17 +86,17 @@ export default function Accueil() {
         </div>
       </section>
 
-      <InfoCardSection eyebrow={OUR_INSTITUTIONS.eyebrow} heading={OUR_INSTITUTIONS.heading} lead={OUR_INSTITUTIONS.lead} items={OUR_INSTITUTIONS.items} columns={4} />
-      <InfoCardSection eyebrow={SIRUS_PORTAL.eyebrow} heading={SIRUS_PORTAL.heading} lead={SIRUS_PORTAL.lead} items={SIRUS_PORTAL.items} columns={3} />
+      <InfoCardSection eyebrow={NOS_INSTANCES.eyebrow} heading={NOS_INSTANCES.heading} lead={NOS_INSTANCES.lead} items={NOS_INSTANCES.items} columns={4} />
 
       {/* New editorial sections — placeholder content pending final copy
           (see constants/atoopvHome.js: HOMEPAGE_PROCESS / HOMEPAGE_ORCHESTRATED).
           Placed between the existing "expertise" intro and the existing
           "process" RichTextSection below, which is intentionally left
           untouched — consolidating the two process sections is a content
-          decision for later, not made here. */}
-      <ProcessRecomposed />
+          decision for later, not made here. Orchestrated Intelligence
+          renders first, Process second (reversed from original order). */}
       <OrchestratedIntelligence />
+      <ProcessRecomposed />
 
       <section className="relative py-10 sm:py-12">
         <div className="shell">

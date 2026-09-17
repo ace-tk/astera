@@ -26,60 +26,36 @@ import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Loc
  * later without touching ProcessRecomposed.jsx / OrchestratedIntelligence.jsx.
  */
 /**
- * "Our institutions" and "SIRUS portal" — two new homepage sections
- * rendered via InfoCardSection, placed directly below the existing
- * "Nos expertises" FeatureGrid. English by request, matching a supplied
- * reference screenshot verbatim (same content as the equivalent French
- * "Nos instances" / "Portail SIRUS" sections already established
- * elsewhere in the ATOOPV content set, translated).
+ * "Nos instances" — new homepage section rendered via InfoCardSection,
+ * placed directly below the existing "Nos expertises" FeatureGrid. French,
+ * matching the equivalent section already established elsewhere in the
+ * ATOOPV content set verbatim (kept in French per this page's own
+ * convention — see file header).
  */
-export const OUR_INSTITUTIONS = {
-  eyebrow: 'Our institutions',
-  heading: 'All instances, all formats.',
-  lead: 'From the CSE to the establishment council, support tailored to each body.',
+export const NOS_INSTANCES = {
+  eyebrow: 'Nos instances',
+  heading: 'Toutes les instances, tous les formats.',
+  lead: "Du CSE au conseil d'établissement, un accompagnement adapté à chaque instance.",
   items: [
     {
       tag: 'CSE',
-      title: 'Ordinary and extraordinary meetings',
-      body: 'Accurate drafting, respecting the legal deadline and internal regulations.',
+      title: 'Réunions ordinaires et extraordinaires',
+      body: 'Rédaction fidèle, dans le respect du délai légal et du règlement intérieur.',
     },
     {
       tag: 'CSSCT',
-      title: 'Health, safety, working conditions',
-      body: 'A technical and precise report, which transcribes the exchanges without distorting them.',
+      title: 'Santé, sécurité, conditions de travail',
+      body: 'Un PV technique et précis, qui retranscrit les échanges sans les déformer.',
     },
     {
       tag: 'CSEC',
-      title: 'Coordination bodies',
-      body: "Neutral presentation of each institution's positions.",
+      title: 'Instances de coordination',
+      body: 'Restitution neutre des positions de chaque établissement.',
     },
     {
-      tag: 'Training',
-      title: 'Economic training for the Works Council',
-      body: 'Educational support for elected officials, in addition to the writing process.',
-    },
-  ],
-}
-
-export const SIRUS_PORTAL = {
-  eyebrow: 'SIRUS portal',
-  heading: 'Track your tickets, from submission to validation.',
-  lead: 'Submit your recordings, track the progress of the writing and approve each report before publication.',
-  items: [
-    {
-      tag: 'Deposit',
-      title: 'One registration, one click',
-      body: 'Audio or video of your meeting, uploaded directly to the platform.',
-    },
-    {
-      tag: 'Treatment',
-      title: 'Automated structuring',
-      body: 'SIRUS transcribes, identifies the speakers and organizes the minutes by agenda item.',
-    },
-    {
-      tag: 'Validation',
-      title: 'Proofreading before distribution',
-      body: 'An integrated quality review, then validation by your secretary before sending.',
+      tag: 'Formation',
+      title: 'Formation économique CSE',
+      body: 'Un accompagnement pédagogique pour les élus, en complément de la rédaction.',
     },
   ],
 }
@@ -100,11 +76,13 @@ export const HOMEPAGE_ORCHESTRATED = {
   eyebrow: 'SYSTEM / 02',
   heading: ['ORCHESTRATED', 'INTELLIGENCE'],
   panels: [
-    { number: '01', title: 'Capturer', description: "L'audio et la vidéo saisis intégralement, sans perte.", accent: 'royal' },
-    { number: '02', title: 'Transcrire', description: 'Chaque mot posé et attribué au bon interlocuteur.', accent: 'coral' },
-    { number: '03', title: 'Comprendre', description: 'Le sens extrait au-delà du simple texte.', accent: 'golden' },
-    { number: '04', title: 'Valider', description: 'Une vérification rapide avant diffusion.', accent: 'emerald' },
-    { number: '05', title: 'Livrer', description: 'Le procès-verbal, prêt à être partagé.', accent: 'sky' },
+    { number: 'DÉPÔT', title: 'Un enregistrement, un clic', description: 'Audio ou vidéo de votre réunion, déposé directement sur la plateforme.', accent: 'royal' },
+    { number: 'TRAITEMENT', title: 'Structuration automatisée', description: "SIRUS transcrit, identifie les intervenants et organise le PV par point d'ordre du jour.", accent: 'coral' },
+    { number: 'VALIDATION', title: 'Relecture avant diffusion', description: 'Une relecture qualité intégrée, puis validation par votre secrétaire avant envoi.', accent: 'golden' },
+    // Intentionally blank per the brief — the fourth slot stays present
+    // (border/background/hover) to keep the 4-column structure, with no
+    // content invented for it.
+    { number: '', title: '', description: '', accent: 'emerald' },
   ],
 }
 

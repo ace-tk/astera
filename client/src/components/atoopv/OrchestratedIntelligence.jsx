@@ -62,11 +62,11 @@ export default function OrchestratedIntelligence({ data = HOMEPAGE_ORCHESTRATED 
             const activate = () => setActive(i)
             return (
               <div
-                key={panel.number}
+                key={i}
                 role="button"
                 tabIndex={0}
                 aria-expanded={isActive}
-                aria-label={`${panel.title} — ${panel.description}`}
+                aria-label={panel.title ? `${panel.title} — ${panel.description}` : undefined}
                 onClick={activate}
                 onFocus={activate}
                 onKeyDown={(e) => {
@@ -81,7 +81,11 @@ export default function OrchestratedIntelligence({ data = HOMEPAGE_ORCHESTRATED 
                 className={clsx(
                   'group relative cursor-pointer overflow-hidden border border-ink/10 bg-card transition-[flex-basis] ease-[cubic-bezier(0.16,1,0.3,1)] lg:border-y-0 lg:border-l lg:border-r-0 lg:first:border-l-0',
                   reduceMotion ? 'duration-0' : 'duration-500',
-                  isActive ? 'lg:basis-[30%]' : 'lg:basis-[17.5%]',
+                  // Tuned for exactly 4 panels: 3 inactive + 1 active sums
+                  // to 100% (3×20 + 40), same "active gets noticeably more
+                  // room, never full-width" ratio as the original 5-panel
+                  // version (4×17.5 + 30).
+                  isActive ? 'lg:basis-[40%]' : 'lg:basis-[20%]',
                 )}
               >
                 <AbstractVisual colorVar={colorVar} active={isActive} />
@@ -96,7 +100,14 @@ export default function OrchestratedIntelligence({ data = HOMEPAGE_ORCHESTRATED 
                     <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted/60">{panel.number}</span>
                     <span
                       className={clsx(
-                        'font-display leading-none text-ink transition-all duration-500',
+                        // `lg:inline-block` — a bare `<span>` is `display:
+                        // inline`, and CSS transforms have no visual effect
+                        // on inline elements, so the `lg:-rotate-90` below
+                        // was never actually rendering rotated (confirmed:
+                        // computed style reports the matrix, but the box
+                        // stays unrotated) — it just went unnoticed with
+                        // the original short single-word titles.
+                        'font-display leading-none text-ink transition-all duration-500 lg:inline-block',
                         isActive
                           ? 'mt-0 text-3xl sm:text-4xl'
                           : 'mt-0 text-xl sm:text-2xl lg:mt-4 lg:origin-left lg:-rotate-90 lg:whitespace-nowrap lg:text-lg',
