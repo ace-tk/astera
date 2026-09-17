@@ -12,7 +12,7 @@ const COLS = {
  * these two new sections have no icons in their reference design, so this
  * stays a separate small component rather than making icon optional on a
  * shared component several other pages also render. */
-function InfoCard({ tag, title, body }) {
+export function InfoCard({ tag, title, body }) {
   return (
     <div className="h-full rounded-[1.6rem] border border-ink/8 bg-card/95 p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift">
       <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-sky">{tag}</span>

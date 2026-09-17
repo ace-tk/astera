@@ -87,6 +87,66 @@ export const HOMEPAGE_ORCHESTRATED = {
 }
 
 /**
+ * "Notre conviction" — verbatim from the reference index.html's
+ * `.positioning` section (kicker/h2/lede + 3 stat pairs). Rendered
+ * immediately below the Orchestrated Intelligence 4-box grid.
+ */
+export const NOTRE_CONVICTION = {
+  eyebrow: 'Notre conviction',
+  heading: "Un PV de CSE mal rédigé n'est jamais neutre. Il peut être contesté, réécrit, remis en cause en réunion suivante.",
+  lead: 'ALC retranscrit sans trahir depuis 2017. SIRUS industrialise cette exigence pour les réunions standardisées, sans jamais sacrifier la fidélité au débat.',
+  stats: [
+    { value: 'Depuis 2017', label: 'Expertise ALC' },
+    { value: 'CSE · CSSCT · CSEC', label: 'Instances couvertes' },
+    { value: 'Présentiel & distanciel', label: 'Deux modes d’intervention' },
+  ],
+}
+
+/**
+ * "Ce que nous garantissons, sur les deux offres." — verbatim from the
+ * reference index.html's value-pillars section. Fed into the existing,
+ * unmodified `ProcessRecomposed` component (same `{eyebrow, heading,
+ * stages:[{number,title,description}]}` shape it already consumes for
+ * `HOMEPAGE_PROCESS`) so it reuses the exact same scroll-pinned
+ * horizontal animation/counter — only the data changes for this call site.
+ */
+export const HOMEPAGE_GUARANTEES = {
+  eyebrow: 'Pourquoi ATOOPV',
+  heading: ['Ce que nous garantissons, sur les deux offres.'],
+  stages: [
+    { number: '01', title: 'Neutralité', description: 'Un tiers extérieur, sans enjeu dans les débats.' },
+    { number: '02', title: 'Fidélité', description: "L'art de retranscrire, sans trahir." },
+    { number: '03', title: 'Double expertise', description: 'Rédaction humaine pour les réunions complexes, génération IA pour les réunions standardisées.' },
+    { number: '04', title: 'Confidentialité', description: "Chaque enregistrement et chaque échange est traité de façon confidentielle, dans le cadre de l'engagement contractuel qui nous lie à votre CSE." },
+    { number: '05', title: "Capacité d'absorption", description: 'Une équipe dimensionnée pour suivre votre rythme de réunions, sans dégrader le délai de livraison.' },
+    { number: '06', title: 'Accompagnement formation', description: 'Passerelle vers la formation économique CSE, en complément de la rédaction.' },
+  ],
+}
+
+/**
+ * Offer tiers — verbatim from the reference index.html's offer-details
+ * section. Same `{tag, title, body}` shape `InfoCardSection` already
+ * consumes for `NOS_INSTANCES`, reused as-is inside the new
+ * AtoopvOffersTimeline section.
+ */
+export const ATOOPV_OFFERS = {
+  eyebrow: 'Nos formats',
+  heading: 'Le niveau de restitution adapté à chaque réunion.',
+  items: [
+    { tag: '90 € HT/h', title: 'Essentiel', body: 'Une synthèse fidèle, pour les réunions courtes et régulières.' },
+    { tag: '130 € HT/h', title: 'Scope', body: "Une restitution structurée par point d'ordre du jour, générée par notre pipeline SIRUS — le niveau intermédiaire entre la synthèse Essentiel et le PV intégral Premium." },
+    { tag: '150 € HT/h', title: 'Premium', body: 'Un PV intégral, rédigé par un expert, pour les réunions complexes ou à enjeux.' },
+  ],
+}
+
+/**
+ * Six compliance names (user-confirmed final list — index.html itself has
+ * no set of six; it only supplied CSE/CSSCT/CSEC/Formation) driving the
+ * AtoopvOffersTimeline rail instead of dates.
+ */
+export const COMPLIANCE_NAMES = ['CSE', 'CSEE', 'CSEC', 'CSSCT', 'CECO', 'QVCT']
+
+/**
  * The homepage's "Compliance Books" teaser — a small glimpse into the real
  * Shop/Compliance Books experience at /atoopv/boutique, not the shop itself.
  *

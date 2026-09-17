@@ -16,6 +16,8 @@ import VideoSection from '@/components/atoopv/VideoSection'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
 import InfoCardSection from '@/components/atoopv/InfoCardSection'
+import NotreConviction from '@/components/atoopv/NotreConviction'
+import AtoopvOffersTimeline from '@/components/atoopv/AtoopvOffersTimeline'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -23,7 +25,7 @@ import CTASection from '@/components/services/CTASection'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis, renderEmphasis } from '@/utils/richText'
-import { ACCUEIL, ATOOPV_STATS, NOS_INSTANCES } from '@/constants/atoopvHome'
+import { ACCUEIL, ATOOPV_STATS, NOS_INSTANCES, HOMEPAGE_GUARANTEES } from '@/constants/atoopvHome'
 
 /**
  * Ported ATOOPV Accueil (home) page — content extracted verbatim in French
@@ -96,7 +98,11 @@ export default function Accueil() {
           decision for later, not made here. Orchestrated Intelligence
           renders first, Process second (reversed from original order). */}
       <OrchestratedIntelligence />
-      <ProcessRecomposed />
+      <NotreConviction />
+      {/* Same ProcessRecomposed component/animation, new data — "Ce que
+          nous garantissons, sur les deux offres." replaces the original
+          "Capturer la réunion → Livrer le PV" content at this position. */}
+      <ProcessRecomposed data={HOMEPAGE_GUARANTEES} />
 
       <section className="relative py-10 sm:py-12">
         <div className="shell">
@@ -155,6 +161,8 @@ export default function Accueil() {
           COMPLIANCE_BOOKS_TEASER (shopHref is an interim target — no
           dedicated Shop route exists in production yet). */}
       <ComplianceBooksTeaser />
+
+      <AtoopvOffersTimeline />
 
       <AtoopvFinalCta />
       <AtoopvFooter />
