@@ -14,6 +14,7 @@ import OrchestratedIntelligence from '@/components/atoopv/OrchestratedIntelligen
 import ComplianceBooksTeaser from '@/components/atoopv/ComplianceBooksTeaser'
 import VideoSection from '@/components/atoopv/VideoSection'
 import ArticleGrid from '@/components/atoopv/ArticleGrid'
+import BlogArticlesGrid from '@/components/atoopv/BlogArticlesGrid'
 import ChipCloud from '@/components/atoopv/ChipCloud'
 import InfoCardSection from '@/components/atoopv/InfoCardSection'
 import NotreConviction from '@/components/atoopv/NotreConviction'
@@ -123,7 +124,7 @@ export default function Accueil() {
 
       <section id="veille" className="relative py-10 sm:py-12">
         <div className="shell">
-          <ArticleGrid {...veille} color="sky" columns={3} />
+          <BlogArticlesGrid data={veille} />
         </div>
       </section>
 

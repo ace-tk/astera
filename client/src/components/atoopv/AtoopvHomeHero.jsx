@@ -5,6 +5,7 @@ import Button from '@/components/ui/Button'
 import HeroTextTrack from '@/components/atoopv/HeroTextTrack'
 import RoadmapCarousel from '@/components/atoopv/RoadmapCarousel'
 import { useSlideCarousel } from '@/hooks/useSlideCarousel'
+import { HOMEPAGE_ORCHESTRATED, NOTRE_CONVICTION } from '@/constants/atoopvHome'
 
 const EASE = [0.16, 1, 0.3, 1]
 
@@ -205,14 +206,26 @@ function PinnedHero({ hero, heroSlides }) {
  * Desktop (≥1024px) with motion allowed gets the pinned scroll choreography
  * for the left-side annotation story; everything else gets the same
  * composition without the pin. Both paths share the same 3-slide
- * left-text/right-Roadmap carousel (see HeroTextTrack/RoadmapCarousel),
- * built for now from the single existing `hero` object duplicated 3× —
- * intentional per the brief, trivial to diversify later.
+ * left-text/right-Roadmap carousel (see HeroTextTrack/RoadmapCarousel).
+ *
+ * The 3 slides were previously the single `hero` object duplicated 3× —
+ * every slide showed identical copy, so the left side looked "stuck" no
+ * matter how the shared `active` index moved. Slides 2 and 3 now reuse
+ * other already-existing homepage headline/lead pairs (Portail SIRUS,
+ * Notre conviction) instead of inventing new copy, so each step of the
+ * carousel actually renders distinct, real content; slide 1 keeps the
+ * hero's own existing badge/title/lead unchanged. The CTAs stay outside
+ * `heroSlides` entirely (rendered once from `hero` in HeroCopy), so they
+ * remain static across every slide as before.
  */
 export default function AtoopvHomeHero({ hero }) {
   const isDesktop = useIsDesktop(1024)
   const reduceMotion = useReducedMotion()
-  const heroSlides = [hero, hero, hero]
+  const heroSlides = [
+    hero,
+    { badge: HOMEPAGE_ORCHESTRATED.eyebrow, title: HOMEPAGE_ORCHESTRATED.heading[0], lead: HOMEPAGE_ORCHESTRATED.lead },
+    { badge: NOTRE_CONVICTION.eyebrow, title: NOTRE_CONVICTION.heading, lead: NOTRE_CONVICTION.lead },
+  ]
 
   return isDesktop && !reduceMotion ? (
     <PinnedHero hero={hero} heroSlides={heroSlides} />

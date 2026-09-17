@@ -65,15 +65,8 @@ function ArticleCard({ article, isActive, onSelect, registerRef }) {
  * always centers its article. A giant month/year watermark behind
  * everything tracks whichever article is active, crossfading rather than
  * sitting static — the one piece of "time passing" ambient motion.
- *
- * `embedded` (used by the homepage's "Nos formats" section, which reuses
- * this exact component/state logic rather than reimplementing it) swaps the
- * standalone full-bleed `<section>` + lab `ExperimentHeader` for a bounded,
- * bordered card that sits naturally inside another section's container.
- * Every interaction — filter, node rail, snap-scroll, keyboard nav,
- * progress bar, watermark crossfade — is identical in both modes.
  */
-export default function BlogTimeline({ embedded = false }) {
+export default function BlogTimeline() {
   const [topic, setTopic] = useState('Tous')
   const [activeId, setActiveId] = useState(BLOG_ARTICLES[0].id)
   const reduceMotion = useReducedMotion()
@@ -119,17 +112,8 @@ export default function BlogTimeline({ embedded = false }) {
 
   if (!active) return null
 
-  const Wrapper = embedded ? 'div' : 'section'
-
   return (
-    <Wrapper
-      {...(embedded ? {} : { id: 'experiment-08' })}
-      className={
-        embedded
-          ? 'relative overflow-hidden rounded-2xl border border-ink/10 bg-card/60 p-6 sm:p-8'
-          : 'relative overflow-hidden border-t border-ink/10 bg-paper py-24 sm:py-32'
-      }
-    >
+    <section id="experiment-08" className="relative overflow-hidden border-t border-ink/10 bg-paper py-24 sm:py-32">
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
         <AnimatePresence mode="wait">
           <motion.div
@@ -139,22 +123,16 @@ export default function BlogTimeline({ embedded = false }) {
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -40 }}
             transition={{ duration: reduceMotion ? 0.2 : 1.1, ease: EASE }}
             className="select-none whitespace-nowrap font-display leading-none text-ink/[0.045]"
-            style={{ fontSize: embedded ? 'min(18vw, 11rem)' : 'min(30vw, 22rem)' }}
+            style={{ fontSize: 'min(30vw, 22rem)' }}
           >
             {active.month} {active.year}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className={embedded ? 'relative' : 'shell relative'}>
-        <div className={clsx('flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between', embedded ? 'mb-8' : 'mb-14 sm:mb-20')}>
-          {embedded ? (
-            <TechnicalLabel dot={false} className="text-muted/60">
-              ATOOSAVOIR — CHRONOLOGIE
-            </TechnicalLabel>
-          ) : (
-            <ExperimentHeader index="08" eyebrow="EXPERIMENT / 08" titleLines={['TIME AS', 'NAVIGATION.']} />
-          )}
+      <div className="shell relative">
+        <div className="mb-14 flex flex-col gap-6 sm:mb-20 sm:flex-row sm:items-end sm:justify-between">
+          <ExperimentHeader index="08" eyebrow="EXPERIMENT / 08" titleLines={['TIME AS', 'NAVIGATION.']} />
 
           <div className="relative shrink-0 self-start sm:self-auto">
             <TechnicalLabel dot={false} className="mb-2">
@@ -191,7 +169,7 @@ export default function BlogTimeline({ embedded = false }) {
             />
           </div>
 
-          <div ref={trackRef} className={clsx(embedded ? 'no-scrollbar' : 'dt-no-scrollbar', 'flex snap-x snap-mandatory overflow-x-auto pb-2 pt-6')}>
+          <div ref={trackRef} className="dt-no-scrollbar flex snap-x snap-mandatory overflow-x-auto pb-2 pt-6">
             {articles.map((article) => (
               <Node
                 key={article.id}
@@ -216,7 +194,7 @@ export default function BlogTimeline({ embedded = false }) {
               <ChevronLeft className="h-4 w-4" />
             </button>
 
-            <div className={clsx(embedded ? 'no-scrollbar' : 'dt-no-scrollbar', 'flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-1 py-2')}>
+            <div className="dt-no-scrollbar flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-6 px-1 py-2">
               {articles.map((article) => (
                 <ArticleCard
                   key={article.id}
@@ -244,6 +222,6 @@ export default function BlogTimeline({ embedded = false }) {
           </p>
         </div>
       </div>
-    </Wrapper>
+    </section>
   )
 }
