@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import Reveal from '@/components/ui/Reveal'
-import { FAQ_ITEMS } from '@/constants/designTest'
+import { ACTUCSE_FAQ } from '@/constants/atoopvHome'
 
 const EASE = [0.16, 1, 0.3, 1]
 
@@ -12,8 +12,7 @@ const EASE = [0.16, 1, 0.3, 1]
  * (single item open at a time, height/opacity expand, "+" rotating 45°
  * into "×") — reproduced rather than imported so it can use AtoopV's own
  * theme-aware card colors (`bg-card`) instead of the lab's fixed
- * `bg-white` panel. Content is `FAQ_ITEMS` from constants/designTest.js,
- * unmodified — same questions, answers and order as Design Test page 11.
+ * `bg-white` panel.
  */
 function FaqRow({ item, index, isOpen, onToggle }) {
   const triggerId = `home-faq-${item.id}-trigger`
@@ -75,24 +74,32 @@ function FaqRow({ item, index, isOpen, onToggle }) {
  * FAQ — final content section before the footer. Compact by design: a
  * small mono eyebrow (same scale/hierarchy as "Nos formats" in
  * AtoopvOffersTimeline, not a big font-display heading) sitting directly
- * above the accordion, no lead paragraph, no illustration.
+ * above the accordion, no lead paragraph, no illustration. First panel
+ * open on load, per the reference gabarit's own integration notes.
  */
-export default function AtoopvFaqSection() {
-  const [openId, setOpenId] = useState(null)
+export default function AtoopvFaqSection({ data = ACTUCSE_FAQ }) {
+  const { eyebrow, note, items } = data
+  const [openId, setOpenId] = useState(items[0]?.id ?? null)
   const toggle = (id) => setOpenId((prev) => (prev === id ? null : id))
 
   return (
     <section className="relative border-t border-ink/10 bg-paper py-16 sm:py-20">
       <div className="shell">
         <Reveal>
-          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">FAQ</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">{eyebrow}</span>
         </Reveal>
 
         <Reveal delay={0.05} className="mx-auto mt-6 flex max-w-2xl flex-col gap-2.5 sm:mt-8">
-          {FAQ_ITEMS.map((item, i) => (
+          {items.map((item, i) => (
             <FaqRow key={item.id} item={item} index={i} isOpen={openId === item.id} onToggle={() => toggle(item.id)} />
           ))}
         </Reveal>
+
+        {note ? (
+          <Reveal delay={0.08} className="mx-auto mt-6 max-w-2xl sm:mt-8">
+            <p className="text-xs leading-relaxed text-muted/80">{note}</p>
+          </Reveal>
+        ) : null}
       </div>
     </section>
   )

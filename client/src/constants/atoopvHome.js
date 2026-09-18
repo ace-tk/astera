@@ -437,3 +437,42 @@ export const ACCUEIL = {
     ],
   },
 }
+
+/**
+ * Homepage FAQ — transcribed verbatim from the "Questions fréquentes"
+ * section of atoopv-gabarit-redactionnel-actucse.html (ActuCSE newsletter
+ * gabarit reference). Kept separate from constants/designTest.js's
+ * FAQ_ITEMS (generic English placeholder content used by the /design-test
+ * sandbox's own FaqAccordion experiment) so the two never bleed into each
+ * other.
+ */
+export const ACTUCSE_FAQ = {
+  eyebrow: 'Questions fréquentes',
+  note: "ALC informe, forme et rédige. Cette page n'est pas une consultation juridique et ne remplace pas l'avis d'un conseil.",
+  items: [
+    {
+      id: 'definition-actucse',
+      question: "Qu'est-ce que la newsletter ActuCSE ?",
+      answer:
+        "ActuCSE est une lettre d'information destinée aux salariés. Elle résume en deux à trois pages les décisions du comité, les activités sociales et culturelles et les actualités de l'entreprise, dans un format clair et lisible par tous. ALC en assure la rédaction et la mise en page. Un CSE qui communique régulièrement gagne en légitimité : l'information vaut autant que l'action quand il s'agit de mobiliser les salariés.",
+    },
+    {
+      id: 'pv-vs-actucse',
+      question: 'Quelle différence entre le PV et la newsletter ActuCSE ?',
+      answer:
+        "Le PV est le document officiel et complet de la réunion, destiné aux élus et à l'employeur. ActuCSE en est une version courte et accessible, pensée pour informer l'ensemble des salariés sans les noyer sous le détail des débats. Les deux outils sont complémentaires : l'un fait foi, l'autre fait lien.",
+    },
+    {
+      id: 'diffusion-resume',
+      question: 'Peut-on diffuser un résumé du PV aux salariés ?',
+      answer:
+        "Oui. Une fois le PV adopté, le comité peut le communiquer aux salariés sous forme intégrale ou sous forme de synthèse. ActuCSE remplit ce second rôle : elle valorise l'action du CSE tout en respectant la confidentialité des informations sensibles, qui restent hors du document diffusé.",
+    },
+    {
+      id: 'delai-livraison',
+      question: 'Sous quel délai la newsletter est-elle livrée ?',
+      answer:
+        'Comptez sept à dix jours ouvrables lorsque ALC rédige le contenu. Si vous fournissez vous-même le rédactionnel, la mise en page est livrée sous 72 heures à compter de sa transmission.',
+    },
+  ],
+}
