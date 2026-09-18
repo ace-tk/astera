@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Download } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import FicheCard from '@/components/atoopv/FicheCard'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -85,7 +85,7 @@ export default function AtoosavoirExemple() {
       </section>
 
       <CTASection {...ATOOSAVOIR_EXEMPLE_CTA} />
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

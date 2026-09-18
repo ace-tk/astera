@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import DiagnosticQuiz from '@/components/atoopv/DiagnosticQuiz'
 import RichTextSection from '@/components/services/RichTextSection'
@@ -46,7 +46,7 @@ export default function Autodiagnostic() {
       </div>
 
       <CTASection {...AUTODIAGNOSTIC_CTA} />
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

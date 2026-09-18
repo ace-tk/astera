@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AProposHero from '@/components/atoopv/AProposHero'
 import AProposSections, { buildChapters } from '@/components/atoopv/AProposSections'
 import { AProposNavSticky, AProposNavMobile } from '@/components/atoopv/AProposNav'
@@ -99,7 +99,7 @@ export default function APropos() {
       {/* Untouched per the brief: same component, same props, same content —
           only the footer's plain-text email becomes a real link. */}
       <CTASection {...A_PROPOS_CTA} footer={<CtaFooterWithContactLink footer={A_PROPOS_CTA.footer} />} />
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

@@ -3,11 +3,11 @@ import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
 
 /**
- * ATOOPV homepage footer — reproduces the reference footer handoff (light
+ * Site-wide footer — reproduces the reference footer handoff (light
  * background, 5-column grid, ink/muted hierarchy) with this site's real
- * routes/contact data rather than the mockup's placeholder ones. Rendered
- * only on `/atoopv` (Accueil.jsx); every other page keeps the shared
- * `landing/sections/Footer`.
+ * routes/contact data rather than the mockup's placeholder ones. Originally
+ * the ATOOPV homepage's own footer (Accueil.jsx); now used everywhere,
+ * replacing the old placeholder-link `landing/sections/Footer`.
  */
 const COLUMNS = [
   {

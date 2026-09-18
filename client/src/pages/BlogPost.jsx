@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, ImageOff, AlertTriangle } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import { fetchBlogBySlug } from '@/services/blog'
 import { usePageMeta } from '@/hooks/usePageMeta'
 
@@ -82,7 +82,7 @@ export default function BlogPost() {
         </div>
       </div>
 
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 
 /**
  * Shared chrome for a service category: Navbar, ambient background, Footer.
@@ -22,7 +22,7 @@ export default function ServiceCategoryLayout() {
       <AmbientBackground />
       <Navbar />
       <Outlet />
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

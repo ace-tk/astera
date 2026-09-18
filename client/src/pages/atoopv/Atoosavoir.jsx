@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoosavoirHero from '@/components/atoopv/AtoosavoirHero'
 import AtoosavoirConstat from '@/components/atoopv/AtoosavoirConstat'
 import AtoosavoirExamples from '@/components/atoopv/AtoosavoirExamples'
@@ -189,7 +189,7 @@ export default function Atoosavoir() {
         }
       />
 
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

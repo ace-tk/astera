@@ -11,7 +11,7 @@ import Features from '@/components/landing/sections/Features'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import PlatformShowcase from '@/components/landing/sections/PlatformShowcase'
 import Blog from '@/components/landing/sections/Blog'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 
 export default function Landing() {
   useSmoothScroll()
@@ -48,7 +48,7 @@ export default function Landing() {
       <Testimonials />
       <PlatformShowcase />
       <Blog />
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

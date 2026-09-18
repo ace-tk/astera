@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import RichTextSection from '@/components/services/RichTextSection'
 import PVSimulator from '@/components/atoopv/PVSimulator'
@@ -78,7 +78,7 @@ export default function Tarification() {
           restructure — appended below the existing Tarification content, unchanged. */}
       <Pricing />
 
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

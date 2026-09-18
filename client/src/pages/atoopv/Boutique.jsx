@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import ResourceLibrary from '@/components/design-test/experiments/ResourceLibrary'
 import ReportPageFlip from '@/components/design-test/experiments/ReportPageFlip'
 import { usePageMeta } from '@/hooks/usePageMeta'
@@ -37,7 +37,7 @@ export default function Boutique() {
         <ReportPageFlip hideEyebrow />
       </div>
 
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }

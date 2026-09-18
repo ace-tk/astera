@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
-import Footer from '@/components/landing/sections/Footer'
+import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { usePageMeta } from '@/hooks/usePageMeta'
@@ -47,7 +47,7 @@ export default function AtoosavoirCgv() {
         </div>
       </section>
 
-      <Footer />
+      <AtoopvFooter />
     </motion.main>
   )
 }
