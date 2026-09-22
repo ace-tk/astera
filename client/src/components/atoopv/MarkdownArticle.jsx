@@ -8,6 +8,7 @@ import { accent } from '@/utils/accent'
 import { cn } from '@/utils/cn'
 import { slugify } from '@/utils/slugify'
 import { mergeIconHeadings, splitIconHeading } from '@/utils/mergeIconHeadings'
+import { remarkUnderline } from '@/cms/underline'
 
 function textFrom(node) {
   if (node == null) return ''
@@ -69,7 +70,7 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
   return (
     <div className="markdown-article max-w-none space-y-5">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkUnderline]}
         components={{
           h1: ({ children }) => (
             <h2 className="mt-10 font-display text-2xl font-medium leading-tight tracking-tight text-balance first:mt-0">{children}</h2>
@@ -122,6 +123,8 @@ export default function MarkdownArticle({ body, color = 'sky', resolveHref = res
           // fits normally.
           p: ({ children }) => <p className="break-words text-base leading-relaxed text-ink/80 text-pretty">{children}</p>,
           strong: ({ children }) => <strong className="font-semibold text-ink">{children}</strong>,
+          // Underline written in the CMS (`<u>…</u>`); the look is decided here, never in the content.
+          u: ({ children }) => <u className="underline decoration-1 underline-offset-4">{children}</u>,
           ul: ({ children }) => <ul className={cn('list-disc space-y-2 pl-5 marker:text-base', a.text)}>{children}</ul>,
           ol: ({ children }) => <ol className={cn('list-decimal space-y-2 pl-5 marker:font-semibold', a.text)}>{children}</ol>,
           li: ({ children }) => {

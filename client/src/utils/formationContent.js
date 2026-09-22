@@ -247,6 +247,10 @@ export function extractCarteLinks(body, markerLine) {
   return []
 }
 
+// A question is a plain-text heading, so the CMS's `<u>…</u>` underline markers are dropped from it.
+// Answers keep them: the FAQ shows their bold / italic / underline (see cms/inlineFormat.jsx).
+const stripUnderlineTags = (s) => s.replace(/<\/?u>/g, '')
+
 /** Alternating question/answer plain-paragraph pairs after the existing
  * "Cliquez sur une question..." line, stopping at the next heading. */
 export function extractFaq(body) {
@@ -261,7 +265,7 @@ export function extractFaq(body) {
     if (qAt === null || /^#{1,4}\s/.test(lines[qAt].trim())) break
     const aAt = nextNonBlank(lines, qAt + 1)
     if (aAt === null || /^#{1,4}\s/.test(lines[aAt].trim())) break
-    items.push({ question: lines[qAt].trim(), answer: lines[aAt].trim() })
+    items.push({ question: stripUnderlineTags(lines[qAt].trim()), answer: lines[aAt].trim() })
     i = aAt + 1
   }
   if (items.length < 2) return null

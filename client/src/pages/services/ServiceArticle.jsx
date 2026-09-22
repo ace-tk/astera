@@ -14,6 +14,9 @@ import FAQSection from '@/components/services/FAQSection'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { useServicePage } from '@/cms/useServicePage'
+import CmsArticleGate from '@/cms/CmsArticleGate'
+import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
 import { resolveServiceHref } from '@/constants/servicesLinks'
@@ -24,7 +27,7 @@ import FormationStatStrip from '@/components/atoopv/FormationStatStrip'
 import PvKineticIntro from '@/components/atoopv/PvKineticIntro'
 import FragmentsToDocument from '@/components/atoopv/FragmentsToDocument'
 import { extractLeadTopics, extractFaq, extractCarteLinks, extractStatStrip } from '@/utils/formationContent'
-import { FORMATION_ECONOMIQUE_FRAGMENTS, COMMUNICATION_FRAGMENTS } from '@/constants/fragmentsIntros'
+import { FRAGMENTS_INTRO_BASE, mergeFragmentsIntro } from '@/cms/fragmentsIntroContainer'
 
 // Kinetic brand intro (adapted from the Design Lab's Experiment 04) and the
 // fragments-to-document intro (adapted from Experiment 06) — each scoped to
@@ -32,10 +35,6 @@ import { FORMATION_ECONOMIQUE_FRAGMENTS, COMMUNICATION_FRAGMENTS } from '@/const
 // ENHANCED_INFO_SLUG/TOPIC_LAYOUT above, so every other Services page is
 // completely unaffected.
 const PV_KINETIC_INTRO_SLUG = 'redaction-pv-cse'
-const FRAGMENTS_INTRO = {
-  'formation-economique-elus-cse': FORMATION_ECONOMIQUE_FRAGMENTS,
-  'communication-cse': COMMUNICATION_FRAGMENTS,
-}
 
 // The one article whose source markdown has a "raw stats/CTA/tag-list" info
 // block that renders far better through components already built for this
@@ -97,9 +96,31 @@ const CARTE_MARKER = 'NOS FORMATIONS À LA CARTE'
 export default function ServiceArticle({ category, slug: slugProp }) {
   const { slug: slugParam } = useParams()
   const slug = slugProp || slugParam
-  const page = getServicePage(slug)
+  const bundled = getServicePage(slug)
 
-  usePageMeta({ title: page ? stripEmphasis(page.title) : undefined, description: page ? excerpt(page.body, 160) : undefined })
+  // Where the content comes from: the bundled markdown (every page that hasn't
+  // been migrated — no network involved) or the CMS (migrated pages, brand-new
+  // CMS pages, and admin previews). The design below is identical either way.
+  const source = useServicePage({ category, slug, bundled, hub: Boolean(slugProp) })
+
+  return (
+    <CmsArticleGate source={source} missingTo={`/services/${category}`}>
+      {(page) => <ServiceArticleView category={category} slug={slug} page={page} />}
+    </CmsArticleGate>
+  )
+}
+
+/** The Service Article design. Receives its content as `page` (same shape from bundled markdown or the CMS). */
+function ServiceArticleView({ category, slug, page }) {
+  // The side navigation (and previous/next order) for this section: the built-in list, or the
+  // CMS's ordered list once it has been set up — plus any newly published CMS pages.
+  const navItems = useSectionNav(category, CATEGORY_NAV[category])
+  const cmsSectionPages = useCmsPages({ section: category })
+
+  usePageMeta({
+    title: page.seo?.title || (page ? stripEmphasis(page.title) : undefined),
+    description: page.seo?.description || (page ? excerpt(page.body, 160) : undefined),
+  })
 
   if (!page) return <Navigate to={`/services/${category}`} replace />
 
@@ -152,6 +173,11 @@ export default function ServiceArticle({ category, slug: slugProp }) {
           })
           .filter(Boolean)
       : []
+  // Formations published in the CMS join the landing page's existing index, after the built-in ones.
+  if (slug === CARTE_INDEX_SLUG) {
+    const listed = new Set(indexItems.map((i) => i.to))
+    for (const p of cmsSectionPages) if (!listed.has(p.path)) indexItems.push({ title: p.title, excerpt: p.excerpt, to: p.path })
+  }
 
   // The right-side editorial rail — built from the page's own real `##`
   // headings (its actual section structure), the same machinery Ressources/
@@ -183,7 +209,7 @@ export default function ServiceArticle({ category, slug: slugProp }) {
   return (
     <>
       {slug === PV_KINETIC_INTRO_SLUG && <PvKineticIntro />}
-      {FRAGMENTS_INTRO[slug] && <FragmentsToDocument {...FRAGMENTS_INTRO[slug]} />}
+      {FRAGMENTS_INTRO_BASE[slug] && <FragmentsToDocument {...mergeFragmentsIntro(FRAGMENTS_INTRO_BASE[slug], page.fragmentsIntro)} />}
 
       {enhanced ? (
         <GuideModelHero
@@ -208,9 +234,9 @@ export default function ServiceArticle({ category, slug: slugProp }) {
             original grid+blocks. */}
         {!usesEditorialSystem && <EditorialGridBackground lines blocks={category === 'guides'} />}
         <ServiceCategoryContent
-          navItems={CATEGORY_NAV[category]}
+          navItems={navItems}
           navLabel={CATEGORY_NAV_LABEL[category]}
-          nav={isPVCategory ? <EditorialCategoryNav items={CATEGORY_NAV[category]} label={CATEGORY_NAV_LABEL[category]} /> : undefined}
+          nav={isPVCategory ? <EditorialCategoryNav items={navItems} label={CATEGORY_NAV_LABEL[category]} /> : undefined}
           stickyColumns={isFormationCategory || isPVCategory}
           compact={isPVCategory}
           rail={
@@ -242,7 +268,7 @@ export default function ServiceArticle({ category, slug: slugProp }) {
               {topics.length > 0 && <FormationTopics topics={topics} layout={topicsLayout} />}
               {afterTopicsBody && <MarkdownArticle body={afterTopicsBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
               {indexItems.length > 0 && <FormationIndex items={indexItems} />}
-              {faqItems.length > 0 && <FAQSection eyebrow="Questions fréquentes" heading="FAQ" items={faqItems} />}
+              {faqItems.length > 0 && <FAQSection eyebrow="Questions fréquentes" heading="FAQ" items={faqItems} richAnswers />}
               {faqAfterBody && <MarkdownArticle body={faqAfterBody} color={CATEGORY_COLOR[category]} resolveHref={resolveServiceHref} iconHeadings />}
             </>
           ) : (

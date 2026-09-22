@@ -3,8 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
+import { inlineFormat } from '@/cms/inlineFormat'
 
-function FAQItem({ item, isOpen, onToggle, isLast }) {
+function FAQItem({ item, isOpen, onToggle, isLast, richAnswers }) {
   return (
     <div className={cn('py-4', !isLast && 'border-b border-ink/8')}>
       <button onClick={onToggle} aria-expanded={isOpen} className="group flex w-full items-center justify-between gap-4 text-left">
@@ -29,7 +30,7 @@ function FAQItem({ item, isOpen, onToggle, isLast }) {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="pr-8 pt-3 text-sm leading-relaxed text-muted text-pretty">{item.answer}</p>
+            <p className="pr-8 pt-3 text-sm leading-relaxed text-muted text-pretty">{(richAnswers && inlineFormat(item.answer)) || item.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -42,8 +43,11 @@ function FAQItem({ item, isOpen, onToggle, isLast }) {
  * so any service page with "Questions fréquentes" content can reuse it.
  * Editorial rules (a top border plus a divider between items) instead of a
  * bordered/shadowed card panel — the page's own background shows through.
+ *
+ * `richAnswers` (CMS pages only) shows bold / italic / underline written in an answer;
+ * without it, answers are plain text exactly as before.
  */
-export default function FAQSection({ eyebrow = 'Questions', heading = 'Frequently asked questions', items }) {
+export default function FAQSection({ eyebrow = 'Questions', heading = 'Frequently asked questions', items, richAnswers = false }) {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
@@ -57,7 +61,7 @@ export default function FAQSection({ eyebrow = 'Questions', heading = 'Frequentl
 
       <Reveal delay={0.05} className="mt-8 border-t border-ink/8">
         {items.map((item, i) => (
-          <FAQItem key={item.question} item={item} isOpen={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? -1 : i)} isLast={i === items.length - 1} />
+          <FAQItem key={item.question} item={item} isOpen={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? -1 : i)} isLast={i === items.length - 1} richAnswers={richAnswers} />
         ))}
       </Reveal>
     </div>

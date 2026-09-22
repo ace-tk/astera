@@ -1,0 +1,142 @@
+[
+  {
+    "id": "pv",
+    "label": "Procès-verbal",
+    "kind": "mega",
+    "link": {
+      "type": "route",
+      "route": "/services"
+    },
+    "color": "royal",
+    "visual": "pv",
+    "groups": [
+      {
+        "id": "nos-formules",
+        "heading": "Nos formules"
+      },
+      {
+        "id": "par-instance",
+        "heading": "Par instance"
+      },
+      {
+        "id": "tarifs-delais",
+        "heading": "Tarifs & délais"
+      }
+    ],
+    "cta": {
+      "tone": "dark"
+    },
+    "cities": false
+  },
+  {
+    "id": "formations",
+    "label": "Formations",
+    "kind": "mega",
+    "link": {
+      "type": "route",
+      "route": "/services/training"
+    },
+    "color": "royal",
+    "visual": "formations",
+    "groups": [
+      {
+        "id": "formations-des-elus",
+        "heading": "Formations des élus"
+      },
+      {
+        "id": "droit-pratique",
+        "heading": "Droit & pratique"
+      },
+      {
+        "id": "communication-du-cse",
+        "heading": "Communication du CSE"
+      }
+    ],
+    "cta": {
+      "tone": "dark"
+    },
+    "cities": false
+  },
+  {
+    "id": "atoosavoir",
+    "label": "AtooSavoir",
+    "kind": "link",
+    "link": {
+      "type": "route",
+      "route": "/atoopv/atoosavoir"
+    },
+    "visual": "atoosavoir",
+    "groups": [],
+    "cta": null,
+    "cities": false
+  },
+  {
+    "id": "ressources",
+    "label": "Ressources",
+    "kind": "mega",
+    "link": {
+      "type": "route",
+      "route": "/atoopv/ressources"
+    },
+    "color": "royal",
+    "visual": "ressources",
+    "groups": [
+      {
+        "id": "outils",
+        "heading": "Outils"
+      },
+      {
+        "id": "modeles-de-pv",
+        "heading": "Modèles de PV"
+      },
+      {
+        "id": "guides-abonnements",
+        "heading": "Guides & abonnements"
+      }
+    ],
+    "cta": {
+      "tone": "light"
+    },
+    "cities": false
+  },
+  {
+    "id": "blog",
+    "label": "Blog",
+    "kind": "mega",
+    "link": {
+      "type": "route",
+      "route": "/atoopv/ressources"
+    },
+    "color": "purple",
+    "visual": "blog",
+    "groups": [
+      {
+        "id": "rubriques",
+        "heading": "Rubriques"
+      },
+      {
+        "id": "le-pv-en-pratique",
+        "heading": "Le PV en pratique"
+      },
+      {
+        "id": "le-cse-en-pratique",
+        "heading": "Le CSE en pratique"
+      }
+    ],
+    "cta": null,
+    "cities": true
+  },
+  {
+    "id": "a-propos",
+    "label": "À propos",
+    "kind": "link",
+    "link": {
+      "type": "route",
+      "route": "/atoopv/a-propos"
+    },
+    "visual": "a-propos",
+    "groups": [],
+    "cta": null,
+    "cities": false
+  }
+]

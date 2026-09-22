@@ -9,6 +9,9 @@ import * as reportRequests from '../controllers/reportRequestController.js'
 import * as customers from '../controllers/customerController.js'
 import * as files from '../controllers/fileController.js'
 import * as blog from '../controllers/blogController.js'
+import * as clientReports from '../controllers/clientReportController.js'
+import cmsRouter from './cms.js'
+import { cms } from '../cms/http.js'
 
 const router = Router()
 
@@ -109,12 +112,28 @@ router.patch('/admin/files/:id/rename', requireAuth, requireAdmin, asyncHandler(
 router.patch('/admin/files/:id/archive', requireAuth, requireAdmin, asyncHandler(files.archiveFile))
 router.delete('/admin/files/:id', requireAuth, requireAdmin, asyncHandler(files.deleteFile))
 
-// Admin — Blog management (CRUD). The public /blog/featured route above is
-// the only thing the Homepage reads; these let an admin actually populate it.
-router.get('/admin/blogs', requireAuth, requireAdmin, asyncHandler(blog.listBlogs))
-router.post('/admin/blogs', requireAuth, requireAdmin, asyncHandler(blog.createBlog))
-router.get('/admin/blogs/:id', requireAuth, requireAdmin, asyncHandler(blog.getBlog))
-router.patch('/admin/blogs/:id', requireAuth, requireAdmin, asyncHandler(blog.updateBlog))
-router.delete('/admin/blogs/:id', requireAuth, requireAdmin, asyncHandler(blog.deleteBlog))
+// Client Reports — PDFs an admin uploads for one client. Every route checks who is asking:
+// the client routes serve only the signed-in client's own reports (see clientReportController.js).
+router.get('/client-reports', requireAuth, asyncHandler(clientReports.requireActiveClient), asyncHandler(clientReports.listMine))
+router.get('/client-reports/:id/file', requireAuth, asyncHandler(clientReports.requireActiveClient), asyncHandler(clientReports.myFile))
+router.get('/admin/customers/:id/client-reports', requireAuth, requireAdmin, asyncHandler(clientReports.listForClient))
+router.post('/admin/customers/:id/client-reports', requireAuth, requireAdmin, clientReports.receivePdf, asyncHandler(clientReports.uploadForClient))
+router.get('/admin/client-reports/:id/file', requireAuth, requireAdmin, asyncHandler(clientReports.adminFile))
+router.delete('/admin/client-reports/:id', requireAuth, requireAdmin, asyncHandler(clientReports.remove))
+
+// Admin — Blog management. The Admin edits a DRAFT (save / preview / publish / unpublish); the
+// public /blog routes above only ever read the published, live version.
+router.get('/admin/blogs', requireAuth, requireAdmin, cms(blog.listBlogs))
+router.post('/admin/blogs', requireAuth, requireAdmin, cms(blog.createBlog))
+router.get('/admin/blogs/:id', requireAuth, requireAdmin, cms(blog.getBlog))
+router.patch('/admin/blogs/:id', requireAuth, requireAdmin, cms(blog.updateBlog))
+router.post('/admin/blogs/:id/publish', requireAuth, requireAdmin, cms(blog.publishBlog))
+router.post('/admin/blogs/:id/unpublish', requireAuth, requireAdmin, cms(blog.unpublishBlog))
+router.post('/admin/blogs/:id/discard-draft', requireAuth, requireAdmin, cms(blog.discardBlogDraft))
+router.get('/admin/blogs/:id/preview', requireAuth, requireAdmin, cms(blog.previewBlog))
+router.delete('/admin/blogs/:id', requireAuth, requireAdmin, cms(blog.deleteBlog))
+
+// CMS — public content API (`/cms/*`, `/media/*`) and the admin CMS API (`/admin/cms/*`).
+router.use(cmsRouter)
 
 export default router

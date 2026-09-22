@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, ImageOff, AlertTriangle } from 'lucide-react'
 import { fetchFeaturedBlog } from '@/services/blog'
+import { resolveMediaUrl } from '@/cms/media'
 import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
 
@@ -53,7 +54,7 @@ function BlogCard({ post }) {
         <div className="aspect-[16/9] overflow-hidden bg-ink/[0.04]">
           {post.imageUrl ? (
             <img
-              src={post.imageUrl}
+              src={resolveMediaUrl(post.imageUrl)}
               alt={post.title}
               loading="lazy"
               decoding="async"

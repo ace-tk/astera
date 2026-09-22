@@ -2,7 +2,8 @@ import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { Menu, X, ArrowUpRight, ChevronDown, BookOpen } from 'lucide-react'
-import { NAV_LINKS, ATOOPV_NAV, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
+import { NAV_LINKS, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
+import { useMainNav } from '@/cms/useNavigation'
 import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
 import NavDropdown from '@/components/landing/NavDropdown'
@@ -136,6 +137,8 @@ export default function Navbar() {
   const { scrollY } = useScroll()
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 24))
   const atTop = useIsAtTop()
+  // Built-in menu until (and unless) the CMS supplies one — same items, same shape, same components.
+  const atoopvNav = useMainNav()
 
   // The ATOOPV homepage ("Accueil") isn't a top-level nav item any more —
   // it's reached via the logo, so the logo needs to know which "home" it's
@@ -177,7 +180,7 @@ export default function Navbar() {
     }
   }
 
-  const openMegaItem = ATOOPV_NAV.find((i) => i.key === openMegaKey)
+  const openMegaItem = atoopvNav.find((i) => i.key === openMegaKey)
 
   return (
     <motion.header
@@ -213,7 +216,7 @@ export default function Navbar() {
             <NavDropdown label={NAV_LINKS[0].label} href={NAV_LINKS[0].href} items={NAV_LINKS[0].children} />
           </div>
 
-          {ATOOPV_NAV.map((item) => {
+          {atoopvNav.map((item) => {
             if (!item.mega) {
               // No dropdown here (AtooSavoir, À propos, Design Test) — same
               // dashed-rule trigger language as the dropdown items below,
@@ -339,7 +342,7 @@ export default function Navbar() {
                 {MOBILE_HOME_LINK.label}
               </HashAwareLink>
               <MobileNavRow item={NAV_LINKS[0]} expandedKey={expandedKey} onToggle={toggleMobile} onNavigate={() => setOpen(false)} />
-              {ATOOPV_NAV.map((item) => (
+              {atoopvNav.map((item) => (
                 <MobileNavRow
                   key={item.key || item.href}
                   item={item}

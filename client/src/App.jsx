@@ -40,6 +40,8 @@ const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'))
 const Workspace = lazy(() => import('@/pages/dashboard/Workspace'))
 const DemoWorkspace = lazy(() => import('@/pages/dashboard/DemoWorkspace'))
 const Overview = lazy(() => import('@/pages/dashboard/Overview'))
+const ClientReports = lazy(() => import('@/pages/dashboard/ClientReports'))
+const ClientReportViewer = lazy(() => import('@/pages/dashboard/ClientReportViewer'))
 const UploadStudio = lazy(() => import('@/pages/dashboard/UploadStudio'))
 const Report = lazy(() => import('@/pages/dashboard/Report'))
 const Replay = lazy(() => import('@/pages/dashboard/Replay'))
@@ -58,9 +60,15 @@ const AdminReportRequestDetail = lazy(() => import('@/pages/admin/AdminReportReq
 const AdminFiles = lazy(() => import('@/pages/admin/AdminFiles'))
 const AdminCustomers = lazy(() => import('@/pages/admin/AdminCustomers'))
 const AdminCustomerDetail = lazy(() => import('@/pages/admin/AdminCustomerDetail'))
+const AdminBlogs = lazy(() => import('@/pages/admin/AdminBlogs'))
+const AdminBlogEditor = lazy(() => import('@/pages/admin/AdminBlogEditor'))
 const AdminCustomerCreate = lazy(() => import('@/pages/admin/AdminCustomerCreate'))
 const AdminAnalytics = lazy(() => import('@/pages/admin/AdminAnalytics'))
 const AdminSettings = lazy(() => import('@/pages/admin/AdminSettings'))
+const AdminCmsMenus = lazy(() => import('@/pages/admin/cms/AdminCmsMenus'))
+const AdminCmsPages = lazy(() => import('@/pages/admin/cms/AdminCmsPages'))
+const AdminCmsPageNew = lazy(() => import('@/pages/admin/cms/AdminCmsPageNew'))
+const AdminCmsPageEditor = lazy(() => import('@/pages/admin/cms/AdminCmsPageEditor'))
 const Status = lazy(() => import('@/pages/dashboard/Status'))
 const About = lazy(() => import('@/pages/dashboard/About'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
@@ -174,6 +182,8 @@ export default function App() {
               <Route index element={<AppEntry />} />
               <Route path="demos" element={<DemoWorkspace />} />
               <Route path="reports" element={<Overview />} />
+              <Route path="client-reports" element={<ClientReports />} />
+              <Route path="client-reports/:id" element={<ClientReportViewer />} />
               <Route path="upload" element={<UploadStudio />} />
               <Route path="report/:id" element={<Report />} />
               <Route path="read/:id" element={<Reader />} />
@@ -195,6 +205,14 @@ export default function App() {
                 <Route path="customers/:id" element={<AdminCustomerDetail />} />
                 <Route path="analytics" element={<AdminAnalytics />} />
                 <Route path="settings" element={<AdminSettings />} />
+                <Route path="cms" element={<Navigate to="/app/admin/cms/pages" replace />} />
+                <Route path="blog" element={<AdminBlogs />} />
+                <Route path="blog/new" element={<AdminBlogEditor />} />
+                <Route path="blog/:id" element={<AdminBlogEditor />} />
+                <Route path="cms/pages" element={<AdminCmsPages />} />
+                <Route path="cms/menus" element={<AdminCmsMenus />} />
+                <Route path="cms/pages/new" element={<AdminCmsPageNew />} />
+                <Route path="cms/pages/:id" element={<AdminCmsPageEditor />} />
               </Route>
               <Route path="status" element={<Status />} />
               <Route path="about" element={<About />} />

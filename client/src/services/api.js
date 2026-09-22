@@ -41,7 +41,20 @@ async function request(path, { method = 'GET', body, token } = {}) {
   return data
 }
 
+// Binary download (e.g. a private PDF). Same session handling as `request`, but the body is returned
+// as a Blob — a plain <iframe src> could not send the Authorization header.
+async function requestBlob(path) {
+  const res = await fetch(`${config.apiUrl}${path}`, { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} })
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    if (res.status === 401 && authToken) unauthorizedListeners.forEach((fn) => fn())
+    throw Object.assign(new Error(data.error || 'Request failed'), { status: res.status, data })
+  }
+  return res.blob()
+}
+
 export const api = {
+  blob: (path) => requestBlob(path),
   get: (path, opts) => request(path, opts),
   post: (path, body, opts) => request(path, { ...opts, method: 'POST', body }),
   patch: (path, body, opts) => request(path, { ...opts, method: 'PATCH', body }),

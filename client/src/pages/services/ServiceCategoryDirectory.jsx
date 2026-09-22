@@ -4,6 +4,7 @@ import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getServicePagesByCategory, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
 
@@ -31,6 +32,9 @@ const COPY = {
 export default function ServiceCategoryDirectory({ category }) {
   const pages = getServicePagesByCategory(category)
   const copy = COPY[category]
+  const navItems = useSectionNav(category, CATEGORY_NAV[category])
+  // Pages published in the CMS join this listing automatically (built-in pages are unchanged).
+  const cmsPages = useCmsPages({ section: category })
   // "by-city" belongs to Procès-verbal — same dashed-rule/arrow left nav and
   // sticky/compact treatment as the rest of that menu; "guides" belongs to
   // neither Procès-verbal nor Formations and keeps its current look.
@@ -38,12 +42,13 @@ export default function ServiceCategoryDirectory({ category }) {
 
   usePageMeta({ title: copy.title, description: copy.lead })
 
-  const items = pages.map((p) => ({
-    title: p.title,
-    body: excerpt(p.body),
-    to: `/services/${category}/${p.slug}`,
-    cta: 'Lire →',
-  }))
+  const builtIn = new Set(pages.map((p) => p.slug))
+  const items = [
+    ...pages.map((p) => ({ title: p.title, body: excerpt(p.body), to: `/services/${category}/${p.slug}`, cta: 'Lire →' })),
+    ...cmsPages.filter((p) => !builtIn.has(p.slug)).map((p) => ({ title: p.title, body: p.excerpt, to: p.path, cta: 'Lire →' })),
+  ]
+  // Same alphabetical rule the built-in pages are already sorted by, so existing cards keep their order.
+  if (cmsPages.length) items.sort((a, b) => a.title.localeCompare(b.title, 'fr'))
 
   return (
     <>
@@ -60,9 +65,9 @@ export default function ServiceCategoryDirectory({ category }) {
             belong to Procès-verbal or Formations and keeps the default. */}
         {category === 'guides' && <EditorialGridBackground lines blocks />}
         <ServiceCategoryContent
-          navItems={CATEGORY_NAV[category]}
+          navItems={navItems}
           navLabel={CATEGORY_NAV_LABEL[category]}
-          nav={isPVCategory ? <EditorialCategoryNav items={CATEGORY_NAV[category]} label={CATEGORY_NAV_LABEL[category]} /> : undefined}
+          nav={isPVCategory ? <EditorialCategoryNav items={navItems} label={CATEGORY_NAV_LABEL[category]} /> : undefined}
           stickyColumns={isPVCategory}
           compact={isPVCategory}
         >

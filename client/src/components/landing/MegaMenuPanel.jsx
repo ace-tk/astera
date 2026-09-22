@@ -67,7 +67,7 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
                 siblings (CSS Grid's default row stretch), so this flex-1
                 middle child naturally absorbs exactly that leftover height. */}
             <div className="my-4 flex-1">
-              <MegaMenuVisual variant={item.key} color={item.color} />
+              <MegaMenuVisual variant={item.visual ?? item.key} color={item.color} />
             </div>
             <Button as={Link} to={cta.buttonHref} onClick={onNavigate} size="sm" variant={cta.tone === 'dark' ? 'soft' : 'primary'} className="w-full">
               {cta.buttonLabel}
@@ -84,7 +84,7 @@ export default function MegaMenuPanel({ item, onNavigate, ...handlers }) {
               <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover/cities:translate-x-0.5" />
             </Link>
             <div className="mt-4 flex-1">
-              <MegaMenuVisual variant={item.key} color={item.color} />
+              <MegaMenuVisual variant={item.visual ?? item.key} color={item.color} />
             </div>
           </div>
         )}

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import { z } from 'zod'
 import { Blog } from '../models/Blog.js'
+import * as posts from '../services/blogService.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 const needDB = (res) => {
@@ -8,9 +8,6 @@ const needDB = (res) => {
   res.status(503).json({ error: 'Database unavailable' })
   return true
 }
-
-const slugify = (s) =>
-  `${s || 'post'}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 80) || 'post'
 
 /**
  * Public — the single card the Homepage's Blog section renders. Prefers a
@@ -35,64 +32,31 @@ export async function getBlogBySlug(req, res) {
   res.json({ blog: blog.toClientJSON() })
 }
 
-/* ------------------------------- Admin CRUD ------------------------------- */
+/* ------------------------------- Admin (draft → preview → publish) ------------------------------- */
+// Routes wrap these with cms() (DB check + CmsError → JSON). See services/blogService.js.
 
-export async function listBlogs(req, res) {
-  if (needDB(res)) return
-  const blogs = await Blog.find().sort('-publishedAt').limit(200)
-  res.json({ blogs: blogs.map((b) => b.toClientJSON()) })
+const rev = (req) => {
+  const raw = req.get('If-Match')?.replace(/"/g, '') ?? req.body?.rev
+  const n = Number(raw)
+  return raw != null && raw !== '' && Number.isInteger(n) ? n : null
 }
+const send = (res, blog, status = 200) => res.status(status).json({ blog: blog.toAdminJSON() })
 
-export async function getBlog(req, res) {
-  if (needDB(res)) return
-  const blog = await Blog.findById(req.params.id)
-  if (!blog) return res.status(404).json({ error: 'Blog post not found' })
-  res.json({ blog: blog.toClientJSON() })
+export const listBlogs = async (req, res) => res.json({ blogs: (await posts.listPosts()).map((b) => b.toAdminJSON()) })
+export const getBlog = async (req, res) => send(res, await posts.getPost(req.params.id))
+export const createBlog = async (req, res) => send(res, await posts.createPost(req.body, req.adminUser._id), 201)
+export const updateBlog = async (req, res) => {
+  const { rev: _ignored, ...patch } = req.body || {}
+  send(res, await posts.saveDraft(req.params.id, patch, { expectedRev: rev(req), userId: req.adminUser._id }))
 }
-
-const blogInputSchema = z.object({
-  title: z.string().min(1).max(200),
-  excerpt: z.string().min(1).max(400),
-  content: z.string().max(20000).optional(),
-  imageUrl: z.string().url(),
-  author: z.string().max(120).optional(),
-  featured: z.boolean().optional(),
-  published: z.boolean().optional(),
-})
-
-export async function createBlog(req, res) {
-  if (needDB(res)) return
-  const parsed = blogInputSchema.safeParse(req.body)
-  if (!parsed.success) return res.status(422).json({ error: 'Invalid blog post', issues: parsed.error.flatten() })
-
-  const base = slugify(parsed.data.title)
-  let slug = base
-  let n = 1
-  // eslint-disable-next-line no-await-in-loop
-  while (await Blog.findOne({ slug })) slug = `${base}-${++n}`
-
-  const blog = await Blog.create({ ...parsed.data, slug, publishedAt: new Date() })
-  res.status(201).json({ blog: blog.toClientJSON() })
+export const publishBlog = async (req, res) => send(res, await posts.publish(req.params.id))
+export const unpublishBlog = async (req, res) => send(res, await posts.unpublish(req.params.id, req.adminUser._id))
+export const discardBlogDraft = async (req, res) => send(res, await posts.discardDraft(req.params.id))
+export const previewBlog = async (req, res) => {
+  res.set('Cache-Control', 'no-store')
+  res.json({ blog: await posts.previewOf(req.params.id) })
 }
-
-const updateSchema = blogInputSchema.partial()
-
-export async function updateBlog(req, res) {
-  if (needDB(res)) return
-  const parsed = updateSchema.safeParse(req.body)
-  if (!parsed.success) return res.status(422).json({ error: 'Invalid update', issues: parsed.error.flatten() })
-
-  const blog = await Blog.findById(req.params.id)
-  if (!blog) return res.status(404).json({ error: 'Blog post not found' })
-
-  Object.entries(parsed.data).forEach(([k, v]) => { blog[k] = v })
-  await blog.save()
-  res.json({ blog: blog.toClientJSON() })
-}
-
-export async function deleteBlog(req, res) {
-  if (needDB(res)) return
-  const blog = await Blog.findByIdAndDelete(req.params.id)
-  if (!blog) return res.status(404).json({ error: 'Blog post not found' })
+export const deleteBlog = async (req, res) => {
+  await posts.removePost(req.params.id)
   res.json({ ok: true, id: req.params.id })
 }

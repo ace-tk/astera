@@ -20,6 +20,7 @@ import SearchableSelect from '@/components/ui/SearchableSelect'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import ReportComposer from '@/components/admin/ReportComposer'
 import StatusChip from '@/components/admin/StatusChip'
+import ClientReportsPanel from '@/components/admin/ClientReportsPanel'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
@@ -334,6 +335,11 @@ export default function AdminCustomerDetail() {
       {/* Internal admin notes — private, never visible to the customer */}
       <Reveal delay={0.14} className="mt-6">
         <NotesPanel customerId={id} />
+      </Reveal>
+
+      {/* Client Reports — PDFs only this client can open (separate from the reports below) */}
+      <Reveal delay={0.15} className="mt-6">
+        <ClientReportsPanel customerId={id} />
       </Reveal>
 
       {/* Reports */}

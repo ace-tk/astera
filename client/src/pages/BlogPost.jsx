@@ -1,11 +1,14 @@
+import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, ImageOff, AlertTriangle } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
-import { fetchBlogBySlug } from '@/services/blog'
+import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
+import { fetchBlogBySlug, fetchBlogPreview } from '@/services/blog'
+import { resolveMediaUrl } from '@/cms/media'
 import { usePageMeta } from '@/hooks/usePageMeta'
 
 const fmtDate = (d) => (d ? new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : null)
@@ -14,13 +17,27 @@ const fmtDate = (d) => (d ? new Date(d).toLocaleDateString(undefined, { year: 'n
  * page chrome as the ported ATOOPV pages (AmbientBackground/Navbar/Footer). */
 export default function BlogPost() {
   const { slug } = useParams()
+  // `?preview=<id>` (from the Admin's Preview button) shows the unpublished working copy in this same design.
+  const previewId = useSearchParams()[0].get('preview')
   const { data: post, isLoading, isError } = useQuery({
-    queryKey: ['blog', slug],
-    queryFn: () => fetchBlogBySlug(slug),
+    queryKey: previewId ? ['blog', 'preview', previewId] : ['blog', slug],
+    queryFn: () => (previewId ? fetchBlogPreview(previewId) : fetchBlogBySlug(slug)),
     retry: false,
+    ...(previewId ? { staleTime: 0, gcTime: 0 } : {}),
   })
+  const previewing = Boolean(previewId && post?.preview)
 
   usePageMeta({ title: post?.title, description: post?.excerpt })
+
+  // A preview is an unpublished draft: keep it out of search engines.
+  useEffect(() => {
+    if (!previewing) return undefined
+    const tag = document.createElement('meta')
+    tag.setAttribute('name', 'robots')
+    tag.setAttribute('content', 'noindex, nofollow')
+    document.head.appendChild(tag)
+    return () => tag.remove()
+  }, [previewing])
 
   return (
     <motion.main
@@ -32,6 +49,11 @@ export default function BlogPost() {
     >
       <AmbientBackground />
       <Navbar />
+      {previewing && (
+        <div className="fixed inset-x-0 top-0 z-[100] bg-ink px-4 py-1.5 text-center text-xs font-medium text-paper" role="status">
+          Preview — this is an unpublished draft. Visitors cannot see it.
+        </div>
+      )}
 
       <div className="shell py-28 sm:py-32">
         <div className="mx-auto max-w-2xl">
@@ -66,7 +88,7 @@ export default function BlogPost() {
 
               <div className="mt-8 aspect-[16/9] overflow-hidden rounded-[1.75rem] border border-ink/8 bg-ink/[0.04] shadow-soft">
                 {post.imageUrl ? (
-                  <img src={post.imageUrl} alt={post.title} loading="eager" decoding="async" className="h-full w-full object-cover" />
+                  <img src={resolveMediaUrl(post.imageUrl)} alt={post.title} loading="eager" decoding="async" className="h-full w-full object-cover" />
                 ) : (
                   <div className="grid h-full w-full place-items-center text-muted/50">
                     <ImageOff className="h-8 w-8" />
@@ -75,7 +97,15 @@ export default function BlogPost() {
               </div>
 
               {post.content && (
-                <div className="mt-10 whitespace-pre-wrap text-base leading-relaxed text-ink/85">{post.content}</div>
+                post.contentFormat === 'markdown' ? (
+                  // Posts written in the Admin editor: the site's own article typography renders their formatting.
+                  <div className="mt-10 text-base leading-relaxed text-ink/85">
+                    <MarkdownArticle body={post.content} color="royal" />
+                  </div>
+                ) : (
+                  // Existing posts are plain text and keep exactly the markup they always had.
+                  <div className="mt-10 whitespace-pre-wrap text-base leading-relaxed text-ink/85">{post.content}</div>
+                )
               )}
             </article>
           )}

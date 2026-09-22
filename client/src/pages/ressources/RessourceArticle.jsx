@@ -1,4 +1,4 @@
-import { useParams, Navigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
@@ -9,6 +9,10 @@ import { usePageMeta } from '@/hooks/usePageMeta'
 import { getResource } from '@/services/resourcesContent'
 import { RESSOURCES_NAV } from '@/constants/resourcesNav'
 import { extractH2Sections } from '@/utils/markdownSections'
+import { useCmsArticle } from '@/cms/useCmsArticle'
+import CmsArticleGate from '@/cms/CmsArticleGate'
+import { CMS_DRIVEN_RESSOURCES } from '@/cms/config'
+import { useSectionNav } from '@/cms/useNavigation'
 
 /**
  * Renders one extracted content/resources/<slug>.md file. A single dynamic
@@ -28,11 +32,29 @@ import { extractH2Sections } from '@/utils/markdownSections'
 export default function RessourceArticle({ slug: slugProp }) {
   const { slug: slugParam } = useParams()
   const slug = slugProp || slugParam
-  const resource = getResource(slug)
+  const bundled = getResource(slug)
 
-  usePageMeta({ title: resource?.title })
+  // Bundled markdown for every existing article; the CMS for new CMS articles and admin previews.
+  const source = useCmsArticle({
+    path: `/atoopv/ressources/${slug}`,
+    section: 'ressources',
+    slug,
+    bundled,
+    hub: Boolean(slugProp),
+    drivenSlugs: CMS_DRIVEN_RESSOURCES,
+  })
 
-  if (!resource) return <Navigate to="/atoopv/ressources" replace />
+  return (
+    <CmsArticleGate source={source} missingTo="/atoopv/ressources">
+      {(resource) => <RessourceArticleView resource={resource} />}
+    </CmsArticleGate>
+  )
+}
+
+/** The Ressources Article design. Receives its content as `resource` (same shape from bundled markdown or the CMS). */
+function RessourceArticleView({ resource }) {
+  const navItems = useSectionNav('ressources', RESSOURCES_NAV)
+  usePageMeta({ title: resource.seo?.title || resource.title, description: resource.seo?.description })
 
   const sections = extractH2Sections(resource.body)
   const hasSections = sections.length >= 2
@@ -44,9 +66,9 @@ export default function RessourceArticle({ slug: slugProp }) {
       <div className="relative">
         <EditorialGridBackground lines />
         <ServiceCategoryContent
-          navItems={RESSOURCES_NAV}
+          navItems={navItems}
           navLabel="Ressources pages"
-          nav={<EditorialCategoryNav items={RESSOURCES_NAV} label="Ressources pages" />}
+          nav={<EditorialCategoryNav items={navItems} label="Ressources pages" />}
           rail={hasSections ? <EditorialSectionRail items={sections} /> : undefined}
           stickyColumns
           compact

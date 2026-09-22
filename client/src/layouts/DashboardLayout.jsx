@@ -3,7 +3,7 @@ import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, PanelLeftClose, PanelLeft, Sparkles,
-  LayoutDashboard, LayoutGrid, Building2, Users, ArrowLeftRight, Inbox, FolderOpen, ChevronRight,
+  LayoutDashboard, LayoutGrid, Building2, Users, ArrowLeftRight, Inbox, FolderOpen, ChevronRight, Files, ListTree, FileCheck2, Newspaper,
 } from 'lucide-react'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
@@ -43,6 +43,7 @@ const NAV_GROUPS = [
     label: 'Library',
     items: [
       { to: '/app/reports', label: 'Reports', icon: FileText, active: 'text-royal' },
+      { to: '/app/client-reports', label: 'Client Reports', icon: FileCheck2, active: 'text-emerald' },
       { to: '/app/analytics', label: 'Analytics', icon: BarChart3, active: 'text-sky' },
     ],
   },
@@ -68,6 +69,14 @@ const ADMIN_NAV_GROUPS = [
       { to: '/app/admin/reports', label: 'Reports', icon: FileText, active: 'text-sky' },
       { to: '/app/admin/report-requests', label: 'Report Requests', icon: Inbox, active: 'text-orange' },
       { to: '/app/admin/files', label: 'All Files', icon: FolderOpen, active: 'text-mint' },
+    ],
+  },
+  {
+    label: 'Content',
+    items: [
+      { to: '/app/admin/cms/pages', label: 'Pages', icon: Files, active: 'text-purple' },
+      { to: '/app/admin/cms/menus', label: 'Menus', icon: ListTree, active: 'text-purple' },
+      { to: '/app/admin/blog', label: 'Blog', icon: Newspaper, active: 'text-purple' },
     ],
   },
   {

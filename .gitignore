@@ -11,3 +11,6 @@ playwright-report
 test-results
 .playwright
 .vercel
+
+# CMS backups (contain page content; created by npm run cms:backup / cms:import)
+server/backups/
