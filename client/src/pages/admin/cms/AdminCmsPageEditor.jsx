@@ -10,6 +10,7 @@ import { describeError, isConflict } from '@/cms/errors'
 import { useToast } from '@/context/ToastContext'
 import RichTextEditor from '@/components/cms/RichTextEditor'
 import { FRAGMENTS_INTRO_BASE, editorialTextOf } from '@/cms/fragmentsIntroContainer'
+import { disassembleServiceArticle, assembleServiceArticle } from '@/cms/serviceArticleContainers'
 import StatusBadge from '@/components/cms/StatusBadge'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import Button from '@/components/ui/Button'
@@ -70,6 +71,24 @@ export default function AdminCmsPageEditor() {
   useEffect(() => {
     if (page && !form) setForm(fromPage(page))
   }, [page, form])
+
+  // Option A container editing (Hero/Intro/Stats/Main/Topics/afterTopics/FAQ/afterFAQ): disassembled
+  // ONCE per page load (and again whenever content is replaced from outside the editor, same signal
+  // `editorKey` already uses for discard/restore) — NOT re-derived from `form.content.body` on every
+  // keystroke. Re-parsing the body after every edit would break the round trip mid-edit: a stat
+  // value or FAQ answer that is briefly empty while the admin is typing gets silently dropped by
+  // `assembleServiceArticle`'s `join()`, which desyncs the extractors' pattern matching for every
+  // OTHER container that render — corrupting fields the admin never touched. Holding the parsed
+  // containers as their own state and only ever writing OUT to `form.content.body` (never reading
+  // back from it) avoids that entirely, while Save/Preview/Publish/dirty-checking keep working
+  // completely unchanged, since that field is kept in sync on every edit regardless.
+  const [containers, setContainersState] = useState(null)
+  useEffect(() => {
+    if (!page || !form || !template) return
+    const usesContainers = template.key === 'service-article' && page.section !== 'guides'
+    setContainersState(usesContainers ? disassembleServiceArticle(page.section, form.slug, form.content.body ?? '') : null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editorKey, Boolean(form), template?.key])
 
   useEffect(() => {
     if (!moreOpen) return undefined
@@ -189,6 +208,15 @@ export default function AdminCmsPageEditor() {
 
   const archived = page.status === 'archived'
   const setContent = (key, value) => setForm((f) => ({ ...f, content: { ...f.content, [key]: value } }))
+  // Guides (and Ressources, a different template entirely) never had Stats/Topics/FAQ in their
+  // design — they keep the single generic body field; every other Service Article section gets the
+  // container view (`containers` state set up above).
+  const usesContainers = template?.key === 'service-article' && page.section !== 'guides'
+  const setContainers = (patch) => {
+    const next = { ...containers, ...patch }
+    setContainersState(next)
+    setContent('body', assembleServiceArticle(next))
+  }
   // The existing "FragmentsToDocument" intro this page's design renders above its hero (see
   // cms/fragmentsIntroContainer.js): only its wording is editable here. Lazily seeded from the
   // current hardcoded text on first edit, so simply opening the page never marks it dirty.
@@ -299,7 +327,7 @@ export default function AdminCmsPageEditor() {
             {fieldError('title') && <span className="mt-1 block text-xs text-rose">{fieldError('title').join(' ')}</span>}
           </label>
 
-          {template?.fields.map((f) =>
+          {template?.fields.filter((f) => !(usesContainers && f.key === 'body')).map((f) =>
             f.type === 'richtext' ? (
               <div key={f.key}>
                 <span className={LABEL}>{f.label}</span>
@@ -322,6 +350,121 @@ export default function AdminCmsPageEditor() {
                 {fieldError(f.key) && <span className="mt-1 block text-xs text-rose">{fieldError(f.key).join(' ')}</span>}
               </label>
             ),
+          )}
+
+          {containers && (
+            <div className="space-y-6">
+              {Boolean(containers.intro) && (
+                <div>
+                  <span className={LABEL}>Intro</span>
+                  <RichTextEditor key={`intro-${editorKey}`} value={containers.intro} onChange={(v) => setContainers({ intro: v })} disabled={archived} label="Intro" />
+                </div>
+              )}
+
+              {containers.stats && (
+                <section aria-label="Stats">
+                  <span className={LABEL}>Stats</span>
+                  <div className="mt-1.5 space-y-2">
+                    {containers.stats.map((s, i) => (
+                      <div key={i} className="grid grid-cols-2 gap-2">
+                        <input
+                          value={s.value}
+                          onChange={(e) => setContainers({ stats: containers.stats.map((s2, idx) => (idx === i ? { ...s2, value: e.target.value } : s2)) })}
+                          disabled={archived}
+                          aria-label={`Stat ${i + 1} value`}
+                          placeholder="Value"
+                          className="input !h-9 !rounded-md text-sm"
+                        />
+                        <input
+                          value={s.label}
+                          onChange={(e) => setContainers({ stats: containers.stats.map((s2, idx) => (idx === i ? { ...s2, label: e.target.value } : s2)) })}
+                          disabled={archived}
+                          aria-label={`Stat ${i + 1} label`}
+                          placeholder="Label"
+                          className="input !h-9 !rounded-md text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              <div>
+                <span className={LABEL}>Main content</span>
+                <RichTextEditor key={`main-${editorKey}`} value={containers.main} onChange={(v) => setContainers({ main: v })} disabled={archived} label="Main content" />
+              </div>
+
+              {containers.topics && (
+                <section aria-label="Topics">
+                  <span className={LABEL}>Topics</span>
+                  <div className="mt-1.5 space-y-2">
+                    {containers.topics.map((t, i) => (
+                      <div key={i} className="grid grid-cols-[4rem_1fr] gap-2">
+                        <input
+                          value={t.icon}
+                          onChange={(e) => setContainers({ topics: containers.topics.map((t2, idx) => (idx === i ? { ...t2, icon: e.target.value } : t2)) })}
+                          disabled={archived}
+                          aria-label={`Topic ${i + 1} icon`}
+                          placeholder="Icon"
+                          className="input !h-9 !rounded-md text-center text-sm"
+                        />
+                        <input
+                          value={t.title}
+                          onChange={(e) => setContainers({ topics: containers.topics.map((t2, idx) => (idx === i ? { ...t2, title: e.target.value } : t2)) })}
+                          disabled={archived}
+                          aria-label={`Topic ${i + 1} title`}
+                          placeholder="Title"
+                          className="input !h-9 !rounded-md text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {containers.topics && Boolean(containers.afterTopics) && (
+                <div>
+                  <span className={LABEL}>Content after topics</span>
+                  <RichTextEditor key={`afterTopics-${editorKey}`} value={containers.afterTopics} onChange={(v) => setContainers({ afterTopics: v })} disabled={archived} label="Content after topics" />
+                </div>
+              )}
+
+              {containers.faq && (
+                <section aria-label="FAQ">
+                  <span className={LABEL}>FAQ</span>
+                  <div className="mt-1.5 space-y-2">
+                    {containers.faq.map((item, i) => (
+                      <div key={i} className="space-y-1.5 rounded-md border border-ink/10 p-2.5">
+                        <input
+                          value={item.question}
+                          onChange={(e) => setContainers({ faq: containers.faq.map((f2, idx) => (idx === i ? { ...f2, question: e.target.value } : f2)) })}
+                          disabled={archived}
+                          aria-label={`FAQ ${i + 1} question`}
+                          placeholder="Question"
+                          className="input !h-9 !rounded-md text-sm"
+                        />
+                        <textarea
+                          value={item.answer}
+                          onChange={(e) => setContainers({ faq: containers.faq.map((f2, idx) => (idx === i ? { ...f2, answer: e.target.value } : f2)) })}
+                          disabled={archived}
+                          rows={2}
+                          aria-label={`FAQ ${i + 1} answer`}
+                          placeholder="Answer"
+                          className="input resize-y !rounded-md text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {containers.faq && Boolean(containers.afterFaq) && (
+                <div>
+                  <span className={LABEL}>Content after FAQ</span>
+                  <RichTextEditor key={`afterFaq-${editorKey}`} value={containers.afterFaq} onChange={(v) => setContainers({ afterFaq: v })} disabled={archived} label="Content after FAQ" />
+                </div>
+              )}
+            </div>
           )}
 
           {fi && (

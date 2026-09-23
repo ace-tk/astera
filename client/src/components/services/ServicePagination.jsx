@@ -6,6 +6,12 @@ import { cn } from '@/utils/cn'
  * Previous/next footer nav between sibling pages in a service category's
  * own nav list — so browsing Drafting, Communication, Training or Guides
  * never dead-ends at a page with no way to keep going.
+ *
+ * `min-w-0` on each `<Link>`: as a direct CSS grid item, its default
+ * `min-width: auto` floors the grid track at the link's intrinsic content
+ * width, which defeats the inner label's `truncate` and lets a long
+ * neighbouring page title (common once a category's nav list is large)
+ * push the whole page wider than the viewport on mobile.
  */
 export default function ServicePagination({ items }) {
   const { pathname } = useLocation()
@@ -21,7 +27,7 @@ export default function ServicePagination({ items }) {
       {prev ? (
         <Link
           to={prev.to}
-          className="group flex items-center gap-3 rounded-2xl border border-ink/8 bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift"
+          className="group flex min-w-0 items-center gap-3 rounded-2xl border border-ink/8 bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift"
         >
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-ink/8 text-muted transition-colors group-hover:border-ink/20 group-hover:text-ink">
             <ArrowLeft className="h-4 w-4" />
@@ -39,7 +45,7 @@ export default function ServicePagination({ items }) {
         <Link
           to={next.to}
           className={cn(
-            'group flex items-center justify-end gap-3 rounded-2xl border border-ink/8 bg-card p-5 text-right shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift',
+            'group flex min-w-0 items-center justify-end gap-3 rounded-2xl border border-ink/8 bg-card p-5 text-right shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift',
           )}
         >
           <span className="min-w-0">
