@@ -20,6 +20,7 @@ const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
 const Boutique = lazy(() => import('@/pages/atoopv/Boutique'))
 const Tarification = lazy(() => import('@/pages/atoopv/Tarification'))
 const APropos = lazy(() => import('@/pages/atoopv/APropos'))
+const Contact = lazy(() => import('@/pages/atoopv/Contact'))
 const Autodiagnostic = lazy(() => import('@/pages/atoopv/Autodiagnostic'))
 const Atoosavoir = lazy(() => import('@/pages/atoopv/Atoosavoir'))
 const AtoosavoirExemple = lazy(() => import('@/pages/atoopv/AtoosavoirExemple'))
@@ -128,15 +129,9 @@ export default function App() {
             {/* /atoopv/simulateur was the page's originally-intended path (still
                 referenced that way by servicesLinks.js/resourcesLinks.js's internal
                 link maps) before it shipped as /atoopv/tarification — redirect
-                rather than duplicate the page. /atoopv/contact has no dedicated
-                page anywhere in the port yet (confirmed: no ContactForm/devis
-                component exists); every "Demander un devis gratuit"-style CTA
-                across the ATOOPV pages points here, so this mirrors the one
-                already-working precedent for the identical action — the English
-                PricingCalculator's own equivalent CTA (constants/pricing.js) —
-                rather than inventing a new destination. */}
+                rather than duplicate the page. */}
             <Route path="/atoopv/simulateur" element={<Navigate to="/atoopv/tarification" replace />} />
-            <Route path="/atoopv/contact" element={<Navigate to="/app" replace />} />
+            <Route path="/atoopv/contact" element={<Contact />} />
             <Route path="/atoopv/a-propos" element={<APropos />} />
             <Route path="/atoopv/autodiagnostic" element={<Autodiagnostic />} />
             <Route path="/atoopv/atoosavoir" element={<Atoosavoir />} />
