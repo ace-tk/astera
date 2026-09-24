@@ -58,7 +58,7 @@ const UTILITY_LINKS = ATOOPV_NAV.filter((i) => UTILITY_HREFS.includes(i.href))
 /** Pure: the navbar's ATOOPV items for a given CMS answer (the built-in list when there is none). */
 export function buildMainNav(data) {
   if (!data?.menu?.configured) return ATOOPV_NAV
-  // CMS menus, then the code-level utility link(s) (Design Test) exactly where they are today.
+  // CMS menus, then any code-level utility link(s), exactly where they are today.
   return [...fromResolvedMenu(data.menu.items), ...UTILITY_LINKS]
 }
 

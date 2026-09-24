@@ -67,7 +67,7 @@ if (isCli) {
   console.log(`Database: ${host}   Mode: ${apply ? 'APPLY' : 'DRY RUN (nothing will be written)'}\n`)
 
   const plan = await planNavigationImport()
-  console.log(`Main menu: ${plan.menuItems.length} menus (Design Test stays a code-level utility link)`)
+  console.log(`Main menu: ${plan.menuItems.length} menus`)
   for (const it of plan.menuItems) {
     console.log(`  • ${it.label} [${it.kind}]${it.groups?.length ? ` — ${it.groups.map((g) => `${g.heading} (${g.entries.length})`).join(' · ')}` : ''}`)
   }

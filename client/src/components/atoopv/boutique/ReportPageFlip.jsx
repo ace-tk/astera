@@ -2,9 +2,9 @@ import { useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import clsx from 'clsx'
-import ExperimentHeader from '../primitives/ExperimentHeader'
-import TechnicalLabel from '../primitives/TechnicalLabel'
-import { REPORT_META, REPORT_PAGES } from '@/constants/designTest'
+import ExperimentHeader from '@/components/common/primitives/ExperimentHeader'
+import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
+import { REPORT_META, REPORT_PAGES } from '@/constants/boutique'
 
 const EASE = [0.16, 1, 0.3, 1]
 const LAST = REPORT_PAGES.length - 1

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent, useReducedMotion } from 'framer-motion'
-import SectionNumber from '@/components/design-test/primitives/SectionNumber'
-import TechnicalLabel from '@/components/design-test/primitives/TechnicalLabel'
-import TechnicalGrid from '@/components/design-test/primitives/TechnicalGrid'
-import MotionReveal from '@/components/design-test/primitives/MotionReveal'
-import { centerTransform } from '@/components/design-test/primitives/centerTransform'
+import SectionNumber from '@/components/common/primitives/SectionNumber'
+import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
+import TechnicalGrid from '@/components/common/primitives/TechnicalGrid'
+import MotionReveal from '@/components/common/primitives/MotionReveal'
+import { centerTransform } from '@/components/common/primitives/centerTransform'
 
 const EASE = [0.16, 1, 0.3, 1]
 

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Menu, X, ArrowUpRight, ChevronDown, BookOpen } from 'lucide-react'
+import { Menu, X, ArrowUpRight, ChevronDown, ShoppingCart } from 'lucide-react'
 import { NAV_LINKS, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
 import { useMainNav } from '@/cms/useNavigation'
 import Button from '@/components/ui/Button'
@@ -33,8 +33,8 @@ function ShopBooksButton({ className, onClick }) {
         className,
       )}
     >
-      <BookOpen className="h-3.5 w-3.5 text-muted" />
-      Shop Books
+      <ShoppingCart className="h-3.5 w-3.5 text-muted" />
+      Books
     </Link>
   )
 }

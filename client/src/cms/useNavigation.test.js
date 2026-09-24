@@ -16,16 +16,15 @@ describe('main navigation source', () => {
     expect(buildMainNav({ menu: null })).toBe(ATOOPV_NAV)
   })
 
-  it('uses the CMS menus in the navbar shape and keeps Design Test as the last, code-level link', () => {
+  it('uses the CMS menus in the navbar shape, with no code-level utility links today', () => {
     const nav = buildMainNav({ menu: { configured: true, items: [resolvedFormations, { id: 'a-propos', label: 'À propos', kind: 'link', href: '/atoopv/a-propos' }] } })
-    expect(nav.map((i) => i.label)).toEqual(['Nos formations', 'À propos', 'Design Test'])
+    expect(nav.map((i) => i.label)).toEqual(['Nos formations', 'À propos'])
     expect(nav[0]).toMatchObject({ key: 'formations', href: '/services/training', mega: { columns: [{ heading: 'Groupe', items: [{ label: 'Une formation', href: '/services/training/x' }] }] }, mobileItems: [{ label: 'Mobile' }] })
-    expect(nav[2].href).toBe('/design-test')
   })
 
-  it('a configured but fully disabled CMS menu shows only the code-level link — it does not resurrect the built-in menu', () => {
+  it('a configured but fully disabled CMS menu shows an empty nav — it does not resurrect the built-in menu', () => {
     const nav = buildMainNav({ menu: { configured: true, items: [] } })
-    expect(nav.map((i) => i.label)).toEqual(['Design Test'])
+    expect(nav).toEqual([])
   })
 })
 
@@ -53,7 +52,7 @@ describe('section side navigation source', () => {
 })
 
 describe('built-in navigation converter', () => {
-  it('produces the 6 real menus (at most 7) and leaves Design Test out', () => {
+  it('produces the 6 real menus (at most 7)', () => {
     const items = toMenuItems(ATOOPV_NAV)
     expect(items.map((i) => i.id)).toEqual(['pv', 'formations', 'atoosavoir', 'ressources', 'blog', 'a-propos'])
     expect(items.length).toBeLessThanOrEqual(7)

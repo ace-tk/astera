@@ -6,9 +6,9 @@ import clsx from 'clsx'
 import { cn } from '@/utils/cn'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
-import TechnicalLabel from '@/components/design-test/primitives/TechnicalLabel'
+import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
 import { ATOOPV_OFFERS, COMPLIANCE_NAMES } from '@/constants/atoopvHome'
-import { BLOG_ARTICLES } from '@/constants/designTest'
+import { BLOG_ARTICLES } from '@/constants/blogArticles'
 
 const EASE = [0.16, 1, 0.3, 1]
 

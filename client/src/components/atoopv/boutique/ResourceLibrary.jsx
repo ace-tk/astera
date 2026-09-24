@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Bell, BookmarkCheck, Clock, Heart, Home, LayoutGrid, PlayCircle, Search, ShoppingBag, Star, User, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import clsx from 'clsx'
-import ExperimentHeader from '../primitives/ExperimentHeader'
-import TechnicalLabel from '../primitives/TechnicalLabel'
-import { RESOURCE_CATEGORIES, RESOURCE_LIBRARY_BOOKS, RESOURCE_FEATURED, RESOURCE_RECOMMENDATIONS } from '@/constants/designTest'
+import ExperimentHeader from '@/components/common/primitives/ExperimentHeader'
+import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
+import { RESOURCE_CATEGORIES, RESOURCE_LIBRARY_BOOKS, RESOURCE_FEATURED, RESOURCE_RECOMMENDATIONS } from '@/constants/boutique'
 
 const EASE = [0.16, 1, 0.3, 1]
 

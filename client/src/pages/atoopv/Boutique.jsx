@@ -2,24 +2,22 @@ import { motion } from 'framer-motion'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
-import ResourceLibrary from '@/components/design-test/experiments/ResourceLibrary'
-import ReportPageFlip from '@/components/design-test/experiments/ReportPageFlip'
+import ResourceLibrary from '@/components/atoopv/boutique/ResourceLibrary'
+import ReportPageFlip from '@/components/atoopv/boutique/ReportPageFlip'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import '@/styles/design-test.css'
+import '@/styles/boutique.css'
 
 /**
  * ATOOPV Shop (/atoopv/boutique) — previously the "Compliance Books" shelf/
  * detail/reader flow (BookCover/BookReader + COMPLIANCE_BOOKS), now the
- * /design-test lab's Experiment 13 (ResourceLibrary) followed by Experiment
- * 10 (ReportPageFlip), transplanted onto this production route in their
- * place, unmodified. `design-test.css` is scoped under a `.design-test` root
- * class, so that wrapper is kept here too — without it, ResourceLibrary's
- * `dt-no-scrollbar` rule wouldn't apply and its horizontal book scroller
- * would show a visible scrollbar it doesn't in the lab.
+ * resource library shell (ResourceLibrary) followed by the procès-verbal
+ * report preview (ReportPageFlip). `boutique.css` is scoped under a
+ * `.boutique-shop` root class, so that wrapper is kept here too — without
+ * it, ResourceLibrary's `dt-no-scrollbar` rule wouldn't apply and its
+ * horizontal book scroller would show a visible scrollbar.
  *
- * `hideEyebrow` on both: this is a live shop page, not the internal lab, so
- * their "EXPERIMENT / 13" / "EXPERIMENT / 10" labels are dropped here —
- * opt-in on each component, so /design-test itself is unaffected.
+ * `hideEyebrow` on both: this is a live shop page, so their internal
+ * "EXPERIMENT / ..." labels are dropped here via an opt-in prop.
  */
 export default function Boutique() {
   usePageMeta({
@@ -32,7 +30,7 @@ export default function Boutique() {
       <AmbientBackground />
       <Navbar />
 
-      <div className="design-test pt-24 sm:pt-28">
+      <div className="boutique-shop pt-24 sm:pt-28">
         <ResourceLibrary hideEyebrow />
         <ReportPageFlip hideEyebrow />
       </div>

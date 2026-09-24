@@ -15,7 +15,7 @@ const clientSrc = path.resolve(import.meta.dirname, '../../client/src')
 const load = (rel) => import(pathToFileURL(path.join(clientSrc, rel)))
 
 describe('built-in navigation import', () => {
-  it('plans exactly the 6 real menus and keeps Design Test out of the CMS', async () => {
+  it('plans exactly the 6 real menus', async () => {
     const plan = await planNavigationImport()
     expect(plan.menuItems.map((i) => i.id)).toEqual(['pv', 'formations', 'atoosavoir', 'ressources', 'blog', 'a-propos'])
     expect(plan.menuItems.length).toBeLessThanOrEqual(7)
@@ -30,8 +30,7 @@ describe('built-in navigation import', () => {
 
     const nav = (await request(app).get('/api/cms/navigation')).body
     const fromCms = fromResolvedMenu(nav.menu.items)
-    const builtIn = ATOOPV_NAV.filter((i) => i.href !== '/design-test')
-    expect(JSON.parse(JSON.stringify(fromCms))).toEqual(JSON.parse(JSON.stringify(builtIn)))
+    expect(JSON.parse(JSON.stringify(fromCms))).toEqual(JSON.parse(JSON.stringify(ATOOPV_NAV)))
   })
 
   it('round-trips every section side navigation exactly (labels, addresses, order, exact-match flags)', async () => {

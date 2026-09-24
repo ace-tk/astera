@@ -8,6 +8,7 @@
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
     "seed": "node src/seed.js",
+    "seed:test-accounts": "node src/seedTestAccounts.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "cms:backup": "node src/cms/migrate/backup.js backup",

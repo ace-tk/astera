@@ -1,10 +1,10 @@
 import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
-import DrawLine from '@/components/design-test/primitives/DrawLine'
-import MotionReveal from '@/components/design-test/primitives/MotionReveal'
-import TechnicalLabel from '@/components/design-test/primitives/TechnicalLabel'
-import SectionNumber from '@/components/design-test/primitives/SectionNumber'
-import { centerTransform } from '@/components/design-test/primitives/centerTransform'
+import DrawLine from '@/components/common/primitives/DrawLine'
+import MotionReveal from '@/components/common/primitives/MotionReveal'
+import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
+import SectionNumber from '@/components/common/primitives/SectionNumber'
+import { centerTransform } from '@/components/common/primitives/centerTransform'
 
 /**
  * Kinetic brand intro for the "Rédaction PV CSE" page — the same motion

@@ -8,8 +8,9 @@
  * Every label and address is copied verbatim — nothing is translated or rewritten.
  */
 
-// Not CMS menus: the design-showcase link is a temporary, code-level utility link.
-export const UTILITY_HREFS = ['/design-test']
+// Not CMS menus: code-level utility links that should never be imported/exported
+// as menu items. Currently none.
+export const UTILITY_HREFS = []
 
 const route = (r) => ({ type: 'route', route: r })
 
@@ -22,7 +23,7 @@ const slug = (s) =>
     .replace(/^-+|-+$/g, '')
     .slice(0, 50)
 
-/** ATOOPV_NAV -> menu items (Design Test excluded: it stays a code-level utility link). */
+/** ATOOPV_NAV -> menu items (any UTILITY_HREFS entries excluded: they stay code-level utility links). */
 export function toMenuItems(atoopvNav) {
   return atoopvNav
     .filter((item) => !UTILITY_HREFS.includes(item.href))

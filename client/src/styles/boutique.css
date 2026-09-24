@@ -1,0 +1,26 @@
+/*
+  Styles scoped to the Boutique shop page. Everything lives under
+  `.boutique-shop` so nothing here can leak into the rest of ATOOPV.
+*/
+
+.boutique-shop .dt-viewport {
+  height: 100vh;
+  height: 100svh;
+}
+
+.boutique-shop .dt-blueprint-grid {
+  background-image: linear-gradient(rgb(var(--line) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.boutique-shop .dt-hairline {
+  background: rgb(var(--line) / 0.12);
+}
+
+.boutique-shop .dt-no-scrollbar {
+  scrollbar-width: none;
+}
+.boutique-shop .dt-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
