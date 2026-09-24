@@ -72,7 +72,18 @@ export default function Tarification() {
         </div>
       </div>
 
-      <CTASection {...TARIFICATION_CTA} />
+      <CTASection
+        {...TARIFICATION_CTA}
+        visual={
+          <div className="aspect-[4/3] overflow-hidden rounded-[1.4rem] border border-ink/8 sm:h-full sm:aspect-auto">
+            <img
+              src="/atoopv-media/hero-salle-reunion.webp"
+              alt="Salle de réunion équipée, prête pour une séance de CSE"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        }
+      />
 
       {/* Homepage Pricing section, relocated here per the Homepage/Tarification
           restructure — appended below the existing Tarification content, unchanged. */}

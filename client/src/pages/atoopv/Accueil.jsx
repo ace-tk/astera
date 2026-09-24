@@ -21,6 +21,7 @@ import NotreConviction from '@/components/atoopv/NotreConviction'
 import CommentCaMarche from '@/components/atoopv/CommentCaMarche'
 import AtoopvOffersTimeline from '@/components/atoopv/AtoopvOffersTimeline'
 import PVSimulator from '@/components/atoopv/PVSimulator'
+import PVPreviewDocument from '@/components/atoopv/PVPreviewDocument'
 import AtoopvFaqSection from '@/components/atoopv/AtoopvFaqSection'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
@@ -151,7 +152,13 @@ export default function Accueil() {
         </div>
       </section>
 
-      <CTASection eyebrow={devis.eyebrow} heading={devis.heading} body={devis.body} primaryCta={devis.primaryCta} />
+      <CTASection
+        eyebrow={devis.eyebrow}
+        heading={devis.heading}
+        body={devis.body}
+        primaryCta={devis.primaryCta}
+        visual={<PVPreviewDocument tier={TARIFICATION_TIERS[0]} instance="CSE" style="indirect" duration={2} color="royal" />}
+      />
 
       <section id="garanties" className="relative py-10 sm:py-12">
         <div className="shell">

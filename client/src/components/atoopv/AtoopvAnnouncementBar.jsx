@@ -38,7 +38,7 @@ export default function AtoopvAnnouncementBar() {
       initial={false}
       animate={atTop ? { y: 0, opacity: 1 } : { y: -24, opacity: 0 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className={cn('fixed inset-x-0 top-0 z-[60] flex justify-center px-4 pt-2', !atTop && 'pointer-events-none')}
+      className={cn('fixed inset-x-0 top-0 z-[60] flex justify-center px-4', !atTop && 'pointer-events-none')}
       aria-hidden={!atTop}
     >
       <div className="flex h-8 w-full max-w-shell items-center justify-between gap-4 rounded-full border border-ink/8 bg-card/60 px-4 shadow-soft backdrop-blur-md">

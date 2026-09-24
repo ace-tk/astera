@@ -287,8 +287,8 @@ export default function Navbar() {
           <div className="hidden sm:block">
             <ShopBooksButton />
           </div>
-          <Button as={Link} to="/app" size="sm" variant="primary" className="hidden sm:inline-flex">
-            Open app <ArrowUpRight className="h-4 w-4" />
+          <Button as={Link} to="/register" size="sm" variant="primary" className="hidden sm:inline-flex">
+            Register <ArrowUpRight className="h-4 w-4" />
           </Button>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -363,8 +363,8 @@ export default function Navbar() {
               ))}
               <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
                 <ShopBooksButton onClick={() => setOpen(false)} />
-                <Button as={Link} to="/app" size="sm" onClick={() => setOpen(false)}>
-                  Open app
+                <Button as={Link} to="/register" size="sm" onClick={() => setOpen(false)}>
+                  Register
                 </Button>
               </div>
             </div>
