@@ -1,6 +1,7 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Send, Check, Clock3, ShieldCheck, Sparkles, ChevronDown } from 'lucide-react'
+import { Send, Check, Clock3, ShieldCheck, Sparkles, ChevronDown, Building2, ArrowRight } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
@@ -173,9 +174,23 @@ export default function Contact() {
     description: HERO.lead,
   })
 
-  const [form, setForm] = useState(initialForm)
+  // Optional prefill from the homepage's quick questionnaire (QuickDiagnostic
+  // -> /atoopv/contact?source=diagnostic&message=...): only ever touches the
+  // existing "Message (optionnel)" field, everything else starts blank as
+  // before. The query string is stripped right after reading it so the
+  // address bar doesn't keep showing raw technical params.
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [form, setForm] = useState(() => {
+    const prefill = searchParams.get('message')
+    return prefill ? { ...initialForm, message: prefill } : initialForm
+  })
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | success
+
+  useEffect(() => {
+    if (searchParams.toString()) setSearchParams({}, { replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
 
@@ -362,6 +377,17 @@ export default function Contact() {
                     <ShieldCheck className="h-3.5 w-3.5 text-indigo-500/70" />
                     {PRIVACY_NOTE}
                   </p>
+
+                  <div className="mt-6 border-t border-ink/8 pt-5">
+                    <Link
+                      to="/register?type=company"
+                      className="group flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-indigo-500/5 hover:text-indigo-600"
+                    >
+                      <Building2 className="h-4 w-4 text-indigo-500/70" />
+                      Register as a company
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </div>
                 </div>
               </form>
             </div>

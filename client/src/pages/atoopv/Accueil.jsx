@@ -22,6 +22,7 @@ import CommentCaMarche from '@/components/atoopv/CommentCaMarche'
 import AtoopvOffersTimeline from '@/components/atoopv/AtoopvOffersTimeline'
 import PVSimulator from '@/components/atoopv/PVSimulator'
 import PVPreviewDocument from '@/components/atoopv/PVPreviewDocument'
+import QuickDiagnostic from '@/components/atoopv/QuickDiagnostic'
 import AtoopvFaqSection from '@/components/atoopv/AtoopvFaqSection'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
@@ -44,7 +45,7 @@ import { TARIFICATION_HERO, TARIFICATION_INTRO, TARIFICATION_TIERS, TARIFICATION
  * Contact) in later phases.
  */
 export default function Accueil() {
-  const { hero, statsCaption, expertise, process, video, veille, devis, garanties, sectors, testimonials, cta, resources } = ACCUEIL
+  const { hero, statsCaption, expertise, process, video, veille, devis, quickDiagnostic, garanties, sectors, testimonials, cta, resources } = ACCUEIL
 
   usePageMeta({ title: stripEmphasis(hero.title), description: hero.lead })
 
@@ -158,6 +159,13 @@ export default function Accueil() {
         body={devis.body}
         primaryCta={devis.primaryCta}
         visual={<PVPreviewDocument tier={TARIFICATION_TIERS[0]} instance="CSE" style="indirect" duration={2} color="royal" />}
+      />
+
+      <QuickDiagnostic
+        eyebrow={quickDiagnostic.eyebrow}
+        heading={quickDiagnostic.heading}
+        subtitle={quickDiagnostic.subtitle}
+        questions={quickDiagnostic.questions}
       />
 
       <section id="garanties" className="relative py-10 sm:py-12">

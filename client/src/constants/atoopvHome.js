@@ -14,6 +14,8 @@
  * near the bottom; only the (more complete) second copy is represented here.
  */
 import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Lock } from 'lucide-react'
+import { INSTANCE_TYPES } from './pricing'
+import { TARIFICATION_TIERS } from './tarificationHome'
 
 /**
  * PLACEHOLDER CONTENT — NOT FINAL.
@@ -360,6 +362,49 @@ export const ACCUEIL = {
     heading: 'Estimez votre besoin en 2 minutes',
     body: 'Renseignez les caractéristiques de votre instance : nous revenons vers vous avec une proposition adaptée et un tarif clair.',
     primaryCta: { label: 'Faire ma simulation', to: '/atoopv/simulateur' },
+  },
+  // Quick qualifying questionnaire — every option below is drawn from data
+  // that already exists elsewhere (INSTANCE_TYPES, TARIFICATION_TIERS) so it
+  // never drifts out of sync with the simulator/pricing page, and the
+  // recording/urgency wording matches the Contact page's own dropdowns.
+  quickDiagnostic: {
+    eyebrow: 'Diagnostic rapide',
+    heading: 'Quel accompagnement PV vous faut-il ?',
+    subtitle: 'Répondez à 4 questions : nous préparons votre demande de devis avec le bon niveau de service.',
+    questions: [
+      {
+        id: 'instance',
+        question: 'Quel type d’instance représentez-vous ?',
+        summaryLabel: 'Type d’instance',
+        options: INSTANCE_TYPES.map((t) => ({ label: t, value: t })),
+      },
+      {
+        id: 'niveau',
+        question: 'De quel niveau de restitution avez-vous besoin ?',
+        summaryLabel: 'Besoin',
+        options: TARIFICATION_TIERS.map((t) => ({ label: `${t.name} — ${t.tagline}`, value: `${t.name} (${t.tagline})` })),
+      },
+      {
+        id: 'enregistrement',
+        question: 'Avez-vous déjà un enregistrement de la réunion ?',
+        summaryLabel: 'Enregistrement disponible',
+        options: [
+          { label: 'Oui — audio ou vidéo disponible', value: 'Oui — audio ou vidéo disponible' },
+          { label: 'Non, pas encore', value: 'Non, pas encore' },
+          { label: 'Je ne sais pas encore', value: 'Je ne sais pas encore' },
+        ],
+      },
+      {
+        id: 'urgence',
+        question: 'Quelle est l’urgence de votre besoin ?',
+        summaryLabel: 'Urgence',
+        options: [
+          { label: 'Réunion imminente — sous 24 à 48h', value: 'Réunion imminente — sous 24 à 48h' },
+          { label: 'Dans les prochaines semaines', value: 'Dans les prochaines semaines' },
+          { label: 'Je me renseigne pour le moment', value: 'Je me renseigne pour le moment' },
+        ],
+      },
+    ],
   },
   garanties: {
     eyebrow: 'Reconnaissance & accréditations',

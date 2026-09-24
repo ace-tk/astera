@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { Mail } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import Button from '@/components/ui/Button'
@@ -25,8 +25,13 @@ export default function Register() {
   const { register } = useAuth()
   const location = useLocation()
   const from = location.state?.from || '/app'
+  const [searchParams] = useSearchParams()
+  // Deep link from e.g. the Contact page's "Register as a company" link
+  // (/register?type=company) — skips straight past the picker, same form
+  // and flow as picking "Company Registration" there manually.
+  const initialType = searchParams.get('type') === 'company' ? 'company' : null
 
-  const [accountType, setAccountType] = useState(null) // null | 'guest' | 'company'
+  const [accountType, setAccountType] = useState(initialType) // null | 'guest' | 'company'
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
