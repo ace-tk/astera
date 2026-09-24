@@ -25,10 +25,10 @@ import { User } from './models/User.js'
 
 function resolvePassword(envVar, label) {
   const fromEnv = process.env[envVar]
-  if (fromEnv) return fromEnv
+  if (fromEnv) return { password: fromEnv, generated: false }
   const generated = crypto.randomBytes(12).toString('base64url')
   console.log(`  (${envVar} not set — generated a random password for ${label})`)
-  return generated
+  return { password: generated, generated: true }
 }
 
 const ACCOUNTS = [
@@ -57,8 +57,10 @@ async function seedTestAccounts() {
 
   console.log('Seeding RBAC test accounts...\n')
   const results = []
+  let anyGenerated = false
   for (const acc of ACCOUNTS) {
-    const password = resolvePassword(acc.envVar, acc.label)
+    const { password, generated } = resolvePassword(acc.envVar, acc.label)
+    anyGenerated = anyGenerated || generated
     const passwordHash = await User.hashPassword(password)
     await User.findOneAndUpdate(
       { email: acc.email },
@@ -81,11 +83,16 @@ async function seedTestAccounts() {
       },
       { upsert: true, new: true, setDefaultsOnInsert: false },
     )
-    results.push({ ...acc, password })
-    console.log(`✓ ${acc.email}  (role: ${acc.role})  password: ${password}`)
+    results.push({ ...acc, password, generated })
+    // A password sourced from an env var is never logged — only a freshly
+    // generated fallback is, since that's the one case where this run is
+    // the only place it exists and the operator needs to see it once.
+    console.log(generated ? `✓ ${acc.email}  (role: ${acc.role})  password: ${password}` : `✓ ${acc.email}  (role: ${acc.role})  password: from ${acc.envVar} (not logged)`)
   }
 
-  console.log('\nSave these credentials now — they are printed here only, never written to source or committed.')
+  if (anyGenerated) {
+    console.log('\nSave the generated credential(s) above now — printed here only, never written to source or committed.')
+  }
   await mongoose.disconnect()
   process.exit(0)
 }
