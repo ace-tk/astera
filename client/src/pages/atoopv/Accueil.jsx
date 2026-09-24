@@ -20,6 +20,7 @@ import InfoCardSection from '@/components/atoopv/InfoCardSection'
 import NotreConviction from '@/components/atoopv/NotreConviction'
 import CommentCaMarche from '@/components/atoopv/CommentCaMarche'
 import AtoopvOffersTimeline from '@/components/atoopv/AtoopvOffersTimeline'
+import PVSimulator from '@/components/atoopv/PVSimulator'
 import AtoopvFaqSection from '@/components/atoopv/AtoopvFaqSection'
 import StatsSection from '@/components/services/StatsSection'
 import FeatureGrid from '@/components/services/FeatureGrid'
@@ -29,6 +30,7 @@ import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis, renderEmphasis } from '@/utils/richText'
 import { ACCUEIL, ATOOPV_STATS, NOS_INSTANCES, HOMEPAGE_GUARANTEES } from '@/constants/atoopvHome'
+import { TARIFICATION_HERO, TARIFICATION_INTRO, TARIFICATION_TIERS, TARIFICATION_CALCULATOR } from '@/constants/tarificationHome'
 
 /**
  * Ported ATOOPV Accueil (home) page — content extracted verbatim in French
@@ -99,6 +101,20 @@ export default function Accueil() {
           near the bottom of the page. Component/content unchanged, only
           its position in this file moved. */}
       <AtoopvOffersTimeline />
+
+      {/* Same interactive price simulator as the Tarification page (PVSimulator),
+          reused here unmodified — just added to the homepage below the offers
+          timeline, without removing it from Tarification. */}
+      <div className="shell pt-2 pb-14 sm:pt-4 sm:pb-16">
+        <PVSimulator
+          title={TARIFICATION_HERO.title}
+          tiers={TARIFICATION_TIERS}
+          badge={TARIFICATION_HERO.badge}
+          intro={TARIFICATION_INTRO.blocks[0]?.text}
+          {...TARIFICATION_CALCULATOR}
+          color="royal"
+        />
+      </div>
 
       {/* New editorial sections — placeholder content pending final copy
           (see constants/atoopvHome.js: HOMEPAGE_PROCESS / HOMEPAGE_ORCHESTRATED).

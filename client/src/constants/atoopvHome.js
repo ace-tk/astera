@@ -251,7 +251,7 @@ export const ACCUEIL = {
     title: 'Vos PV de CSE, CSSCT et IRP rédigés par des *experts des instances représentatives du personnel*.',
     lead: 'Depuis 2017, AtooPV accompagne les CSE, CSSCT et IRP dans la rédaction de leurs procès-verbaux. Nos experts interviennent en présentiel ou à distance pour produire des PV conformes, précis et opposables.',
     primaryCta: { label: 'Demander un devis gratuit', to: '/atoopv/contact' },
-    secondaryCta: { label: 'Simuler mon budget', to: '/atoopv/simulateur' },
+    secondaryCta: { label: 'Simuler mon budget', to: '/atoopv/contact' },
     image: { src: '/atoopv-media/hero-salle-reunion.webp', alt: 'Salle de réunion équipée, prête pour une séance de CSE' },
   },
   statsCaption: 'De la *PME aux groupes cotés au CAC 40* — formation finançable sur budget CSE (Art. L.2315-63 CT)',

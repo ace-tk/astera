@@ -3,14 +3,13 @@
  * Each feature owns a semantic color token (see tailwind.config.js).
  */
 
+// Single plain link now — "How it works" and "Features" no longer need
+// separate submenu entries since they're just anchors within the one Story
+// section, and "Pricing" is unlinked here (still a real, unremoved page at
+// /atoopv/tarification, reachable from elsewhere in the nav) per request.
 const STORY_NAV = {
   label: 'Story',
   href: '#story',
-  children: [
-    { label: 'How it works', href: '#how' },
-    { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '/atoopv/tarification' },
-  ],
 }
 
 /**

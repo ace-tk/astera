@@ -6,7 +6,6 @@ import { NAV_LINKS, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content
 import { useMainNav } from '@/cms/useNavigation'
 import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
-import NavDropdown from '@/components/landing/NavDropdown'
 import MegaMenuPanel from '@/components/landing/MegaMenuPanel'
 import HashAwareLink from '@/components/landing/HashAwareLink'
 import EditorialMenuItem from '@/components/landing/EditorialMenuItem'
@@ -212,9 +211,20 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-0.5 md:flex">
-          <div onMouseEnter={closeMegaNow}>
-            <NavDropdown label={NAV_LINKS[0].label} href={NAV_LINKS[0].href} items={NAV_LINKS[0].children} />
-          </div>
+          {/* Story is a single plain link now (no dropdown) — same
+              arrow-cue style as AtooSavoir/À propos below. HashAwareLink
+              (not Link) since '#story' is an in-page anchor, not a route. */}
+          <HashAwareLink
+            href={NAV_LINKS[0].href}
+            className={cn(plainLinkClass, 'group')}
+            onMouseEnter={closeMegaNow}
+            onFocus={closeMegaNow}
+          >
+            <span className="flex items-center gap-1 border-b border-dashed border-ink/15 pb-0.5 transition-colors duration-200 group-hover:border-royal/40">
+              {NAV_LINKS[0].label}
+              <ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
+          </HashAwareLink>
 
           {atoopvNav.map((item) => {
             if (!item.mega) {
