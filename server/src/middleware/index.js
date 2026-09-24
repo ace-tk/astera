@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { env, isAdminUser } from '../config/env.js'
 import { User } from '../models/User.js'
+import { connectDB } from '../config/db.js'
 
 /** Wrap async route handlers so rejected promises hit the error middleware. */
 export const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
@@ -21,6 +22,7 @@ export function requireAuth(req, res, next) {
 /** Gate a route to admins. Runs after requireAuth. 403 for everyone else. */
 export async function requireAdmin(req, res, next) {
   try {
+    if (!(await connectDB())) return res.status(503).json({ error: 'Service temporarily unavailable. Please try again in a moment.' })
     const user = await User.findById(req.userId)
     if (!user) return res.status(401).json({ error: 'Authentication required' })
     if (!isAdminUser(user)) return res.status(403).json({ error: 'Admin access required' })

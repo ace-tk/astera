@@ -1,9 +1,9 @@
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
-import mongoose from 'mongoose'
 import { User } from '../models/User.js'
 import { env } from '../config/env.js'
+import { connectDB } from '../config/db.js'
 import { COUNTRIES } from '../constants.js'
 import { sendMail, verificationEmail } from '../services/mailer.js'
 import { logActivity } from '../models/ActivityLog.js'
@@ -52,15 +52,15 @@ const signupSchema = z
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) })
 
 const signToken = (id) => jwt.sign({ sub: String(id) }, env.jwtSecret, { expiresIn: env.jwtExpiresIn })
-const dbReady = () => mongoose.connection.readyState === 1
 const newToken = () => crypto.randomBytes(32).toString('hex')
+const SERVICE_UNAVAILABLE = { error: 'Service temporarily unavailable. Please try again in a moment.' }
 const verifyLink = (token) => `${env.clientUrl.replace(/\/$/, '')}/verify-email?token=${token}`
 
 /** Guest (individual) or Company (business) signup — both start unverified. */
 export async function signup(req, res) {
   const parsed = signupSchema.safeParse(req.body)
   if (!parsed.success) return res.status(422).json({ error: 'Invalid signup details', issues: parsed.error.flatten() })
-  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable — running in demo mode' })
+  if (!(await connectDB())) return res.status(503).json(SERVICE_UNAVAILABLE)
 
   const p = parsed.data
   const exists = await User.findOne({ email: p.email })
@@ -100,7 +100,7 @@ export async function signup(req, res) {
 export async function login(req, res) {
   const parsed = loginSchema.safeParse(req.body)
   if (!parsed.success) return res.status(422).json({ error: 'Invalid credentials' })
-  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable — running in demo mode' })
+  if (!(await connectDB())) return res.status(503).json(SERVICE_UNAVAILABLE)
 
   const user = await User.findOne({ email: parsed.data.email }).select('+passwordHash')
   if (!user || !(await user.verifyPassword(parsed.data.password))) {
@@ -122,7 +122,7 @@ export async function login(req, res) {
 }
 
 export async function me(req, res) {
-  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable' })
+  if (!(await connectDB())) return res.status(503).json(SERVICE_UNAVAILABLE)
   const user = await User.findById(req.userId)
   if (!user) return res.status(404).json({ error: 'User not found' })
   res.json({ user: user.toSafeJSON() })
@@ -130,7 +130,7 @@ export async function me(req, res) {
 
 /** Public — clicking the emailed link lands here. */
 export async function verifyEmail(req, res) {
-  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable' })
+  if (!(await connectDB())) return res.status(503).json(SERVICE_UNAVAILABLE)
   const { token } = req.params
   const user = await User.findOne({
     verificationToken: token,
@@ -152,7 +152,7 @@ const resendSchema = z.object({ email: z.string().email() })
 export async function resendVerification(req, res) {
   const parsed = resendSchema.safeParse(req.body)
   if (!parsed.success) return res.status(422).json({ error: 'Invalid email' })
-  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable' })
+  if (!(await connectDB())) return res.status(503).json(SERVICE_UNAVAILABLE)
 
   const user = await User.findOne({ email: parsed.data.email })
   if (user && !user.emailVerified) {
