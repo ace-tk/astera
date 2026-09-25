@@ -48,6 +48,28 @@ const schema = z.object({
   // emails). Optional — the mailer logs instead of sending when unset.
   RESEND_API_KEY: z.string().optional().default(''),
   MAIL_FROM: z.string().optional().default('Astera <onboarding@resend.dev>'),
+  // Which provider sends mail. 'auto' (default) picks SMTP when SMTP_HOST is
+  // set, else Resend when RESEND_API_KEY is set, else 'log' (nothing is sent).
+  // Set explicitly to force one. Production on O2Switch: MAIL_PROVIDER=smtp.
+  MAIL_PROVIDER: z.enum(['auto', 'smtp', 'resend', 'log']).optional().default('auto'),
+  // SMTP (e.g. the O2Switch mail server). SMTP_SECURE=true means implicit TLS
+  // (port 465); when unset it defaults to true only for port 465.
+  SMTP_HOST: z.string().optional().default(''),
+  SMTP_PORT: z.coerce.number().int().positive().optional().default(465),
+  SMTP_SECURE: z.string().optional().default(''),
+  SMTP_USER: z.string().optional().default(''),
+  SMTP_PASS: z.string().optional().default(''),
+  // Escape hatch only for a mail server whose certificate doesn't match its
+  // hostname; leave unset (verify certificates) unless O2Switch's cert forces it.
+  SMTP_TLS_REJECT_UNAUTHORIZED: z.string().optional().default(''),
+  // Where the public Contact Us form delivers its enquiries.
+  CONTACT_TO_EMAIL: z.string().optional().default('contact@atoopv.com'),
+  // Submissions allowed per client IP per 15 minutes on the public Contact form.
+  CONTACT_RATE_LIMIT_MAX: z.coerce.number().int().positive().optional().default(5),
+  // Express "trust proxy": how many reverse-proxy hops sit in front of the app (so rate limits see the
+  // real visitor IP, not the proxy's). 1 suits Vercel; a number, 'true', or 'loopback' are accepted.
+  // If every visitor appears to share one IP on a host, adjust this (see deploy/o2switch/README.md).
+  TRUST_PROXY: z.string().optional().default('1'),
   // Deepgram transcription timeout. Vercel Hobby (with Fluid Compute) caps a
   // function invocation at 300s — this default (170s) restores close to the
   // original 180s allowance while leaving ~130s of headroom in the same
@@ -96,6 +118,16 @@ export const env = {
   adminEmails: e.ADMIN_EMAILS.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean),
   resendApiKey: e.RESEND_API_KEY,
   mailFrom: e.MAIL_FROM,
+  mailProvider: e.MAIL_PROVIDER !== 'auto' ? e.MAIL_PROVIDER : e.SMTP_HOST ? 'smtp' : e.RESEND_API_KEY ? 'resend' : 'log',
+  smtpHost: e.SMTP_HOST,
+  smtpPort: e.SMTP_PORT,
+  smtpSecure: e.SMTP_SECURE ? e.SMTP_SECURE.toLowerCase() === 'true' : e.SMTP_PORT === 465,
+  smtpUser: e.SMTP_USER,
+  smtpPass: e.SMTP_PASS,
+  smtpRejectUnauthorized: e.SMTP_TLS_REJECT_UNAUTHORIZED.toLowerCase() !== 'false',
+  contactTo: e.CONTACT_TO_EMAIL,
+  contactRateLimitMax: e.CONTACT_RATE_LIMIT_MAX,
+  trustProxy: /^\d+$/.test(e.TRUST_PROXY) ? Number(e.TRUST_PROXY) : e.TRUST_PROXY === 'true' ? true : e.TRUST_PROXY === 'false' ? false : e.TRUST_PROXY,
   transcriptionTimeoutMs: e.TRANSCRIPTION_TIMEOUT_MS,
   redisUrl: e.REDIS_URL,
   isProd,

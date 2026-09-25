@@ -9,6 +9,7 @@ import * as reportRequests from '../controllers/reportRequestController.js'
 import * as customers from '../controllers/customerController.js'
 import * as files from '../controllers/fileController.js'
 import * as blog from '../controllers/blogController.js'
+import { submitContact } from '../controllers/contactController.js'
 import * as clientReports from '../controllers/clientReportController.js'
 import cmsRouter from './cms.js'
 import { cms } from '../cms/http.js'
@@ -32,6 +33,9 @@ const uploadMedia = (req, res, next) =>
   })
 
 router.get('/health', (req, res) => res.json({ ok: true, service: 'astera-api', ts: Date.now() }))
+
+// Public Contact Us form -> email to CONTACT_TO_EMAIL (see contactController.js). No auth, no DB.
+router.post('/contact', asyncHandler(submitContact))
 
 // Auth
 router.post('/auth/signup', asyncHandler(signup))

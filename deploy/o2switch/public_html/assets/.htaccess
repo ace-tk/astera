@@ -1,0 +1,6 @@
+# public_html/assets/.htaccess
+# Every file Vite emits under /assets is content-hashed (name-<hash>.js|css|png…), so a given
+# URL never changes content and can be cached for a year.
+<IfModule mod_headers.c>
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>

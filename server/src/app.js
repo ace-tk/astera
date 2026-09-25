@@ -15,8 +15,9 @@ import { errorHandler, notFound } from './middleware/index.js'
 export function createApp() {
   const app = express()
 
-  // Behind a proxy (Render/Vercel) so rate-limit + secure cookies see real IPs.
-  app.set('trust proxy', 1)
+  // Behind a proxy (Vercel / O2Switch Apache+Passenger) so rate limits see real IPs. Hop count is
+  // configurable (TRUST_PROXY, default 1).
+  app.set('trust proxy', env.trustProxy)
 
   app.use(
     helmet({
@@ -31,6 +32,17 @@ export function createApp() {
 
   app.use('/api', rateLimit({ windowMs: 60_000, max: 120, standardHeaders: true, legacyHeaders: false }))
   app.use('/api/reports', rateLimit({ windowMs: 60_000, max: 30, standardHeaders: true, legacyHeaders: false }))
+  // Public, unauthenticated, and sends real email - so it gets a much tighter limit than the rest of the API.
+  app.use(
+    '/api/contact',
+    rateLimit({
+      windowMs: 15 * 60_000,
+      max: env.contactRateLimitMax,
+      standardHeaders: true,
+      legacyHeaders: false,
+      message: { error: 'Trop de demandes envoyées. Merci de réessayer dans quelques minutes.' },
+    }),
+  )
 
   app.get('/', (req, res) => res.json({ name: 'Astera API', tagline: 'From conversations to clarity.' }))
   app.use('/api', routes)

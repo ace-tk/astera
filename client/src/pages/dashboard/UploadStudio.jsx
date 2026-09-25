@@ -125,7 +125,13 @@ export default function UploadStudio() {
       const socket = io(config.socketUrl, {
         auth: { userId: user?.id },
         path: config.socketPath,
-        transports: ['websocket'], // Socket.IO's long-polling handshake isn't reliable across serverless instances
+        // WebSocket stays the preferred transport (Vercel: long-polling isn't reliable across serverless
+        // instances). `tryAllTransports` is what makes the second entry a real fallback: without it Socket.IO
+        // never leaves the first transport, so a host that can't pass WebSocket upgrades (e.g. behind
+        // Passenger/Apache on shared hosting) would get no live progress at all. Polling is safe on a single
+        // Node process; if neither works the request lifecycle + /reports/progress/:jobId still finish the job.
+        transports: ['websocket', 'polling'],
+        tryAllTransports: true,
       })
       socket.on('connect', async () => {
         if (!connectedOnce) {

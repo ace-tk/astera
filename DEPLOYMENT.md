@@ -1,5 +1,7 @@
 # Deployment
 
+> **O2Switch (own hosting, https://atoopv.com):** see [`deploy/o2switch/README.md`](deploy/o2switch/README.md) — packaging script, Apache `.htaccess`, Passenger shim, env vars and the test checklist. The Vercel setup described below stays as the reference deployment.
+
 **Current architecture: everything on Vercel, one domain, with live realtime
 progress.** The client (static Vite build), the REST API (Express), and the
 realtime layer (Socket.IO over Vercel's native WebSocket support) deploy from

@@ -1,0 +1,48 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ATOOPV — public_html/.htaccess   (React single-page app + Node API under /api)
+#
+# IMPORTANT: cPanel's "Setup Node.js App" writes its OWN Passenger block into this file
+# (between "# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN" and "... END").
+# If cPanel already created that block, KEEP it and add the rules below above or below it —
+# never inside it, and never delete it, or /api stops working.
+# ─────────────────────────────────────────────────────────────────────────────
+
+DirectoryIndex index.html
+Options -MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1. www -> apex, always over HTTPS (one redirect, not two).
+  RewriteCond %{HTTP_HOST} ^www\.atoopv\.com$ [NC]
+  RewriteRule ^ https://atoopv.com%{REQUEST_URI} [L,R=301]
+
+  # 2. Enforce HTTPS (also honours a TLS-terminating proxy that sets X-Forwarded-Proto).
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # 3. The API (including /api/socket.io) belongs to the Node app. Leave it completely
+  #    untouched so it is never rewritten to index.html.
+  RewriteRule ^api(/|$) - [L]
+
+  # 4. Single-page-app fallback: real files/directories are served as-is; every other
+  #    URL (e.g. /atoopv/tarification, /app/admin) is handed to React Router.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ /index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # The HTML shell must never be cached, otherwise visitors keep an old build after a deploy.
+  <Files "index.html">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </Files>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

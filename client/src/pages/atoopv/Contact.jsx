@@ -1,13 +1,14 @@
 import { useEffect, useId, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Send, Check, Clock3, ShieldCheck, Sparkles, ChevronDown, Building2, ArrowRight } from 'lucide-react'
+import { Send, Check, Clock3, ShieldCheck, Sparkles, ChevronDown, Building2, ArrowRight, Loader2 } from 'lucide-react'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import Navbar from '@/components/landing/Navbar'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import Button from '@/components/ui/Button'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { EMAIL_RE } from '@/utils/validators'
+import { api } from '@/services/api'
 import { cn } from '@/utils/cn'
 
 /**
@@ -15,10 +16,10 @@ import { cn } from '@/utils/cn'
  * dropdown option, field, CTA and privacy string below is fixed content — this
  * page previously existed only as a stub redirect (/atoopv/contact -> /app), so
  * the copy here is authored to match a supplied design reference exactly. The
- * scope of this file is presentation only: local state, validation and layout.
- * There is no backend endpoint for this yet, so submission is client-side only
- * (see handleSubmit) — no new API/route was added, per the request's own
- * "do not change APIs or backend logic" constraint.
+ * scope of this file is presentation, local state and validation. Submission
+ * posts to POST /api/contact (server/src/controllers/contactController.js),
+ * which validates again server-side and emails the team; the success message
+ * is shown only after the server confirms the email was actually sent.
  */
 
 const HERO = {
@@ -28,6 +29,9 @@ const HERO = {
     'Demandez une démonstration personnalisée — nous vous présentons la chaîne de traitement sur un cas type proche de votre instance et répondons à vos questions sur l’intégration, la confidentialité et la qualité des projets de PV générés.',
   micro: 'Réponse sous 48 heures ouvrées · Sans engagement.',
 }
+
+const SUCCESS_MESSAGE = 'Merci ! Votre demande a bien été envoyée. Nous vous répondons sous 48 heures ouvrées.'
+const CONNECTION_ERROR = 'Impossible d’envoyer votre demande pour le moment. Vérifiez votre connexion ou écrivez-nous à contact@atoopv.com.'
 
 const PRIVACY_NOTE = 'Vos données restent confidentielles · conformité RGPD · pas de tracking publicitaire.'
 
@@ -185,7 +189,8 @@ export default function Contact() {
     return prefill ? { ...initialForm, message: prefill } : initialForm
   })
   const [errors, setErrors] = useState({})
-  const [status, setStatus] = useState('idle') // idle | success
+  const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [submitError, setSubmitError] = useState('')
 
   useEffect(() => {
     if (searchParams.toString()) setSearchParams({}, { replace: true })
@@ -208,13 +213,22 @@ export default function Contact() {
     return Object.keys(next).length === 0
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    if (!validate()) return
-    // No backend endpoint exists for this form yet — kept strictly client-side
-    // per this task's UI-only scope. The CTA's resting label never changes.
-    setStatus('success')
-    setTimeout(() => setStatus('idle'), 2200)
+    if (status === 'sending' || !validate()) return
+    setStatus('sending')
+    setSubmitError('')
+    try {
+      await api.post('/contact', Object.fromEntries(Object.entries(form).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])))
+      setForm(initialForm)
+      setErrors({})
+      setStatus('success')
+    } catch (err) {
+      // The server re-validates: show its field errors next to the fields when it rejects the input.
+      if (err.status === 400 && err.data?.fieldErrors) setErrors(err.data.fieldErrors)
+      setSubmitError(err.status ? err.message : CONNECTION_ERROR)
+      setStatus('error')
+    }
   }
 
   return (
@@ -367,11 +381,29 @@ export default function Contact() {
                     variant="accent"
                     size="lg"
                     className="w-full !bg-indigo-500 shadow-[0_0_0_1px_rgba(99,102,241,0.25),0_16px_40px_-14px_rgba(99,102,241,0.55)] hover:!bg-indigo-600 hover:brightness-100"
-                    disabled={status === 'success'}
+                    disabled={status === 'sending'}
+                    aria-busy={status === 'sending'}
                   >
-                    {status === 'success' ? <Check className="h-4 w-4" /> : <Send className="h-4 w-4" />}
+                    {status === 'sending' ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : status === 'success' ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Send className="h-4 w-4" />
+                    )}
                     Envoyer la demande
                   </Button>
+
+                  {status === 'success' && (
+                    <p role="status" className="mt-4 text-center text-sm font-medium text-emerald">
+                      {SUCCESS_MESSAGE}
+                    </p>
+                  )}
+                  {status === 'error' && (
+                    <p role="alert" className="mt-4 text-center text-sm text-coral">
+                      {submitError}
+                    </p>
+                  )}
 
                   <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-muted">
                     <ShieldCheck className="h-3.5 w-3.5 text-indigo-500/70" />
