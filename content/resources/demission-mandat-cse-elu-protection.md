@@ -117,7 +117,3 @@ Un procès-verbal de CSE précis et complet, c’est votre [première ligne de d
 * [→ Livres blancs CSE gratuits](https://atoopv.com/livres-blancs/)
 * [→ Autodiagnostic CSE](https://atoopv.com/autodiagnostic/)
 * [→ Modèle PV CSE Premium](https://atoopv.com/modele-pv-cse-premium-integral/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

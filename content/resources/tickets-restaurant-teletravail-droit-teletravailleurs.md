@@ -45,6 +45,4 @@ Publication LinkedIn ALC SAS — Droit social 2026
 
 💡 **Point pratique CSE :** Le CSE doit être informé et consulté sur l’accord de télétravail, notamment les clauses relatives aux avantages. Il peut demander que l’accord précise explicitement le maintien des tickets-restaurant pour les jours de télétravail. Un accord flou ou silencieux sur ce point est source de contentieux.
 
-#TicketsRestaurant#Télétravail#ÉgalitéDeTraitement#DroitDuTravail#CSE#AvantageSalarial#AccordTélétravail
-
 📚 **Sources :** Art. L. 1222-9 C. trav. · Circulaire URSSAF · Publications LinkedIn ALC SAS

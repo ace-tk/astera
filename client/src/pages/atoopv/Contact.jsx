@@ -173,8 +173,10 @@ function SectionHeading({ index, children }) {
 }
 
 export default function Contact() {
+  // usePageMeta already appends " — ATOOPV" to every title — appending it here too produced
+  // a duplicated "... — ATOOPV — ATOOPV" tab title.
   usePageMeta({
-    title: `${HERO.heading.join('')} — ATOOPV`,
+    title: HERO.heading.join(''),
     description: HERO.lead,
   })
 

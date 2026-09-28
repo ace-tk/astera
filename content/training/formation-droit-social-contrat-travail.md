@@ -54,7 +54,7 @@ PROGRAMME
 
 ## Formation droit social contrat travail : programme complet
 
-En premier lieu, la formation aborde les différents types de contrats de travail (CDI, CDD, intérim) et leurs conditions de validité. Ensuite, elle couvre les motifs légaux de rupture du contrat : dém
+En premier lieu, la formation aborde les différents types de contrats de travail (CDI, CDD, intérim) et leurs conditions de validité.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI CHOISIR ALC
 
 ## Formez vos élus avant la prochaine réunion
 
-La formation droit social contrat travail d’AtooPV permet aux élus CSE de comprendre les mécanismes du contrat de travail et les conditions légales de sa rupture. En effet, maîtriser le droit social e
+La formation droit social contrat travail d’AtooPV permet aux élus CSE de comprendre les mécanismes du contrat de travail et les conditions légales de sa rupture.
 
 ⚖️
 

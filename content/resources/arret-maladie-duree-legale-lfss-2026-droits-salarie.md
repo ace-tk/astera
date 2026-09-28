@@ -1,4 +1,4 @@
-# Arrêt maladie : durée légale, LFSS 2026 et droits du salarié — Publication LinkedIn ALC SAS (198k vues)
+# Arrêt maladie : durée légale, LFSS 2026 et droits du salarié — Publication LinkedIn ALC SAS
 
 - Source URL: https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/
 - Category: resources
@@ -6,7 +6,7 @@
 
 La **durée légale de l’arrêt maladie** a été profondément modifiée par la LFSS 2026. En effet, le décret n° 2026-498 plafonne les indemnités journalières à 31 jours puis 62 jours selon les situations. Ainsi, les salariés et les élus CSE doivent connaître la nouvelle **durée légale arrêt maladie LFSS 2026** pour défendre les droits des salariés concernés.
 
-Par ailleurs, la publication LinkedIn originale d’ALC SAS sur ce sujet a atteint 198 000 vues, ce qui témoigne de l’importance de cette réforme pour les professionnels des ressources humaines et les élus du personnel. En pratique, cette réforme impacte directement les droits des salariés en arrêt maladie et les obligations des employeurs.
+En pratique, cette réforme impacte directement les droits des salariés en arrêt maladie et les obligations des employeurs.
 
 De plus, les élus CSE ont un rôle crucial à jouer dans l’information et la défense des salariés concernés par un arrêt maladie prolongé. C’est pourquoi il est essentiel de maîtriser les nouvelles règles issues de la LFSS 2026. Cet article synthétise les points clés à connaître.
 
@@ -24,15 +24,13 @@ Ainsi, la **durée légale de l’arrêt maladie** a été profondément modifi�
 
 # 📋 Publication LinkedIn virale — Arrêts maladie & droit du salarié
 
-Ainsi, retrouvez ci-dessous la publication LinkedIn du président d’ALC SAS — 198 000+ impressions — droit du travail, arrêts maladie, LFSS 2026, CSE & CSSCT.
-
-**💡 Pourquoi cette publication a-t-elle autant résonné ?** En posant une question que tout DRH se pose — *« Jusqu’où dure l’obligation d’un arrêt maladie ?»* — et en y répondant de façon juridiquement sourcée, cette publication a touché 145 722 membres LinkedIn en moins d’un mois.
+Ainsi, retrouvez ci-dessous la publication LinkedIn du président d’ALC SAS — droit du travail, arrêts maladie, LFSS 2026, CSE & CSSCT.
 
 ⚖️
 
 ## Arrêt maladie : durée légale et réforme LFSS 2026
 
-📅 Mai 2026 · ❤️ 222 réactions · 💬 2 commentaires · 🔁 50 republications · 👁️ 198 272 impressions
+📅 Mai 2026 · ❤️ 222 réactions · 💬 2 commentaires · 🔁 50 republications
 
 Or, ⚖️ **Un arrêt maladie ne peut légalement pas être limité dans sa durée. Dès le 1er septembre 2026, cette règle change — partiellement.**
 
@@ -53,13 +51,6 @@ En effet, la loi de financement de la Sécurité sociale 2026 (art. 81) modifie 
    Ainsi, la jurisprudence (Cass. soc., 23 janvier 2002) conditionne le licenciement pour absence prolongée à la preuve d’une désorganisation durable et d’une impossibilité de remplacement définitif.
 
 **📋 Pour les élus CSE/CSSCT :** Toute alerte sur la charge de travail doit être datée, chiffrée et assortie de la position de l’employeur dans le PV. Ce document peut être produit en contentieux.
-
-#CSE  
-#DroitDuTravail  
-#IRP  
-#CSSCT  
-#ArretMaladie  
-#LFSS2026
 
 Source : LFSS 2026, art. 81 (art. L. 162-4-1 CSS) · Décret n° 2026-498 du 12 juin 2026 · Cass. soc., 23 janvier 2002 · Art. R. 323-1 CSS — Publication LinkedIn ALC SAS
 
@@ -110,16 +101,12 @@ Par ailleurs, l’article 81 de la loi de financement de la Sécurité sociale p
 
 **📚 Autres publications à fort trafic — ALC SAS**
 
-* ⚖️ [Arrêt maladie : durée légale et LFSS 2026](https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/) — 198k impressions LinkedIn
-* 📅 [Congé payé vendredi après 37h : décompte jours ouvrables](https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/) — 144k impressions
-* 📊 [Congés payés + heures sup : 3 bulletins, 3 résultats](https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/) — 131k impressions
+* ⚖️ [Arrêt maladie : durée légale et LFSS 2026](https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/)
+* 📅 [Congé payé vendredi après 37h : décompte jours ouvrables](https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/)
+* 📊 [Congés payés + heures sup : 3 bulletins, 3 résultats](https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/)
 * 🗓️ [Compteur CP après arrêt maladie : 2 vérifications obligatoires](https://atoopv.com/compteur-cp-arret-maladie-verifications-avant-solder/)
 * 🛡️ [Grossesse et licenciement nul : Cass. soc. 2026](https://atoopv.com/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026/)
 * 📸 [Droit à l’image du salarié après son départ](https://atoopv.com/droit-image-salarie-depart-jurisprudence-cour-cassation/)
 * 🍽️ [Tickets-restaurant et télétravail](https://atoopv.com/tickets-restaurant-teletravail-droit-teletravailleurs/)
 * 📋 [Veille sociale CSE — Juin 2026 (compilation)](https://atoopv.com/veille-sociale-cse-juin-2026/)
 * 🔍 [Toute la veille juridique CSE →](https://atoopv.com/category/veille-juridique-cse/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

@@ -38,7 +38,7 @@ En conclusion, le **licenciement grossesse nul** constitue l’une des protectio
 
 Publication LinkedIn ALC SAS — Droit du travail 2026
 
-👁 7 200+ impressions · ❤️ 142 réactions · Mai 2026
+❤️ 142 réactions · Mai 2026
 
 💡 **Pourquoi cette publication a-t-elle résonné ?** La protection de la femme enceinte contre le licenciement est un droit fondamental, mais encore méconnu. La Cour de cassation confirme en 2026 que le licenciement d’une salariée enceinte est nul de plein droit, même si l’employeur ignorait l’état de grossesse au moment de la rupture.
 
@@ -46,8 +46,7 @@ Publication LinkedIn ALC SAS — Droit du travail 2026
 
 📅 Mai 2026  
 ❤️ 142 réactions  
-💬 18 commentaires  
-👁 7 200 impressions
+💬 18 commentaires
 
 **⚠️ Une salariée enceinte ne peut pas être licenciée.** La nullité s’applique même si l’employeur n’était pas informé de la grossesse — à condition que la salariée notifie son état dans les 15 jours suivant la notification du licenciement.
 
@@ -58,7 +57,5 @@ Publication LinkedIn ALC SAS — Droit du travail 2026
 5. **Le rôle du CSE et de la CSSCT :** Le CSE peut être alerté si une salariée enceinte est exposée à un risque particulier. La CSSCT (entreprises +300 salariés) veille à l’adaptation du poste de travail. Le défaut de consultation peut aggraver la responsabilité de l’employeur devant les prud’hommes.
 
 💡 **Point pratique CSE :** Si une salariée informe le CSE d’un licenciement pendant sa grossesse, le délégué peut l’accompagner lors de l’entretien préalable et signaler la situation à l’inspecteur du travail. La nullité peut être soulevée en référé prud’homal (procédure d’urgence) pour obtenir une réintégration rapide.
-
-#Grossesse#LicenciementNul#ProtectionMaternité#DroitDuTravail#CSE#CourDeCassation2026
 
 📚 **Sources :** Art. L. 1225-4 et L. 1225-5 C. trav. · Cass. soc. 2026 · Publications LinkedIn ALC SAS

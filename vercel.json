@@ -9,6 +9,13 @@
       "maxDuration": 300
     }
   },
+  "redirects": [
+    {
+      "source": "/atoopv/simulateur",
+      "destination": "/atoopv/tarification",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }

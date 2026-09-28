@@ -20,8 +20,10 @@ import '@/styles/boutique.css'
  * "EXPERIMENT / ..." labels are dropped here via an opt-in prop.
  */
 export default function Boutique() {
+  // usePageMeta already appends " — ATOOPV" to every title — passing it here too produced
+  // a duplicated "Boutique | ATOOPV — ATOOPV" tab title.
   usePageMeta({
-    title: 'Boutique | ATOOPV',
+    title: 'Boutique',
     description: 'Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE.',
   })
 

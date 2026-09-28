@@ -115,7 +115,3 @@ Documenter au [procès-verbal de CSE](https://atoopv.com/proces-verbal/) chaque 
 Vous devez tracer ces dispositifs dans vos PV de réunion CSE ? [Notre service de rédaction PV CSE](https://atoopv.com/redaction-pv-cse/) garantit une retranscription fidèle, neutre et conforme au Code du travail. Livraison J+2 à J+5.
 
 👉 [Pourquoi externaliser la rédaction de votre PV CSE ?](https://atoopv.com/externaliser-pv-cse/) · [Voir nos tarifs transparents](https://atoopv.com/tarif-redaction-pv-cse/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

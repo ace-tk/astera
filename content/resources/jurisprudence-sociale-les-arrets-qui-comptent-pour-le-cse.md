@@ -31,9 +31,3 @@ Par ailleurs, la jurisprudence récente a profondément modifié les règles d�
 ## AtooPV : vos PV de CSE, précis et fidèles aux débats
 
 En conclusion, les décisions de jurisprudence sociale CSE présentées ici concernent directement le fonctionnement du comité. Un [procès-verbal précis](/redaction-pv-cse/), daté et fidèle aux débats constitue souvent la première pièce produite en contentieux. AtooPV vous accompagne dans la [rédaction de vos PV](/services/) avec la rigueur juridique qu’ils exigent. Demandez un devis gratuit pour en savoir plus.
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non
-
-👍 1 · 👎 0

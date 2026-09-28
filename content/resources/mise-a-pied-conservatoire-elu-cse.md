@@ -116,7 +116,3 @@ Un [procès-verbal de CSE](https://atoopv.com/proces-verbal/) précis, rédigé 
 * [→ Livres blancs CSE gratuits](https://atoopv.com/livres-blancs/)
 * [→ Autodiagnostic CSE](https://atoopv.com/autodiagnostic/)
 * [→ Modèle PV CSE Premium](https://atoopv.com/modele-pv-cse-premium-integral/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

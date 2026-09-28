@@ -92,7 +92,7 @@ POURQUOI CHOISIR ALC
 
 ## Formations élus CSE agréé : notre catalogue complet
 
-Ainsi, les formations élus CSE d’AtooPV permettent aux membres du Comité Social et Économique d’acquérir les compétences juridiques, économiques et managériales nécessaires à leur mandat. Notre organisme de
+Ainsi, les formations élus CSE d’AtooPV permettent aux membres du Comité Social et Économique d’acquérir les compétences juridiques, économiques et managériales nécessaires à leur mandat.
 
 ⚖️
 

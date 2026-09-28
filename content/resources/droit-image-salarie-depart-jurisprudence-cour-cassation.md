@@ -1,4 +1,4 @@
-# Droit à l’image du salarié après son départ : ce que dit vraiment la loi — ALC SAS (152 impressions)
+# Droit à l’image du salarié après son départ : ce que dit vraiment la loi — ALC SAS
 
 - Source URL: https://atoopv.com/droit-image-salarie-depart-jurisprudence-cour-cassation/
 - Category: resources
@@ -61,7 +61,5 @@ Publication LinkedIn ALC SAS — Jurisprudence Cour de cassation
 ### Ce que le CSE peut faire concrètement
 
 **Point pratique CSE :** Le CSE peut demander à l’employeur de présenter sa politique de gestion des droits à l’image lors d’une réunion. Il peut aussi alerter si des photos d’anciens salariés apparaissent encore sur les supports de l’entreprise. C’est une question de conformité RGPD et de respect des droits fondamentaux.
-
-#DroitImage#DroitDuTravail#Licenciement#RGPD#CSE#CourDeCassation#DroitsDesPersonnalité
 
 📚 **Sources :** Art. 9 C. civ. · Cass. soc. 13 mai 2026, n° 24-19.117 · Cass. soc. 19 janvier 2022, n° 20-12.420 · RGPD · Publications LinkedIn ALC SAS

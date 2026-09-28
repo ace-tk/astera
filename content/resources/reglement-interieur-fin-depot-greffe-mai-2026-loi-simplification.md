@@ -1,4 +1,4 @@
-# Règlement intérieur : fin du dépôt au greffe depuis le 28 mai 2026 — ALC SAS (71 impressions)
+# Règlement intérieur : fin du dépôt au greffe depuis le 28 mai 2026 — ALC SAS
 
 - Source URL: https://atoopv.com/reglement-interieur-fin-depot-greffe-mai-2026-loi-simplification/
 - Category: resources
@@ -16,7 +16,7 @@ Le CSE conserve un rôle essentiel dans la procédure d’adoption du règlement
 
 ## 📋 Règlement intérieur : la fin du dépôt au greffe du conseil de prud’hommes — ce qui change depuis le 28 mai 2026
 
-📅 Juin 2026 · 👁️ 71 impressions
+📅 Juin 2026
 
 Depuis que je rédige des PV de CSE, je vois passer des règlements intérieurs déposés, oubliés, parfois contestés. **Une règle vient de changer.**
 
@@ -46,9 +46,3 @@ Pour un élu, l’essentiel tient en une phrase : ce qui rend le règlement int�
 La partie réglementaire (articles R.1321-2 et R.1321-3, et la contravention attachée au défaut de dépôt) n’est pas encore mise à jour. **Un décret est attendu.** Le ministère du Travail indique que la suppression du dépôt s’applique néanmoins dès maintenant.
 
 Une formalité en moins pour l’employeur. **Aucune protection en moins** pour les salariés, à une condition : que les autres étapes soient respectées. L’élu consulté est bien placé pour le vérifier.
-
-#CSE #DroitSocial #RèglementIntérieur #DroitDuTravail #ReprésentantsDuPersonnel #DialogueSocial #LoiSimplification
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

@@ -14,7 +14,7 @@ export const A_PROPOS_HERO = {
   title: 'L’expertise du procès-verbal de CSE, *au service de vos instances*',
   lead: 'AtooPV fait de la rédaction des procès-verbaux un métier à part entière : méthode rigoureuse, délais tenus, fidélité totale aux échanges. Pour des CSE de toutes tailles, partout en France.',
   primaryCta: { label: 'Travaillons ensemble', to: '/atoopv/contact' },
-  secondaryCta: { label: 'Nos services', to: '/atoopv/services' },
+  secondaryCta: { label: 'Nos services', to: '/services' },
 }
 
 export const A_PROPOS_MISSION = {
@@ -111,6 +111,6 @@ export const A_PROPOS_CTA = {
   heading: 'Confiez la rédaction de vos PV à AtooPV',
   body: 'Libérez vos élus des contraintes administratives et sécurisez la conformité de vos procès-verbaux. Rédaction de PV, audiotypie et formations élus CSE : un seul partenaire pour votre instance.',
   primaryCta: { label: 'Contactez-nous', to: '/atoopv/contact' },
-  secondaryCta: { label: 'Voir nos services', to: '/atoopv/services' },
+  secondaryCta: { label: 'Voir nos services', to: '/services' },
   footer: '04 12 10 06 06 · contact@atoopv.com · ALC SAS — SIREN 833 781 248',
 }

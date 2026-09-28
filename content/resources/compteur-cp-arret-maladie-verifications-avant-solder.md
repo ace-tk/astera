@@ -35,29 +35,18 @@ Gestionnaire de paie, attention à l’erreur qui se paie ! Un salarié revient 
 
 **⚠️ Principe fondamental :** *Délai passé ≠ congés perdus.* L’employeur ne peut pas se décharger sur l’écoulement du temps si le salarié n’a pas été informé ou mis en mesure de prendre ses congés.
 
-#CongesPayes
-#ArretMaladie
-#DroitDuTravail
-#CSE
-#Paie
-#GestionRH
-
 Source : C. trav. L. 3141-19-3 · Cass. soc. 13 nov. 2025, n° 24-14.084 — Publication LinkedIn ALC SAS
 
 🔗 **Retrouvez toutes les publications de veille juridique** dans la [rubrique Veille juridique CSE](https://atoopv.com/category/veille-juridique-cse/) d’AtooPV.
 
 **📚 Autres publications à fort trafic — ALC SAS**
 
-* ⚖️ [Arrêt maladie : durée légale et LFSS 2026](https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/) — 198k impressions LinkedIn
-* 📅 [Congé payé vendredi après 37h : décompte jours ouvrables](https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/) — 144k impressions
-* 📊 [Congés payés + heures sup : 3 bulletins, 3 résultats](https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/) — 131k impressions
+* ⚖️ [Arrêt maladie : durée légale et LFSS 2026](https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/)
+* 📅 [Congé payé vendredi après 37h : décompte jours ouvrables](https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/)
+* 📊 [Congés payés + heures sup : 3 bulletins, 3 résultats](https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/)
 * 🗓️ [Compteur CP après arrêt maladie : 2 vérifications obligatoires](https://atoopv.com/compteur-cp-arret-maladie-verifications-avant-solder/)
 * 🛡️ [Grossesse et licenciement nul : Cass. soc. 2026](https://atoopv.com/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026/)
 * 📸 [Droit à l’image du salarié après son départ](https://atoopv.com/droit-image-salarie-depart-jurisprudence-cour-cassation/)
 * 🍽️ [Tickets-restaurant et télétravail](https://atoopv.com/tickets-restaurant-teletravail-droit-teletravailleurs/)
 * 📋 [Veille sociale CSE — Juin 2026 (compilation)](https://atoopv.com/veille-sociale-cse-juin-2026/)
 * 🔍 [Toute la veille juridique CSE →](https://atoopv.com/category/veille-juridique-cse/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

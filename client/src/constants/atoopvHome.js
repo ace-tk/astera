@@ -266,31 +266,31 @@ export const ACCUEIL = {
         icon: FileText,
         title: 'Rédaction PV de CSE',
         body: 'Procès-verbaux conformes au Code du travail, livrés sous 48 à 72h. Intervention en présentiel ou sur enregistrement fourni. Conformité Art. L.2315-34.',
-        cta: { label: 'Découvrir →', to: '/atoopv/services' },
+        cta: { label: 'Découvrir →', to: '/services' },
       },
       {
         icon: Shield,
         title: 'Rédaction PV CSSCT',
         body: 'Comptes-rendus de réunions CSSCT avec maîtrise des enjeux santé-sécurité. Identification des risques, suivi des alertes, traçabilité des décisions.',
-        cta: { label: 'Découvrir →', to: '/atoopv/services' },
+        cta: { label: 'Découvrir →', to: '/services' },
       },
       {
         icon: Mic,
         title: 'Retranscription audio/vidéo',
         body: 'Vos enregistrements transformés en verbatim structuré et exploitable. Idéal pour les réunions à distance ou les instances à fort volume d’échanges.',
-        cta: { label: 'Découvrir →', to: '/atoopv/services' },
+        cta: { label: 'Découvrir →', to: '/services' },
       },
       {
         icon: Handshake,
         title: 'Assistance aux élus',
         body: 'Accompagnement des secrétaires de CSE dans la préparation et la rédaction de leurs PV. Formulation juridique, structure des délibérations, relecture experte.',
-        cta: { label: 'Découvrir →', to: '/atoopv/services' },
+        cta: { label: 'Découvrir →', to: '/services' },
       },
       {
         icon: GraduationCap,
         title: 'Formation des élus',
         body: 'Organisme agréé au titre de la formation économique des membres du CSE — Région AURA. Formations finançables (art. L.2315-63 CT) : droit du travail, CSSCT, heures de délégation, lecture des comptes.',
-        cta: { label: 'Découvrir →', to: '/atoopv/services' },
+        cta: { label: 'Découvrir →', to: '/services' },
       },
       {
         icon: Calculator,
@@ -330,25 +330,25 @@ export const ACCUEIL = {
   },
   veille: {
     eyebrow: 'Veille juridique CSE',
-    heading: 'Publications LinkedIn d’ALC SAS — 678 148 impressions',
+    // SEO audit: the "— N impressions" vanity LinkedIn metric was removed from the
+    // heading and from each item's badge below — stale/promotional counts, not
+    // page content. Heading/lead/titles/body/cta/links are otherwise unchanged.
+    heading: 'Publications LinkedIn d’ALC SAS',
     lead: 'Arrêts de la Cour de cassation, réformes législatives, jurisprudence sociale : les publications du président d’ALC SAS décryptées pour les élus CSE et les DRH.',
     items: [
       {
-        badge: '198 272 impressions',
         title: 'Arrêt maladie : durée légale et LFSS 2026',
         body: 'Ce que change la loi de financement de la Sécurité sociale 2026 pour les employeurs et les CSE.',
         cta: 'Lire l’article →',
         to: '/atoopv/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie',
       },
       {
-        badge: '144 000 impressions',
         title: 'Congé payé vendredi après 37h : le calcul qui surprend',
         body: 'Combien de jours de CP décomptés pour un vendredi posé après 37h lundi–jeudi ?',
         cta: 'Lire l’article →',
         to: '/atoopv/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables',
       },
       {
-        badge: '131 000 impressions',
         title: 'CP + heures sup : 3 bulletins, 3 résultats',
         body: 'La règle du maintien de salaire et ses effets sur les bulletins de paie.',
         cta: 'Lire l’article →',

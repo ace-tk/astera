@@ -54,7 +54,7 @@ BONNES PRATIQUES
 
 ## Communication CSE newsletter ASC : les bonnes pratiques
 
-En premier lieu, définissez les objectifs de votre communication CSE newsletter ASC : informer sur les avantages salariés, communiquer sur les réunions plénières, présenter les actions culturelles et
+En premier lieu, définissez les objectifs de votre communication CSE newsletter ASC : informer sur les avantages salariés, communiquer sur les réunions plénières, présenter les actions culturelles.
 
 📋
 

@@ -54,7 +54,7 @@ PROGRAMME
 
 ## Formation trésorier CSE : compétences et programme
 
-En premier lieu, la formation couvre la comptabilité simplifiée adaptée aux CSE et la présentation des comptes en réunion plénière. Ensuite, les participants apprennent à gérer le contrôle URSSAF sur
+En premier lieu, la formation couvre la comptabilité simplifiée adaptée aux CSE et la présentation des comptes en réunion plénière.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI CHOISIR ALC
 
 ## Formez vos élus avant la prochaine réunion
 
-La formation trésorier CSE proposée par AtooPV couvre en 2 jours l’ensemble des compétences nécessaires pour gérer efficacement les budgets du Comité Social et Économique. En effet, le trésorier du CS
+La formation trésorier CSE proposée par AtooPV couvre en 2 jours l’ensemble des compétences nécessaires pour gérer efficacement les budgets du Comité Social et Économique.
 
 ⚖️
 

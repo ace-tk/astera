@@ -54,7 +54,7 @@ PROGRAMME DÉTAILLÉ
 
 ## Formation économique élus CSE : programme 5 jours
 
-En premier lieu, la formation couvre l’analyse des documents comptables : bilan, compte de résultat, rapport de gestion et liasse fiscale. Ensuite, les participants apprennent à déchiffrer les indicat
+En premier lieu, la formation couvre l’analyse des documents comptables : bilan, compte de résultat, rapport de gestion et liasse fiscale.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI CHOISIR ALC
 
 ## Contenu détaillé de notre formation économique CSE
 
-Tout d’abord, notre organisme de formation est déclaré (NDA 84740456974) et spécialisé dans la formation économique des membres du CSE (art. L.2315-63 CT), gage de la qualité de l’enseignement dispens
+Tout d’abord, notre organisme de formation est déclaré (NDA 84740456974) et spécialisé dans la formation économique des membres du CSE (art. L.2315-63 CT).
 
 ⚖️
 

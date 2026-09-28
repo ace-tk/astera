@@ -16,7 +16,7 @@ Face aux obligations employeur en période de **canicule au travail**, le CSE jo
 
 ## ☀️ Canicule au travail : le Code du travail se met à la page — décret n° 2025-482
 
-📅 Juin 2026 · 👁️ 16 impressions
+📅 Juin 2026
 
 💧 Pendant quinze ans, le Code du travail demandait de l’eau « pour la boisson ». Depuis le **1er juillet 2025**, elle doit permettre de « se désaltérer et **se rafraîchir** ».
 
@@ -45,9 +45,3 @@ Le salarié conserve son **droit de retrait** face à un danger grave et imminen
 ⏳ Le décret a complété l’article R. 4721-5. L’inspection du travail peut désormais placer l’employeur en **mise en demeure** sur ce risque, avec **8 jours** pour se conformer.
 
 Ce n’est plus un « point divers » : c’est une ligne qui a sa place à l’ordre du jour du CSE en période estivale.
-
-#CSE #DroitDuTravail #SantéAuTravail #Canicule #Prévention #DialogueSocial
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

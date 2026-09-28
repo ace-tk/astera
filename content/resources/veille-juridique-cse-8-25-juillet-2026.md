@@ -27,7 +27,3 @@ Troisième cas, transfert d’un marché de sécurité aéroportuaire : la Cour 
 ## Veille juridique CSE : ce qu’il faut retenir
 
 Trois décisions, un seul fil conducteur : la Cour de cassation resserre les règles du jeu entre élus, syndicats et employeurs. Ce sont précisément ces zones grises qui finissent, ou non, consignées dans un procès-verbal solide. Pour le CSE, cette veille juridique CSE confirme que la rigueur du [PV](https://atoopv.com/) reste la meilleure protection face à ces contentieux. Retrouvez le texte intégral de ces décisions sur le site d[e la Cour de cassation.](https://www.courdecassation.fr/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

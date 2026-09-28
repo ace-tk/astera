@@ -54,7 +54,7 @@ CE QUE LE GUIDE CONTIENT
 
 ## Guide du comité CSE : tout ce que les élus doivent savoir
 
-En premier lieu, notre guide aborde la constitution et le fonctionnement du bureau du CSE : président, secrétaire, trésorier. Ensuite, il couvre les consultations obligatoires, les expertises, les dro
+En premier lieu, notre guide aborde la constitution et le fonctionnement du bureau du CSE : président, secrétaire, trésorier.
 
 📋
 

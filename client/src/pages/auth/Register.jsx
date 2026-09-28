@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { Mail } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
+import { usePageMeta } from '@/hooks/usePageMeta'
 import Button from '@/components/ui/Button'
 import AuthShell from './AuthShell'
 import AccountTypeSelector from './AccountTypeSelector'
@@ -22,6 +23,8 @@ const COPY = {
 }
 
 export default function Register() {
+  // Authentication page — must not be indexed.
+  usePageMeta({ noindex: true })
   const { register } = useAuth()
   const location = useLocation()
   const from = location.state?.from || '/app'

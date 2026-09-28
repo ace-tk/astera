@@ -7,7 +7,6 @@ import RichTextSection from '@/components/services/RichTextSection'
 import PVSimulator from '@/components/atoopv/PVSimulator'
 import FAQSection from '@/components/services/FAQSection'
 import CTASection from '@/components/services/CTASection'
-import Pricing from '@/components/landing/sections/Pricing'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import {
   TARIFICATION_HERO,
@@ -85,9 +84,12 @@ export default function Tarification() {
         }
       />
 
-      {/* Homepage Pricing section, relocated here per the Homepage/Tarification
-          restructure — appended below the existing Tarification content, unchanged. */}
-      <Pricing />
+      {/* SEO audit: the English/SaaS-style "Pricing" section (Solo/Studio/Scale,
+          $/seat/mo) previously relocated here from the homepage was removed —
+          unrelated to ATOOPV's French CSE PV pricing, which is already covered
+          above by PVSimulator/TARIFICATION_TIERS. The `Pricing` component
+          itself is untouched (it's a shared component); only this page's use
+          of it was removed. */}
 
       <AtoopvFooter />
     </motion.main>

@@ -114,7 +114,3 @@ La documentation systématique des démissions en [procès-verbal de CSE](https:
 AtooPV rédige vos procès-verbaux depuis 2017. [Découvrez notre service de rédaction PV CSE](https://atoopv.com/redaction-pv-cse/) — livraison J+2, conformité garantie, tarif transparent.
 
 [Voir les tarifs](https://atoopv.com/tarif-redaction-pv-cse/) · [Demander un devis gratuit](https://atoopv.com/redaction-pv-cse/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

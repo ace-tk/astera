@@ -54,7 +54,7 @@ CE QUE DIT LA LOI
 
 ## Ce que dit la loi sur le rédacteur PV CSE
 
-En premier lieu, l’article L.2315-34 du Code du travail confie au secrétaire du CSE la responsabilité de l’établissement du procès-verbal. Il est transmis à l’employeur et aux membres dans le délai fi
+En premier lieu, l’article L.2315-34 du Code du travail confie au secrétaire du CSE la responsabilité de l’établissement du procès-verbal.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI ATOOPV
 
 ## Option 2 : Un prestataire spécialisé comme AtooPV
 
-Ensuite, AtooPV assiste ou remplace le secrétaire dans sa mission de expert IRP. Que ce soit en présence en séance, sur enregistrement ou sur notes brutes, notre équipe garantit une livraison so
+Ensuite, AtooPV assiste ou remplace le secrétaire dans sa mission de expert IRP.
 
 ⚖️
 

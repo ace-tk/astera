@@ -76,7 +76,7 @@ POURQUOI ATOOPV
 
 ## AtooPV : un PV conforme au Code du travail, garanti
 
-En conclusion, AtooPV maîtrise chaque article du Code du travail relatif aux PV CSE. Confiez-nous votre rédaction pour une conformité juridique garantie. Demandez un devis gratuit et découvrez nos ser
+En conclusion, AtooPV maîtrise chaque article du Code du travail relatif aux PV CSE. Confiez-nous votre rédaction pour une conformité juridique garantie.
 
 ⚖️
 

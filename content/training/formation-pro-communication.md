@@ -54,7 +54,7 @@ PROGRAMME
 
 ## Formation communication CSE : outils et techniques
 
-En premier lieu, la formation aborde les fondamentaux de la communication institutionnelle : messages clés, cibles, canaux de diffusion. Ensuite, les participants découvrent les outils numériques adap
+En premier lieu, la formation aborde les fondamentaux de la communication institutionnelle : messages clés, cibles, canaux de diffusion.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI CHOISIR ALC
 
 ## Formez vos élus avant la prochaine réunion
 
-La formation communication CSE d’AtooPV dote les élus des compétences essentielles pour informer efficacement les salariés et valoriser les actions du comité. En effet, une communication maîtrisée ren
+La formation communication CSE d’AtooPV dote les élus des compétences essentielles pour informer efficacement les salariés et valoriser les actions du comité.
 
 ⚖️
 

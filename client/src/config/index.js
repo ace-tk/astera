@@ -2,6 +2,11 @@
  * Central runtime config. Everything the client needs to know about its
  * environment lives here so we never sprinkle `import.meta.env` across the app.
  */
+// Production base URL for SEO (canonical, og:url, sitemap). Single source of
+// truth — no page/component should hardcode a domain. O2Switch is production;
+// there is no Vercel/astera.app-specific override, by design.
+export const SITE_URL = 'https://atoopv.com'
+
 export const config = {
   appName: 'ATOOPV',
   tagline: 'From Conversations to Clarity.',

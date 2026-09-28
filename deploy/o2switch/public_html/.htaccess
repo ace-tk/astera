@@ -26,6 +26,11 @@ Options -MultiViews
   #    untouched so it is never rewritten to index.html.
   RewriteRule ^api(/|$) - [L]
 
+  # 3b. SEO audit: /atoopv/simulateur is a duplicate of /atoopv/tarification and must not
+  #     stay indexable — a real, permanent redirect (not the SPA's client-side one, which a
+  #     crawler never gets a 301 status from, only a 200 + JS navigation).
+  RewriteRule ^atoopv/simulateur/?$ https://atoopv.com/atoopv/tarification [R=301,L]
+
   # 4. Single-page-app fallback: real files/directories are served as-is; every other
   #    URL (e.g. /atoopv/tarification, /app/admin) is handed to React Router.
   RewriteCond %{REQUEST_FILENAME} !-f

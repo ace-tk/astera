@@ -72,9 +72,3 @@ Nous intervenons en présentiel ou à distance pour rédiger vos PV de CSE, CSSC
 * [→ Livres blancs CSE gratuits](https://atoopv.com/livres-blancs/)
 * [→ Autodiagnostic CSE](https://atoopv.com/autodiagnostic/)
 * [→ Modèle PV CSE Premium](https://atoopv.com/modele-pv-cse-premium-integral/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non
-
-👍 1 · 👎 0

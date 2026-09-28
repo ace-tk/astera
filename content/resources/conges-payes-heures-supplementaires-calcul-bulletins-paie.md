@@ -1,4 +1,4 @@
-# Congés payés et heures supplémentaires : 3 bulletins de paie, 3 résultats — ALC SAS (131k vues)
+# Congés payés et heures supplémentaires : 3 bulletins de paie, 3 résultats — ALC SAS
 
 - Source URL: https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/
 - Category: resources
@@ -18,15 +18,15 @@ Le calcul des **congés payés et heures supplémentaires** sur les bulletins de
 
 # 📋 Publication LinkedIn virale — Congés payés + heures sup : 3 bulletins, 3 résultats
 
-131 000+ impressions — La même situation, trois conventions collectives différentes, trois calculs de bulletins différents. Ce qui change vraiment selon votre accord d’entreprise.
+La même situation, trois conventions collectives différentes, trois calculs de bulletins différents. Ce qui change vraiment selon votre accord d’entreprise.
 
-**💡 Pourquoi cette publication a-t-elle touché 131 000 personnes ?** Parce que la question du calcul de l’indemnité de congés payés en présence d’heures supplémentaires est l’une des plus mal maîtrisées en gestion de la paie et du personnel.
+La question du calcul de l’indemnité de congés payés en présence d’heures supplémentaires est l’une des plus mal maîtrisées en gestion de la paie et du personnel.
 
 📊
 
 ## Congés payés et heures supplémentaires : 3 bulletins de paie, 3 résultats différents
 
-📅 2026 · ❤️ 115 engagements · 👁️ 131 000+ impressions
+📅 2026 · ❤️ 115 engagements
 
 🔑 **La règle fondamentale :** L’indemnité de congés payés est calculée selon la règle la plus favorable entre :
 
@@ -39,11 +39,4 @@ Le calcul des **congés payés et heures supplémentaires** sur les bulletins de
 
 **📋 Pour les élus CSE :** Lorsque vous constatez des différences entre bulletins pour des salariés dans des situations similaires, vérifiez d’abord la convention collective et ses dispositions spécifiques sur le calcul des CP. La jurisprudence impose toujours le maintien de la règle la plus favorable au salarié.
 
-#CongesPayes  
-#HeuresSupplementaires  
-#DroitDuTravail  
-#CSE  
-#BulletinDePaie  
-#ConventionCollective
-
-Source : Art. L. 3141-24 et L. 3141-25 du Code du travail — Publication LinkedIn ALC SAS (131k impressions)
+Source : Art. L. 3141-24 et L. 3141-25 du Code du travail — Publication LinkedIn ALC SAS

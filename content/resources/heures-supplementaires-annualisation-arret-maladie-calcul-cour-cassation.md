@@ -16,7 +16,7 @@ Les élus CSE ont la capacité de contrôler le **calcul des heures supplémenta
 
 ## ⚖️ Annualisation du temps de travail et arrêt maladie : la Cour de cassation fixe la méthode de calcul des heures supplémentaires
 
-📅 Juin 2026 · 👁️ 254 impressions
+📅 Juin 2026
 
 🔎 **Un arrêt maladie en pleine période haute peut faire perdre des heures supplémentaires à un salarié annualisé.**
 
@@ -53,9 +53,3 @@ L’arrêt ne vise que la période haute. Transposer mécaniquement l’abaissem
 À la prochaine clôture de période, **demandez le détail du calcul** pour chaque salarié ayant eu un arrêt maladie en saison haute. Un seuil laissé à 1 607 h, c’est une réclamation à chiffrer.
 
 **Source :** Cass. soc., 3 juin 2026, n° 24-19.545, FS-B, cassation partielle (ECLI:FR:CCASS:2026:SO00509).
-
-#CSE #DroitSocial #HeuresSupplémentaires #Annualisation #ReprésentantsDuPersonnel
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

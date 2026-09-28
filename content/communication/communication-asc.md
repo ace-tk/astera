@@ -54,7 +54,7 @@ LE CADRE LÉGAL
 
 ## Le rapport de gestion des activités sociales culturelles CSE
 
-En premier lieu, le rapport de gestion des ASC est un document obligatoire présenté à l’assemblée des élus, conformément aux articles L.2312-83 et L.2315-64 du Code du travail. Par conséquent, ce rapp
+En premier lieu, le rapport de gestion des ASC est un document obligatoire présenté à l’assemblée des élus, conformément aux articles L.2312-83 et L.2315-64 du Code du travail.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI ATOOPV
 
 ## AtooPV : expert en communication ASC CSE depuis 2017
 
-En conclusion, AtooPV accompagne les comités sociaux et économiques dans la gestion et la communication de leurs activités sociales et culturelles. Demandez un devis sur-mesure sous 48h pour bénéficie
+En conclusion, AtooPV accompagne les comités sociaux et économiques dans la gestion et la communication de leurs activités sociales et culturelles.
 
 ⚖️
 

@@ -54,7 +54,7 @@ COMMENT ÇA FONCTIONNE
 
 ## Comment fonctionne la newsletter ActuCSE ?
 
-En effet, la newsletter ActuCSE simplifie considérablement la communication entre les élus et les salariés. Premièrement, elle reprend le contenu du procès-verbal rédigé par AtooPV. Ensuite, elle le m
+En effet, la newsletter ActuCSE simplifie considérablement la communication entre les élus et les salariés. Premièrement, elle reprend le contenu du procès-verbal rédigé par AtooPV.
 
 📋
 
@@ -76,7 +76,7 @@ POURQUOI ACTUCSE
 
 ## Comment fonctionne la newsletter ActuCSE ?
 
-Newsletter ActuCSE est le service d’AtooPV qui transforme le contenu de vos procès-verbaux de CSE en newsletter interne lisible par tous les salariés. La newsletter ActuCSE permet à vos élus CSE de co
+Newsletter ActuCSE est le service d’AtooPV qui transforme le contenu de vos procès-verbaux de CSE en newsletter interne lisible par tous les salariés.
 
 ⚖️
 

@@ -1,4 +1,4 @@
-# Congé payé vendredi après 37h lundi-jeudi : combien de jours décomptés ? — ALC SAS (144k vues)
+# Congé payé vendredi après 37h lundi-jeudi : combien de jours décomptés ? — ALC SAS
 
 - Source URL: https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/
 - Category: resources
@@ -18,15 +18,15 @@ Combien de **jours de congé payé le vendredi** doivent être décomptés lorsq
 
 # 📋 Publication LinkedIn virale — Congé payé vendredi : le calcul qui change tout
 
-144 000+ impressions — Un salarié pose son vendredi en congé payé après avoir travaillé 37h du lundi au jeudi. Combien de jours de CP décompte-t-on ? La réponse surprend.
+Un salarié pose son vendredi en congé payé après avoir travaillé 37h du lundi au jeudi. Combien de jours de CP décompte-t-on ? La réponse surprend.
 
-**💡 Pourquoi cette publication a-t-elle autant touché ?** La règle de décompte des congés payés reste l’une des sources d’erreur les plus fréquentes en paie et en gestion RH. Cette publication a généré 144 000 impressions et 472 engagements sur LinkedIn.
+**💡 Pourquoi cette publication a-t-elle autant touché ?** La règle de décompte des congés payés reste l’une des sources d’erreur les plus fréquentes en paie et en gestion RH.
 
 📅
 
 ## Congé payé vendredi : 37h du lundi au jeudi — combien de jours décomptés ?
 
-📅 2026 · ❤️ 472 engagements · 👁️ 144 000+ impressions
+📅 2026 · ❤️ 472 engagements
 
 **Scénario :** Un salarié travaille du lundi au vendredi. Il pose son **vendredi en congé payé**. Du lundi au jeudi, il a effectué **37 heures**.
 
@@ -41,14 +41,7 @@ La question posée : combien de jours de congés payés doit-on décompter pour 
 
 **📋 Pour les élus CSE :** Si votre accord d’entreprise prévoit un décompte en jours ouvrés (lundi-vendredi), la règle change : 1 vendredi posé = 1 jour ouvré. Vérifiez toujours l’accord applicable dans votre entreprise.
 
-#CongesPayes
-#DroitDuTravail
-#CSE
-#Paie
-#RH
-#JoursOuvrables
-
-Source : Art. L. 3141-3 et s. du Code du travail — Publication LinkedIn ALC SAS (144k impressions)
+Source : Art. L. 3141-3 et s. du Code du travail — Publication LinkedIn ALC SAS
 
 ✅
 
@@ -65,16 +58,12 @@ Source : Art. L. 3141-3 et s. du Code du travail — Publication LinkedIn ALC SA
 
 **📚 Autres publications à fort trafic — ALC SAS**
 
-* ⚖️ [Arrêt maladie : durée légale et LFSS 2026](https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/) — 198k impressions LinkedIn
-* 📅 [Congé payé vendredi après 37h : décompte jours ouvrables](https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/) — 144k impressions
-* 📊 [Congés payés + heures sup : 3 bulletins, 3 résultats](https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/) — 131k impressions
+* ⚖️ [Arrêt maladie : durée légale et LFSS 2026](https://atoopv.com/arret-maladie-duree-legale-lfss-2026-droits-salarie/)
+* 📅 [Congé payé vendredi après 37h : décompte jours ouvrables](https://atoopv.com/conge-paye-vendredi-37h-decompte-jours-ouvrables/)
+* 📊 [Congés payés + heures sup : 3 bulletins, 3 résultats](https://atoopv.com/conges-payes-heures-supplementaires-calcul-bulletins-paie/)
 * 🗓️ [Compteur CP après arrêt maladie : 2 vérifications obligatoires](https://atoopv.com/compteur-cp-arret-maladie-verifications-avant-solder/)
 * 🛡️ [Grossesse et licenciement nul : Cass. soc. 2026](https://atoopv.com/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026/)
 * 📸 [Droit à l’image du salarié après son départ](https://atoopv.com/droit-image-salarie-depart-jurisprudence-cour-cassation/)
 * 🍽️ [Tickets-restaurant et télétravail](https://atoopv.com/tickets-restaurant-teletravail-droit-teletravailleurs/)
 * 📋 [Veille sociale CSE — Juin 2026 (compilation)](https://atoopv.com/veille-sociale-cse-juin-2026/)
 * 🔍 [Toute la veille juridique CSE →](https://atoopv.com/category/veille-juridique-cse/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

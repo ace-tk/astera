@@ -3,10 +3,13 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { resendVerificationRequest } from '@/services/auth'
+import { usePageMeta } from '@/hooks/usePageMeta'
 import Button from '@/components/ui/Button'
 import AuthShell, { Field } from './AuthShell'
 
 export default function Login() {
+  // Authentication page — must not be indexed.
+  usePageMeta({ noindex: true })
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

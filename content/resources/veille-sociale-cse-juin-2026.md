@@ -30,7 +30,7 @@ Retrouvez ci-dessous les publications LinkedIn du président d’ALC SAS sur l�
 
 Retrouvez ici la synthèse des dernières publications de veille juridique et sociale partagées sur LinkedIn — droit du travail, jurisprudence, actualité CSE & CSSCT.
 
-**15 publications**  ·  **23 250 impressions LinkedIn** au total
+**15 publications**
 
 **💡 Pourquoi cette veille ?** En tant que spécialistes de la rédaction de procès-verbaux CSE, CSSCT et IRP, nous suivons de près l’évolution du droit social pour vous garantir des comptes rendus conformes et à jour. Ces publications reflètent notre engagement quotidien envers la qualité et la rigueur juridique.
 
@@ -40,7 +40,7 @@ Retrouvez ici la synthèse des dernières publications de veille juridique et so
 
 ## Harcèlement moral inversé : quand l’élu du CSE est le harceleur
 
-📅 23 juin 2026 · 👁️ 16 impressions
+📅 23 juin 2026
 
 On imagine toujours l’élu du CSE en protecteur. La Cour de cassation vient de juger l’inverse : le harceleur était un élu du comité, et sa victime, la directrice qui était sa supérieure (Cass. soc., 10 juin 2026, n° 24-20.871).
 
@@ -56,7 +56,7 @@ Source : Cass. soc., 10 juin 2026, n° 24-20.871 — Publications LinkedIn ALC S
 
 ## Traumatisme vicariant : la santé mentale des élus CSE, un angle mort
 
-📅 22 juin 2026 · 👁️ 108 impressions
+📅 22 juin 2026
 
 Un élu qui absorbe semaine après semaine la détresse de ses collègues peut développer un **traumatisme vicariant** — troubles du sommeil, hypervigilance, détachement (McCann et Pearlman, 1990). Ce n’est pas le burn-out militant : deux risques différents, deux réponses différentes.
 
@@ -70,7 +70,7 @@ Source : Art. L.4121-1 et L.2315-18 C. trav. — Publications LinkedIn ALC SAS
 
 ## Confidentialité et libre diffusion du PV de CSE : ce que dit vraiment l’arrêt Manpower
 
-📅 20 juin 2026 · 👁️ 142 impressions
+📅 20 juin 2026
 
 L’arrêt Manpower du 1er avril 2026 circule beaucoup, avec des commentaires souvent inexacts. Le litige portait non sur un procès-verbal, mais sur un **avis du CSE central** repris par un syndicat sur son site. Sur la diffusion des PV, la Cour précise qu’ils « n’ont vocation à être communiqués qu’à l’intérieur de l’entreprise ».
 
@@ -86,7 +86,7 @@ Source : Cass. soc., 1er avril 2026, n° 24-19.613 F-D — Publications LinkedIn
 
 ## Canicule au travail : le Code du travail se met à la page
 
-📅 20 juin 2026 · 👁️ 146 impressions
+📅 20 juin 2026
 
 Depuis le 1er juillet 2025, le décret n° 2025-482 a réécrit l’article R.4225-2 : l’eau passe du statut de boisson à celui de mesure de prévention contre la chaleur. En épisode de chaleur intense, elle doit être maintenue **au frais** toute la journée près des postes. Sur les chantiers sans eau courante : minimum **3 litres par jour** par travailleur (R.4534-143).
 
@@ -100,7 +100,7 @@ Source : Décret n° 2025-482 ; R.4225-2, R.4463-1 à R.4463-8, R.4534-143 C. tr
 
 ## Règlement intérieur : fin du dépôt obligatoire au greffe depuis le 28 mai 2026
 
-📅 19 juin 2026 · ❤️ 2 réactions · 🔁 1 republication · 👁️ 459 impressions
+📅 19 juin 2026 · ❤️ 2 réactions · 🔁 1 republication
 
 La loi n° 2026-403 du 26 mai 2026 a modifié l’article L.1321-4 du Code du travail. Depuis le **28 mai 2026**, l’employeur n’a plus à déposer le règlement intérieur au greffe du conseil de prud’hommes pour qu’il entre en vigueur.
 
@@ -116,7 +116,7 @@ Source : Loi n° 2026-403 du 26 mai 2026 ; art. L.1321-4 C. trav. — Publicatio
 
 ## Arrêt maladie en période haute et annualisation : la méthode de calcul des heures supplémentaires fixée
 
-📅 17 juin 2026 · 👁️ 329 impressions
+📅 17 juin 2026
 
 Un arrêt maladie en pleine période haute peut faire perdre des heures supplémentaires à un salarié annualisé. La Cour de cassation fixe la méthode (Cass. soc., 3 juin 2026, n° 24-19.545, FS-B) : **le seuil de déclenchement doit être abaissé de la durée de l’absence** en période haute, évaluée à la durée hebdomadaire moyenne.
 
@@ -130,7 +130,7 @@ Source : Cass. soc., 3 juin 2026, n° 24-19.545, FS-B — Publications LinkedIn 
 
 ## Utilisation de l’image d’un salarié après son départ : une autorisation imprécise ne tient pas
 
-📅 16 juin 2026 · 👁️ 167 impressions
+📅 16 juin 2026
 
 Un directeur régional quitte son entreprise par rupture conventionnelle. Des mois plus tard, sa photo figure encore sur le site. Il avait signé une autorisation d’exploiter son image « sans limitation de durée ». Il obtient **3 000 € de dommages-intérêts** (Cass. soc., 13 mai 2026, n° 24-19.117).
 
@@ -144,7 +144,7 @@ Source : Cass. soc., 13 mai 2026, n° 24-19.117 — Publications LinkedIn ALC SA
 
 ## Arrêts de travail : 4 changements issus des décrets du 12 juin 2026
 
-📅 14 juin 2026 · ❤️ 13 réactions · 🔁 4 republications · 👁️ 12 149 impressions
+📅 14 juin 2026 · ❤️ 13 réactions · 🔁 4 republications
 
 Quatre décrets parus au Journal officiel des 13 et 14 juin 2026 réforment le régime des arrêts de travail. À partir du **1er septembre 2026**, un médecin ne pourra plus prescrire un arrêt de plus d’un mois d’un seul tenant (première prescription : 31 jours max ; chaque prolongation : 62 jours max).
 
@@ -161,7 +161,7 @@ Source : Décrets n° 2026-498, 499, 501 et 503 du 12 juin 2026 (JO des 13 et 14
 
 ## Heures supplémentaires effectuées sans autorisation : sont-elles dues ?
 
-📅 13 juin 2026 · ❤️ 2 réactions · 👁️ 656 impressions
+📅 13 juin 2026 · ❤️ 2 réactions
 
 Un employeur refuse de payer des heures supplémentaires en invoquant un avenant imposant son accord préalable. La Cour de cassation écarte l’argument : le salarié peut prétendre au paiement si leur réalisation a été **rendue nécessaire par les tâches qui lui ont été confiées** (Cass. soc. 14 nov. 2018, n° 17-16.959).
 
@@ -175,7 +175,7 @@ Source : Cass. soc. 14 nov. 2018, n° 17-16.959 ; C. trav. art. L.3121-27 et L.3
 
 ## Préjudice d’anxiété : le délai de prescription passe à 10 ans
 
-📅 3 juin 2026 · 👁️ 338 impressions
+📅 3 juin 2026
 
 La Cour de cassation, réunie en chambre mixte, porte le délai de prescription du préjudice d’anxiété à **dix ans** (Cass., ch. mixte, 29 mai 2026, n° 24-17.384). Elle juge que ce préjudice est un dommage corporel relevant de la prescription décennale du code civil. Des dossiers que beaucoup pensaient prescrits ne le sont plus.
 
@@ -189,7 +189,7 @@ Source : Cass., ch. mixte, 29 mai 2026, n° 24-17.384 ; Cass. soc. 28 mai 2026 e
 
 ## Remplacement des membres CSSCT : la Cour de cassation tranche
 
-📅 11 juin 2026 · ❤️ 1 réaction · 👁️ 138 impressions
+📅 11 juin 2026 · ❤️ 1 réaction
 
 Un élu de CSSCT peut-il être remplacé par une simple résolution du CSE ? **Non.** (Cass. soc., 28 mai 2026, n° 24-22.914). L’article L.2315-39 dispose que les membres de la CSSCT sont désignés pour la durée du mandat des élus. Hors les cas de fin anticipée limitativement énumérés par l’article L.2314-33, le CSE ne peut pas remplacer un membre — même à l’unanimité. La même règle s’applique aux représentants de proximité.
 
@@ -201,7 +201,7 @@ Source : Cass. soc., 28 mai 2026, n° 24-22.914 ; art. L.2315-39 et L.2314-33 C.
 
 ## Harcèlement moral : licenciement après signalement — qui prouve quoi ?
 
-📅 15 juin 2026 · 👁️ 197 impressions
+📅 15 juin 2026
 
 Un salarié signale un harcèlement, puis est licencié. Ce licenciement est-il automatiquement nul ? Non. La jurisprudence dessine une grille précise. La protection (Cass. soc. 19 avr. 2023, n° 21-21.053) : décrire les faits suffit sans les qualifier de « harcèlement ». Si la lettre vise la dénonciation, la nullité est acquise — sauf mauvaise foi prouvée par l’employeur.
 
@@ -217,7 +217,7 @@ Source : Cass. soc. 19 avr. 2023, n° 21-21.053 ; Cass. soc. 18 oct. 2023, n° 2
 
 ## Grossesse et produits dangereux : déclarer ou ne pas déclarer ?
 
-📅 5 juin 2026 · ❤️ 1 réaction · 👁️ 6 993 impressions
+📅 5 juin 2026 · ❤️ 1 réaction
 
 Une chimiste enceinte est licenciée pour faute grave après avoir déclaré sa grossesse à l’employeur qui retourne cette révélation contre elle. La Cour de cassation casse tout (Cass. soc. 3 juin 2026, n° 24-22.719) : déclarer sa grossesse reste une faculté, jamais une obligation (art. L.1225-2). Le silence, même sur un poste à risque, ne peut fonder un licenciement.
 
@@ -233,7 +233,7 @@ Source : Cass. soc. 3 juin 2026, n° 24-22.719 ; art. L.1225-2, L.1132-1 C. trav
 
 ## Forfait jours : votre employeur vous organise-t-il un entretien de charge de travail ?
 
-📅 Semaine du 26 mai 2026 · ❤️ 4 réactions · 🔁 1 republication · 👁️ 870 impressions
+📅 Semaine du 26 mai 2026 · ❤️ 4 réactions · 🔁 1 republication
 
 Le forfait jours impose à l’employeur d’organiser chaque année un entretien individuel portant sur la charge de travail, l’organisation du travail, l’articulation vie professionnelle/vie personnelle et la rémunération (art. L.3121-65 C. trav.). Sans cet entretien, la convention de forfait est privée d’effet, et le salarié peut réclamer le paiement d’heures supplémentaires au-delà de 35 heures.
 
@@ -245,7 +245,7 @@ Source : Art. L.3121-65 C. trav. — Publications LinkedIn ALC SAS
 
 ## Cannabis au volant, licenciement au bureau : où s’arrête le pouvoir de l’employeur ?
 
-📅 Semaine du 26 mai 2026 · ❤️ 3 réactions · 🔁 1 republication · 👁️ 542 impressions
+📅 Semaine du 26 mai 2026 · ❤️ 3 réactions · 🔁 1 republication
 
 Un salarié contrôlé positif au cannabis dans son véhicule personnel, hors temps de travail, est licencié pour faute grave au motif d’un « trouble à l’entreprise ». La Cour de cassation refuse de valider ce raisonnement.
 
@@ -268,7 +268,3 @@ AtooPV prend en charge la rédaction de vos procès-verbaux avec rigueur juridiq
 * [→ Services de rédaction PV](/redaction-pv-cse/)
 * [→ Livres blancs CSE gratuits](/guides-livres-blancs-cse/)
 * [→ Tickets-restaurant et télétravail](/tickets-restaurant-teletravail-droit-teletravailleur/)
-
-💡 Cette ressource vous a-t-elle été bénéfique ?
-
-👍 Oui👎 Non

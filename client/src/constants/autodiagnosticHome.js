@@ -183,6 +183,6 @@ export const AUTODIAGNOSTIC_CTA = {
   eyebrow: 'Aller plus loin',
   heading: 'Confiez la conformité de vos PV à AtooPV',
   body: 'Découvrez notre service de rédaction de PV CSE, nos cas pratiques et nos formations élus CSE pour sécuriser durablement votre mandat.',
-  primaryCta: { label: 'Voir nos services', to: '/atoopv/services' },
+  primaryCta: { label: 'Voir nos services', to: '/services' },
   secondaryCta: { label: 'Voir toutes nos ressources', to: '/atoopv/ressources' },
 }

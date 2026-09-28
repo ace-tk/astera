@@ -12,6 +12,7 @@ import EasterEggs from '@/components/eggs/EasterEggs'
 import { GuestOnly, RequireAuth, RequireAdmin } from '@/components/auth/RouteGuards'
 import { useAuth } from '@/context/AuthContext'
 import { useA11y } from '@/context/A11yContext'
+import { useCanonical } from '@/hooks/useCanonical'
 
 // Route-level code splitting keeps the landing bundle lean.
 const Landing = lazy(() => import('@/pages/Landing'))
@@ -109,6 +110,8 @@ function AppEntry() {
 export default function App() {
   const location = useLocation()
   const { reduceMotion } = useA11y()
+  // One self-referencing canonical + og:url per route, for every page automatically.
+  useCanonical()
   return (
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
       <ScrollToTop />

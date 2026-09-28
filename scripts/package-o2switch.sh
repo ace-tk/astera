@@ -22,8 +22,13 @@ echo "==> Verifying the bundle is production-ready"
 [ -f dist/index.html ] || fail "client/dist/index.html missing"
 if grep -rlq "localhost:5050" dist; then fail "dist still contains the dev API fallback (http://localhost:5050) — VITE_API_URL was not applied"; fi
 if grep -rlE "vercel\.app|test1\.atoopv\.com" dist >/dev/null 2>&1; then fail "dist references a Vercel/test1 hostname"; fi
+# SEO-specific: index.html's own static canonical/OG/robots must resolve to production, never
+# astera.app — this is scoped to index.html only (astera.app also appears, correctly, in unrelated
+# demo/product copy elsewhere in the bundle — a support email string, mock admin data, a decorative
+# fake URL in a landing-page preview card — none of which are SEO/domain references).
+if grep -q "astera\.app" dist/index.html; then fail "dist/index.html still references astera.app (canonical/OG/robots must be atoopv.com)"; fi
 grep -rlq '"/api"' dist/assets || echo "  (note: could not find the literal \"/api\" in the bundle — check VITE_API_URL manually)"
-echo "  ok: no localhost:5050, no vercel.app / test1 hostnames in dist"
+echo "  ok: no localhost:5050, no vercel.app / test1 hostnames, no astera.app in index.html's SEO tags"
 
 echo "==> Assembling $OUT"
 rm -rf "$OUT"

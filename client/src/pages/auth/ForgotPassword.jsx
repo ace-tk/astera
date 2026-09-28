@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { KeyRound } from 'lucide-react'
+import { usePageMeta } from '@/hooks/usePageMeta'
 import AuthShell from './AuthShell'
 
 /**
@@ -8,6 +9,8 @@ import AuthShell from './AuthShell'
  * real request-reset form.
  */
 export default function ForgotPassword() {
+  // Authentication page — must not be indexed.
+  usePageMeta({ noindex: true })
   return (
     <AuthShell
       eyebrow="Account recovery"
