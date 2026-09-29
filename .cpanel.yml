@@ -1,9 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/tenu7190/atoopv.com/
-    - export PATH="/opt/alt/alt-nodejs24/root/usr/bin:$PATH"
-    - cd /home/tenu7190/astera/client
-    - npm ci
-    - npm run build
-    - /bin/cp -R dist/. $DEPLOYPATH
+    # A single chained command: cPanel runs each task list item as its own
+    # independent shell invocation, so export/cd from one line never carries
+    # over to the next — everything that needs to share state must be one line.
+    - export DEPLOYPATH=/home/tenu7190/atoopv.com/ && export PATH="/opt/alt/alt-nodejs24/root/usr/bin:$PATH" && cd /home/tenu7190/astera/client && npm ci && npm run build && /bin/cp -R dist/. $DEPLOYPATH
