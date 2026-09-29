@@ -20,6 +20,9 @@ export const fetchNavigation = () => withTimeout(api.get('/cms/navigation'), 600
 
 export const fetchCmsMenu = (key) => api.get(`/cms/menus/${key}`).then((r) => r.menu)
 
+/** Resolves to the live footer content, or null if the CMS has none yet (never happens once seeded server-side). */
+export const fetchCmsFooter = () => withTimeout(api.get('/cms/footer')).then((r) => r.footer)
+
 /* ---------------------------------- admin ---------------------------------- */
 
 const A = '/admin/cms'
@@ -53,6 +56,11 @@ export const saveAdminMenuDraft = (key, items, rev) => api.patch(`${A}/menus/${k
 export const publishAdminMenu = (key) => api.post(`${A}/menus/${key}/publish`).then((r) => r.menu)
 export const discardAdminMenu = (key) => api.post(`${A}/menus/${key}/discard`).then((r) => r.menu)
 export const initializeAdminMenu = (key, items) => api.post(`${A}/menus/${key}/initialize`, { items }).then((r) => r.menu)
+
+export const fetchAdminFooter = () => api.get(`${A}/footer`).then((r) => r.footer)
+export const saveAdminFooterDraft = (content, rev) => api.patch(`${A}/footer`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.footer)
+export const publishAdminFooter = () => api.post(`${A}/footer/publish`).then((r) => r.footer)
+export const discardAdminFooter = () => api.post(`${A}/footer/discard`).then((r) => r.footer)
 
 export const fetchSectionNavList = () => api.get(`${A}/section-navs`).then((r) => r.sections)
 export const fetchSectionNav = (section) => api.get(`${A}/section-navs/${section}`).then((r) => r.nav)

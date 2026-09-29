@@ -16,6 +16,16 @@ export const MENU_COLORS = ['royal', 'purple', 'coral', 'golden', 'emerald', 'sk
 
 export const MENU_KEYS = ['main']
 
+/* --------------------------------- Footer --------------------------------- */
+// The footer is a single, always-one-document CMS resource (not keyed like Menu),
+// so these are simple ceilings rather than per-key limits.
+export const MAX_FOOTER_COLUMNS = 6
+export const MAX_FOOTER_COLUMN_LINKS = 10
+export const MAX_FOOTER_LEGAL_LINKS = 10
+export const MAX_FOOTER_SOCIAL_LINKS = 10
+/** Known icon keys the public footer knows how to render; 'other' falls back to a generic link glyph. */
+export const FOOTER_SOCIAL_ICONS = ['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'other']
+
 export const PAGE_STATUSES = ['draft', 'published', 'archived']
 
 /** URL segment: lowercase words separated by single hyphens. */

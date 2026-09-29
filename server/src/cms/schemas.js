@@ -4,6 +4,7 @@ import {
   SLUG_RE, MAX_SLUG_LENGTH, MAX_BODY_CHARS,
   MAX_MENU_GROUPS, MAX_GROUP_ENTRIES, MAX_MENU_MOBILE_ITEMS, MAX_MAIN_MENU_ITEMS, MAX_SECTION_NAV_ENTRIES,
   MENU_VISUALS, MENU_COLORS,
+  MAX_FOOTER_COLUMNS, MAX_FOOTER_COLUMN_LINKS, MAX_FOOTER_LEGAL_LINKS, MAX_FOOTER_SOCIAL_LINKS, FOOTER_SOCIAL_ICONS,
 } from './constants.js'
 
 const noNewlines = (s) => !/[\r\n]/.test(s)
@@ -58,7 +59,10 @@ export const linkSchema = z
     if (l.type === 'external') need(/^https?:\/\//i.test(l.url || ''), 'An external link must be http(s)')
     if (l.type === 'mailto') need(/^mailto:/i.test(l.url || ''), 'A mailto link must start with mailto:')
     if (l.type === 'tel') need(/^tel:/i.test(l.url || ''), 'A tel link must start with tel:')
-    if (l.type === 'anchor') need(/^#\S+/.test(l.url || ''), 'An anchor link must start with #')
+    // Bare '#' is allowed (not just '#some-id'): the footer's legal links are seeded
+    // with it as a real, honest "not linked to a real page yet" placeholder — see
+    // footerDefaults.js — and must stay valid so the CMS never has to invent a URL.
+    if (l.type === 'anchor') need(/^#/.test(l.url || ''), 'An anchor link must start with #')
   })
 
 /** Menus only ever link inside the site: to a CMS page, or to an existing route. */
@@ -154,4 +158,84 @@ export const sectionNavEntriesSchema = z
       if (ids.has(e.id)) ctx.addIssue({ code: 'custom', path: [i, 'id'], message: `Duplicate entry id "${e.id}"` })
       ids.add(e.id)
     })
+  })
+
+/* --------------------------------- Footer ---------------------------------- */
+// Unlike menu/side-nav links (which only ever point inside the site), footer links
+// legitimately need every kind `linkSchema` supports except 'page': routes, mailto,
+// tel, and — for the legal links, which have no real pages yet — plain '#' anchors.
+// 'page' is excluded because, unlike menuService's resolveLiveMenu, footerService
+// does not resolve page references to a live path — allowing it here would let an
+// admin save a link the public site could never actually follow. The label is
+// always required (footer links never "follow a page title" the way a menu entry can).
+
+const footerLinkSchema = linkSchema.refine((l) => l.type !== 'page', 'A footer link cannot reference a CMS page yet — use a route or address instead')
+
+const footerEntrySchema = z
+  .object({ id: idSchema, label: inlineText(80, 1), link: footerLinkSchema })
+  .strict()
+
+const footerColumnSchema = z
+  .object({
+    id: idSchema,
+    title: inlineText(60, 1),
+    links: z.array(footerEntrySchema).max(MAX_FOOTER_COLUMN_LINKS, `A footer column can have at most ${MAX_FOOTER_COLUMN_LINKS} links`).default([]),
+  })
+  .strict()
+
+const footerSocialLinkSchema = z
+  .object({
+    id: idSchema,
+    platform: inlineText(40, 1),
+    icon: z.enum(FOOTER_SOCIAL_ICONS).default('other'),
+    url: z
+      .string()
+      .trim()
+      .min(1)
+      .max(500)
+      .refine((u) => /^(https?:|mailto:|tel:)/i.test(u), 'Must start with https://, mailto: or tel:'),
+    enabled: z.boolean().default(true),
+  })
+  .strict()
+
+export const footerContentSchema = z
+  .object({
+    brand: z
+      .object({
+        tagline: inlineText(160).optional().default(''),
+        location: inlineText(160).optional().default(''),
+      })
+      .strict(),
+    contact: z
+      .object({
+        phoneDisplay: inlineText(40).optional().default(''),
+        phoneHref: inlineText(60).optional().default(''),
+        email: inlineText(120).optional().default(''),
+      })
+      .strict(),
+    cta: z
+      .object({
+        label: inlineText(60).optional().default(''),
+        link: footerLinkSchema.optional(),
+      })
+      .strict(),
+    columns: z.array(footerColumnSchema).max(MAX_FOOTER_COLUMNS, `The footer can have at most ${MAX_FOOTER_COLUMNS} columns`).default([]),
+    legalLinks: z.array(footerEntrySchema).max(MAX_FOOTER_LEGAL_LINKS, `At most ${MAX_FOOTER_LEGAL_LINKS} legal links are allowed`).default([]),
+    social: z.array(footerSocialLinkSchema).max(MAX_FOOTER_SOCIAL_LINKS, `At most ${MAX_FOOTER_SOCIAL_LINKS} social links are allowed`).default([]),
+    copyrightText: inlineText(200).optional().default(''),
+    bottomLine: inlineText(200).optional().default(''),
+  })
+  .strict()
+  .superRefine((f, ctx) => {
+    const ids = new Set()
+    const checkDup = (id, path) => {
+      if (ids.has(id)) ctx.addIssue({ code: 'custom', path, message: `Duplicate id "${id}"` })
+      ids.add(id)
+    }
+    f.columns.forEach((c, ci) => {
+      checkDup(c.id, ['columns', ci, 'id'])
+      c.links.forEach((l, li) => checkDup(l.id, ['columns', ci, 'links', li, 'id']))
+    })
+    f.legalLinks.forEach((l, li) => checkDup(l.id, ['legalLinks', li, 'id']))
+    f.social.forEach((s, si) => checkDup(s.id, ['social', si, 'id']))
   })

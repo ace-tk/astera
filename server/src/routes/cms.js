@@ -7,6 +7,7 @@ import * as pageCtl from '../controllers/cmsPageController.js'
 import * as menuCtl from '../controllers/cmsMenuController.js'
 import * as mediaCtl from '../controllers/cmsMediaController.js'
 import * as navCtl from '../controllers/cmsSectionNavController.js'
+import * as footerCtl from '../controllers/cmsFooterController.js'
 
 const router = Router()
 const adminOnly = [requireAuth, requireAdmin]
@@ -25,6 +26,7 @@ const uploadImage = (req, res, next) =>
 router.get('/cms/index', cms(pageCtl.publicIndex))
 router.get('/cms/pages', cms(pageCtl.publicPage))
 router.get('/cms/menus/:key', cms(menuCtl.publicMenu))
+router.get('/cms/footer', cms(footerCtl.publicFooter))
 router.get('/cms/navigation', cms(navCtl.publicNavigation))
 router.get('/media/:id/:filename', mediaCtl.serveMedia)
 
@@ -54,6 +56,12 @@ router.patch('/admin/cms/menus/:key', ...adminOnly, cms(menuCtl.saveMenuDraft))
 router.post('/admin/cms/menus/:key/publish', ...adminOnly, cms(menuCtl.publishMenu))
 router.post('/admin/cms/menus/:key/discard', ...adminOnly, cms(menuCtl.discardMenuDraft))
 router.post('/admin/cms/menus/:key/initialize', ...adminOnly, cms(menuCtl.initializeMenu))
+
+/* ---------------- Admin: footer ---------------- */
+router.get('/admin/cms/footer', ...adminOnly, cms(footerCtl.getFooter))
+router.patch('/admin/cms/footer', ...adminOnly, cms(footerCtl.saveFooterDraft))
+router.post('/admin/cms/footer/publish', ...adminOnly, cms(footerCtl.publishFooter))
+router.post('/admin/cms/footer/discard', ...adminOnly, cms(footerCtl.discardFooterDraft))
 
 /* ---------------- Admin: section navigation (side nav + previous/next order) ---------------- */
 router.get('/admin/cms/section-navs', ...adminOnly, cms(navCtl.listSectionNavs))
