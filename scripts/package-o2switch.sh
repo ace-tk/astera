@@ -13,10 +13,10 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/deploy/o2switch/out"
 fail() { echo "✗ $*" >&2; exit 1; }
 
-echo "==> Frontend build (VITE_API_URL=/api, VITE_DEMO_MODE=false)"
+echo "==> Frontend build (VITE_API_URL=https://api.atoopv.com/api, VITE_DEMO_MODE=false)"
 cd "$ROOT/client"
 [ -d node_modules ] || npm ci
-VITE_API_URL=/api VITE_DEMO_MODE=false npm run build
+VITE_API_URL=https://api.atoopv.com/api VITE_DEMO_MODE=false npm run build
 
 echo "==> Verifying the bundle is production-ready"
 [ -f dist/index.html ] || fail "client/dist/index.html missing"
@@ -27,7 +27,7 @@ if grep -rlE "vercel\.app|test1\.atoopv\.com" dist >/dev/null 2>&1; then fail "d
 # demo/product copy elsewhere in the bundle — a support email string, mock admin data, a decorative
 # fake URL in a landing-page preview card — none of which are SEO/domain references).
 if grep -q "astera\.app" dist/index.html; then fail "dist/index.html still references astera.app (canonical/OG/robots must be atoopv.com)"; fi
-grep -rlq '"/api"' dist/assets || echo "  (note: could not find the literal \"/api\" in the bundle — check VITE_API_URL manually)"
+grep -rlq '"https://api.atoopv.com/api"' dist/assets || echo "  (note: could not find the literal \"https://api.atoopv.com/api\" in the bundle — check VITE_API_URL manually)"
 echo "  ok: no localhost:5050, no vercel.app / test1 hostnames, no astera.app in index.html's SEO tags"
 
 echo "==> Assembling $OUT"
