@@ -141,10 +141,11 @@ export default function Navbar() {
 
   // The ATOOPV homepage ("Accueil") isn't a top-level nav item any more —
   // it's reached via the logo, so the logo needs to know which "home" it's
-  // standing in for: the Astera marketing root ("/") everywhere else, or
-  // the ported ATOOPV homepage while already inside that section.
-  const inAtoopv = location.pathname.startsWith('/atoopv') || location.pathname.startsWith('/services')
-  const logoHref = inAtoopv ? '/atoopv' : '/'
+  // standing in for. After the page-content swap (Accueil now renders at
+  // "/", the Story/marketing page now renders at "/atoopv"), that "home" is
+  // "/" for every page except the swapped "/atoopv" page itself, which
+  // self-links exactly the way "/" used to.
+  const logoHref = location.pathname === '/atoopv' ? '/atoopv' : '/'
 
   // The ATOOPV homepage floats a slim announcement bar above the navbar
   // (AtoopvAnnouncementBar, rendered in Accueil.jsx) — since this header is
@@ -153,7 +154,9 @@ export default function Navbar() {
   // only while that bar is actually visible: it hides itself past the very
   // top of the page (see useIsAtTop), so once scrolled this header should
   // collapse back up to `top-0` rather than leave a gap where the bar was.
-  const isAtoopvHome = location.pathname === '/atoopv'
+  // Tracks "/" now, not "/atoopv", since that's where Accueil (and the bar)
+  // actually render after the page-content swap.
+  const isAtoopvHome = location.pathname === '/'
   const makeRoomForAnnouncement = isAtoopvHome && atTop
 
   const toggleMobile = (key) => setExpandedKey((prev) => (prev === key ? null : key))
@@ -213,7 +216,10 @@ export default function Navbar() {
         <div className="hidden items-center gap-0.5 md:flex">
           {/* Story is a single plain link now (no dropdown) — same
               arrow-cue style as AtooSavoir/À propos below. HashAwareLink
-              (not Link) since '#story' is an in-page anchor, not a route. */}
+              still works fine here: its href is now a plain route ('/atoopv',
+              after the page-content swap), which it renders as a normal
+              <Link> — no hash handling needed, so the component didn't
+              need to change even though what it's linking to did. */}
           <HashAwareLink
             href={NAV_LINKS[0].href}
             className={cn(plainLinkClass, 'group')}

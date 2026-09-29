@@ -3,13 +3,14 @@
  * Each feature owns a semantic color token (see tailwind.config.js).
  */
 
-// Single plain link now — "How it works" and "Features" no longer need
-// separate submenu entries since they're just anchors within the one Story
-// section, and "Pricing" is unlinked here (still a real, unremoved page at
-// /atoopv/tarification, reachable from elsewhere in the nav) per request.
+// Single plain link. Was an in-page anchor ('#story') to the Story section
+// on this same page; since the page-content swap moved the Story page's
+// content to /atoopv (and this page now shows the ATOOPV homepage instead),
+// this now links there directly. HashAwareLink renders any non-hash href as
+// a normal <Link>, so no other change was needed for that.
 const STORY_NAV = {
   label: 'Story',
-  href: '#story',
+  href: '/atoopv',
 }
 
 /**

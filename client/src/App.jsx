@@ -123,9 +123,13 @@ export default function App() {
       <Suspense fallback={<PageLoader />}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Landing />} />
+            {/* Page-content swap (requested): "/" now renders the ATOOPV
+                homepage (Accueil) and "/atoopv" now renders the Story/
+                marketing page (Landing) — the opposite of before. Only these
+                two `element` values were swapped; no other route changed. */}
+            <Route path="/" element={<Accueil />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/atoopv" element={<Accueil />} />
+            <Route path="/atoopv" element={<Landing />} />
             <Route path="/atoopv/boutique" element={<Boutique />} />
             <Route path="/atoopv/tarification" element={<Tarification />} />
             {/* /atoopv/simulateur was the page's originally-intended path (still
