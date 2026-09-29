@@ -39,7 +39,7 @@ export default function AtoosavoirCgv() {
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <Link to="/atoopv/atoosavoir" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted link-underline">
+            <Link to="/atoosavoir" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted link-underline">
               <ArrowLeft className="h-3.5 w-3.5" /> Retour à atoosavoir
             </Link>
             <div className="mt-8">{page && <MarkdownArticle body={page.body} color="royal" />}</div>

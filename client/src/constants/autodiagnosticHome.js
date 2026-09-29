@@ -52,7 +52,7 @@ export const AUTODIAGNOSTIC_QUIZ = {
   heading: 'Autodiagnostic CSE — Votre comité est-il conforme ?',
   footer: 'ALC SAS — Le droit social expliqué de manière accessible —',
   footerLink: { label: 'atoopv.com', to: 'https://atoopv.com' },
-  contactTo: '/atoopv/contact',
+  contactTo: '/contact',
   restartLabel: 'Recommencer le diagnostic',
   questions: [
     {
@@ -184,5 +184,5 @@ export const AUTODIAGNOSTIC_CTA = {
   heading: 'Confiez la conformité de vos PV à AtooPV',
   body: 'Découvrez notre service de rédaction de PV CSE, nos cas pratiques et nos formations élus CSE pour sécuriser durablement votre mandat.',
   primaryCta: { label: 'Voir nos services', to: '/services' },
-  secondaryCta: { label: 'Voir toutes nos ressources', to: '/atoopv/ressources' },
+  secondaryCta: { label: 'Voir toutes nos ressources', to: '/ressources' },
 }

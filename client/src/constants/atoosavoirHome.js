@@ -13,7 +13,7 @@ export const ATOOSAVOIR_HERO = {
   badge: 'Service de recherche documentaire — Élus de CSE',
   title: 'Vous posez la question. Nous trouvons *la source*.',
   lead: 'Recherche dans le Code du travail, la jurisprudence et les accords de branche. Fiche structurée, sourcée, livrée en 5 jours ouvrés. Exploitable en réunion.',
-  primaryCta: { label: 'Recevoir mon audit PV gratuit', to: '/atoopv/contact' },
+  primaryCta: { label: 'Recevoir mon audit PV gratuit', to: '/contact' },
   secondaryCta: { label: 'Voir les tarifs', to: '#tarifs' },
   image: { src: '/atoopv-media/atoosavoir-hero.jpg', alt: 'Bureau d’un juriste avec documents et statuette de la Justice' },
 }
@@ -235,8 +235,8 @@ export const ATOOSAVOIR_CTA = {
   eyebrow: 'Offre de découverte',
   heading: 'Analyse de conformité gratuite de votre dernier PV.',
   body: 'Envoyez-nous votre dernier procès-verbal de CSE. Nous vous retournons une fiche de corrections — points de conformité, zones d’attention, améliorations concrètes. Sans engagement.',
-  primaryCta: { label: 'Envoyer mon PV pour audit', to: '/atoopv/contact' },
-  secondaryCta: { label: 'Voir toutes nos ressources', to: '/atoopv/ressources' },
+  primaryCta: { label: 'Envoyer mon PV pour audit', to: '/contact' },
+  secondaryCta: { label: 'Voir toutes nos ressources', to: '/ressources' },
 }
 
 export const ATOOSAVOIR_CONTACT = { phone: '04 12 10 06 06', phoneHref: 'tel:+33412100606', email: 'contact@atoopv.com', emailHref: 'mailto:contact@atoopv.com' }
@@ -244,7 +244,7 @@ export const ATOOSAVOIR_CONTACT = { phone: '04 12 10 06 06', phoneHref: 'tel:+33
 export const ATOOSAVOIR_LEGAL =
   'atoosavoir est un service d’information documentaire — il ne constitue pas une consultation juridique. Consultez un avocat avant toute décision engageante. ALC SAS au capital de 1 000 € — SIRET 833 781 248 00038 — RCS Lyon.'
 
-// --- /atoopv/atoosavoir/exemple -------------------------------------------------
+// --- /atoosavoir/exemple -------------------------------------------------
 
 export const ATOOSAVOIR_EXEMPLE_HERO = {
   badge: 'Exemple de livrable',
@@ -289,11 +289,11 @@ export const ATOOSAVOIR_EXEMPLE_CTA = {
   eyebrow: 'Une question similaire ?',
   heading: 'Posez-la, nous menons la recherche.',
   body: 'Décrivez votre situation, nous vous livrons une fiche structurée et sourcée sous 5 jours ouvrés.',
-  primaryCta: { label: 'Recevoir mon audit PV gratuit', to: '/atoopv/contact' },
-  secondaryCta: { label: 'Retour à atoosavoir', to: '/atoopv/atoosavoir' },
+  primaryCta: { label: 'Recevoir mon audit PV gratuit', to: '/contact' },
+  secondaryCta: { label: 'Retour à atoosavoir', to: '/atoosavoir' },
 }
 
-// --- /atoopv/atoosavoir/cgv -------------------------------------------------
+// --- /atoosavoir/cgv -------------------------------------------------
 
 export const ATOOSAVOIR_CGV_HERO = {
   title: 'Conditions générales de vente — atoosavoir',

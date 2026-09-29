@@ -100,7 +100,7 @@ describe('dry-run report — ressources batch', () => {
     for (const p of plan) {
       expect(p.ok, p.slug).toBe(true)
       expect(p.section).toBe('ressources')
-      expect(p.path).toBe(`/atoopv/ressources/${p.slug}`)
+      expect(p.path).toBe(`/ressources/${p.slug}`)
       expect(p.page.templateKey).toBe('ressources-article')
       // "assemble(disassemble(body)) === body": there is no disassembly step for this template, so
       // the identity holds by construction — checked explicitly against the raw parsed body anyway.
@@ -110,7 +110,7 @@ describe('dry-run report — ressources batch', () => {
 
   it('every menu-linked page IS an existing hardcoded ROUTE (never a page reference) — per the tarifs-infos correction, page.menu must stay null for all 34, not just the linked ones', async () => {
     for (const [slug, expected] of Object.entries(EXPECTED_MENU)) {
-      const placement = await menuPlacementFor(`/atoopv/ressources/${slug}`)
+      const placement = await menuPlacementFor(`/ressources/${slug}`)
       expect(placement, slug).toMatchObject(expected)
     }
   })
@@ -120,7 +120,7 @@ describe('dry-run report — ressources batch', () => {
     const unlinked = BATCH.filter((s) => !linked.has(s))
     expect(unlinked).toHaveLength(28)
     for (const slug of unlinked) {
-      const placement = await menuPlacementFor(`/atoopv/ressources/${slug}`)
+      const placement = await menuPlacementFor(`/ressources/${slug}`)
       expect(placement, slug).toBeNull()
     }
   })
@@ -153,7 +153,7 @@ describe('end to end (isolated in-memory database — never production): import 
     const blog = nav.menu.items.find((i) => i.id === 'blog')
     const allHrefs = [...ressources.groups, ...blog.groups].flatMap((g) => g.entries.map((e) => e.href))
     for (const slug of Object.keys(EXPECTED_MENU)) {
-      const href = `/atoopv/ressources/${slug}`
+      const href = `/ressources/${slug}`
       expect(allHrefs.filter((h2) => h2 === href), slug).toHaveLength(1) // exactly once, never duplicated
     }
     const modelesGroup = ressources.groups.find((g) => g.id === 'modeles-de-pv').entries.map((e) => e.label)
@@ -169,16 +169,16 @@ describe('end to end (isolated in-memory database — never production): import 
 
     const before = (await request(app).get('/api/cms/navigation')).body
     const groupBefore = before.menu.items.find((i) => i.id === 'ressources').groups.find((g) => g.id === 'modeles-de-pv')
-    expect((await request(app).get('/api/cms/pages').query({ path: '/atoopv/ressources/modeles-pv' })).status).toBe(200)
+    expect((await request(app).get('/api/cms/pages').query({ path: '/ressources/modeles-pv' })).status).toBe(200)
 
     await request(app).post(`/api/admin/cms/pages/${page._id}/unpublish`).set(h)
-    expect((await request(app).get('/api/cms/pages').query({ path: '/atoopv/ressources/modeles-pv' })).status).toBe(404)
+    expect((await request(app).get('/api/cms/pages').query({ path: '/ressources/modeles-pv' })).status).toBe(404)
     const after = (await request(app).get('/api/cms/navigation')).body
     const groupAfter = after.menu.items.find((i) => i.id === 'ressources').groups.find((g) => g.id === 'modeles-de-pv')
     expect(groupAfter).toEqual(groupBefore) // the hardcoded route link is byte-for-byte unaffected
 
     await request(app).post(`/api/admin/cms/pages/${page._id}/publish`).set(h)
-    expect((await request(app).get('/api/cms/pages').query({ path: '/atoopv/ressources/modeles-pv' })).status).toBe(200)
+    expect((await request(app).get('/api/cms/pages').query({ path: '/ressources/modeles-pv' })).status).toBe(200)
   })
 
   it('preview shows the draft (body edit) before publishing, and publishing makes it live; Admin fields are pre-filled with the current French content and opening the page never dirties it', async () => {
@@ -193,7 +193,7 @@ describe('end to end (isolated in-memory database — never production): import 
     expect(fetched.body.page.draft.content.body.length).toBeGreaterThan(1000)
 
     await request(app).patch(`/api/admin/cms/pages/${page._id}`).set(h).send({ content: { body: 'Brouillon avec un tout autre contenu.' } })
-    const stillLive = (await request(app).get('/api/cms/pages').query({ path: '/atoopv/ressources/droits-elus-cse-guide-juridique' })).body.page.content.body
+    const stillLive = (await request(app).get('/api/cms/pages').query({ path: '/ressources/droits-elus-cse-guide-juridique' })).body.page.content.body
     expect(stillLive).not.toBe('Brouillon avec un tout autre contenu.')
 
     const preview = await request(app).get(`/api/admin/cms/pages/${page._id}/preview`).set(h)
@@ -202,7 +202,7 @@ describe('end to end (isolated in-memory database — never production): import 
     expect((await request(app).get(`/api/admin/cms/pages/${page._id}/preview`)).status).toBe(401) // preview needs auth
 
     await request(app).post(`/api/admin/cms/pages/${page._id}/publish`).set(h)
-    const nowLive = (await request(app).get('/api/cms/pages').query({ path: '/atoopv/ressources/droits-elus-cse-guide-juridique' })).body.page.content.body
+    const nowLive = (await request(app).get('/api/cms/pages').query({ path: '/ressources/droits-elus-cse-guide-juridique' })).body.page.content.body
     expect(nowLive).toBe('Brouillon avec un tout autre contenu.')
   })
 
@@ -216,7 +216,7 @@ describe('end to end (isolated in-memory database — never production): import 
     expect(new Set(paths).size).toBe(paths.length) // no duplicate entries anywhere in the merged list
     // The hub-level entries RESSOURCES_NAV already names keep their exact built-in label.
     for (const slug of ['modeles-pv', 'cas-pratiques', 'actualite-sociale', 'jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse', 'comment-lire-arret-cour-de-cassation', 'la-minute-cse']) {
-      expect(paths, slug).toContain(`/atoopv/ressources/${slug}`)
+      expect(paths, slug).toContain(`/ressources/${slug}`)
     }
     expect(nav.pages.filter((p) => p.section === 'ressources').map((p) => p.slug).sort()).toEqual([...BATCH].sort())
   })

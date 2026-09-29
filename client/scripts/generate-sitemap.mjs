@@ -42,31 +42,34 @@ const SERVICE_HUB_SLUG = {
 const SERVICE_CATEGORIES = ['drafting', 'by-city', 'tarifs-infos', 'guides', 'communication', 'training']
 
 // Same rule for Ressources: guides-livres-blancs-cse is the file served at the
-// bare /atoopv/ressources URL (App.jsx's index route), not at its own slug URL.
+// bare /ressources URL (App.jsx's index route), not at its own slug URL.
 const RESSOURCES_HUB_SLUG = 'guides-livres-blancs-cse'
 
 // Static ATOOPV pages that aren't backed by a content/<category>/<slug>.md file.
+// "/" is the real ATOOPV homepage (Accueil) since the page-content swap and is
+// indexed here; the English/demo Story page lives at "/accueil" (renamed from
+// "/atoopv" — same page, same content, only the URL changed).
 // Deliberately excludes:
-//   "/"                    the English/demo landing page bundled in this app —
-//                          not ATOOPV content; a separate decision outside this SEO pass.
-//   "/services/pricing"    an old English pricing page superseded by /atoopv/tarification,
-//                          not linked from any nav — left in place but not indexed.
-//   "/atoopv/simulateur"   duplicate of /atoopv/tarification; 301-redirected, not indexed.
-//   "/blog/:slug"          dynamic, database-backed posts; not enumerable at build time.
+//   "/services/pricing"  an old English pricing page superseded by /tarification,
+//                        not linked from any nav — left in place but not indexed.
+//   "/simulateur"        duplicate of /tarification; 301-redirected, not indexed.
+//   "/atoopv", "/atoopv/*"  the old pre-rename URLs — 301-redirected, not indexed.
+//   "/blog/:slug"        dynamic, database-backed posts; not enumerable at build time.
 //   /login, /register, /forgot, /verify-email, /app/*  non-indexable / private.
 const STATIC_PAGES = [
-  '/atoopv',
-  '/atoopv/boutique',
-  '/atoopv/tarification',
-  '/atoopv/contact',
-  '/atoopv/a-propos',
-  '/atoopv/autodiagnostic',
-  '/atoopv/atoosavoir',
-  '/atoopv/atoosavoir/exemple',
-  '/atoopv/atoosavoir/cgv',
+  '/',
+  '/accueil',
+  '/boutique',
+  '/tarification',
+  '/contact',
+  '/a-propos',
+  '/autodiagnostic',
+  '/atoosavoir',
+  '/atoosavoir/exemple',
+  '/atoosavoir/cgv',
   '/services',
-  '/atoopv/ressources',
-  '/atoopv/ressources/veille-juridique-cse',
+  '/ressources',
+  '/ressources/veille-juridique-cse',
 ]
 
 function buildUrls() {
@@ -83,7 +86,7 @@ function buildUrls() {
 
   for (const slug of slugsIn('resources')) {
     if (slug === RESSOURCES_HUB_SLUG) continue
-    urls.push(`/atoopv/ressources/${slug}`)
+    urls.push(`/ressources/${slug}`)
   }
 
   return urls

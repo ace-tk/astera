@@ -17,7 +17,7 @@ export function fixedItems(entriesByGroup = {}, over = {}) {
     ...(MENU_VISUALS.includes(fm.visual) ? { visual: fm.visual } : {}),
     groups: fm.groups.map((g) => ({ id: g.id, heading: g.heading, entries: entriesByGroup[`${fm.id}/${g.id}`] || [] })),
     mobile: [],
-    ...(fm.cta ? { cta: { tone: fm.cta.tone, eyebrow: '', title: '', buttonLabel: '', link: { type: 'route', route: '/atoopv/tarification' } } } : {}),
+    ...(fm.cta ? { cta: { tone: fm.cta.tone, eyebrow: '', title: '', buttonLabel: '', link: { type: 'route', route: '/tarification' } } } : {}),
     ...(fm.cities ? { cities: { heading: 'Villes', label: 'Texte', linkLabel: 'Voir', link: { type: 'route', route: '/services/by-city' } } } : {}),
     ...(over[fm.id] || {}),
   }))

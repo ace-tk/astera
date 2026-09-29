@@ -74,14 +74,14 @@ Client-side build variables (baked into public JS — **no secrets ever**): `VIT
 
 ## 4. What the `.htaccess` does (tested on a real Apache 2.4)
 
-`/atoopv/tarification`, `/app/admin` … → React (`index.html`) · `/api/*` and `/api/socket.io` → **never** rewritten · HTTP → HTTPS · `www` → apex · `index.html` not cached · `/assets/*` cached 1 year (content-hashed).
+`/tarification`, `/app/admin` … → React (`index.html`) · `/api/*` and `/api/socket.io` → **never** rewritten · HTTP → HTTPS · `www` → apex · `index.html` not cached · `/assets/*` cached 1 year (content-hashed).
 
 ## 5. Verify after deploying (staging, then production)
 
 ```bash
 D=https://staging.atoopv.com        # or https://atoopv.com
 curl -s  $D/api/health                                   # {"ok":true,"service":"astera-api",…}
-curl -sI $D/atoopv/tarification | head -1                # HTTP 200  (SPA deep link)
+curl -sI $D/tarification | head -1                # HTTP 200  (SPA deep link)
 curl -s -o /dev/null -w '%{http_code}\n' $D/api/nope     # 404 JSON, NOT the React page
 curl -s -X POST $D/api/contact -H 'content-type: application/json' -d '{}'   # 400 + French fieldErrors
 ```

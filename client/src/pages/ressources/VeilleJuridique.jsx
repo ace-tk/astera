@@ -25,7 +25,7 @@ export default function VeilleJuridique() {
 
   const items = VEILLE_JURIDIQUE_SLUGS.map((slug) => {
     const r = getResource(slug)
-    return { title: r.title, body: excerpt(r.body), to: `/atoopv/ressources/${slug}`, cta: 'Lire →' }
+    return { title: r.title, body: excerpt(r.body), to: `/ressources/${slug}`, cta: 'Lire →' }
   })
   const listed = new Set(items.map((i) => i.to))
   for (const p of cmsArticles) if (!listed.has(p.path)) items.push({ title: p.title, body: p.excerpt, to: p.path, cta: 'Lire →' })

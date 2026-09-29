@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://atoopv.com/atoopv</loc>
+    <loc>https://atoopv.com/</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/boutique</loc>
+    <loc>https://atoopv.com/accueil</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/tarification</loc>
+    <loc>https://atoopv.com/boutique</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/contact</loc>
+    <loc>https://atoopv.com/tarification</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/a-propos</loc>
+    <loc>https://atoopv.com/contact</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/autodiagnostic</loc>
+    <loc>https://atoopv.com/a-propos</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/atoosavoir</loc>
+    <loc>https://atoopv.com/autodiagnostic</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/atoosavoir/exemple</loc>
+    <loc>https://atoopv.com/atoosavoir</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/atoosavoir/cgv</loc>
+    <loc>https://atoopv.com/atoosavoir/exemple</loc>
+  </url>
+  <url>
+    <loc>https://atoopv.com/atoosavoir/cgv</loc>
   </url>
   <url>
     <loc>https://atoopv.com/services</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources</loc>
+    <loc>https://atoopv.com/ressources</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/veille-juridique-cse</loc>
+    <loc>https://atoopv.com/ressources/veille-juridique-cse</loc>
   </url>
   <url>
     <loc>https://atoopv.com/services/drafting</loc>
@@ -181,105 +184,105 @@
     <loc>https://atoopv.com/services/training/formation-pro-communication</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/actualite-sociale</loc>
+    <loc>https://atoopv.com/ressources/actualite-sociale</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie</loc>
+    <loc>https://atoopv.com/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/canicule-travail-decret-2025-482-obligations-employeur-cse</loc>
+    <loc>https://atoopv.com/ressources/canicule-travail-decret-2025-482-obligations-employeur-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/cas-pratiques</loc>
+    <loc>https://atoopv.com/ressources/cas-pratiques</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/comment-lire-arret-cour-de-cassation</loc>
+    <loc>https://atoopv.com/ressources/comment-lire-arret-cour-de-cassation</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/commissaire-de-justice-cse-constat-entrave</loc>
+    <loc>https://atoopv.com/ressources/commissaire-de-justice-cse-constat-entrave</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/competences-elu-cse-mandat</loc>
+    <loc>https://atoopv.com/ressources/competences-elu-cse-mandat</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/compteur-cp-arret-maladie-verifications-avant-solder</loc>
+    <loc>https://atoopv.com/ressources/compteur-cp-arret-maladie-verifications-avant-solder</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables</loc>
+    <loc>https://atoopv.com/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/conges-payes-heures-supplementaires-calcul-bulletins-paie</loc>
+    <loc>https://atoopv.com/ressources/conges-payes-heures-supplementaires-calcul-bulletins-paie</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/demission-mandat-cse-elu-protection</loc>
+    <loc>https://atoopv.com/ressources/demission-mandat-cse-elu-protection</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/droit-image-salarie-depart-jurisprudence-cour-cassation</loc>
+    <loc>https://atoopv.com/ressources/droit-image-salarie-depart-jurisprudence-cour-cassation</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/droits-elus-cse-guide-juridique</loc>
+    <loc>https://atoopv.com/ressources/droits-elus-cse-guide-juridique</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026</loc>
+    <loc>https://atoopv.com/ressources/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/harcelement-moral-methodes-gestion-cse</loc>
+    <loc>https://atoopv.com/ressources/harcelement-moral-methodes-gestion-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/heures-supplementaires-annualisation-arret-maladie-calcul-cour-cassation</loc>
+    <loc>https://atoopv.com/ressources/heures-supplementaires-annualisation-arret-maladie-calcul-cour-cassation</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/heures-supplementaires-conges-payes-calcul</loc>
+    <loc>https://atoopv.com/ressources/heures-supplementaires-conges-payes-calcul</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/histoire-cse-comite-entreprise-cnr-1943</loc>
+    <loc>https://atoopv.com/ressources/histoire-cse-comite-entreprise-cnr-1943</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse</loc>
+    <loc>https://atoopv.com/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/la-minute-cse</loc>
+    <loc>https://atoopv.com/ressources/la-minute-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/mentions-obligatoires-pv</loc>
+    <loc>https://atoopv.com/ressources/mentions-obligatoires-pv</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/mise-a-pied-conservatoire-elu-cse</loc>
+    <loc>https://atoopv.com/ressources/mise-a-pied-conservatoire-elu-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/modele-pv-cse-premium-integral</loc>
+    <loc>https://atoopv.com/ressources/modele-pv-cse-premium-integral</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/modeles-pv</loc>
+    <loc>https://atoopv.com/ressources/modeles-pv</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/proces-verbal</loc>
+    <loc>https://atoopv.com/ressources/proces-verbal</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/reglement-interieur-fin-depot-greffe-mai-2026-loi-simplification</loc>
+    <loc>https://atoopv.com/ressources/reglement-interieur-fin-depot-greffe-mai-2026-loi-simplification</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/reorganisation-silencieuse-cse-demissions</loc>
+    <loc>https://atoopv.com/ressources/reorganisation-silencieuse-cse-demissions</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/signature-du-proces-verbal-de-reunion-du-cse</loc>
+    <loc>https://atoopv.com/ressources/signature-du-proces-verbal-de-reunion-du-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/solde-de-tout-compte-signature</loc>
+    <loc>https://atoopv.com/ressources/solde-de-tout-compte-signature</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/surveillance-salaries-cnil-cse</loc>
+    <loc>https://atoopv.com/ressources/surveillance-salaries-cnil-cse</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/teletravail-impose-cse-droits-employeur</loc>
+    <loc>https://atoopv.com/ressources/teletravail-impose-cse-droits-employeur</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/tickets-restaurant-teletravail-droit-teletravailleurs</loc>
+    <loc>https://atoopv.com/ressources/tickets-restaurant-teletravail-droit-teletravailleurs</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/veille-juridique-cse-8-25-juillet-2026</loc>
+    <loc>https://atoopv.com/ressources/veille-juridique-cse-8-25-juillet-2026</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/atoopv/ressources/veille-sociale-cse-juin-2026</loc>
+    <loc>https://atoopv.com/ressources/veille-sociale-cse-juin-2026</loc>
   </url>
 </urlset>

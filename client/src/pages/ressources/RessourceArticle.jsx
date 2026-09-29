@@ -18,7 +18,7 @@ import { useSectionNav } from '@/cms/useNavigation'
  * Renders one extracted content/resources/<slug>.md file. A single dynamic
  * page for every page (hubs and leaf articles alike -- they're all just
  * extracted markdown, no structural difference) rather than one file per
- * page, same reasoning as Services' ServiceArticle. The /atoopv/ressources index
+ * page, same reasoning as Services' ServiceArticle. The /ressources index
  * route passes slug="guides-livres-blancs-cse" directly: that page *is* the
  * real Ressources landing page on atoopv.com (the nav's "Ressources" link
  * points straight at it), so the index route renders it rather than a
@@ -36,7 +36,7 @@ export default function RessourceArticle({ slug: slugProp }) {
 
   // Bundled markdown for every existing article; the CMS for new CMS articles and admin previews.
   const source = useCmsArticle({
-    path: `/atoopv/ressources/${slug}`,
+    path: `/ressources/${slug}`,
     section: 'ressources',
     slug,
     bundled,
@@ -45,7 +45,7 @@ export default function RessourceArticle({ slug: slugProp }) {
   })
 
   return (
-    <CmsArticleGate source={source} missingTo="/atoopv/ressources">
+    <CmsArticleGate source={source} missingTo="/ressources">
       {(resource) => <RessourceArticleView resource={resource} />}
     </CmsArticleGate>
   )

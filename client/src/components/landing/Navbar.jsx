@@ -117,11 +117,12 @@ export default function Navbar() {
 
   // The ATOOPV homepage ("Accueil") isn't a top-level nav item any more —
   // it's reached via the logo, so the logo needs to know which "home" it's
-  // standing in for. After the page-content swap (Accueil now renders at
-  // "/", the Story/marketing page now renders at "/atoopv"), that "home" is
-  // "/" for every page except the swapped "/atoopv" page itself, which
-  // self-links exactly the way "/" used to.
-  const logoHref = location.pathname === '/atoopv' ? '/atoopv' : '/'
+  // standing in for. After the page-content swap (Accueil renders at "/",
+  // the Story/marketing page renders at "/accueil" — renamed from "/atoopv",
+  // same page, same content, only the URL changed), that "home" is "/" for
+  // every page except the Story page itself, which self-links exactly the
+  // way "/" used to.
+  const logoHref = location.pathname === '/accueil' ? '/accueil' : '/'
 
   // The ATOOPV homepage floats a slim announcement bar above the navbar
   // (AtoopvAnnouncementBar, rendered in Accueil.jsx) — since this header is
@@ -192,10 +193,11 @@ export default function Navbar() {
         <div className="hidden items-center gap-0.5 md:flex">
           {/* Story is a single plain link now (no dropdown) — same
               arrow-cue style as AtooSavoir/À propos below. HashAwareLink
-              still works fine here: its href is now a plain route ('/atoopv',
-              after the page-content swap), which it renders as a normal
-              <Link> — no hash handling needed, so the component didn't
-              need to change even though what it's linking to did. */}
+              still works fine here: its href is now a plain route ('/accueil',
+              after the page-content swap and the later /atoopv → /accueil
+              rename), which it renders as a normal <Link> — no hash handling
+              needed, so the component didn't need to change even though
+              what it's linking to did. */}
           <HashAwareLink
             href={NAV_LINKS[0].href}
             className={cn(plainLinkClass, 'group')}

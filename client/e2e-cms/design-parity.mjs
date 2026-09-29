@@ -31,9 +31,9 @@ const SECTIONS = [
   { key: 'training', label: 'Formations', menuLabel: 'Formations', dir: 'training', ref: 'formation-droit-social-contrat-travail', base: '/services/training', badge: 'Services', slugSpecific: true },
   { key: 'communication', label: 'Communication', menuLabel: 'Formations', dir: 'communication', ref: 'newsletter-actucse', base: '/services/communication', badge: 'Services' },
   { key: 'guides', label: 'Guides pratiques', menuLabel: 'Ressources', dir: 'guides', ref: 'approbation-pv-cse', base: '/services/guides', badge: 'Services' },
-  { key: 'ressources', label: 'Ressources', menuLabel: 'Ressources', dir: 'resources', ref: 'cas-pratiques', base: '/atoopv/ressources', badge: 'Ressources' },
+  { key: 'ressources', label: 'Ressources', menuLabel: 'Ressources', dir: 'resources', ref: 'cas-pratiques', base: '/ressources', badge: 'Ressources' },
   // A leaf article is not in Ressources' side navigation (only hub pages are), whereas a new page is appended to it.
-  { key: 'ressources', label: 'Ressources', menuLabel: 'Ressources', dir: 'resources', ref: 'canicule-travail-decret-2025-482-obligations-employeur-cse', base: '/atoopv/ressources', badge: 'Ressources', leafNotInNav: true },
+  { key: 'ressources', label: 'Ressources', menuLabel: 'Ressources', dir: 'resources', ref: 'canicule-travail-decret-2025-482-obligations-employeur-cse', base: '/ressources', badge: 'Ressources', leafNotInNav: true },
 ]
 const SRC = path.resolve(here, '../src/components')
 const tokensIn = (file) => new Set(fs.readFileSync(`${SRC}/${file}`, 'utf8').split(/[\s"'`{}()]+/))
@@ -201,12 +201,12 @@ for (const S of SECTIONS) {
 
   /* ---- Mega menu placement (desktop + mobile) ---- */
   const needle = ref.title.slice(0, 22)
-  await open(view, '/atoopv', 1440, 1000, false)
+  await open(view, '/accueil', 1440, 1000, false)
   await view.locator('header a[aria-expanded]', { hasText: S.menuLabel }).first().hover()
   await view.waitForTimeout(600)
   check(`${S.key}: appears in the "${S.menuLabel}" mega menu`, (await view.locator(`header a[href="${path}"]`).count()) >= 1)
   await view.setViewportSize({ width: 390, height: 844 })
-  await view.goto(`${BASE}/atoopv`, { waitUntil: 'networkidle' })
+  await view.goto(`${BASE}/accueil`, { waitUntil: 'networkidle' })
   await view.locator('header button[aria-label="Menu"]').first().click()
   await view.locator(`header button[aria-label$="${S.menuLabel}"]`).first().click()
   await view.waitForTimeout(500)
@@ -223,12 +223,12 @@ for (const S of SECTIONS) {
     await admin.request.post(`${API}/admin/cms/pages/${id}/unpublish`, { headers: auth })
   }
   check(`${S.key}: unpublished — public API no longer serves it`, (await admin.request.get(`${API}/cms/pages?path=${encodeURIComponent(path)}`)).status() === 404)
-  await open(view, '/atoopv', 1440, 1000, false)
+  await open(view, '/accueil', 1440, 1000, false)
   await view.locator('header a[aria-expanded]', { hasText: S.menuLabel }).first().hover()
   await view.waitForTimeout(600)
   check(`${S.key}: unpublished — gone from the desktop mega menu`, (await view.locator(`header a[href="${path}"]`).count()) === 0)
   await view.setViewportSize({ width: 390, height: 844 })
-  await view.goto(`${BASE}/atoopv`, { waitUntil: 'networkidle' })
+  await view.goto(`${BASE}/accueil`, { waitUntil: 'networkidle' })
   await view.locator('header button[aria-label="Menu"]').first().click()
   await view.locator(`header button[aria-label$="${S.menuLabel}"]`).first().click()
   await view.waitForTimeout(500)

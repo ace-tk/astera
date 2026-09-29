@@ -220,7 +220,7 @@ export default function AtoopvOffersTimeline() {
         </div>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button as={Link} to="/atoopv/tarification" variant="soft" size="md" magnetic={false}>
+          <Button as={Link} to="/tarification" variant="soft" size="md" magnetic={false}>
             <Eye className="h-4 w-4" /> Live preview
           </Button>
           {/* No "Download sample report" destination exists in the reference

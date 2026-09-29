@@ -27,7 +27,7 @@ import {
  */
 // The existing footer string is "04 12 10 06 06 · contact@atoopv.com · ALC
 // SAS — SIREN 833 781 248" — split apart here only so the email segment can
-// become a real <Link> to the existing /atoopv/contact route instead of
+// become a real <Link> to the existing /contact route instead of
 // plain text (CTASection's `footer` prop already just renders whatever it's
 // given, string or node, so no change to that shared component is needed).
 // Built in this .jsx page rather than the .js constants file since JSX
@@ -37,7 +37,7 @@ function CtaFooterWithContactLink({ footer }) {
   return (
     <>
       {phone} ·{' '}
-      <Link to="/atoopv/contact" className="link-underline text-ink/70 hover:text-ink">
+      <Link to="/contact" className="link-underline text-ink/70 hover:text-ink">
         {email}
       </Link>{' '}
       · {company}

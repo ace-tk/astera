@@ -17,7 +17,7 @@ export const TARIFICATION_HERO = {
   badge: 'Simulateur de prix',
   title: 'Estimez votre budget PV',
   lead: 'Une estimation en 30 secondes, un devis précis sous 24h.',
-  primaryCta: { label: 'Demander un devis gratuit →', to: '/atoopv/contact' },
+  primaryCta: { label: 'Demander un devis gratuit →', to: '/contact' },
 }
 
 export const TARIFICATION_INTRO = {
@@ -85,7 +85,7 @@ export const TARIFICATION_TIERS = [
 
 export const TARIFICATION_CALCULATOR = {
   disclaimer: 'Estimation non contractuelle, hors taxes (+20% TVA) • Devis personnalisé gratuit sous 24h',
-  cta: { label: 'Demander un devis gratuit →', to: '/atoopv/contact' },
+  cta: { label: 'Demander un devis gratuit →', to: '/contact' },
   labels: { format: 'Format', duration: 'Durée de la réunion', estimate: 'Estimation indicative', currency: 'HT', instance: 'Instance', preview: 'Aperçu de l’extrait' },
 }
 
@@ -158,6 +158,6 @@ export const TARIFICATION_CTA = {
   eyebrow: 'Passons à l’action',
   heading: 'Prêt pour votre devis personnalisé ?',
   body: 'Décrivez-nous votre réunion : type d’instance, durée, fréquence et format souhaité. Vous recevez un devis gratuit et personnalisé sous 24 heures.',
-  primaryCta: { label: 'Demander un devis gratuit', to: '/atoopv/contact' },
-  secondaryCta: { label: 'Voir toutes nos ressources', to: '/atoopv/ressources' },
+  primaryCta: { label: 'Demander un devis gratuit', to: '/contact' },
+  secondaryCta: { label: 'Voir toutes nos ressources', to: '/ressources' },
 }

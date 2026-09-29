@@ -17,7 +17,7 @@ describe('main navigation source', () => {
   })
 
   it('uses the CMS menus in the navbar shape, with no code-level utility links today', () => {
-    const nav = buildMainNav({ menu: { configured: true, items: [resolvedFormations, { id: 'a-propos', label: 'À propos', kind: 'link', href: '/atoopv/a-propos' }] } })
+    const nav = buildMainNav({ menu: { configured: true, items: [resolvedFormations, { id: 'a-propos', label: 'À propos', kind: 'link', href: '/a-propos' }] } })
     expect(nav.map((i) => i.label)).toEqual(['Nos formations', 'À propos'])
     expect(nav[0]).toMatchObject({ key: 'formations', href: '/services/training', mega: { columns: [{ heading: 'Groupe', items: [{ label: 'Une formation', href: '/services/training/x' }] }] }, mobileItems: [{ label: 'Mobile' }] })
   })
@@ -66,6 +66,6 @@ describe('built-in navigation converter', () => {
   })
 
   it('a plain (non-mega) CMS item comes back as the simple {label, href} the navbar expects', () => {
-    expect(fromResolvedMenu([{ id: 'a-propos', label: 'À propos', kind: 'link', href: '/atoopv/a-propos' }])).toEqual([{ label: 'À propos', href: '/atoopv/a-propos' }])
+    expect(fromResolvedMenu([{ id: 'a-propos', label: 'À propos', kind: 'link', href: '/a-propos' }])).toEqual([{ label: 'À propos', href: '/a-propos' }])
   })
 })

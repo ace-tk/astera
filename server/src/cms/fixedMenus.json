@@ -63,7 +63,7 @@
     "kind": "link",
     "link": {
       "type": "route",
-      "route": "/atoopv/atoosavoir"
+      "route": "/atoosavoir"
     },
     "visual": "atoosavoir",
     "groups": [],
@@ -76,7 +76,7 @@
     "kind": "mega",
     "link": {
       "type": "route",
-      "route": "/atoopv/ressources"
+      "route": "/ressources"
     },
     "color": "royal",
     "visual": "ressources",
@@ -105,7 +105,7 @@
     "kind": "mega",
     "link": {
       "type": "route",
-      "route": "/atoopv/ressources"
+      "route": "/ressources"
     },
     "color": "purple",
     "visual": "blog",
@@ -132,7 +132,7 @@
     "kind": "link",
     "link": {
       "type": "route",
-      "route": "/atoopv/a-propos"
+      "route": "/a-propos"
     },
     "visual": "a-propos",
     "groups": [],

@@ -11,8 +11,23 @@
   },
   "redirects": [
     {
+      "source": "/simulateur",
+      "destination": "/tarification",
+      "permanent": true
+    },
+    {
       "source": "/atoopv/simulateur",
-      "destination": "/atoopv/tarification",
+      "destination": "/tarification",
+      "permanent": true
+    },
+    {
+      "source": "/atoopv",
+      "destination": "/accueil",
+      "permanent": true
+    },
+    {
+      "source": "/atoopv/:path*",
+      "destination": "/:path*",
       "permanent": true
     }
   ],

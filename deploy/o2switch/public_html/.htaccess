@@ -26,13 +26,23 @@ Options -MultiViews
   #    untouched so it is never rewritten to index.html.
   RewriteRule ^api(/|$) - [L]
 
-  # 3b. SEO audit: /atoopv/simulateur is a duplicate of /atoopv/tarification and must not
-  #     stay indexable — a real, permanent redirect (not the SPA's client-side one, which a
-  #     crawler never gets a 301 status from, only a 200 + JS navigation).
-  RewriteRule ^atoopv/simulateur/?$ https://atoopv.com/atoopv/tarification [R=301,L]
+  # 3b. SEO audit: /simulateur is a duplicate of /tarification and must not stay
+  #     indexable — a real, permanent redirect (not the SPA's client-side one, which
+  #     a crawler never gets a 301 status from, only a 200 + JS navigation).
+  RewriteRule ^simulateur/?$ https://atoopv.com/tarification [R=301,L]
+  RewriteRule ^atoopv/simulateur/?$ https://atoopv.com/tarification [R=301,L]
+
+  # 3c. Route rename: /atoopv (and every /atoopv/* sub-path) moved to a top-level
+  #     path — same pages, same content, only the URL changed (see App.jsx). Real
+  #     server-level 301s for old bookmarks/search results/inbound links, same
+  #     reasoning as 3b: a crawler needs an actual 301, not the SPA's client-side
+  #     redirect. The bare "/atoopv" case is listed before the general "/atoopv/*"
+  #     rule so it isn't swallowed by it.
+  RewriteRule ^atoopv/?$ https://atoopv.com/accueil [R=301,L]
+  RewriteRule ^atoopv/(.*)$ https://atoopv.com/$1 [R=301,L]
 
   # 4. Single-page-app fallback: real files/directories are served as-is; every other
-  #    URL (e.g. /atoopv/tarification, /app/admin) is handed to React Router.
+  #    URL (e.g. /tarification, /app/admin) is handed to React Router.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^ /index.html [L]

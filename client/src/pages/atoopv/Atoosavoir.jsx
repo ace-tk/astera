@@ -114,7 +114,7 @@ export default function Atoosavoir() {
                 {...ATOOSAVOIR_FICHE_TEASER}
                 color="royal"
                 footer={
-                  <Button as={Link} to="/atoopv/atoosavoir/exemple" variant="soft" size="sm">
+                  <Button as={Link} to="/atoosavoir/exemple" variant="soft" size="sm">
                     Voir un exemple complet
                   </Button>
                 }
@@ -181,7 +181,7 @@ export default function Atoosavoir() {
             <br />
             <span className="mt-3 block text-[0.7rem] leading-relaxed">
               {ATOOSAVOIR_LEGAL}{' '}
-              <Link to="/atoopv/atoosavoir/cgv" className="link-underline">
+              <Link to="/atoosavoir/cgv" className="link-underline">
                 Conditions générales de vente
               </Link>
             </span>

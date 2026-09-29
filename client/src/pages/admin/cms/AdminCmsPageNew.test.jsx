@@ -25,7 +25,7 @@ const TEMPLATES = [
   },
   {
     key: 'ressources-article', name: 'Ressources Article', description: 'technical description', creatable: true, fields,
-    defaults: { badge: 'Ressources', body: '' }, tagOptions: [], pathPattern: '/atoopv/ressources/:slug',
+    defaults: { badge: 'Ressources', body: '' }, tagOptions: [], pathPattern: '/ressources/:slug',
     sections: [{ key: 'ressources', label: 'Ressources', menu: 'Ressources' }],
   },
 ]
@@ -91,7 +91,7 @@ describe('Add page — the section decides the design', () => {
     renderForm()
     await userEvent.click(await screen.findByRole('radio', { name: /^Ressources/ }))
     fireEvent.change(screen.getByPlaceholderText(/Formation aux nouvelles obligations/), { target: { value: 'Un article' } })
-    expect(screen.getByText('/atoopv/ressources/un-article')).toBeTruthy()
+    expect(screen.getByText('/ressources/un-article')).toBeTruthy()
     // the menu placement is suggested from the section
     expect(within(screen.getByLabelText('Main menu')).getAllByRole('option').find((o) => o.selected).textContent).toBe('Ressources')
     fireEvent.change(screen.getByLabelText('Menu group'), { target: { value: 'guides' } })

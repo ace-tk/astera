@@ -19,7 +19,7 @@ import { cn } from '@/utils/cn'
  * "Message (optionnel)" field, then strips from the URL. No new form, no
  * new submission endpoint — this only ever hands off to the existing one.
  */
-export default function QuickDiagnostic({ eyebrow, heading, subtitle, questions, contactTo = '/atoopv/contact', color = 'royal' }) {
+export default function QuickDiagnostic({ eyebrow, heading, subtitle, questions, contactTo = '/contact', color = 'royal' }) {
   const navigate = useNavigate()
   const a = accent(color)
   const [index, setIndex] = useState(0)

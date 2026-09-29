@@ -5,10 +5,10 @@
  * site, not a translation task like the English /services content.
  *
  * The "veille juridique" and "ressources" links now point at the real
- * ported Ressources pages (/atoopv/ressources/...) built from
+ * ported Ressources pages (/ressources/...) built from
  * content/resources/*.md. What's still out of scope points forward to
- * routes that will ship with later phases (/atoopv/simulateur,
- * /atoopv/services, /atoopv/contact) rather than out to atoopv.com — this
+ * routes that will ship with later phases (/simulateur,
+ * /services, /contact) rather than out to atoopv.com — this
  * is a migration, not a set of outbound links to the original site. The
  * source page also repeats its "Ressources gratuites" block verbatim twice
  * near the bottom; only the (more complete) second copy is represented here.
@@ -191,11 +191,11 @@ export const COMPLIANCE_NAMES = ['CSE', 'CSEE', 'CSEC', 'CSSCT', 'CECO', 'QVCT']
 
 /**
  * The homepage's "Compliance Books" teaser — a small glimpse into the real
- * Shop/Compliance Books experience at /atoopv/boutique, not the shop itself.
+ * Shop/Compliance Books experience at /boutique, not the shop itself.
  *
- * `shopHref` originally pointed at /atoopv/ressources as an interim target,
- * back when no dedicated Shop route existed. Now that /atoopv/boutique is a
- * real page (see pages/atoopv/Boutique.jsx), this points there instead —
+ * `shopHref` originally pointed at /ressources as an interim target,
+ * back when no dedicated Shop route existed. Now that /boutique is a
+ * real page (see pages/Boutique.jsx), this points there instead —
  * still the only value that needed to change.
  */
 export const COMPLIANCE_BOOKS_TEASER = {
@@ -203,7 +203,7 @@ export const COMPLIANCE_BOOKS_TEASER = {
   heading: ['COMPLIANCE', 'BOOKS.'],
   lead: 'Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE.',
   categories: ['Tous', 'CSE', 'Juridique', 'Finance', 'Santé', 'Management', 'Procès-verbal'],
-  shopHref: '/atoopv/boutique',
+  shopHref: '/boutique',
   featured: {
     category: 'CSE',
     badge: 'EN VEDETTE',
@@ -252,8 +252,8 @@ export const ACCUEIL = {
     badge: 'Agréé au titre de la formation économique des membres du CSE — Région AURA',
     title: 'Vos PV de CSE, CSSCT et IRP rédigés par des *experts des instances représentatives du personnel*.',
     lead: 'Depuis 2017, AtooPV accompagne les CSE, CSSCT et IRP dans la rédaction de leurs procès-verbaux. Nos experts interviennent en présentiel ou à distance pour produire des PV conformes, précis et opposables.',
-    primaryCta: { label: 'Demander un devis gratuit', to: '/atoopv/contact' },
-    secondaryCta: { label: 'Simuler mon budget', to: '/atoopv/contact' },
+    primaryCta: { label: 'Demander un devis gratuit', to: '/contact' },
+    secondaryCta: { label: 'Simuler mon budget', to: '/contact' },
     image: { src: '/atoopv-media/hero-salle-reunion.webp', alt: 'Salle de réunion équipée, prête pour une séance de CSE' },
   },
   statsCaption: 'De la *PME aux groupes cotés au CAC 40* — formation finançable sur budget CSE (Art. L.2315-63 CT)',
@@ -297,7 +297,7 @@ export const ACCUEIL = {
         eyebrow: 'Simulation gratuite',
         title: 'Estimez votre budget en 30 secondes',
         body: 'Devis personnalisé sans engagement. Réponse sous 24h par un expert ALC SAS.',
-        cta: { label: 'Simuler mon budget →', to: '/atoopv/simulateur' },
+        cta: { label: 'Simuler mon budget →', to: '/simulateur' },
         featured: true,
       },
     ],
@@ -340,28 +340,28 @@ export const ACCUEIL = {
         title: 'Arrêt maladie : durée légale et LFSS 2026',
         body: 'Ce que change la loi de financement de la Sécurité sociale 2026 pour les employeurs et les CSE.',
         cta: 'Lire l’article →',
-        to: '/atoopv/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie',
+        to: '/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie',
       },
       {
         title: 'Congé payé vendredi après 37h : le calcul qui surprend',
         body: 'Combien de jours de CP décomptés pour un vendredi posé après 37h lundi–jeudi ?',
         cta: 'Lire l’article →',
-        to: '/atoopv/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables',
+        to: '/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables',
       },
       {
         title: 'CP + heures sup : 3 bulletins, 3 résultats',
         body: 'La règle du maintien de salaire et ses effets sur les bulletins de paie.',
         cta: 'Lire l’article →',
-        to: '/atoopv/ressources/conges-payes-heures-supplementaires-calcul-bulletins-paie',
+        to: '/ressources/conges-payes-heures-supplementaires-calcul-bulletins-paie',
       },
     ],
-    footerCta: { label: '⚖️ Voir toute la veille juridique CSE — 8 articles', to: '/atoopv/ressources/veille-juridique-cse' },
+    footerCta: { label: '⚖️ Voir toute la veille juridique CSE — 8 articles', to: '/ressources/veille-juridique-cse' },
   },
   devis: {
     eyebrow: 'Devis qualifié — réponse sous 24h',
     heading: 'Estimez votre besoin en 2 minutes',
     body: 'Renseignez les caractéristiques de votre instance : nous revenons vers vous avec une proposition adaptée et un tarif clair.',
-    primaryCta: { label: 'Faire ma simulation', to: '/atoopv/simulateur' },
+    primaryCta: { label: 'Faire ma simulation', to: '/simulateur' },
   },
   // Quick qualifying questionnaire — every option below is drawn from data
   // that already exists elsewhere (INSTANCE_TYPES, TARIFICATION_TIERS) so it
@@ -456,8 +456,8 @@ export const ACCUEIL = {
     eyebrow: 'Passons à l’action',
     heading: 'Confiez-nous vos procès-verbaux dès aujourd’hui',
     body: 'Devis gratuit sous 24h. Première livraison sous 48 à 72h. Aucun engagement.',
-    primaryCta: { label: 'Demander un devis gratuit', to: '/atoopv/contact' },
-    secondaryCta: { label: 'Télécharger nos guides gratuits', to: '/atoopv/ressources' },
+    primaryCta: { label: 'Demander un devis gratuit', to: '/contact' },
+    secondaryCta: { label: 'Télécharger nos guides gratuits', to: '/ressources' },
     legal: 'ALC SAS — SIREN 833 781 248 — Lyon · Annecy · contact@atoopv.com · 04 12 10 06 06',
   },
   resources: {
@@ -470,14 +470,14 @@ export const ACCUEIL = {
         title: 'Comment lire un arrêt de la Cour de cassation',
         body: 'Fiche pédagogique : structure, vocabulaire et méthode de lecture décryptés pour les élus.',
         cta: 'Lire le guide →',
-        to: '/atoopv/ressources/comment-lire-arret-cour-de-cassation',
+        to: '/ressources/comment-lire-arret-cour-de-cassation',
       },
       {
         badge: '7 guides',
         title: 'Tous nos livres blancs CSE',
         body: 'Suppléance, CSSCT, heures de délégation, budget, formation… 7 guides en téléchargement libre.',
         cta: 'Voir tous les guides →',
-        to: '/atoopv/ressources/guides-livres-blancs-cse',
+        to: '/ressources/guides-livres-blancs-cse',
       },
     ],
   },

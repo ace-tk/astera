@@ -6,7 +6,7 @@ import Reveal from '@/components/ui/Reveal'
 import { cn } from '@/utils/cn'
 
 /**
- * Replaces the Homepage's old Pricing section (moved to /atoopv/tarification).
+ * Replaces the Homepage's old Pricing section (moved to /tarification).
  * Same uneven bento pattern as Features.jsx (SpotlightCard + Glyph + variable
  * spans), distinct content — this showcases the product's surfaces rather
  * than pitching capabilities, so the page doesn't read as two Features sections.

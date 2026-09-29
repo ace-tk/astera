@@ -19,7 +19,7 @@ export const ressourcesArticle = {
 
   sections: [{ key: 'ressources', label: 'Ressources', menu: 'Ressources', skin: 'ressources' }],
 
-  pathFor: (section, slug) => `/atoopv/ressources/${slug}`,
+  pathFor: (section, slug) => `/ressources/${slug}`,
 
   contentSchema: z
     .object({

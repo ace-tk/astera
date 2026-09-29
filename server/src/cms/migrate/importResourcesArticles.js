@@ -37,7 +37,7 @@ const repoRoot = path.resolve(here, '../../../../')
 export const CONTENT_ROOT = path.join(repoRoot, 'content')
 const RESOURCES_DIR = path.join(CONTENT_ROOT, 'resources')
 
-// `/atoopv/ressources` (bare, no slug) is `guides-livres-blancs-cse` rendered directly — the App.jsx
+// `/ressources` (bare, no slug) is `guides-livres-blancs-cse` rendered directly — the App.jsx
 // index route passes its slug as a prop, which RessourceArticle.jsx turns into `hub: true`, forcing
 // bundled content at that URL regardless of CMS migration/cutover (identical mechanism to every
 // Service Article category's hub). `veille-juridique-cse` is NOT a markdown file at all — it is

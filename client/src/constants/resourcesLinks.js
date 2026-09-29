@@ -23,16 +23,16 @@ const ALIASES = {
 // section is ported too — see servicesLinks.js); everything left here is
 // Contact, Simulateur, Autodiagnostic, À propos, or atoosavoir.
 const SECTION_MAP = {
-  contact: '/atoopv/contact',
-  tarification: '/atoopv/simulateur',
-  'simulateur-de-prix': '/atoopv/simulateur',
-  autodiagnostic: '/atoopv/autodiagnostic',
-  'autodiagnostic-cse': '/atoopv/autodiagnostic', // dead link on the live site itself (404) -- closest real destination
-  'a-propos': '/atoopv/a-propos',
-  faq: '/atoopv/a-propos',
-  atoosavoir: '/atoopv/atoosavoir',
-  'atoosavoir/exemple': '/atoopv/atoosavoir/exemple',
-  'atoosavoir/cgv': '/atoopv/atoosavoir/cgv',
+  contact: '/contact',
+  tarification: '/simulateur',
+  'simulateur-de-prix': '/simulateur',
+  autodiagnostic: '/autodiagnostic',
+  'autodiagnostic-cse': '/autodiagnostic', // dead link on the live site itself (404) -- closest real destination
+  'a-propos': '/a-propos',
+  faq: '/a-propos',
+  atoosavoir: '/atoosavoir',
+  'atoosavoir/exemple': '/atoosavoir/exemple',
+  'atoosavoir/cgv': '/atoosavoir/cgv',
 }
 
 const ASSET_EXT_RE = /\.(jpe?g|png|webp|gif|pdf|mp4)$/i
@@ -55,15 +55,15 @@ export function resolveResourceHref(rawHref) {
   if (ASSET_EXT_RE.test(path)) return { href: rawHref, external: true }
 
   const slug = path.replace(/^\/+|\/+$/g, '')
-  if (slug === '') return { href: '/atoopv', external: false }
-  if (slug === 'category/veille-juridique-cse') return { href: '/atoopv/ressources/veille-juridique-cse', external: false }
+  if (slug === '') return { href: '/accueil', external: false }
+  if (slug === 'category/veille-juridique-cse') return { href: '/ressources/veille-juridique-cse', external: false }
 
   const resolvedSlug = ALIASES[slug] || slug
-  if (RESOURCES_BY_SLUG.has(resolvedSlug)) return { href: `/atoopv/ressources/${resolvedSlug}`, external: false }
-  if (VEILLE_JURIDIQUE_SLUGS.includes(resolvedSlug)) return { href: `/atoopv/ressources/${resolvedSlug}`, external: false }
+  if (RESOURCES_BY_SLUG.has(resolvedSlug)) return { href: `/ressources/${resolvedSlug}`, external: false }
+  if (VEILLE_JURIDIQUE_SLUGS.includes(resolvedSlug)) return { href: `/ressources/${resolvedSlug}`, external: false }
 
   const serviceRoute = serviceRouteForSlug(slug)
   if (serviceRoute) return { href: serviceRoute, external: false }
 
-  return { href: SECTION_MAP[slug] || '/atoopv', external: false }
+  return { href: SECTION_MAP[slug] || '/accueil', external: false }
 }

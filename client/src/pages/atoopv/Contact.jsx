@@ -14,7 +14,7 @@ import { cn } from '@/utils/cn'
 /**
  * AtoopV "demande de démo" page. Every heading, paragraph, label, placeholder,
  * dropdown option, field, CTA and privacy string below is fixed content — this
- * page previously existed only as a stub redirect (/atoopv/contact -> /app), so
+ * page previously existed only as a stub redirect (/contact -> /app), so
  * the copy here is authored to match a supplied design reference exactly. The
  * scope of this file is presentation, local state and validation. Submission
  * posts to POST /api/contact (server/src/controllers/contactController.js),
@@ -181,7 +181,7 @@ export default function Contact() {
   })
 
   // Optional prefill from the homepage's quick questionnaire (QuickDiagnostic
-  // -> /atoopv/contact?source=diagnostic&message=...): only ever touches the
+  // -> /contact?source=diagnostic&message=...): only ever touches the
   // existing "Message (optionnel)" field, everything else starts blank as
   // before. The query string is stripped right after reading it so the
   // address bar doesn't keep showing raw technical params.

@@ -47,8 +47,8 @@ describe('section → template → route → frontend component', () => {
         // /services/<section>/:slug  →  <ServiceArticle category="<section>" />  (the design is chosen by `category`)
         expect(routeBlock(`/services/${s.key}`), s.key).toContain(`<Route path=":slug" element={<ServiceArticle category="${s.key}" />} />`)
       } else {
-        expect(address).toBe('/atoopv/ressources/un-slug')
-        expect(routeBlock('/atoopv/ressources'), s.key).toContain('<Route path=":slug" element={<RessourceArticle />} />')
+        expect(address).toBe('/ressources/un-slug')
+        expect(routeBlock('/ressources'), s.key).toContain('<Route path=":slug" element={<RessourceArticle />} />')
       }
     }
   })

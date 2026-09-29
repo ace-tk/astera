@@ -33,8 +33,8 @@ const SEED_ENTRIES = {
   [`formations/${DROIT}`]: [entry('e3', 'Droit social', route('/services/training/formation-droit-social-contrat-travail'))],
   [`pv/${FORMULES}`]: [entry('p1', 'PV à l’acte', route('/services/drafting/redaction-pv-cse-a-lacte'))],
 }
-const PLAIN_ABOUT = { id: 'a-propos', label: 'À propos', kind: 'link', enabled: true, link: route('/atoopv/a-propos') }
-const PV_CTA = { tone: 'dark', eyebrow: 'Devis en 24 h', title: 'Votre PV relu et livré sous 5 jours.', buttonLabel: 'Demander un devis', link: route('/atoopv/tarification') }
+const PLAIN_ABOUT = { id: 'a-propos', label: 'À propos', kind: 'link', enabled: true, link: route('/a-propos') }
+const PV_CTA = { tone: 'dark', eyebrow: 'Devis en 24 h', title: 'Votre PV relu et livré sous 5 jours.', buttonLabel: 'Demander un devis', link: route('/tarification') }
 const seed = () => fixedItems(SEED_ENTRIES, { pv: { cta: PV_CTA } })
 const initMenu = (h, items = seed()) => request(app).post(`${B}/menus/main/initialize`).set(h).send({ items })
 
@@ -55,7 +55,7 @@ describe('approved templates', () => {
     const h = await adminHeader()
     const ok = await createPage(h, { templateKey: 'ressources-article', section: 'ressources', slug: 'nouvel-article', title: 'Nouvel article' })
     expect(ok.status).toBe(201)
-    expect(ok.body.page.path).toBe('/atoopv/ressources/nouvel-article')
+    expect(ok.body.page.path).toBe('/ressources/nouvel-article')
     expect(ok.body.page.draft.content.badge).toBe('Ressources')
     // a service section is not a section of the Ressources template (and vice-versa)
     expect((await createPage(h, { templateKey: 'ressources-article', section: 'training', slug: 'x', title: 'x' })).status).toBe(422)
@@ -98,7 +98,7 @@ describe('menus — fixed structure, editable content', () => {
     expect(f).toMatchObject({ kind: 'mega', visual: 'formations', color: 'royal' })
     expect(f.groups.map((g) => g.heading)).toEqual(['Formations des élus', 'Droit & pratique'])
     expect(f.groups[0].entries.map((e) => e.label)).toEqual(['Formation économique', 'Trésorier du CSE'])
-    expect(m.items[0].cta).toMatchObject({ eyebrow: 'Devis en 24 h', buttonHref: '/atoopv/tarification' })
+    expect(m.items[0].cta).toMatchObject({ eyebrow: 'Devis en 24 h', buttonHref: '/tarification' })
   })
 
   it('lets an admin edit what is INSIDE the menus (links, mobile list, panel texts): draft first, live on publish', async () => {

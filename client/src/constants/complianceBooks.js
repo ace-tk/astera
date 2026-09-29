@@ -1,5 +1,5 @@
 /**
- * Shared source of truth for the real ATOOPV Shop (/atoopv/boutique) and its
+ * Shared source of truth for the real ATOOPV Shop (/boutique) and its
  * book reader (BookReader.jsx). The shop grid, the book detail view, and the
  * reader all read from this one array — never duplicated between them.
  *

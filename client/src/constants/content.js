@@ -5,12 +5,13 @@
 
 // Single plain link. Was an in-page anchor ('#story') to the Story section
 // on this same page; since the page-content swap moved the Story page's
-// content to /atoopv (and this page now shows the ATOOPV homepage instead),
-// this now links there directly. HashAwareLink renders any non-hash href as
-// a normal <Link>, so no other change was needed for that.
+// content out (and this page now shows the ATOOPV homepage instead), this
+// now links there directly — at /accueil (renamed from /atoopv; the old
+// /atoopv redirects there, see App.jsx). HashAwareLink renders any non-hash
+// href as a normal <Link>, so no other change was needed for that.
 const STORY_NAV = {
   label: 'Story',
-  href: '/atoopv',
+  href: '/accueil',
 }
 
 /**
@@ -64,8 +65,8 @@ export const ATOOPV_NAV = [
         {
           heading: 'Tarifs & délais',
           items: [
-            { label: 'Tarifs & devis', href: '/atoopv/tarification' },
-            { label: 'Simulateur de budget', href: '/atoopv/tarification' },
+            { label: 'Tarifs & devis', href: '/tarification' },
+            { label: 'Simulateur de budget', href: '/tarification' },
             { label: 'Délais de remise', href: '/services/tarifs-infos/delai-redaction-pv-cse' },
             { label: 'PV par ville — 11 villes', href: '/services/by-city' },
           ],
@@ -76,14 +77,14 @@ export const ATOOPV_NAV = [
         eyebrow: 'Devis en 24 h',
         title: 'Votre PV relu et livré sous 5 jours.',
         buttonLabel: 'Demander un devis',
-        buttonHref: '/atoopv/tarification',
+        buttonHref: '/tarification',
       },
     },
     mobileItems: [
       { label: 'Rédaction intégrale', href: '/services/drafting' },
       { label: 'PV à l’acte', href: '/services/drafting/redaction-pv-cse-a-lacte' },
       { label: 'Par instance', href: '/services/drafting/redaction-pv-cse' },
-      { label: 'Tarifs & délais', href: '/atoopv/tarification' },
+      { label: 'Tarifs & délais', href: '/tarification' },
       { label: 'PV par ville', href: '/services/by-city' },
     ],
   },
@@ -123,7 +124,7 @@ export const ATOOPV_NAV = [
         eyebrow: 'Sur mesure',
         title: 'Construisons le plan de formation de votre mandat.',
         buttonLabel: 'Nous contacter',
-        buttonHref: '/atoopv/tarification',
+        buttonHref: '/tarification',
       },
     },
     mobileItems: [
@@ -132,36 +133,36 @@ export const ATOOPV_NAV = [
       { label: 'Communication du CSE', href: '/services/communication' },
     ],
   },
-  { label: 'AtooSavoir', href: '/atoopv/atoosavoir' },
+  { label: 'AtooSavoir', href: '/atoosavoir' },
   {
     key: 'ressources',
     label: 'Ressources',
-    href: '/atoopv/ressources',
+    href: '/ressources',
     color: 'royal',
     mega: {
       columns: [
         {
           heading: 'Outils',
           items: [
-            { label: 'Autodiagnostic de votre CSE', href: '/atoopv/autodiagnostic' },
-            { label: 'Simulateur de budget PV', href: '/atoopv/tarification' },
+            { label: 'Autodiagnostic de votre CSE', href: '/autodiagnostic' },
+            { label: 'Simulateur de budget PV', href: '/tarification' },
           ],
         },
         {
           heading: 'Modèles de PV',
           items: [
             { label: 'Modèle de PV gratuit', href: '/services/guides/modele-pv-cse-gratuit' },
-            { label: 'Bibliothèque de modèles', href: '/atoopv/ressources/modeles-pv' },
-            { label: 'Modèle premium intégral', href: '/atoopv/ressources/modele-pv-cse-premium-integral' },
+            { label: 'Bibliothèque de modèles', href: '/ressources/modeles-pv' },
+            { label: 'Modèle premium intégral', href: '/ressources/modele-pv-cse-premium-integral' },
           ],
         },
         {
           heading: 'Guides & abonnements',
           items: [
-            { label: 'Guides & livres blancs', href: '/atoopv/ressources/guides-livres-blancs-cse' },
+            { label: 'Guides & livres blancs', href: '/ressources/guides-livres-blancs-cse' },
             { label: 'Le guide du comité', href: '/services/communication/guide-du-comite' },
             { label: 'Newsletter ActuCSE', href: '/services/communication/newsletter-actucse' },
-            { label: 'Questions fréquentes', href: '/atoopv/a-propos' },
+            { label: 'Questions fréquentes', href: '/a-propos' },
           ],
         },
       ],
@@ -174,26 +175,26 @@ export const ATOOPV_NAV = [
       },
     },
     mobileItems: [
-      { label: 'Autodiagnostic de votre CSE', href: '/atoopv/autodiagnostic' },
-      { label: 'Simulateur de budget PV', href: '/atoopv/tarification' },
-      { label: 'Modèles de PV', href: '/atoopv/ressources/modeles-pv' },
-      { label: 'Guides & abonnements', href: '/atoopv/ressources/guides-livres-blancs-cse' },
+      { label: 'Autodiagnostic de votre CSE', href: '/autodiagnostic' },
+      { label: 'Simulateur de budget PV', href: '/tarification' },
+      { label: 'Modèles de PV', href: '/ressources/modeles-pv' },
+      { label: 'Guides & abonnements', href: '/ressources/guides-livres-blancs-cse' },
     ],
   },
   {
     key: 'blog',
     label: 'Blog',
-    href: '/atoopv/ressources',
+    href: '/ressources',
     color: 'purple',
     mega: {
       columns: [
         {
           heading: 'Rubriques',
           items: [
-            { label: 'Actualité sociale', href: '/atoopv/ressources/actualite-sociale' },
-            { label: 'Jurisprudence', href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse' },
-            { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
-            { label: 'Veille sociale', href: '/atoopv/ressources/veille-juridique-cse' },
+            { label: 'Actualité sociale', href: '/ressources/actualite-sociale' },
+            { label: 'Jurisprudence', href: '/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse' },
+            { label: 'Cas pratiques', href: '/ressources/cas-pratiques' },
+            { label: 'Veille sociale', href: '/ressources/veille-juridique-cse' },
           ],
         },
         {
@@ -208,10 +209,10 @@ export const ATOOPV_NAV = [
         {
           heading: 'Le CSE en pratique',
           items: [
-            { label: 'Droits & moyens des élus', href: '/atoopv/ressources/droits-elus-cse-guide-juridique' },
+            { label: 'Droits & moyens des élus', href: '/ressources/droits-elus-cse-guide-juridique' },
             { label: 'Information-consultation & BDESE', href: '/services/guides/information-consultation-cse' },
             { label: 'Réunions & fonctionnement', href: '/services/guides/reunion-extraordinaire-cse' },
-            { label: 'Comptes & contrôle URSSAF', href: '/atoopv/ressources' },
+            { label: 'Comptes & contrôle URSSAF', href: '/ressources' },
           ],
         },
       ],
@@ -223,25 +224,25 @@ export const ATOOPV_NAV = [
       },
     },
     mobileItems: [
-      { label: 'Actualité sociale', href: '/atoopv/ressources/actualite-sociale' },
-      { label: 'Jurisprudence', href: '/atoopv/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse' },
-      { label: 'Cas pratiques', href: '/atoopv/ressources/cas-pratiques' },
+      { label: 'Actualité sociale', href: '/ressources/actualite-sociale' },
+      { label: 'Jurisprudence', href: '/ressources/jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse' },
+      { label: 'Cas pratiques', href: '/ressources/cas-pratiques' },
       { label: 'Le PV en pratique', href: '/services/guides/pv-cse-contenu-obligatoire' },
-      { label: 'Le CSE en pratique', href: '/atoopv/ressources/droits-elus-cse-guide-juridique' },
+      { label: 'Le CSE en pratique', href: '/ressources/droits-elus-cse-guide-juridique' },
       { label: 'PV par ville', href: '/services/by-city' },
     ],
   },
-  { label: 'À propos', href: '/atoopv/a-propos' },
+  { label: 'À propos', href: '/a-propos' },
 ]
 
 /** Mobile-only: kept as the burger menu's first row (see ATOOPV_NAV's own
  * comment — desktop drops "Accueil" entirely, reached via the logo instead). */
-export const MOBILE_HOME_LINK = { label: 'Accueil', href: '/atoopv' }
+export const MOBILE_HOME_LINK = { label: 'Accueil', href: '/accueil' }
 
 /** No /contact/ route exists in this app — every "Devis PV" / "Demander un
  * devis" / "Nous contacter" CTA in the brief resolves to the closest
  * existing equivalent, the quote/pricing page. */
-export const DEVIS_CTA_HREF = '/atoopv/tarification'
+export const DEVIS_CTA_HREF = '/tarification'
 
 /** Full desktop top-level order: Story (unchanged, Astera-only) followed by
  * the six ATOOPV entries. Mobile renders MOBILE_HOME_LINK first, then this

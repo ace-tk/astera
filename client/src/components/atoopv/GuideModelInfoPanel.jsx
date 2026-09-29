@@ -53,7 +53,7 @@ export default function GuideModelInfoPanel({ headingBody, stats, contact, color
         )}
         {contact.email && (
           <p className="mt-4 text-sm text-muted">
-            <Link to="/atoopv/contact" className="font-medium text-ink link-underline">
+            <Link to="/contact" className="font-medium text-ink link-underline">
               {contact.email}
             </Link>
             {contact.trailing && <> · {contact.trailing}</>}

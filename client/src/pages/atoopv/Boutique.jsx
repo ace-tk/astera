@@ -8,7 +8,7 @@ import { usePageMeta } from '@/hooks/usePageMeta'
 import '@/styles/boutique.css'
 
 /**
- * ATOOPV Shop (/atoopv/boutique) — previously the "Compliance Books" shelf/
+ * ATOOPV Shop (/boutique) — previously the "Compliance Books" shelf/
  * detail/reader flow (BookCover/BookReader + COMPLIANCE_BOOKS), now the
  * resource library shell (ResourceLibrary) followed by the procès-verbal
  * report preview (ReportPageFlip). `boutique.css` is scoped under a

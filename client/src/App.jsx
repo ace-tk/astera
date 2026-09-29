@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useParams } from 'react-router-dom'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { onUnauthorized } from '@/services/api'
@@ -95,6 +95,12 @@ function SessionExpiryRedirect() {
   return null
 }
 
+/** Redirects an old /atoopv/ressources/:slug bookmark to its new /ressources/:slug home, preserving the slug. */
+function AtoopvRessourceRedirect() {
+  const { slug } = useParams()
+  return <Navigate to={`/ressources/${slug}`} replace />
+}
+
 /**
  * The sole entry point behind "Open app": by the time this renders, RequireAuth
  * has already guaranteed a signed-in user. Admins are sent straight to their
@@ -123,31 +129,49 @@ export default function App() {
       <Suspense fallback={<PageLoader />}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            {/* Page-content swap (requested): "/" now renders the ATOOPV
-                homepage (Accueil) and "/atoopv" now renders the Story/
-                marketing page (Landing) — the opposite of before. Only these
-                two `element` values were swapped; no other route changed. */}
+            {/* Page-content swap (from an earlier change): "/" renders the ATOOPV
+                homepage (Accueil) — untouched by the /atoopv route rename below. */}
             <Route path="/" element={<Accueil />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/atoopv" element={<Landing />} />
-            <Route path="/atoopv/boutique" element={<Boutique />} />
-            <Route path="/atoopv/tarification" element={<Tarification />} />
-            {/* /atoopv/simulateur was the page's originally-intended path (still
-                referenced that way by servicesLinks.js/resourcesLinks.js's internal
-                link maps) before it shipped as /atoopv/tarification — redirect
-                rather than duplicate the page. */}
-            <Route path="/atoopv/simulateur" element={<Navigate to="/atoopv/tarification" replace />} />
-            <Route path="/atoopv/contact" element={<Contact />} />
-            <Route path="/atoopv/a-propos" element={<APropos />} />
-            <Route path="/atoopv/autodiagnostic" element={<Autodiagnostic />} />
-            <Route path="/atoopv/atoosavoir" element={<Atoosavoir />} />
-            <Route path="/atoopv/atoosavoir/exemple" element={<AtoosavoirExemple />} />
-            <Route path="/atoopv/atoosavoir/cgv" element={<AtoosavoirCgv />} />
-            <Route path="/atoopv/ressources" element={<ServiceCategoryLayout />}>
+            {/* Route rename (requested): the Story/marketing page (Landing) — same
+                component, same content, same everything — now lives at /accueil
+                instead of /atoopv. /atoopv and every /atoopv/* sub-path redirect to
+                their new top-level equivalent, for old bookmarks/SEO/search results. */}
+            <Route path="/accueil" element={<Landing />} />
+            <Route path="/atoopv" element={<Navigate to="/accueil" replace />} />
+            <Route path="/boutique" element={<Boutique />} />
+            <Route path="/atoopv/boutique" element={<Navigate to="/boutique" replace />} />
+            <Route path="/tarification" element={<Tarification />} />
+            <Route path="/atoopv/tarification" element={<Navigate to="/tarification" replace />} />
+            {/* /simulateur (formerly /atoopv/simulateur) was the page's originally-intended
+                path (still referenced that way by servicesLinks.js/resourcesLinks.js's
+                internal link maps) before it shipped as /tarification — redirect rather
+                than duplicate the page. */}
+            <Route path="/simulateur" element={<Navigate to="/tarification" replace />} />
+            <Route path="/atoopv/simulateur" element={<Navigate to="/tarification" replace />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/atoopv/contact" element={<Navigate to="/contact" replace />} />
+            <Route path="/a-propos" element={<APropos />} />
+            <Route path="/atoopv/a-propos" element={<Navigate to="/a-propos" replace />} />
+            <Route path="/autodiagnostic" element={<Autodiagnostic />} />
+            <Route path="/atoopv/autodiagnostic" element={<Navigate to="/autodiagnostic" replace />} />
+            <Route path="/atoosavoir" element={<Atoosavoir />} />
+            <Route path="/atoopv/atoosavoir" element={<Navigate to="/atoosavoir" replace />} />
+            <Route path="/atoosavoir/exemple" element={<AtoosavoirExemple />} />
+            <Route path="/atoopv/atoosavoir/exemple" element={<Navigate to="/atoosavoir/exemple" replace />} />
+            <Route path="/atoosavoir/cgv" element={<AtoosavoirCgv />} />
+            <Route path="/atoopv/atoosavoir/cgv" element={<Navigate to="/atoosavoir/cgv" replace />} />
+            <Route path="/ressources" element={<ServiceCategoryLayout />}>
               <Route index element={<RessourceArticle slug="guides-livres-blancs-cse" />} />
               <Route path="veille-juridique-cse" element={<VeilleJuridique />} />
               <Route path=":slug" element={<RessourceArticle />} />
             </Route>
+            <Route path="/atoopv/ressources" element={<Navigate to="/ressources" replace />} />
+            <Route path="/atoopv/ressources/veille-juridique-cse" element={<Navigate to="/ressources/veille-juridique-cse" replace />} />
+            <Route path="/atoopv/ressources/:slug" element={<AtoopvRessourceRedirect />} />
+            {/* Safety net: any other /atoopv/* URL not explicitly listed above (old query
+                variants, typos, anything missed) still lands somewhere real instead of 404ing. */}
+            <Route path="/atoopv/*" element={<Navigate to="/accueil" replace />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/drafting" element={<ServiceCategoryLayout />}>
               <Route index element={<ServiceArticle category="drafting" slug="nos-services-pv" />} />

@@ -1,5 +1,5 @@
 /**
- * Content for the Boutique (/atoopv/boutique) shop experience: the resource
+ * Content for the Boutique (/boutique) shop experience: the resource
  * library shell and the procès-verbal report preview.
  */
 
