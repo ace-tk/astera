@@ -1,8 +1,8 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/tenu7190/public_html/
-    - source /home/tenu7190/nodevenv/astera-api/24/bin/activate
+    - export DEPLOYPATH=/home/tenu7190/atoopv.com/
+    - export PATH="/opt/alt/alt-nodejs24/root/usr/bin:$PATH"
     - cd /home/tenu7190/astera/client
     - npm ci
     - npm run build
