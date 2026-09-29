@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Menu, X, ArrowUpRight, ChevronDown, ShoppingCart } from 'lucide-react'
+import { Menu, X, ArrowUpRight, ChevronDown } from 'lucide-react'
 import { NAV_LINKS, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
 import { useMainNav } from '@/cms/useNavigation'
 import Button from '@/components/ui/Button'
@@ -13,30 +13,6 @@ import { useIsAtTop } from '@/hooks/useIsAtTop'
 import { cn } from '@/utils/cn'
 
 const CLOSE_DELAY_MS = 150
-
-/**
- * Reserved placement for a future "Shop Books" entry point — content and
- * final destination to follow later; for now this links to the existing
- * /atoopv/boutique route (the same target ComplianceBooksTeaser's "Découvrir
- * la boutique" button already uses further down the homepage), styled as a
- * compact utility pill matching ThemeSwitcher's visual weight so the two
- * read as one paired control rather than a second primary CTA.
- */
-function ShopBooksButton({ className, onClick }) {
-  return (
-    <Link
-      to="/atoopv/boutique"
-      onClick={onClick}
-      className={cn(
-        'flex h-9 items-center gap-1.5 rounded-full border border-ink/8 bg-card/50 px-2.5 text-xs font-medium text-ink/70 backdrop-blur-md transition-colors hover:border-ink/20 hover:text-ink',
-        className,
-      )}
-    >
-      <ShoppingCart className="h-3.5 w-3.5 text-muted" />
-      Books
-    </Link>
-  )
-}
 
 const triggerClass =
   'flex items-center gap-1 rounded-full px-2.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-ink/[0.04] hover:text-ink'
@@ -290,9 +266,6 @@ export default function Navbar() {
           <Button as={Link} to={DEVIS_CTA_HREF} size="sm" variant="accent" className="hidden lg:inline-flex">
             Devis PV
           </Button>
-          <div className="hidden sm:block">
-            <ShopBooksButton />
-          </div>
           <Button as={Link} to="/register" size="sm" variant="primary" className="hidden sm:inline-flex">
             Register <ArrowUpRight className="h-4 w-4" />
           </Button>
@@ -368,7 +341,6 @@ export default function Navbar() {
                 />
               ))}
               <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
-                <ShopBooksButton onClick={() => setOpen(false)} />
                 <Button as={Link} to="/register" size="sm" onClick={() => setOpen(false)}>
                   Register
                 </Button>
