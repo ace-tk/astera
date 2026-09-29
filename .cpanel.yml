@@ -4,5 +4,5 @@ deployment:
     - export DEPLOYPATH=/home/tenu7190/public_html/
     - cd /home/tenu7190/astera/client
     - npm ci
-    - VITE_API_URL=/api VITE_DEMO_MODE=false npm run build
+    - npm run build
     - /bin/cp -R dist/. $DEPLOYPATH
