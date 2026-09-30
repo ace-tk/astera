@@ -1,18 +1,42 @@
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import HeroVisual from '@/components/landing/HeroVisual'
 import { SLIDE_TRANSITION, SLIDE_DRAG_THRESHOLD, useTrackWidth } from '@/hooks/useSlideCarousel'
 import { cn } from '@/utils/cn'
 
 const SLIDE_COUNT = 3
 
+// The 3 homepage hero slides' real photos (replacing the abstract HeroVisual
+// mockup that used to render identically in all 3 — see this component's own
+// comment below). Square source images (1024×1024) matching the card's own
+// aspect-square box exactly, so `object-cover` shows each one uncropped.
+const SLIDE_IMAGES = [
+  { src: '/homepage-hero/slide-1.webp', alt: 'Réunion du CSE autour de la table, procès-verbal en préparation' },
+  { src: '/homepage-hero/slide-2.webp', alt: 'Relecture et signature du procès-verbal' },
+  { src: '/homepage-hero/slide-3.webp', alt: 'Prise de notes manuscrite pendant la réunion' },
+]
+
+/** One slide's photo — same outer footprint (aspect-square, max width, rounded
+ * corners, border, shadow) as the HeroVisual card it replaces, so the track's
+ * width measurement (useTrackWidth) and the bleed math below still line up
+ * exactly; only what's INSIDE that box changed, from a coded mockup to a
+ * real photo. `object-cover` on a genuinely square (1024×1024) source shows
+ * the full image with zero cropping. */
+function HeroSlideImage({ src, alt }) {
+  return (
+    <div className="relative mx-auto aspect-square w-full max-w-[43rem] overflow-hidden rounded-[2.2rem] border border-ink/8 bg-card shadow-float">
+      <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+    </div>
+  )
+}
+
 /**
- * The hero's right "Roadmap Alignment" visual as a horizontally draggable
- * track, synchronized to the same `active`/`onSwipe` as HeroTextTrack. Each
- * slide mounts the existing `HeroVisual` completely unmodified — same
- * styling, shadows, borders, floating pills, and parallax/float animation
- * as today; this only adds swipe/drag around it, never touches the card
- * itself. Content is intentionally identical across all 3 for now.
+ * The hero's right visual as a horizontally draggable track, synchronized to
+ * the same `active`/`onSwipe` as HeroTextTrack. Each slide now shows one of
+ * the 3 real photos in SLIDE_IMAGES (previously: the same coded `HeroVisual`
+ * "Roadmap Alignment" mockup, identically, on all 3 — see git history for
+ * that version). The carousel mechanics themselves — drag/swipe, chevrons,
+ * dot indicators, spring transition, track-width measurement — are
+ * completely unchanged; only what mounts inside each slide panel differs.
  *
  * Panel width is measured in pixels (useTrackWidth) rather than driven by
  * a CSS-percentage transform — see that hook's comment for why (this
@@ -53,9 +77,9 @@ export default function RoadmapCarousel({ active, onSwipe }) {
             transition={SLIDE_TRANSITION}
             className="flex cursor-grab active:cursor-grabbing"
           >
-            {Array.from({ length: SLIDE_COUNT }).map((_, i) => (
+            {SLIDE_IMAGES.map((slide, i) => (
               <div key={i} className="shrink-0" style={{ width }}>
-                <HeroVisual />
+                <HeroSlideImage src={slide.src} alt={slide.alt} />
               </div>
             ))}
           </motion.div>

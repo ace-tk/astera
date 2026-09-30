@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LogOut, Mail, UserRound, CalendarDays, FileText, Clock, ThumbsUp, Lock, Building2, Check } from 'lucide-react'
+import { LogOut, Mail, UserRound, CalendarDays, FileText, Clock, ThumbsUp, Lock, Building2, Check, KeyRound } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useReports } from '@/hooks/useReports'
 import { useToast } from '@/context/ToastContext'
-import { updateProfileRequest } from '@/services/auth'
+import { updateProfileRequest, changePasswordRequest } from '@/services/auth'
 import { COUNTRIES } from '@/constants/countries'
 import { VAT_RE, PHONE_RE, LINKEDIN_RE } from '@/utils/validators'
 import SearchableSelect from '@/components/ui/SearchableSelect'
@@ -46,6 +46,9 @@ export default function Profile() {
   const [company, setCompany] = useState(companyOf(user))
   const [companyErrors, setCompanyErrors] = useState({})
   const [companySaving, setCompanySaving] = useState(false)
+  const [pwd, setPwd] = useState({ currentPassword: '', newPassword: '', confirmNewPassword: '' })
+  const [pwdErrors, setPwdErrors] = useState({})
+  const [pwdSaving, setPwdSaving] = useState(false)
 
   // Seed the name once the session (re)loads — state init runs before user is ready.
   useEffect(() => {
@@ -123,6 +126,26 @@ export default function Profile() {
       toast({ title: 'Couldn’t save', description: err?.data?.error || 'Please try again.', variant: 'warn', color: 'rose' })
     } finally {
       setCompanySaving(false)
+    }
+  }
+
+  const pwdDirty = Boolean(pwd.currentPassword || pwd.newPassword || pwd.confirmNewPassword)
+  const savePassword = async () => {
+    const errs = {}
+    if (!pwd.currentPassword) errs.currentPassword = 'Enter your current password.'
+    if (pwd.newPassword.length < 8) errs.newPassword = 'Use at least 8 characters.'
+    if (pwd.newPassword !== pwd.confirmNewPassword) errs.confirmNewPassword = 'Passwords do not match.'
+    setPwdErrors(errs)
+    if (Object.keys(errs).length) return
+    setPwdSaving(true)
+    try {
+      await changePasswordRequest(pwd)
+      setPwd({ currentPassword: '', newPassword: '', confirmNewPassword: '' })
+      toast({ title: 'Password updated', description: 'Use your new password next time you sign in.', variant: 'success', color: 'emerald' })
+    } catch (err) {
+      toast({ title: 'Couldn’t update password', description: err?.data?.error || err?.message || 'Please try again.', variant: 'warn', color: 'rose' })
+    } finally {
+      setPwdSaving(false)
     }
   }
 
@@ -230,6 +253,55 @@ export default function Profile() {
       </Reveal>
       )}
 
+      {/* Change password */}
+      <Reveal delay={0.1} className="mt-6">
+        <div className="rounded-3xl border border-ink/8 bg-card p-6 shadow-soft sm:p-8">
+          <span className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-muted">
+            <KeyRound className="h-3.5 w-3.5" /> Change password
+          </span>
+          <p className="mt-1.5 text-xs text-muted">Enter your current password, then choose a new one.</p>
+
+          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            <CF label="Current password" className="sm:col-span-2" error={pwdErrors.currentPassword}>
+              <input
+                type="password"
+                autoComplete="current-password"
+                value={pwd.currentPassword}
+                onChange={(e) => setPwd((p) => ({ ...p, currentPassword: e.target.value }))}
+                className="input"
+                placeholder="••••••••"
+              />
+            </CF>
+            <CF label="New password" error={pwdErrors.newPassword} hint={!pwdErrors.newPassword ? 'At least 8 characters.' : undefined}>
+              <input
+                type="password"
+                autoComplete="new-password"
+                value={pwd.newPassword}
+                onChange={(e) => setPwd((p) => ({ ...p, newPassword: e.target.value }))}
+                className="input"
+                placeholder="••••••••"
+              />
+            </CF>
+            <CF label="Confirm new password" error={pwdErrors.confirmNewPassword}>
+              <input
+                type="password"
+                autoComplete="new-password"
+                value={pwd.confirmNewPassword}
+                onChange={(e) => setPwd((p) => ({ ...p, confirmNewPassword: e.target.value }))}
+                className="input"
+                placeholder="••••••••"
+              />
+            </CF>
+          </div>
+
+          <div className="mt-6 flex justify-end border-t border-ink/8 pt-5">
+            <Button size="sm" variant="accent" onClick={savePassword} disabled={!pwdDirty || pwdSaving} magnetic={false}>
+              <KeyRound className="h-4 w-4" /> {pwdSaving ? 'Updating…' : 'Update password'}
+            </Button>
+          </div>
+        </div>
+      </Reveal>
+
       {/* Statistics */}
       <div className="mt-6 grid grid-cols-3 gap-3">
         {STATS.map((s, i) => (
@@ -259,12 +331,12 @@ export default function Profile() {
   )
 }
 
-function CF({ label, children, className, error }) {
+function CF({ label, children, className, error, hint }) {
   return (
     <label className={className}>
       <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">{label}</span>
       {children}
-      {error && <span className="mt-1 block text-xs text-rose">{error}</span>}
+      {error ? <span className="mt-1 block text-xs text-rose">{error}</span> : hint ? <span className="mt-1 block text-xs text-muted">{hint}</span> : null}
     </label>
   )
 }

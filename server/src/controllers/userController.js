@@ -36,3 +36,36 @@ export async function updateMe(req, res) {
   await user.save()
   res.json({ user: user.toSafeJSON() })
 }
+
+// Same minimum as signup (server/src/controllers/authController.js's passwordFields) — kept
+// separate rather than imported to avoid a userController <-> authController import cycle.
+const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Enter your current password'),
+    newPassword: z.string().min(8, 'Use at least 8 characters').max(128),
+    confirmNewPassword: z.string(),
+  })
+  .refine((d) => d.newPassword === d.confirmNewPassword, { message: 'Passwords do not match', path: ['confirmNewPassword'] })
+
+/** Self-service password change. Requires the current password — same as any
+ * "change password while signed in" flow — so a hijacked, still-open session
+ * can't be used to lock the real owner out by itself. */
+export async function changePassword(req, res) {
+  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable' })
+  const parsed = changePasswordSchema.safeParse(req.body)
+  if (!parsed.success) return res.status(422).json({ error: 'Invalid password change request', issues: parsed.error.flatten() })
+
+  const user = await User.findById(req.userId).select('+passwordHash')
+  if (!user) return res.status(404).json({ error: 'User not found' })
+
+  const ok = await user.verifyPassword(parsed.data.currentPassword)
+  // 400, not 401: the session itself is fine — only the submitted current-password guess
+  // was wrong. The app's API client treats ANY 401 as "session expired" and force-logs the
+  // user out globally (services/api.js's onUnauthorized listeners) — a wrong-password retry
+  // must never trigger that.
+  if (!ok) return res.status(400).json({ error: 'Your current password is incorrect', code: 'WRONG_CURRENT_PASSWORD' })
+
+  user.passwordHash = await User.hashPassword(parsed.data.newPassword)
+  await user.save()
+  res.json({ ok: true })
+}

@@ -180,11 +180,6 @@ function PinnedHero({ hero, heroSlides }) {
               <HeroCopy heroSlides={heroSlides} active={active} onSwipe={step} hero={hero} phase={phase} animated />
             </div>
             <div className="relative flex min-w-0 items-center justify-center p-6">
-              {/* HeroVisual's floating chips are positioned by percentage
-                  against its own square box, tuned for the ~27rem width it
-                  renders at on the Astera hero — a wider box here would wrap
-                  its fixed-size text less, shrink the card, and let the
-                  chips drift onto content they're meant to sit beside. */}
               <div className="w-full max-w-[27rem]">
                 <RoadmapCarousel active={active} onSwipe={step} />
               </div>
@@ -199,10 +194,11 @@ function PinnedHero({ hero, heroSlides }) {
 /**
  * ATOOPV homepage hero — content/visual split built on the existing
  * `ACCUEIL.hero` content (real badge/title/lead/CTA copy). The right side
- * reuses HeroVisual (via RoadmapCarousel), the same "Q3 Roadmap alignment"
- * component that anchors the Astera marketing hero
- * (components/landing/sections/Hero.jsx) — one component, one source of
- * data, rendered a second time here rather than a separate hero image.
+ * (RoadmapCarousel) shows 3 real photos, one per slide (see that
+ * component's own SLIDE_IMAGES) — previously the same coded "Q3 Roadmap
+ * alignment" mockup (HeroVisual) that still anchors the separate Astera
+ * marketing hero (components/landing/sections/Hero.jsx), rendered
+ * identically on all 3 slides.
  * Desktop (≥1024px) with motion allowed gets the pinned scroll choreography
  * for the left-side annotation story; everything else gets the same
  * composition without the pin. Both paths share the same 3-slide

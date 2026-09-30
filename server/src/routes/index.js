@@ -2,7 +2,7 @@ import { Router } from 'express'
 import multer from 'multer'
 import { asyncHandler, requireAuth, requireAdmin } from '../middleware/index.js'
 import { signup, login, me, verifyEmail, resendVerification } from '../controllers/authController.js'
-import { updateMe } from '../controllers/userController.js'
+import { updateMe, changePassword } from '../controllers/userController.js'
 import { listReports, getReport, createReport, updateReport, deleteReport, getProgress } from '../controllers/reportController.js'
 import * as admin from '../controllers/adminController.js'
 import * as reportRequests from '../controllers/reportRequestController.js'
@@ -42,6 +42,7 @@ router.post('/auth/signup', asyncHandler(signup))
 router.post('/auth/login', asyncHandler(login))
 router.get('/auth/me', requireAuth, asyncHandler(me))
 router.patch('/auth/me', requireAuth, asyncHandler(updateMe))
+router.post('/auth/change-password', requireAuth, asyncHandler(changePassword))
 router.get('/auth/verify-email/:token', asyncHandler(verifyEmail))
 router.post('/auth/resend-verification', asyncHandler(resendVerification))
 
