@@ -5,6 +5,7 @@ import {
   MAX_MENU_GROUPS, MAX_GROUP_ENTRIES, MAX_MENU_MOBILE_ITEMS, MAX_MAIN_MENU_ITEMS, MAX_SECTION_NAV_ENTRIES,
   MENU_VISUALS, MENU_COLORS,
   MAX_FOOTER_COLUMNS, MAX_FOOTER_COLUMN_LINKS, MAX_FOOTER_LEGAL_LINKS, MAX_FOOTER_SOCIAL_LINKS, FOOTER_SOCIAL_ICONS,
+  HOME_HERO_SLIDE_COUNT,
 } from './constants.js'
 
 const noNewlines = (s) => !/[\r\n]/.test(s)
@@ -238,4 +239,30 @@ export const footerContentSchema = z
     })
     f.legalLinks.forEach((l, li) => checkDup(l.id, ['legalLinks', li, 'id']))
     f.social.forEach((s, si) => checkDup(s.id, ['social', si, 'id']))
+  })
+
+/* --------------------------------- Home hero --------------------------------- */
+// One slide's photo: either a Media Library path (`/api/media/<id>/<file>`, picked
+// via MediaPicker) or the site's own built-in static asset path (the seeded
+// default, e.g. `/homepage-hero/slide-1.webp`) — both are just site-relative paths,
+// so the same simple shape covers whichever one is currently in use.
+const homeHeroSlideSchema = z
+  .object({
+    id: idSchema,
+    path: z.string().trim().min(1).max(300).regex(/^\//, 'Must be a site-relative path (starting with /)'),
+    alt: inlineText(300).optional().default(''),
+  })
+  .strict()
+
+export const homeHeroContentSchema = z
+  .object({
+    slides: z.array(homeHeroSlideSchema).length(HOME_HERO_SLIDE_COUNT, `Exactly ${HOME_HERO_SLIDE_COUNT} slides are required — the homepage carousel is built for ${HOME_HERO_SLIDE_COUNT}`),
+  })
+  .strict()
+  .superRefine((h, ctx) => {
+    const ids = new Set()
+    h.slides.forEach((s, i) => {
+      if (ids.has(s.id)) ctx.addIssue({ code: 'custom', path: ['slides', i, 'id'], message: `Duplicate id "${s.id}"` })
+      ids.add(s.id)
+    })
   })

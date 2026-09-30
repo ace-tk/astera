@@ -23,6 +23,9 @@ export const fetchCmsMenu = (key) => api.get(`/cms/menus/${key}`).then((r) => r.
 /** Resolves to the live footer content, or null if the CMS has none yet (never happens once seeded server-side). */
 export const fetchCmsFooter = () => withTimeout(api.get('/cms/footer')).then((r) => r.footer)
 
+/** Resolves to the live homepage hero's `{ slides }`. */
+export const fetchCmsHomeHero = () => withTimeout(api.get('/cms/home-hero')).then((r) => r.homeHero)
+
 /* ---------------------------------- admin ---------------------------------- */
 
 const A = '/admin/cms'
@@ -61,6 +64,11 @@ export const fetchAdminFooter = () => api.get(`${A}/footer`).then((r) => r.foote
 export const saveAdminFooterDraft = (content, rev) => api.patch(`${A}/footer`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.footer)
 export const publishAdminFooter = () => api.post(`${A}/footer/publish`).then((r) => r.footer)
 export const discardAdminFooter = () => api.post(`${A}/footer/discard`).then((r) => r.footer)
+
+export const fetchAdminHomeHero = () => api.get(`${A}/home-hero`).then((r) => r.homeHero)
+export const saveAdminHomeHeroDraft = (content, rev) => api.patch(`${A}/home-hero`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.homeHero)
+export const publishAdminHomeHero = () => api.post(`${A}/home-hero/publish`).then((r) => r.homeHero)
+export const discardAdminHomeHero = () => api.post(`${A}/home-hero/discard`).then((r) => r.homeHero)
 
 export const fetchSectionNavList = () => api.get(`${A}/section-navs`).then((r) => r.sections)
 export const fetchSectionNav = (section) => api.get(`${A}/section-navs/${section}`).then((r) => r.nav)

@@ -1,19 +1,11 @@
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { SLIDE_TRANSITION, SLIDE_DRAG_THRESHOLD, useTrackWidth } from '@/hooks/useSlideCarousel'
+import { useHomeHeroCms } from '@/cms/useHomeHero'
+import { resolveMediaUrl } from '@/cms/media'
 import { cn } from '@/utils/cn'
 
 const SLIDE_COUNT = 3
-
-// The 3 homepage hero slides' real photos (replacing the abstract HeroVisual
-// mockup that used to render identically in all 3 — see this component's own
-// comment below). Square source images (1024×1024) matching the card's own
-// aspect-square box exactly, so `object-cover` shows each one uncropped.
-const SLIDE_IMAGES = [
-  { src: '/homepage-hero/slide-1.webp', alt: 'Réunion du CSE autour de la table, procès-verbal en préparation' },
-  { src: '/homepage-hero/slide-2.webp', alt: 'Relecture et signature du procès-verbal' },
-  { src: '/homepage-hero/slide-3.webp', alt: 'Prise de notes manuscrite pendant la réunion' },
-]
 
 /** One slide's photo — same outer footprint (aspect-square, max width, rounded
  * corners, border, shadow) as the HeroVisual card it replaces, so the track's
@@ -24,7 +16,7 @@ const SLIDE_IMAGES = [
 function HeroSlideImage({ src, alt }) {
   return (
     <div className="relative mx-auto aspect-square w-full max-w-[43rem] overflow-hidden rounded-[2.2rem] border border-ink/8 bg-card shadow-float">
-      <img src={src} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+      <img src={resolveMediaUrl(src)} alt={alt} className="h-full w-full object-cover" loading="lazy" />
     </div>
   )
 }
@@ -32,11 +24,13 @@ function HeroSlideImage({ src, alt }) {
 /**
  * The hero's right visual as a horizontally draggable track, synchronized to
  * the same `active`/`onSwipe` as HeroTextTrack. Each slide now shows one of
- * the 3 real photos in SLIDE_IMAGES (previously: the same coded `HeroVisual`
- * "Roadmap Alignment" mockup, identically, on all 3 — see git history for
- * that version). The carousel mechanics themselves — drag/swipe, chevrons,
- * dot indicators, spring transition, track-width measurement — are
- * completely unchanged; only what mounts inside each slide panel differs.
+ * the 3 real photos from the CMS (useHomeHeroCms — Admin → Content → Menus →
+ * Homepage; falls back to the site's built-in defaults if the CMS is
+ * unreachable, same rule as the footer). Previously: the same coded
+ * `HeroVisual` "Roadmap Alignment" mockup, identically, on all 3 — see git
+ * history for that version. The carousel mechanics themselves — drag/swipe,
+ * chevrons, dot indicators, spring transition, track-width measurement —
+ * are completely unchanged; only what mounts inside each slide panel differs.
  *
  * Panel width is measured in pixels (useTrackWidth) rather than driven by
  * a CSS-percentage transform — see that hook's comment for why (this
@@ -55,6 +49,7 @@ function HeroSlideImage({ src, alt }) {
  * width/position; only what's visible *around* them changes.
  */
 export default function RoadmapCarousel({ active, onSwipe }) {
+  const { slides } = useHomeHeroCms()
   const [trackRef, width] = useTrackWidth()
   // Measured chip overflow is ~6% of card width (left-[-6%]/right-[-5%]);
   // 6.5% covers both with a few px of safety without bleeding so far that
@@ -77,9 +72,9 @@ export default function RoadmapCarousel({ active, onSwipe }) {
             transition={SLIDE_TRANSITION}
             className="flex cursor-grab active:cursor-grabbing"
           >
-            {SLIDE_IMAGES.map((slide, i) => (
-              <div key={i} className="shrink-0" style={{ width }}>
-                <HeroSlideImage src={slide.src} alt={slide.alt} />
+            {slides.map((slide, i) => (
+              <div key={slide.id ?? i} className="shrink-0" style={{ width }}>
+                <HeroSlideImage src={slide.path} alt={slide.alt} />
               </div>
             ))}
           </motion.div>

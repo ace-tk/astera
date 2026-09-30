@@ -26,6 +26,13 @@ export const MAX_FOOTER_SOCIAL_LINKS = 10
 /** Known icon keys the public footer knows how to render; 'other' falls back to a generic link glyph. */
 export const FOOTER_SOCIAL_ICONS = ['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'other']
 
+/* --------------------------------- Home hero --------------------------------- */
+// Also a single, always-one-document CMS resource. The number of slides is
+// fixed at 3 — the homepage's carousel (RoadmapCarousel.jsx) is structurally
+// built for exactly 3 (same "fixed structure, only content editable"
+// philosophy as the main menu) — so this isn't a ceiling, it's exact.
+export const HOME_HERO_SLIDE_COUNT = 3
+
 export const PAGE_STATUSES = ['draft', 'published', 'archived']
 
 /** URL segment: lowercase words separated by single hyphens. */

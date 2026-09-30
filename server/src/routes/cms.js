@@ -8,6 +8,7 @@ import * as menuCtl from '../controllers/cmsMenuController.js'
 import * as mediaCtl from '../controllers/cmsMediaController.js'
 import * as navCtl from '../controllers/cmsSectionNavController.js'
 import * as footerCtl from '../controllers/cmsFooterController.js'
+import * as homeHeroCtl from '../controllers/cmsHomeHeroController.js'
 
 const router = Router()
 const adminOnly = [requireAuth, requireAdmin]
@@ -27,6 +28,7 @@ router.get('/cms/index', cms(pageCtl.publicIndex))
 router.get('/cms/pages', cms(pageCtl.publicPage))
 router.get('/cms/menus/:key', cms(menuCtl.publicMenu))
 router.get('/cms/footer', cms(footerCtl.publicFooter))
+router.get('/cms/home-hero', cms(homeHeroCtl.publicHomeHero))
 router.get('/cms/navigation', cms(navCtl.publicNavigation))
 router.get('/media/:id/:filename', mediaCtl.serveMedia)
 
@@ -62,6 +64,12 @@ router.get('/admin/cms/footer', ...adminOnly, cms(footerCtl.getFooter))
 router.patch('/admin/cms/footer', ...adminOnly, cms(footerCtl.saveFooterDraft))
 router.post('/admin/cms/footer/publish', ...adminOnly, cms(footerCtl.publishFooter))
 router.post('/admin/cms/footer/discard', ...adminOnly, cms(footerCtl.discardFooterDraft))
+
+/* ---------------- Admin: home hero (homepage carousel images) ---------------- */
+router.get('/admin/cms/home-hero', ...adminOnly, cms(homeHeroCtl.getHomeHero))
+router.patch('/admin/cms/home-hero', ...adminOnly, cms(homeHeroCtl.saveHomeHeroDraft))
+router.post('/admin/cms/home-hero/publish', ...adminOnly, cms(homeHeroCtl.publishHomeHero))
+router.post('/admin/cms/home-hero/discard', ...adminOnly, cms(homeHeroCtl.discardHomeHeroDraft))
 
 /* ---------------- Admin: section navigation (side nav + previous/next order) ---------------- */
 router.get('/admin/cms/section-navs', ...adminOnly, cms(navCtl.listSectionNavs))
