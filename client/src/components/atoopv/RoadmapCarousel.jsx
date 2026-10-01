@@ -7,17 +7,32 @@ import { cn } from '@/utils/cn'
 
 const SLIDE_COUNT = 3
 
-/** One slide's photo — same outer footprint (aspect-square, max width, rounded
- * corners, shadow) as the HeroVisual card it replaces, so the track's width
+/** One slide's photo — same outer footprint (aspect-square, max width,
+ * rounded corners) as the HeroVisual card it replaces, so the track's width
  * measurement (useTrackWidth) still lines up exactly; only what's INSIDE
  * that box changed, from a coded mockup to a real photo. `object-cover` on a
  * genuinely square (1024×1024) source shows the full image with zero
- * cropping. No border here — the photo's own edge is the card's edge, flush
- * against the rounded corners with nothing framing it. */
-function HeroSlideImage({ src, alt }) {
+ * cropping. No background or shadow on this wrapper — the photo's own edge
+ * is the card's edge, flush against the rounded corners with nothing
+ * framing it (a `bg-card` + `shadow-float` pairing used to sit here: the
+ * background showed through as a flash of plain color on whichever slide's
+ * image hadn't finished loading yet, and the shadow's own downward blur —
+ * `0 20px 60px -20px` in tailwind.config.js — read as a faint square smudge
+ * behind the card's bottom corners once the image HAD loaded. Both are gone
+ * now rather than papered over, since neither one should be visible either
+ * way). `eager`/`high` loading only for the first slide — it's the one
+ * visible immediately on page load (the hero's LCP element), so deferring
+ * it like the off-screen slides 2/3 only made that load-flash worse. */
+function HeroSlideImage({ src, alt, priority = false }) {
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-[43rem] overflow-hidden rounded-[2.2rem] bg-card shadow-float">
-      <img src={resolveMediaUrl(src)} alt={alt} className="h-full w-full object-cover" loading="lazy" />
+    <div className="relative mx-auto aspect-square w-full max-w-[43rem] overflow-hidden rounded-[2.2rem] bg-transparent">
+      <img
+        src={resolveMediaUrl(src)}
+        alt={alt}
+        className="block h-full w-full object-cover"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
+      />
     </div>
   )
 }
@@ -67,7 +82,7 @@ export default function RoadmapCarousel({ active, onSwipe }) {
         >
           {slides.map((slide, i) => (
             <div key={slide.id ?? i} className="shrink-0" style={{ width }}>
-              <HeroSlideImage src={slide.path} alt={slide.alt} />
+              <HeroSlideImage src={slide.path} alt={slide.alt} priority={i === 0} />
             </div>
           ))}
         </motion.div>

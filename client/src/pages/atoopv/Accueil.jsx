@@ -5,7 +5,6 @@ import AtoopvAnnouncementBar from '@/components/atoopv/AtoopvAnnouncementBar'
 import AtoopvScrollControl from '@/components/atoopv/AtoopvScrollControl'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoopvFinalCta from '@/components/atoopv/AtoopvFinalCta'
-import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
 import AtoopvTicker from '@/components/atoopv/AtoopvTicker'
@@ -60,16 +59,6 @@ export default function Accueil() {
       <AtoopvAnnouncementBar />
       <AmbientBackground />
       <Navbar />
-
-      {/* The theme toggle used to live inside the shared Navbar (every
-          page); it's since been scoped to just this page, so it's rendered
-          here instead — a small fixed pill tucked under the nav so it never
-          competes with the nav's own controls at any viewport width. Offset
-          bumped +2rem (top-28/32) to clear the announcement bar above the
-          now-lower navbar. */}
-      <div className="fixed right-4 top-28 z-40 hidden sm:block sm:right-6 sm:top-32">
-        <ThemeSwitcher />
-      </div>
 
       {/* Replaces the old bottom "SCROLL DOWN / 01·06" hero strip — a
           persistent, page-level floating corner control rather than
