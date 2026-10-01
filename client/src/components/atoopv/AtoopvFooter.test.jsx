@@ -63,10 +63,10 @@ describe('Public footer — CMS-driven with a safe hardcoded fallback', () => {
     expect(screen.queryByLabelText('LinkedIn')).toBeNull()
   })
 
-  it('legal links render with their current href (including an unset "#")', () => {
+  it('legal links render with their current href (now real pages, not "#")', () => {
     fetchCmsFooter.mockReturnValue(new Promise(() => {}))
     renderFooter()
     const link = screen.getByText('Mentions légales')
-    expect(link.getAttribute('href')).toBe('#')
+    expect(link.getAttribute('href')).toBe('/mentions-legales')
   })
 })

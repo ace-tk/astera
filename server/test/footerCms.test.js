@@ -178,8 +178,8 @@ describe('footer CMS — content CRUD (columns, links, legal links, social links
     expect(pub.body.footer.contact.email).toBe('hello@atoopv.com')
     expect(pub.body.footer.cta.label).toBe('Contactez-nous')
     expect(pub.body.footer.legalLinks.find((l) => l.id === 'legal-mentions').link).toEqual({ type: 'route', route: '/legal/mentions', newTab: false })
-    // the untouched legal links keep their '#' placeholder — nothing was silently invented
-    expect(pub.body.footer.legalLinks.find((l) => l.id === 'legal-cgv').link.url).toBe('#')
+    // the untouched legal links keep their own default target — nothing was silently invented
+    expect(pub.body.footer.legalLinks.find((l) => l.id === 'legal-cgv').link).toEqual({ type: 'route', route: '/cgv', newTab: false })
   })
 
   it('adds a social link, and it is optional — an empty list is valid', async () => {

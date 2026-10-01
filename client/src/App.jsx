@@ -26,6 +26,7 @@ const Autodiagnostic = lazy(() => import('@/pages/atoopv/Autodiagnostic'))
 const Atoosavoir = lazy(() => import('@/pages/atoopv/Atoosavoir'))
 const AtoosavoirExemple = lazy(() => import('@/pages/atoopv/AtoosavoirExemple'))
 const AtoosavoirCgv = lazy(() => import('@/pages/atoopv/AtoosavoirCgv'))
+const LegalPage = lazy(() => import('@/pages/atoopv/LegalPage'))
 const RessourceArticle = lazy(() => import('@/pages/ressources/RessourceArticle'))
 const VeilleJuridique = lazy(() => import('@/pages/ressources/VeilleJuridique'))
 const Services = lazy(() => import('@/pages/Services'))
@@ -161,6 +162,14 @@ export default function App() {
             <Route path="/atoopv/atoosavoir/exemple" element={<Navigate to="/atoosavoir/exemple" replace />} />
             <Route path="/atoosavoir/cgv" element={<AtoosavoirCgv />} />
             <Route path="/atoopv/atoosavoir/cgv" element={<Navigate to="/atoosavoir/cgv" replace />} />
+            {/* The 4 footer legal pages (Mentions légales, CGV, Politique de
+                confidentialité, Cookies) — previously the footer's legalLinks
+                pointed at "#" since none of these existed; see
+                constants/legalPages.js for the (placeholder) content. */}
+            <Route path="/mentions-legales" element={<LegalPage slug="mentions-legales" />} />
+            <Route path="/cgv" element={<LegalPage slug="cgv" />} />
+            <Route path="/politique-de-confidentialite" element={<LegalPage slug="politique-de-confidentialite" />} />
+            <Route path="/cookies" element={<LegalPage slug="cookies" />} />
             <Route path="/ressources" element={<ServiceCategoryLayout />}>
               <Route index element={<RessourceArticle slug="guides-livres-blancs-cse" />} />
               <Route path="veille-juridique-cse" element={<VeilleJuridique />} />
