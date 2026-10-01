@@ -164,8 +164,9 @@ export default function App() {
             <Route path="/atoopv/atoosavoir/cgv" element={<Navigate to="/atoosavoir/cgv" replace />} />
             {/* The 4 footer legal pages (Mentions légales, CGV, Politique de
                 confidentialité, Cookies) — previously the footer's legalLinks
-                pointed at "#" since none of these existed; see
-                constants/legalPages.js for the (placeholder) content. */}
+                pointed at "#" since none of these existed. Content is now
+                CMS-driven (Content → Menus → Legal pages); see
+                cms/useLegalPages.js / cms/legalPagesDefaults.js. */}
             <Route path="/mentions-legales" element={<LegalPage slug="mentions-legales" />} />
             <Route path="/cgv" element={<LegalPage slug="cgv" />} />
             <Route path="/politique-de-confidentialite" element={<LegalPage slug="politique-de-confidentialite" />} />

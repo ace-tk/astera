@@ -7,17 +7,30 @@ import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { getLegalPage } from '@/constants/legalPages'
+import { useLegalPagesCms } from '@/cms/useLegalPages'
+
+// Route slug ("/mentions-legales") -> CMS content key (legalPagesContentSchema's
+// fixed object keys, server/src/cms/schemas.js). Kept as an explicit map rather
+// than deriving one from the other so neither naming scheme constrains the other.
+const SLUG_TO_KEY = {
+  'mentions-legales': 'mentionsLegales',
+  cgv: 'cgv',
+  'politique-de-confidentialite': 'confidentialite',
+  cookies: 'cookies',
+}
 
 /**
  * The 4 footer legal pages (Mentions légales, CGV, Politique de
- * confidentialité, Cookies) — one generic page shell, content looked up by
- * slug from constants/legalPages.js, same composition (Navbar/AtoopvHero/
- * MarkdownArticle/AtoopvFooter) as the existing AtoosavoirCgv page, which is
- * the established pattern for this kind of long-form legal text on this site.
+ * confidentialité, Cookies) — one generic page shell, content now CMS-driven
+ * (Content → Menus → Legal pages; useLegalPagesCms falls back to the site's
+ * real current text if the CMS is unreachable, same rule as the footer/
+ * homepage hero). Same composition (Navbar/AtoopvHero/MarkdownArticle/
+ * AtoopvFooter) as the existing AtoosavoirCgv page, the established pattern
+ * for long-form legal text on this site.
  */
 export default function LegalPage({ slug }) {
-  const page = getLegalPage(slug)
+  const content = useLegalPagesCms()
+  const page = content[SLUG_TO_KEY[slug]]
 
   usePageMeta({ title: page?.title, description: page?.lead })
 

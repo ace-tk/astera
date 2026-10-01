@@ -266,3 +266,26 @@ export const homeHeroContentSchema = z
       ids.add(s.id)
     })
   })
+
+/* --------------------------------- Legal pages --------------------------------- */
+// The 4 footer legal pages (Mentions légales, CGV, Politique de confidentialité,
+// Cookies) — a fixed, non-addable/removable set of exactly these 4 keys (the
+// routes themselves are code, in App.jsx; only their title/lead/body are
+// admin-editable). `body` reuses the same Markdown whitelist as every other
+// rich-text field in this file.
+const legalPageSchema = z
+  .object({
+    title: inlineText(120, 1),
+    lead: inlineText(300).optional().default(''),
+    body: markdownField(MAX_BODY_CHARS),
+  })
+  .strict()
+
+export const legalPagesContentSchema = z
+  .object({
+    mentionsLegales: legalPageSchema,
+    cgv: legalPageSchema,
+    confidentialite: legalPageSchema,
+    cookies: legalPageSchema,
+  })
+  .strict()

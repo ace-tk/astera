@@ -9,6 +9,7 @@ import * as mediaCtl from '../controllers/cmsMediaController.js'
 import * as navCtl from '../controllers/cmsSectionNavController.js'
 import * as footerCtl from '../controllers/cmsFooterController.js'
 import * as homeHeroCtl from '../controllers/cmsHomeHeroController.js'
+import * as legalPagesCtl from '../controllers/cmsLegalPagesController.js'
 
 const router = Router()
 const adminOnly = [requireAuth, requireAdmin]
@@ -29,6 +30,7 @@ router.get('/cms/pages', cms(pageCtl.publicPage))
 router.get('/cms/menus/:key', cms(menuCtl.publicMenu))
 router.get('/cms/footer', cms(footerCtl.publicFooter))
 router.get('/cms/home-hero', cms(homeHeroCtl.publicHomeHero))
+router.get('/cms/legal-pages', cms(legalPagesCtl.publicLegalPages))
 router.get('/cms/navigation', cms(navCtl.publicNavigation))
 router.get('/media/:id/:filename', mediaCtl.serveMedia)
 
@@ -70,6 +72,12 @@ router.get('/admin/cms/home-hero', ...adminOnly, cms(homeHeroCtl.getHomeHero))
 router.patch('/admin/cms/home-hero', ...adminOnly, cms(homeHeroCtl.saveHomeHeroDraft))
 router.post('/admin/cms/home-hero/publish', ...adminOnly, cms(homeHeroCtl.publishHomeHero))
 router.post('/admin/cms/home-hero/discard', ...adminOnly, cms(homeHeroCtl.discardHomeHeroDraft))
+
+/* ---------------- Admin: legal pages ---------------- */
+router.get('/admin/cms/legal-pages', ...adminOnly, cms(legalPagesCtl.getLegalPages))
+router.patch('/admin/cms/legal-pages', ...adminOnly, cms(legalPagesCtl.saveLegalPagesDraft))
+router.post('/admin/cms/legal-pages/publish', ...adminOnly, cms(legalPagesCtl.publishLegalPages))
+router.post('/admin/cms/legal-pages/discard', ...adminOnly, cms(legalPagesCtl.discardLegalPagesDraft))
 
 /* ---------------- Admin: section navigation (side nav + previous/next order) ---------------- */
 router.get('/admin/cms/section-navs', ...adminOnly, cms(navCtl.listSectionNavs))

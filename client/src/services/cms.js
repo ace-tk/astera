@@ -25,6 +25,7 @@ export const fetchCmsFooter = () => withTimeout(api.get('/cms/footer')).then((r)
 
 /** Resolves to the live homepage hero's `{ slides }`. */
 export const fetchCmsHomeHero = () => withTimeout(api.get('/cms/home-hero')).then((r) => r.homeHero)
+export const fetchCmsLegalPages = () => withTimeout(api.get('/cms/legal-pages')).then((r) => r.legalPages)
 
 /* ---------------------------------- admin ---------------------------------- */
 
@@ -69,6 +70,11 @@ export const fetchAdminHomeHero = () => api.get(`${A}/home-hero`).then((r) => r.
 export const saveAdminHomeHeroDraft = (content, rev) => api.patch(`${A}/home-hero`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.homeHero)
 export const publishAdminHomeHero = () => api.post(`${A}/home-hero/publish`).then((r) => r.homeHero)
 export const discardAdminHomeHero = () => api.post(`${A}/home-hero/discard`).then((r) => r.homeHero)
+
+export const fetchAdminLegalPages = () => api.get(`${A}/legal-pages`).then((r) => r.legalPages)
+export const saveAdminLegalPagesDraft = (content, rev) => api.patch(`${A}/legal-pages`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.legalPages)
+export const publishAdminLegalPages = () => api.post(`${A}/legal-pages/publish`).then((r) => r.legalPages)
+export const discardAdminLegalPages = () => api.post(`${A}/legal-pages/discard`).then((r) => r.legalPages)
 
 export const fetchSectionNavList = () => api.get(`${A}/section-navs`).then((r) => r.sections)
 export const fetchSectionNav = (section) => api.get(`${A}/section-navs/${section}`).then((r) => r.nav)

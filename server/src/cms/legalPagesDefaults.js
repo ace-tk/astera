@@ -1,24 +1,26 @@
 /**
- * The site's 4 footer legal pages — Mentions légales, CGV (site-wide, distinct
- * from atoosavoirHome.js's ATOOSAVOIR_CGV_HERO which is that one service's own
- * terms of sale), Politique de confidentialité, Cookies.
+ * The site's 4 footer legal pages' real, live content as of the Legal Pages
+ * CMS migration — i.e. exactly what used to be hardcoded in
+ * client/src/constants/legalPages.js. legalPagesService.getLegalPages() seeds
+ * a brand-new LegalPages document with this in BOTH draft and live the first
+ * time it is ever read, so the public pages never show anything different
+ * from what they already show today, and no separate "import" admin step is
+ * needed.
  *
- * TODO(legal): every body below is PLACEHOLDER text, clearly marked as a draft
- * inside its own markdown, not ATOOPV's real, lawyer-approved legal copy — it
- * exists so the footer's links point at a real page instead of "#" (see
- * server/src/cms/footerDefaults.js's legalLinks). Replace each `body` with the
- * real text once it's ready; nothing else about these pages needs to change.
- * (Same placeholder-content rule as client/src/pages/auth/TermsAcceptance.jsx.)
+ * TODO(legal): every body below is PLACEHOLDER text (clearly marked as a
+ * draft inside its own markdown), not ATOOPV's real, lawyer-approved legal
+ * copy. An admin can now replace it from Content → Menus → Legal pages —
+ * no code change or redeploy needed for that anymore.
  */
 
 const DRAFT_NOTE =
   '> **Brouillon** — ce texte est un espace réservé en attendant le texte juridique définitif validé par ATOOPV. Ne pas considérer comme contractuel.'
 
-export const MENTIONS_LEGALES = {
-  slug: 'mentions-legales',
-  title: 'Mentions légales',
-  lead: 'Informations légales relatives à l’éditeur et à l’hébergeur du site atoopv.com.',
-  body: `${DRAFT_NOTE}
+export const DEFAULT_LEGAL_PAGES_CONTENT = {
+  mentionsLegales: {
+    title: 'Mentions légales',
+    lead: 'Informations légales relatives à l’éditeur et à l’hébergeur du site atoopv.com.',
+    body: `${DRAFT_NOTE}
 
 ## 1. Éditeur du site
 
@@ -38,13 +40,11 @@ L'ensemble des éléments du site (textes, visuels, logos, structure) est proté
 ## 4. Contact
 
 Pour toute question relative aux présentes mentions légales, écrivez à contact@atoopv.com.`,
-}
-
-export const CGV = {
-  slug: 'cgv',
-  title: 'Conditions générales de vente',
-  lead: 'Les présentes conditions générales de vente régissent les prestations proposées par ATOOPV.',
-  body: `${DRAFT_NOTE}
+  },
+  cgv: {
+    title: 'Conditions générales de vente',
+    lead: 'Les présentes conditions générales de vente régissent les prestations proposées par ATOOPV.',
+    body: `${DRAFT_NOTE}
 
 ## Article 1 — Objet
 
@@ -73,13 +73,11 @@ ATOOPV s'engage à exécuter sa prestation avec diligence. Sa responsabilité ne
 ## Article 7 — Droit applicable
 
 Les présentes CGV sont soumises au droit français. Tout litige relève, à défaut d'accord amiable, de la compétence des tribunaux français.`,
-}
-
-export const POLITIQUE_DE_CONFIDENTIALITE = {
-  slug: 'politique-de-confidentialite',
-  title: 'Politique de confidentialité',
-  lead: 'Comment ATOOPV collecte, utilise et protège vos données personnelles.',
-  body: `${DRAFT_NOTE}
+  },
+  confidentialite: {
+    title: 'Politique de confidentialité',
+    lead: 'Comment ATOOPV collecte, utilise et protège vos données personnelles.',
+    body: `${DRAFT_NOTE}
 
 ## 1. Responsable du traitement
 
@@ -106,13 +104,11 @@ Vous pouvez également introduire une réclamation auprès de la Commission nati
 ## 6. Sécurité
 
 ATOOPV met en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé.`,
-}
-
-export const COOKIES = {
-  slug: 'cookies',
-  title: 'Politique de cookies',
-  lead: 'Quels cookies sont utilisés sur atoopv.com et comment les gérer.',
-  body: `${DRAFT_NOTE}
+  },
+  cookies: {
+    title: 'Politique de cookies',
+    lead: 'Quels cookies sont utilisés sur atoopv.com et comment les gérer.',
+    body: `${DRAFT_NOTE}
 
 ## 1. Qu'est-ce qu'un cookie ?
 
@@ -132,8 +128,5 @@ Vous pouvez configurer votre navigateur pour accepter, refuser ou être averti a
 ## 4. Contact
 
 Pour toute question relative à cette politique, écrivez à contact@atoopv.com.`,
+  },
 }
-
-export const LEGAL_PAGES = [MENTIONS_LEGALES, CGV, POLITIQUE_DE_CONFIDENTIALITE, COOKIES]
-
-export const getLegalPage = (slug) => LEGAL_PAGES.find((p) => p.slug === slug)
