@@ -1,0 +1,91 @@
+name: Deploy frontend to O2Switch
+
+# VS Code -> git push -> GitHub -> this workflow builds client/dist and syncs
+# it to O2Switch's public_html over SSH. Only the frontend is deployed here —
+# the Node API at ~/astera-api is untouched by this workflow (it keeps
+# running under Passenger; redeploying it is a separate, manual step, same as
+# documented in deploy/o2switch/README.md).
+#
+# Requires these repo secrets (Settings -> Secrets and variables -> Actions),
+# none of which are committed anywhere in this repo:
+#   O2SWITCH_SSH_HOST  - the SSH hostname for the O2Switch account
+#   O2SWITCH_SSH_PORT  - the SSH port (cPanel's "SSH Access" page; O2Switch
+#                        rarely uses the default 22)
+#   O2SWITCH_SSH_USER  - the cPanel username (tenu7190)
+#   O2SWITCH_SSH_KEY   - a private key whose matching public key has been
+#                        added to that account's ~/.ssh/authorized_keys
+# This workflow does nothing (fails harmlessly at the "Configure SSH" step)
+# until all four secrets exist, so adding this file does not deploy anything
+# by itself.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'client/**'
+      - 'content/**'
+      - '.github/workflows/deploy-o2switch.yml'
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-o2switch-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy client/dist -> public_html
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - run: npm ci
+
+      - name: Build (production env — API on its own subdomain, demo mode off)
+        env:
+          VITE_API_URL: https://api.atoopv.com/api
+          VITE_DEMO_MODE: 'false'
+        run: npm run build
+
+      # Same checks scripts/package-o2switch.sh already runs locally — kept
+      # identical on purpose so both paths refuse to ship the same mistakes.
+      - name: Verify the bundle is production-ready
+        run: |
+          set -euo pipefail
+          [ -f dist/index.html ]
+          if grep -rlq "localhost:5050" dist; then echo "::error::dist still contains the dev API fallback"; exit 1; fi
+          if grep -rlE "vercel\.app|test1\.atoopv\.com" dist >/dev/null 2>&1; then echo "::error::dist references a Vercel/test1 hostname"; exit 1; fi
+          if grep -q "astera\.app" dist/index.html; then echo "::error::dist/index.html still references astera.app"; exit 1; fi
+          echo "ok: bundle checks passed"
+
+      - name: Configure SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
+
+      - name: Add O2Switch host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p "${{ secrets.O2SWITCH_SSH_PORT }}" "${{ secrets.O2SWITCH_SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      # --delete removes stale files from a previous build (old content-hashed
+      # asset filenames) but NEVER the two .htaccess files, so whatever's
+      # live on the server for those (including any Passenger block cPanel
+      # wrote into public_html/.htaccess) is preserved exactly as-is.
+      - name: Sync dist/ to public_html over rsync/SSH
+        run: |
+          rsync -avz --delete \
+            --exclude='.htaccess' \
+            --exclude='assets/.htaccess' \
+            -e "ssh -p ${{ secrets.O2SWITCH_SSH_PORT }} -o StrictHostKeyChecking=yes" \
+            dist/ \
+            "${{ secrets.O2SWITCH_SSH_USER }}@${{ secrets.O2SWITCH_SSH_HOST }}:/home/tenu7190/public_html/"

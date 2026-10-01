@@ -123,12 +123,17 @@ function StaticHero({ hero, heroSlides }) {
   return (
     <section className="relative border-b border-ink/10 pt-32 sm:pt-36 lg:pt-40">
       <div className="shell">
-        <div className="rounded-none border border-ink/10 lg:grid lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="lg:grid lg:grid-cols-[1.1fr_0.9fr]">
           {/* min-w-0 on both cells — see the matching comment in
               PinnedHero: prevents the carousel tracks' non-shrinkable
               slide panels from feeding a runaway width back into these
-              grid tracks' auto min-size. */}
-          <div className="min-w-0 border-b border-ink/10 lg:border-b-0 lg:border-r">
+              grid tracks' auto min-size. No border/divider between the two
+              columns or around the pair — the slide card itself (its own
+              rounded corners, in RoadmapCarousel) is the only visible
+              boundary now; a surrounding sharp-cornered frame was both
+              drawing an unwanted straight line between the columns and
+              visually swallowing the card's own rounding. */}
+          <div className="min-w-0">
             <HeroCopy heroSlides={heroSlides} active={active} onSwipe={step} hero={hero} phase={0} animated={false} />
           </div>
           <motion.div
@@ -168,15 +173,17 @@ function PinnedHero({ hero, heroSlides }) {
     <section ref={sectionRef} className="relative border-b border-ink/10" style={{ height: '230vh' }}>
       <div className="sticky top-0 flex h-screen flex-col justify-start overflow-hidden pt-28">
         <div className="shell w-full">
-          <div className="grid grid-cols-[1.1fr_0.9fr] border border-ink/10" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
+          <div className="grid grid-cols-[1.1fr_0.9fr]" style={{ height: 'min(46rem, calc(100vh - 7rem))' }}>
             {/* min-w-0 on both grid cells: without it, the carousel
                 tracks' non-shrinkable (shrink-0) slide panels feed their
                 combined width back into these 1.1fr/0.9fr tracks' auto
                 min-size, which — since the panels' own width is itself
                 measured from this cell — creates a runaway feedback loop
                 (confirmed empirically: it multiplied by the slide count on
-                every tick until hitting the browser's max layout size). */}
-            <div className="min-w-0 border-r border-ink/10">
+                every tick until hitting the browser's max layout size).
+                No border/divider here either — see the matching comment in
+                StaticHero above. */}
+            <div className="min-w-0">
               <HeroCopy heroSlides={heroSlides} active={active} onSwipe={step} hero={hero} phase={phase} animated />
             </div>
             <div className="relative flex min-w-0 items-center justify-center p-6">
