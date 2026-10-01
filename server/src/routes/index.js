@@ -2,7 +2,8 @@ import { Router } from 'express'
 import multer from 'multer'
 import { asyncHandler, requireAuth, requireAdmin } from '../middleware/index.js'
 import { signup, login, me, verifyEmail, resendVerification } from '../controllers/authController.js'
-import { updateMe, changePassword } from '../controllers/userController.js'
+import { updateMe, changePassword, uploadCompanyLogo } from '../controllers/userController.js'
+import { MEDIA_MAX_BYTES } from '../cms/constants.js'
 import { listReports, getReport, createReport, updateReport, deleteReport, getProgress } from '../controllers/reportController.js'
 import * as admin from '../controllers/adminController.js'
 import * as reportRequests from '../controllers/reportRequestController.js'
@@ -32,6 +33,18 @@ const uploadMedia = (req, res, next) =>
     return res.status(400).json({ error: 'Upload failed. Please try again.' })
   })
 
+// Same small-image limits/field name as the CMS media uploader (cms.js's uploadImage) —
+// a company logo is a small image, not a 100 MB report attachment.
+const logoUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MEDIA_MAX_BYTES, files: 1 } }).single('file')
+const uploadLogo = (req, res, next) =>
+  logoUpload(req, res, (err) => {
+    if (!err) return next()
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({ error: `That image is too large. The limit is ${MEDIA_MAX_BYTES / 1024 / 1024} MB.` })
+    }
+    return res.status(400).json({ error: 'Upload failed. Please try again.' })
+  })
+
 router.get('/health', (req, res) => res.json({ ok: true, service: 'astera-api', ts: Date.now() }))
 
 // Public Contact Us form -> email to CONTACT_TO_EMAIL (see contactController.js). No auth, no DB.
@@ -43,6 +56,7 @@ router.post('/auth/login', asyncHandler(login))
 router.get('/auth/me', requireAuth, asyncHandler(me))
 router.patch('/auth/me', requireAuth, asyncHandler(updateMe))
 router.post('/auth/change-password', requireAuth, asyncHandler(changePassword))
+router.post('/auth/me/logo', requireAuth, uploadLogo, asyncHandler(uploadCompanyLogo))
 router.get('/auth/verify-email/:token', asyncHandler(verifyEmail))
 router.post('/auth/resend-verification', asyncHandler(resendVerification))
 

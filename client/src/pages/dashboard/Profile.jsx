@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LogOut, Mail, UserRound, CalendarDays, FileText, Clock, ThumbsUp, Lock, Building2, Check, KeyRound } from 'lucide-react'
+import { LogOut, Mail, UserRound, CalendarDays, FileText, Clock, ThumbsUp, Lock, Building2, Check, KeyRound, ImagePlus } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useReports } from '@/hooks/useReports'
 import { useToast } from '@/context/ToastContext'
-import { updateProfileRequest, changePasswordRequest } from '@/services/auth'
-import { COUNTRIES } from '@/constants/countries'
+import { updateProfileRequest, changePasswordRequest, uploadCompanyLogoRequest } from '@/services/auth'
+import { COUNTRIES, INDUSTRIES } from '@/constants/countries'
 import { VAT_RE, PHONE_RE, LINKEDIN_RE } from '@/utils/validators'
+import { resolveMediaUrl } from '@/cms/media'
 import SearchableSelect from '@/components/ui/SearchableSelect'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import { cn } from '@/utils/cn'
 
-const COMPANY_FIELDS = ['companyName', 'vatNumber', 'country', 'firstName', 'lastName', 'phone', 'linkedinUrl']
+const COMPANY_FIELDS = ['companyName', 'vatNumber', 'country', 'firstName', 'lastName', 'phone', 'linkedinUrl', 'industry', 'state', 'taxNumber', 'companyAddress']
 const companyOf = (u) => Object.fromEntries(COMPANY_FIELDS.map((k) => [k, u?.[k] || '']))
 
 /** These are optional profile fields (unlike signup) — only validate format
@@ -49,6 +50,8 @@ export default function Profile() {
   const [pwd, setPwd] = useState({ currentPassword: '', newPassword: '', confirmNewPassword: '' })
   const [pwdErrors, setPwdErrors] = useState({})
   const [pwdSaving, setPwdSaving] = useState(false)
+  const [logoUploading, setLogoUploading] = useState(false)
+  const logoInputRef = useRef(null)
 
   // Seed the name once the session (re)loads — state init runs before user is ready.
   useEffect(() => {
@@ -126,6 +129,22 @@ export default function Profile() {
       toast({ title: 'Couldn’t save', description: err?.data?.error || 'Please try again.', variant: 'warn', color: 'rose' })
     } finally {
       setCompanySaving(false)
+    }
+  }
+
+  const onLogoChange = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // allow re-selecting the same file later
+    if (!file) return
+    setLogoUploading(true)
+    try {
+      const { user: updated } = await uploadCompanyLogoRequest(file)
+      setUser(updated)
+      toast({ title: 'Logo updated', variant: 'success', color: 'emerald' })
+    } catch (err) {
+      toast({ title: 'Couldn’t upload logo', description: err?.data?.error || err?.message || 'Please try again.', variant: 'warn', color: 'rose' })
+    } finally {
+      setLogoUploading(false)
     }
   }
 
@@ -220,15 +239,46 @@ export default function Profile() {
           </span>
           <p className="mt-1.5 text-xs text-muted">Optional — fill in whenever you like.</p>
 
+          {/* Company logo — uploaded separately from the fields below (its own endpoint), so it
+              saves immediately on selection rather than waiting for "Save company details". */}
+          <div className="mt-5 flex items-center gap-4">
+            <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl border border-ink/8 bg-paper text-muted">
+              {user.companyLogoUrl ? (
+                <img src={resolveMediaUrl(user.companyLogoUrl)} alt="Company logo" className="h-full w-full object-cover" />
+              ) : (
+                <Building2 className="h-6 w-6" />
+              )}
+            </span>
+            <div>
+              <span className="mb-2 block text-xs font-medium uppercase tracking-widest text-muted">Company logo</span>
+              <input ref={logoInputRef} type="file" accept="image/png,image/jpeg,image/gif,image/webp" onChange={onLogoChange} className="hidden" />
+              <Button size="sm" variant="soft" magnetic={false} disabled={logoUploading} onClick={() => logoInputRef.current?.click()}>
+                <ImagePlus className="h-4 w-4" /> {logoUploading ? 'Uploading…' : user.companyLogoUrl ? 'Change logo' : 'Upload logo'}
+              </Button>
+            </div>
+          </div>
+
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
             <CF label="Company name" className="sm:col-span-2">
               <input value={company.companyName} onChange={(e) => setCompany((c) => ({ ...c, companyName: e.target.value }))} className="input" placeholder="Acme Inc." />
             </CF>
+            <CF label="Industry">
+              <SearchableSelect value={company.industry} onChange={(v) => setCompany((c) => ({ ...c, industry: v }))} options={INDUSTRIES} placeholder="Select industry" />
+            </CF>
             <CF label="VAT number" error={companyErrors.vatNumber}>
               <input value={company.vatNumber} onChange={(e) => setCompany((c) => ({ ...c, vatNumber: e.target.value }))} className="input" placeholder="VAT123456" />
             </CF>
+            <CF label="Tax number">
+              <input value={company.taxNumber} onChange={(e) => setCompany((c) => ({ ...c, taxNumber: e.target.value }))} className="input" placeholder="TAX123456" />
+            </CF>
             <CF label="Country">
               <SearchableSelect value={company.country} onChange={(v) => setCompany((c) => ({ ...c, country: v }))} options={COUNTRIES} placeholder="Select country" />
+            </CF>
+            <CF label="State / region">
+              <input value={company.state} onChange={(e) => setCompany((c) => ({ ...c, state: e.target.value }))} className="input" placeholder="California" />
+            </CF>
+            <CF label="Company address" className="sm:col-span-2">
+              <input value={company.companyAddress} onChange={(e) => setCompany((c) => ({ ...c, companyAddress: e.target.value }))} className="input" placeholder="1 Rue de la Paix, 75002 Paris" />
             </CF>
             <CF label="First name">
               <input value={company.firstName} onChange={(e) => setCompany((c) => ({ ...c, firstName: e.target.value }))} className="input" placeholder="Ada" />

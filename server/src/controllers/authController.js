@@ -27,6 +27,9 @@ const guestSignupSchema = z.object({
   lastName: z.string().min(1).max(80),
   email: z.string().email(),
   phone: z.string().regex(PHONE_RE, 'Enter a valid phone number with country code, e.g. +14155550123'),
+  // See the identical field on companySignupSchema below for why this is
+  // enforced server-side rather than trusted from the client's disabled button.
+  termsAccepted: z.literal(true, { errorMap: () => ({ message: 'You must accept the Terms & Conditions to continue' }) }),
   ...passwordFields,
 })
 
@@ -41,6 +44,12 @@ const companySignupSchema = z.object({
   phone: z.string().regex(PHONE_RE, 'Enter a valid phone number with country code, e.g. +14155550123'),
   email: z.string().email(),
   linkedinUrl: z.string().regex(LINKEDIN_RE, 'Enter a valid LinkedIn profile URL'),
+  // The client's "Create account" button is disabled until the Terms & Conditions
+  // box is scrolled to its end (client/src/pages/auth/TermsAcceptance.jsx), but
+  // a disabled button is only a UI convenience — the server never trusts it and
+  // re-enforces the same requirement here: a request that omits this, or sends
+  // anything other than `true`, is rejected outright, same as a missing password.
+  termsAccepted: z.literal(true, { errorMap: () => ({ message: 'You must accept the Terms & Conditions to continue' }) }),
   ...passwordFields,
 })
 
@@ -82,6 +91,10 @@ export async function signup(req, res) {
     ...(p.accountType === 'company'
       ? { companyName: p.companyName, vatNumber: p.vatNumber, country: p.country, linkedinUrl: p.linkedinUrl }
       : {}),
+    // Both branches require termsAccepted === true (validated above), so this
+    // is unconditional — guest and company accounts both show the Terms &
+    // Conditions box at signup now.
+    termsAcceptedAt: new Date(),
     emailVerified: false,
     verificationToken,
     verificationTokenExpires: new Date(Date.now() + 24 * 60 * 60 * 1000),

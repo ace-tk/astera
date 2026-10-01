@@ -22,6 +22,7 @@ const guestSignup = (overrides = {}) => ({
   phone: '+919876543210',
   password: 'supersecret123',
   confirmPassword: 'supersecret123',
+  termsAccepted: true,
   ...overrides,
 })
 
@@ -39,6 +40,7 @@ describe('Guest registration (Phase 2)', () => {
     expect(stored.linkedinUrl).toBeUndefined()
     expect(stored.firstName).toBe('Sam')
     expect(stored.phone).toBe('+919876543210')
+    expect(stored.termsAcceptedAt).toBeInstanceOf(Date)
   })
 
   it('rejects a guest payload missing required fields', async () => {
@@ -48,6 +50,18 @@ describe('Guest registration (Phase 2)', () => {
 
   it('still enforces phone format for guests', async () => {
     const res = await request(app).post('/api/auth/signup').send(guestSignup({ phone: '12345' }))
+    expect(res.status).toBe(422)
+  })
+
+  it('rejects guest signup when the Terms & Conditions were not accepted', async () => {
+    const res = await request(app).post('/api/auth/signup').send(guestSignup({ termsAccepted: false }))
+    expect(res.status).toBe(422)
+  })
+
+  it('rejects guest signup when termsAccepted is missing entirely', async () => {
+    const payload = guestSignup()
+    delete payload.termsAccepted
+    const res = await request(app).post('/api/auth/signup').send(payload)
     expect(res.status).toBe(422)
   })
 
@@ -73,6 +87,7 @@ describe('Company registration still works unchanged (Phase 2 regression check)'
       email: `ada+${new mongoose.Types.ObjectId()}@astera.dev`,
       linkedinUrl: 'https://linkedin.com/in/ada',
       password: 'supersecret123', confirmPassword: 'supersecret123',
+      termsAccepted: true,
     })
     expect(res.status).toBe(201)
   })

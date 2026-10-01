@@ -30,6 +30,20 @@ const userSchema = new mongoose.Schema(
     lastName: { type: String, trim: true },
     phone: { type: String, trim: true },
     linkedinUrl: { type: String, trim: true },
+    industry: { type: String, trim: true },
+    state: { type: String, trim: true },
+    taxNumber: { type: String, trim: true },
+    companyAddress: { type: String, trim: true },
+    // Set only via the dedicated logo upload endpoint (userController.js's
+    // uploadCompanyLogo), never through the general profile PATCH — same
+    // "media library path" shape as CMS images (`/api/media/<id>/<file>`),
+    // reusing that same storage (cms/mediaStorage.js) and public serve route.
+    companyLogoUrl: { type: String, trim: true },
+    // When the signup's Terms & Conditions checkbox was accepted (set once,
+    // at account creation, by authController.js's signup — never by the
+    // profile PATCH) — both guest and company signups require it. Absent/null
+    // only for accounts created before this field existed.
+    termsAcceptedAt: { type: Date },
     // Defaults to true so every existing document (which has no value stored
     // for this path) hydrates as verified with zero migration — only new
     // signups explicitly set this false until they click the email link.
@@ -57,11 +71,13 @@ userSchema.methods.toSafeJSON = function () {
   const {
     _id, name, email, workspace, role, theme, plan, createdAt,
     accountType, companyName, vatNumber, country, firstName, lastName, phone, linkedinUrl,
+    industry, state, taxNumber, companyAddress, companyLogoUrl, termsAcceptedAt,
     emailVerified, status, lastLoginAt, invitedByAdmin,
   } = this
   return {
     id: _id, name, email, workspace, role, theme, plan, createdAt,
     accountType, companyName, vatNumber, country, firstName, lastName, phone, linkedinUrl,
+    industry, state, taxNumber, companyAddress, companyLogoUrl, termsAcceptedAt,
     emailVerified, status, lastLoginAt, invitedByAdmin,
     isAdmin: isAdminUser(this),
   }

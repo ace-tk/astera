@@ -26,3 +26,13 @@ export const COUNTRIES = [
 ]
 
 export const ACCOUNT_STATUSES = ['active', 'suspended', 'disabled']
+
+// Mirrors server/src/constants.js's INDUSTRIES — Profile page's Company Details industry picker.
+export const INDUSTRIES = [
+  'Accounting & Finance', 'Aerospace & Defense', 'Agriculture', 'Automotive', 'Banking & Insurance',
+  'Construction & Real Estate', 'Consulting', 'Consumer Goods', 'E-commerce & Retail', 'Education',
+  'Energy & Utilities', 'Entertainment & Media', 'Food & Beverage', 'Government & Public Sector',
+  'Healthcare & Pharmaceuticals', 'Hospitality & Tourism', 'Information Technology', 'Legal Services',
+  'Logistics & Transportation', 'Manufacturing', 'Marketing & Advertising', 'Mining & Metals',
+  'Nonprofit & NGO', 'Professional Services', 'Telecommunications', 'Textiles & Apparel', 'Other',
+]

@@ -1,7 +1,10 @@
+import crypto from 'node:crypto'
 import mongoose from 'mongoose'
 import { z } from 'zod'
 import { User } from '../models/User.js'
-import { COUNTRIES } from '../constants.js'
+import { Media } from '../models/Media.js'
+import { saveImage, sniffImageType } from '../cms/mediaStorage.js'
+import { COUNTRIES, INDUSTRIES } from '../constants.js'
 
 const dbReady = () => mongoose.connection.readyState === 1
 
@@ -12,6 +15,7 @@ const VAT_RE = /^[A-Za-z0-9\s-]{4,20}$/
 // Self-service profile edit. Email stays immutable here, same as before —
 // company/personal fields are new and all optional (a customer fills them in
 // whenever they like; nothing here is required to keep using the account).
+// companyLogoUrl is deliberately absent: it is only ever set by uploadCompanyLogo below.
 const updateSchema = z.object({
   name: z.string().min(1).max(80).optional(),
   companyName: z.string().min(1).max(160).optional(),
@@ -21,6 +25,10 @@ const updateSchema = z.object({
   lastName: z.string().min(1).max(80).optional(),
   phone: z.string().regex(PHONE_RE, 'Enter a valid phone number with country code').optional(),
   linkedinUrl: z.string().regex(LINKEDIN_RE, 'Enter a valid LinkedIn profile URL').optional(),
+  industry: z.enum(INDUSTRIES).optional(),
+  state: z.string().min(1).max(120).optional(),
+  taxNumber: z.string().min(1).max(40).optional(),
+  companyAddress: z.string().min(1).max(300).optional(),
 })
 
 /** Update the signed-in user's own profile. */
@@ -68,4 +76,41 @@ export async function changePassword(req, res) {
   user.passwordHash = await User.hashPassword(parsed.data.newPassword)
   await user.save()
   res.json({ ok: true })
+}
+
+/** Self-service company logo upload. Reuses the same GridFS-backed image
+ * storage as the CMS Media Library (server/src/cms/mediaStorage.js) so there
+ * is no separate storage mechanism to maintain — but this route is
+ * `requireAuth`-only (no `requireAdmin`), it stores under the caller's own
+ * `uploadedBy`, and it never touches the shared cms/media library list; it
+ * only ever writes the resulting path onto that one user's own record. */
+export async function uploadCompanyLogo(req, res) {
+  if (!dbReady()) return res.status(503).json({ error: 'Database unavailable' })
+  if (!req.file) return res.status(422).json({ error: 'Attach an image in the "media" field.' })
+
+  const type = sniffImageType(req.file.buffer)
+  if (!type) return res.status(415).json({ error: 'Only JPEG, PNG, GIF and WebP images are accepted.' })
+
+  const user = await User.findById(req.userId)
+  if (!user) return res.status(404).json({ error: 'User not found' })
+
+  const sha256 = crypto.createHash('sha256').update(req.file.buffer).digest('hex')
+  let media = await Media.findOne({ sha256 })
+  if (!media) {
+    const filename = `company-logo-${Date.now()}.${type.ext}`
+    const gridFsId = await saveImage(req.file.buffer, filename, type.mime)
+    media = await Media.create({
+      filename,
+      mimeType: type.mime,
+      sizeBytes: req.file.size,
+      sha256,
+      title: 'Company logo',
+      storage: { provider: 'gridfs', gridFsId },
+      uploadedBy: req.userId,
+    })
+  }
+
+  user.companyLogoUrl = media.path
+  await user.save()
+  res.json({ user: user.toSafeJSON() })
 }

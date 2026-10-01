@@ -5,6 +5,7 @@ import { validateProfileFields, EMAIL_RE } from '@/utils/validators'
 import SearchableSelect from '@/components/ui/SearchableSelect'
 import Button from '@/components/ui/Button'
 import { Field } from './AuthShell'
+import TermsAcceptance from './TermsAcceptance'
 
 const FIELD_INPUT_CLASS =
   'h-12 w-full rounded-2xl border border-ink/12 bg-paper px-4 text-sm text-ink outline-none transition-colors hover:border-ink/25 focus:border-accent'
@@ -18,6 +19,7 @@ const EMPTY = {
 export default function CompanyRegisterForm({ onSubmit: submit, busy, serverError }) {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
+  const [termsAccepted, setTermsAccepted] = useState(false)
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const validate = () => {
@@ -33,6 +35,7 @@ export default function CompanyRegisterForm({ onSubmit: submit, busy, serverErro
     const errs = validate()
     setErrors(errs)
     if (Object.keys(errs).length) return
+    if (!termsAccepted) return // defensive — the submit button is already disabled until this is true
     submit({
       accountType: 'company',
       companyName: form.companyName.trim(),
@@ -45,6 +48,7 @@ export default function CompanyRegisterForm({ onSubmit: submit, busy, serverErro
       linkedinUrl: form.linkedinUrl.trim(),
       password: form.password,
       confirmPassword: form.confirmPassword,
+      termsAccepted,
     })
   }
 
@@ -124,13 +128,15 @@ export default function CompanyRegisterForm({ onSubmit: submit, busy, serverErro
         </div>
       </div>
 
+      <TermsAcceptance onAccept={setTermsAccepted} />
+
       {serverError && (
         <p role="alert" className="rounded-2xl border border-coral/25 bg-coral/[0.06] px-4 py-3 text-sm text-coral">
           {serverError}
         </p>
       )}
 
-      <Button type="submit" variant="accent" size="lg" className="w-full" magnetic={false} disabled={busy}>
+      <Button type="submit" variant="accent" size="lg" className="w-full" magnetic={false} disabled={busy || !termsAccepted}>
         {busy ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" /> Creating account…

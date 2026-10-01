@@ -41,3 +41,15 @@ export const COUNTRIES = [
   'Tuvalu', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay',
   'Uzbekistan', 'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe',
 ]
+
+// Company Details — Industry picker (Profile page). A fixed, generic list rather
+// than a relational taxonomy: this is a self-reported descriptive field, not used
+// for any business logic, so a flat enum is intentionally sufficient.
+export const INDUSTRIES = [
+  'Accounting & Finance', 'Aerospace & Defense', 'Agriculture', 'Automotive', 'Banking & Insurance',
+  'Construction & Real Estate', 'Consulting', 'Consumer Goods', 'E-commerce & Retail', 'Education',
+  'Energy & Utilities', 'Entertainment & Media', 'Food & Beverage', 'Government & Public Sector',
+  'Healthcare & Pharmaceuticals', 'Hospitality & Tourism', 'Information Technology', 'Legal Services',
+  'Logistics & Transportation', 'Manufacturing', 'Marketing & Advertising', 'Mining & Metals',
+  'Nonprofit & NGO', 'Professional Services', 'Telecommunications', 'Textiles & Apparel', 'Other',
+]

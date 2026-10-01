@@ -26,6 +26,7 @@ const validSignup = (overrides = {}) => ({
   linkedinUrl: 'https://www.linkedin.com/in/janedoe',
   password: 'supersecret123',
   confirmPassword: 'supersecret123',
+  termsAccepted: true,
   ...overrides,
 })
 
@@ -50,10 +51,29 @@ describe('signup — full registration + email verification gate', () => {
     expect(res.status).toBe(422)
   })
 
+  it('rejects company signup when the Terms & Conditions were not accepted', async () => {
+    const res = await request(app).post('/api/auth/signup').send(validSignup({ termsAccepted: false }))
+    expect(res.status).toBe(422)
+  })
+
+  it('rejects company signup when termsAccepted is missing entirely', async () => {
+    const payload = validSignup()
+    delete payload.termsAccepted
+    const res = await request(app).post('/api/auth/signup').send(payload)
+    expect(res.status).toBe(422)
+  })
+
   it('creates an unverified account and returns no token', async () => {
     const res = await request(app).post('/api/auth/signup').send(validSignup())
     expect(res.status).toBe(201)
     expect(res.body.token).toBeUndefined()
+  })
+
+  it('records when the Terms & Conditions were accepted', async () => {
+    const payload = validSignup()
+    await request(app).post('/api/auth/signup').send(payload)
+    const stored = await User.findOne({ email: payload.email })
+    expect(stored.termsAcceptedAt).toBeInstanceOf(Date)
   })
 
   it('rejects a duplicate email with 409', async () => {

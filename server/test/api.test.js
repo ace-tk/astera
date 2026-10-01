@@ -218,6 +218,66 @@ describe('profile (PATCH /api/auth/me)', () => {
     const res = await request(app).patch('/api/auth/me').send({ name: 'x' })
     expect(res.status).toBe(401)
   })
+
+  it('accepts the extended company-details fields (industry, state, taxNumber, companyAddress)', async () => {
+    const { token } = await realUser()
+    const res = await request(app)
+      .patch('/api/auth/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ industry: 'Information Technology', state: 'Île-de-France', taxNumber: 'TAX-999', companyAddress: '1 Rue de la Paix, Paris' })
+    expect(res.status).toBe(200)
+    expect(res.body.user.industry).toBe('Information Technology')
+    expect(res.body.user.state).toBe('Île-de-France')
+    expect(res.body.user.taxNumber).toBe('TAX-999')
+    expect(res.body.user.companyAddress).toBe('1 Rue de la Paix, Paris')
+  })
+
+  it('rejects an industry outside the fixed list', async () => {
+    const { token } = await realUser()
+    const res = await request(app).patch('/api/auth/me').set('Authorization', `Bearer ${token}`).send({ industry: 'Not A Real Industry' })
+    expect(res.status).toBe(422)
+  })
+
+  it('rejects companyLogoUrl in the general profile PATCH — only the logo endpoint may set it', async () => {
+    const { token } = await realUser()
+    const res = await request(app).patch('/api/auth/me').set('Authorization', `Bearer ${token}`).send({ companyLogoUrl: '/api/media/507f1f77bcf86cd799439011/x.png' })
+    expect(res.status).toBe(200) // unknown field is just silently ignored (zod strips it), not an error
+    expect(res.body.user.companyLogoUrl).toBeFalsy()
+  })
+})
+
+describe('company logo upload (POST /api/auth/me/logo)', () => {
+  const PNG_1PX = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 'base64')
+
+  it('requires auth', async () => {
+    const res = await request(app).post('/api/auth/me/logo').attach('file', PNG_1PX, { filename: 'logo.png', contentType: 'image/png' })
+    expect(res.status).toBe(401)
+  })
+
+  it('uploads a real image and stores its media-library path on the user', async () => {
+    const { token } = await realUser()
+    const res = await request(app)
+      .post('/api/auth/me/logo')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('file', PNG_1PX, { filename: 'logo.png', contentType: 'image/png' })
+    expect(res.status).toBe(200)
+    expect(res.body.user.companyLogoUrl).toMatch(/^\/api\/media\/[a-f0-9]{24}\/.+\.png$/)
+  })
+
+  it('rejects a non-image file', async () => {
+    const { token } = await realUser()
+    const res = await request(app)
+      .post('/api/auth/me/logo')
+      .set('Authorization', `Bearer ${token}`)
+      .attach('file', Buffer.from('not an image'), { filename: 'x.txt', contentType: 'text/plain' })
+    expect(res.status).toBe(415)
+  })
+
+  it('rejects a request with no file attached', async () => {
+    const { token } = await realUser()
+    const res = await request(app).post('/api/auth/me/logo').set('Authorization', `Bearer ${token}`)
+    expect(res.status).toBe(422)
+  })
 })
 
 describe('admin', () => {
