@@ -99,9 +99,10 @@ describe('Admin page editor — container-style editing shows the actual migrate
 
     expect(screen.getByText('Intro').closest('div')).toHaveTextContent(/Voici l.intro du programme de formation\./)
     expect(screen.getByLabelText('Stat 1 value')).toHaveValue('2017')
-    expect(screen.getByLabelText('Stat 1 label')).toHaveValue('Année de création')
+    expect(screen.getByLabelText('Stat 1 label (fixed wording, not editable)')).toHaveValue('Année de création')
+    expect(screen.getByLabelText('Stat 1 label (fixed wording, not editable)')).toHaveAttribute('readonly')
     expect(screen.getByLabelText('Stat 4 value')).toHaveValue('15')
-    expect(screen.getByLabelText('Stat 4 label')).toHaveValue('Guides juridiques publiés')
+    expect(screen.getByLabelText('Stat 4 label (fixed wording, not editable)')).toHaveValue('Guides juridiques publiés')
     expect(screen.getByText('Main content').closest('div')).toHaveTextContent(/Voici le contenu principal de la page\./)
     expect(screen.getByLabelText('Topic 1 icon')).toHaveValue('📋')
     expect(screen.getByLabelText('Topic 1 title')).toHaveValue('Premier thème')
@@ -133,6 +134,23 @@ describe('Admin page editor — container-style editing shows the actual migrate
     const sentBody = cms.saveAdminDraft.mock.calls[0][1].content.body
     expect(sentBody).toBe(REAL_BODY.replace('2017', '2018'))
     expect(cms.saveAdminDraft.mock.calls[0][1].content.badge).toBe('Services') // untouched
+  })
+
+  // Regression test for the bug reported 2026-10-02 on the ActuCSE page: a Stat's LABEL
+  // used to be a normal editable input, but extractStatStrip() (the same function the
+  // PUBLIC page also uses to find the stats block in the saved body) only recognizes one
+  // of 4 exact, hardcoded label strings. Editing a label to anything else saved fine, but
+  // the next time the page loaded, the stats block could no longer be found at all — it
+  // silently merged into plain "Main content" text, and the Stats UI section disappeared
+  // (reproduced directly: see conversation). The label is now read-only so this can't happen.
+  it('a Stat label cannot be edited — typing into it has no effect, and it is marked read-only', async () => {
+    cms.fetchAdminPage.mockResolvedValue(page())
+    renderEditor()
+    const field = await screen.findByLabelText('Stat 1 label (fixed wording, not editable)')
+    expect(field).toHaveAttribute('readonly')
+    await userEvent.type(field, '!!!')
+    expect(field).toHaveValue('Année de création') // unchanged
+    expect(screen.getByRole('button', { name: /Save draft/ })).toBeDisabled() // never became dirty
   })
 
   it('editing a FAQ answer reassembles the body and changes only that answer', async () => {

@@ -364,6 +364,10 @@ export default function AdminCmsPageEditor() {
               {containers.stats && (
                 <section aria-label="Stats">
                   <span className={LABEL}>Stats</span>
+                  <p className="mt-1 text-xs text-muted">
+                    Only the value of each stat is editable — the label is fixed, the same wording on
+                    every page (see below for why).
+                  </p>
                   <div className="mt-1.5 space-y-2">
                     {containers.stats.map((s, i) => (
                       <div key={i} className="grid grid-cols-2 gap-2">
@@ -375,13 +379,26 @@ export default function AdminCmsPageEditor() {
                           placeholder="Value"
                           className="input !h-9 !rounded-md text-sm"
                         />
+                        {/* Read-only by design, not just in this UI: extractStatStrip() (utils/
+                            formationContent.js) — the SAME function both this editor and the public
+                            page use to find the stats block in the saved body — only recognizes one
+                            of 4 exact, hardcoded label strings. Editing a label to anything else here
+                            used to silently save fine, but the NEXT time the page loaded (admin
+                            re-opening it, or a visitor on the public site), that function could no
+                            longer find the stats block at all: `disassembleServiceArticle` returned
+                            `stats: null`, which folded the stats AND the Intro above them into one
+                            plain-text "Main content" block — exactly the bug reported 2026-10-02 on
+                            the ActuCSE page. Making the label read-only here closes the only path that
+                            produced it, without a schema change (the 4 strings are genuinely meant to
+                            be identical boilerplate on every page — see STAT_LABEL in
+                            cms/serviceArticleContainers.js — never page-specific wording). */}
                         <input
                           value={s.label}
-                          onChange={(e) => setContainers({ stats: containers.stats.map((s2, idx) => (idx === i ? { ...s2, label: e.target.value } : s2)) })}
+                          readOnly
                           disabled={archived}
-                          aria-label={`Stat ${i + 1} label`}
-                          placeholder="Label"
-                          className="input !h-9 !rounded-md text-sm"
+                          aria-label={`Stat ${i + 1} label (fixed wording, not editable)`}
+                          title="Fixed wording — identical on every page, needed to keep this recognized as a stats block"
+                          className="input !h-9 !rounded-md bg-ink/[0.03] text-sm text-muted"
                         />
                       </div>
                     ))}
