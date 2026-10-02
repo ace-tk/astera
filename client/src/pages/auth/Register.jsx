@@ -11,14 +11,14 @@ import CompanyRegisterForm from './CompanyRegisterForm'
 
 const COPY = {
   guest: {
-    eyebrow: 'Get started',
-    title: 'Create your guest account',
-    subtitle: 'Just the essentials — you can start uploading meetings right away.',
+    eyebrow: 'Pour commencer',
+    title: 'Créez votre compte invité',
+    subtitle: 'Juste l’essentiel — vous pouvez commencer à déposer vos réunions tout de suite.',
   },
   company: {
-    eyebrow: 'Get started',
-    title: 'Create your ATOOPV account',
-    subtitle: 'Tell us about your business — we’ll set up your workspace and send a verification link.',
+    eyebrow: 'Pour commencer',
+    title: 'Créez votre compte ATOOPV',
+    subtitle: 'Parlez-nous de votre entreprise — nous configurons votre espace et vous envoyons un lien de vérification.',
   },
 }
 
@@ -48,7 +48,7 @@ export default function Register() {
       setDoneEmail(payload.email)
       setDone(true)
     } catch (err) {
-      setError(err.status === 409 ? 'An account with that email already exists.' : err.data?.error || err.message || 'Could not create your account.')
+      setError(err.status === 409 ? 'Un compte existe déjà avec cette adresse e-mail.' : err.data?.error || err.message || 'Impossible de créer votre compte.')
     } finally {
       setBusy(false)
     }
@@ -56,17 +56,17 @@ export default function Register() {
 
   if (done) {
     return (
-      <AuthShell eyebrow="Almost there" title="Check your email">
+      <AuthShell eyebrow="Presque fini" title="Vérifiez votre e-mail">
         <div className="flex flex-col items-center text-center">
           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald/10 text-emerald">
             <Mail className="h-7 w-7" />
           </span>
           <p className="mt-5 text-sm leading-relaxed text-muted">
-            We sent a verification link to <span className="font-medium text-ink">{doneEmail}</span>. Click it to
-            activate your account, then sign in.
+            Nous avons envoyé un lien de vérification à <span className="font-medium text-ink">{doneEmail}</span>.
+            Cliquez dessus pour activer votre compte, puis connectez-vous.
           </p>
           <Button as={Link} to="/login" variant="accent" size="lg" className="mt-7 w-full">
-            Go to sign in
+            Aller à la connexion
           </Button>
         </div>
       </AuthShell>
@@ -76,15 +76,15 @@ export default function Register() {
   if (!accountType) {
     return (
       <AuthShell
-        eyebrow="Get started"
-        title="How will you use ATOOPV?"
-        subtitle="Pick the option that fits — you can always add company details later."
+        eyebrow="Pour commencer"
+        title="Comment allez-vous utiliser ATOOPV ?"
+        subtitle="Choisissez l’option qui vous correspond — vous pourrez toujours compléter les informations de votre entreprise plus tard."
         wide
         footer={
           <>
-            Already have an account?{' '}
+            Vous avez déjà un compte ?{' '}
             <Link to="/login" state={{ from }} className="link-underline font-medium text-ink">
-              Sign in
+              Se connecter
             </Link>
           </>
         }
@@ -104,9 +104,9 @@ export default function Register() {
       wide
       footer={
         <>
-          Already have an account?{' '}
+          Vous avez déjà un compte ?{' '}
           <Link to="/login" state={{ from }} className="link-underline font-medium text-ink">
-            Sign in
+            Se connecter
           </Link>
         </>
       }
@@ -116,7 +116,7 @@ export default function Register() {
         onClick={() => setAccountType(null)}
         className="link-underline mb-6 text-sm font-medium text-muted hover:text-ink"
       >
-        ← Choose a different account type
+        ← Choisir un autre type de compte
       </button>
 
       {accountType === 'guest' ? (

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { Menu, X, ArrowUpRight, ChevronDown } from 'lucide-react'
-import { NAV_LINKS, MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
+import { MOBILE_HOME_LINK, DEVIS_CTA_HREF } from '@/constants/content'
 import { useMainNav } from '@/cms/useNavigation'
 import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
@@ -34,12 +34,12 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
   const linkClass = 'block flex-1 rounded-2xl px-4 py-3.5 text-lg font-medium hover:bg-ink/[0.04]'
 
   if (!subItems?.length) {
-    // No sub-list here either (AtooSavoir, À propos, Design Test) — same
-    // dashed-rule row as a dropdown item, but with ArrowUpRight instead of
-    // a chevron since there's nothing to expand. Built by hand rather than
-    // via EditorialMenuItem: that component's label is hardcoded to
-    // text-sm, which would read visibly smaller than these rows' existing
-    // text-lg sibling items (Story, Procès-verbal, ...).
+    // No sub-list here either (AtooSavoir, À propos) — same dashed-rule row
+    // as a dropdown item, but with ArrowUpRight instead of a chevron since
+    // there's nothing to expand. Built by hand rather than via
+    // EditorialMenuItem: that component's label is hardcoded to text-sm,
+    // which would read visibly smaller than these rows' existing text-lg
+    // sibling items (Procès-verbal, ...).
     return (
       <HashAwareLink
         href={item.href}
@@ -56,8 +56,8 @@ function MobileNavRow({ item, expandedKey, onToggle, onNavigate }) {
     <div>
       {/* Same "this opens a menu" dashed-rule signal as the desktop
           triggers, scoped to items that actually have a sub-list — a plain
-          item (AtooSavoir, À propos, Design Test) has no chevron above and
-          gets no line here either. */}
+          item (AtooSavoir, À propos) has no chevron above and gets no line
+          here either. */}
       <div className="mx-4 flex items-center border-b border-dashed border-ink/15">
         <HashAwareLink href={item.href} onClick={onNavigate} className={cn(linkClass, 'px-0')}>
           {item.label}
@@ -115,14 +115,9 @@ export default function Navbar() {
   // Built-in menu until (and unless) the CMS supplies one — same items, same shape, same components.
   const atoopvNav = useMainNav()
 
-  // The ATOOPV homepage ("Accueil") isn't a top-level nav item any more —
-  // it's reached via the logo, so the logo needs to know which "home" it's
-  // standing in for. After the page-content swap (Accueil renders at "/",
-  // the Story/marketing page renders at "/accueil" — renamed from "/atoopv",
-  // same page, same content, only the URL changed), that "home" is "/" for
-  // every page except the Story page itself, which self-links exactly the
-  // way "/" used to.
-  const logoHref = location.pathname === '/accueil' ? '/accueil' : '/'
+  // The ATOOPV homepage ("Accueil") isn't a top-level nav item — it's
+  // reached via the logo (desktop) or MOBILE_HOME_LINK (mobile's first row).
+  const logoHref = '/'
 
   // The ATOOPV homepage floats a slim announcement bar above the navbar
   // (AtoopvAnnouncementBar, rendered in Accueil.jsx) — since this header is
@@ -191,32 +186,13 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-0.5 md:flex">
-          {/* Story is a single plain link now (no dropdown) — same
-              arrow-cue style as AtooSavoir/À propos below. HashAwareLink
-              still works fine here: its href is now a plain route ('/accueil',
-              after the page-content swap and the later /atoopv → /accueil
-              rename), which it renders as a normal <Link> — no hash handling
-              needed, so the component didn't need to change even though
-              what it's linking to did. */}
-          <HashAwareLink
-            href={NAV_LINKS[0].href}
-            className={cn(plainLinkClass, 'group')}
-            onMouseEnter={closeMegaNow}
-            onFocus={closeMegaNow}
-          >
-            <span className="flex items-center gap-1 border-b border-dashed border-ink/15 pb-0.5 transition-colors duration-200 group-hover:border-royal/40">
-              {NAV_LINKS[0].label}
-              <ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </span>
-          </HashAwareLink>
-
           {atoopvNav.map((item) => {
             if (!item.mega) {
-              // No dropdown here (AtooSavoir, À propos, Design Test) — same
-              // dashed-rule trigger language as the dropdown items below,
-              // but with EditorialMenuItem's own diagonal ArrowUpRight
-              // instead of a ChevronDown, so it reads as "goes to a page"
-              // rather than falsely promising a menu that isn't there.
+              // No dropdown here (AtooSavoir, À propos) — same dashed-rule
+              // trigger language as the dropdown items below, but with
+              // EditorialMenuItem's own diagonal ArrowUpRight instead of a
+              // ChevronDown, so it reads as "goes to a page" rather than
+              // falsely promising a menu that isn't there.
               return (
                 <Link key={item.href} to={item.href} className={cn(plainLinkClass, 'group')} onMouseEnter={closeMegaNow} onFocus={closeMegaNow}>
                   <span className="flex items-center gap-1 border-b border-dashed border-ink/15 pb-0.5 transition-colors duration-200 group-hover:border-royal/40">
@@ -269,7 +245,7 @@ export default function Navbar() {
             Devis PV
           </Button>
           <Button as={Link} to="/register" size="sm" variant="primary" className="hidden sm:inline-flex">
-            Register <ArrowUpRight className="h-4 w-4" />
+            Espace client <ArrowUpRight className="h-4 w-4" />
           </Button>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -332,7 +308,6 @@ export default function Navbar() {
               >
                 {MOBILE_HOME_LINK.label}
               </HashAwareLink>
-              <MobileNavRow item={NAV_LINKS[0]} expandedKey={expandedKey} onToggle={toggleMobile} onNavigate={() => setOpen(false)} />
               {atoopvNav.map((item) => (
                 <MobileNavRow
                   key={item.key || item.href}
@@ -344,7 +319,7 @@ export default function Navbar() {
               ))}
               <div className="mt-3 flex items-center justify-between gap-3 border-t border-ink/8 pt-3">
                 <Button as={Link} to="/register" size="sm" onClick={() => setOpen(false)}>
-                  Register
+                  Espace client
                 </Button>
               </div>
             </div>

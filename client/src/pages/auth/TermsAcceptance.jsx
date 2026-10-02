@@ -74,9 +74,9 @@ export default function TermsAcceptance({ onAccept }) {
 
   return (
     <div className="rounded-2xl border border-ink/12 bg-paper/60 p-4">
-      <p className="text-sm font-medium text-ink">Terms &amp; Conditions &amp; Privacy Policy</p>
+      <p className="text-sm font-medium text-ink">Conditions générales &amp; politique de confidentialité</p>
       <p className="mt-1 text-xs text-muted">
-        Please read the policy and scroll to the end to enable the Continue button.
+        Veuillez lire le texte et faire défiler jusqu’à la fin pour activer le bouton de validation.
       </p>
 
       <div
@@ -93,10 +93,10 @@ export default function TermsAcceptance({ onAccept }) {
           checked={reachedEnd}
           readOnly
           aria-readonly="true"
-          aria-label="I have read and accepted the Terms &amp; Conditions"
+          aria-label="J'ai lu et j'accepte les conditions générales"
           className="h-4 w-4 accent-accent"
         />
-        I have read and accepted the Terms &amp; Conditions
+        J'ai lu et j'accepte les conditions générales
       </label>
     </div>
   )

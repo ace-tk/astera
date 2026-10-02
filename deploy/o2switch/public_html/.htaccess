@@ -38,8 +38,14 @@ Options -MultiViews
   #     reasoning as 3b: a crawler needs an actual 301, not the SPA's client-side
   #     redirect. The bare "/atoopv" case is listed before the general "/atoopv/*"
   #     rule so it isn't swallowed by it.
-  RewriteRule ^atoopv/?$ https://atoopv.com/accueil [R=301,L]
+  RewriteRule ^atoopv/?$ https://atoopv.com/ [R=301,L]
   RewriteRule ^atoopv/(.*)$ https://atoopv.com/$1 [R=301,L]
+
+  # 3d. Client-reported bug: /accueil used to render an English demo page
+  #     ("Story") unrelated to ATOOPV's offer — that page is deleted (App.jsx)
+  #     and the "Story" nav item removed (Navbar.jsx). Real server-level 301
+  #     for anyone with an old bookmark/search result, same reasoning as 3c.
+  RewriteRule ^accueil/?$ https://atoopv.com/ [R=301,L]
 
   # 4. Single-page-app fallback: real files/directories are served as-is; every other
   #    URL (e.g. /tarification, /app/admin) is handed to React Router.

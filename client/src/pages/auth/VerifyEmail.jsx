@@ -20,7 +20,7 @@ export default function VerifyEmail() {
 
   if (status === 'pending') {
     return (
-      <AuthShell eyebrow="One moment" title="Verifying your email…">
+      <AuthShell eyebrow="Un instant" title="Vérification de votre e-mail…">
         <div className="flex justify-center py-4">
           <Loader2 className="h-8 w-8 animate-spin text-accent" />
         </div>
@@ -30,14 +30,14 @@ export default function VerifyEmail() {
 
   if (status === 'success') {
     return (
-      <AuthShell eyebrow="Verified" title="Your email is confirmed">
+      <AuthShell eyebrow="Vérifié" title="Votre e-mail est confirmé">
         <div className="flex flex-col items-center text-center">
           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald/10 text-emerald">
             <CheckCircle2 className="h-7 w-7" />
           </span>
-          <p className="mt-5 text-sm leading-relaxed text-muted">Your account is now active. You can sign in.</p>
+          <p className="mt-5 text-sm leading-relaxed text-muted">Votre compte est maintenant actif. Vous pouvez vous connecter.</p>
           <Button as={Link} to="/login" variant="accent" size="lg" className="mt-7 w-full">
-            Go to sign in
+            Aller à la connexion
           </Button>
         </div>
       </AuthShell>
@@ -45,16 +45,16 @@ export default function VerifyEmail() {
   }
 
   return (
-    <AuthShell eyebrow="Link issue" title="This link is invalid or expired">
+    <AuthShell eyebrow="Problème de lien" title="Ce lien est invalide ou expiré">
       <div className="flex flex-col items-center text-center">
         <span className="grid h-14 w-14 place-items-center rounded-2xl bg-coral/10 text-coral">
           <AlertTriangle className="h-7 w-7" />
         </span>
         <p className="mt-5 text-sm leading-relaxed text-muted">
-          This verification link is no longer valid. Try signing in — you can request a new link from there.
+          Ce lien de vérification n’est plus valide. Essayez de vous connecter — vous pourrez demander un nouveau lien depuis là.
         </p>
         <Button as={Link} to="/login" variant="accent" size="lg" className="mt-7 w-full">
-          Go to sign in
+          Aller à la connexion
         </Button>
       </div>
     </AuthShell>

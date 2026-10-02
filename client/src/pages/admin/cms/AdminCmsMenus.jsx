@@ -179,7 +179,7 @@ function MainMenuTab() {
             ))}
           </ul>
           <p className="mt-3 text-xs text-muted">
-            The main menus are fixed parts of the website: they can’t be added, removed, renamed or reordered here. “Story” and “Design Test” are part of the site itself.
+            The main menus are fixed parts of the website: they can’t be added, removed, renamed or reordered here.
           </p>
         </section>
 

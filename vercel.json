@@ -22,12 +22,17 @@
     },
     {
       "source": "/atoopv",
-      "destination": "/accueil",
+      "destination": "/",
       "permanent": true
     },
     {
       "source": "/atoopv/:path*",
       "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/accueil",
+      "destination": "/",
       "permanent": true
     }
   ],

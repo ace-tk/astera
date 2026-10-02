@@ -35,7 +35,7 @@ export default function Login() {
       const user = await login(form.email.trim(), form.password)
       navigate(user?.isAdmin ? '/app/admin' : '/app', { replace: true })
     } catch (err) {
-      setError(err.status === 401 ? 'Incorrect email or password.' : err.message || 'Could not sign in.')
+      setError(err.status === 401 ? 'E-mail ou mot de passe incorrect.' : err.message || 'Connexion impossible.')
       setBusy(false)
     }
   }
@@ -47,31 +47,31 @@ export default function Login() {
 
   return (
     <AuthShell
-      eyebrow="Welcome back"
-      title="Sign in to ATOOPV"
-      subtitle="Access your own meetings, reports, and history."
+      eyebrow="Bon retour"
+      title="Connexion à votre espace client"
+      subtitle="Accédez à vos réunions, rapports et historique."
       footer={
         <>
-          New to ATOOPV?{' '}
+          Nouveau sur ATOOPV ?{' '}
           <Link to="/register" state={{ from }} className="link-underline font-medium text-ink">
-            Create an account
+            Créer un compte
           </Link>
         </>
       }
     >
       <form onSubmit={onSubmit} className="space-y-4" noValidate>
         <Field
-          label="Email"
+          label="E-mail"
           id="email"
           type="email"
           autoComplete="email"
           required
           value={form.email}
           onChange={set('email')}
-          placeholder="you@company.com"
+          placeholder="vous@entreprise.com"
         />
         <Field
-          label="Password"
+          label="Mot de passe"
           id="password"
           type="password"
           autoComplete="current-password"
@@ -83,7 +83,7 @@ export default function Login() {
 
         <div className="flex justify-end">
           <Link to="/forgot" className="text-xs text-muted transition-colors hover:text-ink">
-            Forgot password?
+            Mot de passe oublié ?
           </Link>
         </div>
 
@@ -94,21 +94,21 @@ export default function Login() {
               <>
                 {' '}
                 <button type="button" onClick={onResend} className="link-underline font-medium text-coral">
-                  Resend verification email
+                  Renvoyer l'e-mail de vérification
                 </button>
               </>
             )}
-            {needsVerification && resent && <span className="mt-1 block font-medium">Verification email sent — check your inbox.</span>}
+            {needsVerification && resent && <span className="mt-1 block font-medium">E-mail de vérification envoyé — consultez votre boîte de réception.</span>}
           </p>
         )}
 
         <Button type="submit" variant="accent" size="lg" className="w-full" magnetic={false} disabled={busy}>
           {busy ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Signing in…
+              <Loader2 className="h-4 w-4 animate-spin" /> Connexion en cours…
             </>
           ) : (
-            'Sign in'
+            'Se connecter'
           )}
         </Button>
       </form>

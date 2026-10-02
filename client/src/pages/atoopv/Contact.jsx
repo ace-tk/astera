@@ -418,7 +418,7 @@ export default function Contact() {
                       className="group flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-indigo-500/5 hover:text-indigo-600"
                     >
                       <Building2 className="h-4 w-4 text-indigo-500/70" />
-                      Register as a company
+                      Créer un compte entreprise
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </Link>
                   </div>

@@ -76,7 +76,7 @@ export function resolveServiceHref(rawHref) {
   if (ASSET_EXT_RE.test(path)) return { href: rawHref, external: true }
 
   const slug = path.replace(/^\/+|\/+$/g, '')
-  if (slug === '') return { href: '/accueil', external: false }
+  if (slug === '') return { href: '/', external: false }
   if (slug === 'livres-blancs') return { href: '/ressources/guides-livres-blancs-cse', external: false }
 
   const serviceRoute = serviceRouteForSlug(slug)

@@ -3,16 +3,6 @@
  * Each feature owns a semantic color token (see tailwind.config.js).
  */
 
-// Single plain link. Was an in-page anchor ('#story') to the Story section
-// on this same page; since the page-content swap moved the Story page's
-// content out (and this page now shows the ATOOPV homepage instead), this
-// now links there directly — at /accueil (renamed from /atoopv; the old
-// /atoopv redirects there, see App.jsx). HashAwareLink renders any non-hash
-// href as a normal <Link>, so no other change was needed for that.
-const STORY_NAV = {
-  label: 'Story',
-  href: '/accueil',
-}
 
 /**
  * The ATOOPV site's own top-level navigation — six commercial entries plus
@@ -235,19 +225,16 @@ export const ATOOPV_NAV = [
   { label: 'À propos', href: '/a-propos' },
 ]
 
-/** Mobile-only: kept as the burger menu's first row (see ATOOPV_NAV's own
- * comment — desktop drops "Accueil" entirely, reached via the logo instead). */
-export const MOBILE_HOME_LINK = { label: 'Accueil', href: '/accueil' }
+/** Mobile-only: kept as the burger menu's first row (desktop drops "Accueil"
+ * entirely, reached via the logo instead). Points at "/" — the real ATOOPV
+ * homepage. (There used to be a separate English "Story" demo page at
+ * "/accueil"; it's gone — see App.jsx's "/accueil" redirect to "/".) */
+export const MOBILE_HOME_LINK = { label: 'Accueil', href: '/' }
 
 /** No /contact/ route exists in this app — every "Devis PV" / "Demander un
  * devis" / "Nous contacter" CTA in the brief resolves to the closest
  * existing equivalent, the quote/pricing page. */
 export const DEVIS_CTA_HREF = '/tarification'
-
-/** Full desktop top-level order: Story (unchanged, Astera-only) followed by
- * the six ATOOPV entries. Mobile renders MOBILE_HOME_LINK first, then this
- * same array — see Navbar.jsx. */
-export const NAV_LINKS = [STORY_NAV, ...ATOOPV_NAV]
 
 // The animated "journey" a conversation takes through Astera.
 export const JOURNEY = [

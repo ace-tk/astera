@@ -55,7 +55,7 @@ export function resolveResourceHref(rawHref) {
   if (ASSET_EXT_RE.test(path)) return { href: rawHref, external: true }
 
   const slug = path.replace(/^\/+|\/+$/g, '')
-  if (slug === '') return { href: '/accueil', external: false }
+  if (slug === '') return { href: '/', external: false }
   if (slug === 'category/veille-juridique-cse') return { href: '/ressources/veille-juridique-cse', external: false }
 
   const resolvedSlug = ALIASES[slug] || slug
@@ -65,5 +65,5 @@ export function resolveResourceHref(rawHref) {
   const serviceRoute = serviceRouteForSlug(slug)
   if (serviceRoute) return { href: serviceRoute, external: false }
 
-  return { href: SECTION_MAP[slug] || '/accueil', external: false }
+  return { href: SECTION_MAP[slug] || '/', external: false }
 }

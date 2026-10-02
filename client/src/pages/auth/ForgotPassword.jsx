@@ -13,14 +13,14 @@ export default function ForgotPassword() {
   usePageMeta({ noindex: true })
   return (
     <AuthShell
-      eyebrow="Account recovery"
-      title="Password reset is on the way"
-      subtitle="Self-serve reset isn’t wired up in this build yet. If you’re locked out, reach the team and we’ll restore access."
+      eyebrow="Récupération de compte"
+      title="La réinitialisation arrive bientôt"
+      subtitle="La réinitialisation en libre-service n’est pas encore disponible. Si vous êtes bloqué, contactez-nous et nous vous aiderons à retrouver l’accès."
       footer={
         <>
-          Remembered it?{' '}
+          Vous vous en souvenez ?{' '}
           <Link to="/login" className="link-underline font-medium text-ink">
-            Back to sign in
+            Retour à la connexion
           </Link>
         </>
       }
@@ -30,8 +30,8 @@ export default function ForgotPassword() {
           <KeyRound className="h-5 w-5" />
         </span>
         <p className="text-sm text-muted">
-          Email <span className="font-medium text-ink">support@astera.app</span> from your account address and we’ll help
-          you back in.
+          Écrivez à <span className="font-medium text-ink">contact@atoopv.com</span> depuis l’adresse e-mail de votre
+          compte et nous vous aiderons à retrouver l’accès.
         </p>
       </div>
     </AuthShell>

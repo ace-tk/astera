@@ -7,15 +7,15 @@ const OPTIONS = [
     type: 'guest',
     icon: User,
     color: 'sky',
-    title: 'Guest User',
-    description: 'For individuals using ATOOPV for personal meetings and reports.',
+    title: 'Compte invité',
+    description: 'Pour les particuliers utilisant ATOOPV pour leurs réunions et rapports personnels.',
   },
   {
     type: 'company',
     icon: Building2,
     color: 'royal',
-    title: 'Company Registration',
-    description: 'For businesses — includes company profile, VAT, and LinkedIn.',
+    title: 'Compte entreprise',
+    description: 'Pour les entreprises — profil société, TVA et LinkedIn inclus.',
   },
 ]
 
@@ -41,7 +41,7 @@ export default function AccountTypeSelector({ onSelect }) {
             <h3 className="mt-4 font-display text-lg font-semibold tracking-tight">{title}</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">{description}</p>
             <span className={cn('mt-4 inline-flex items-center gap-1.5 text-sm font-medium', a.text)}>
-              Continue <Check className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
+              Continuer <Check className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
             </span>
           </button>
         )

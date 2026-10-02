@@ -27,14 +27,14 @@ export default function GuestRegisterForm({ onSubmit: submit, busy, serverError 
 
   const validate = () => {
     const errs = {}
-    if (!form.firstName.trim()) errs.firstName = 'First name is required.'
-    if (!form.lastName.trim()) errs.lastName = 'Last name is required.'
-    if (!form.email.trim() || !EMAIL_RE.test(form.email.trim())) errs.email = 'Enter a valid email address.'
+    if (!form.firstName.trim()) errs.firstName = 'Le prénom est obligatoire.'
+    if (!form.lastName.trim()) errs.lastName = 'Le nom est obligatoire.'
+    if (!form.email.trim() || !EMAIL_RE.test(form.email.trim())) errs.email = 'Saisissez une adresse e-mail valide.'
     const dial = dialFromLabel(form.callingCode)
     const phone = `${dial}${form.phoneNumber.trim()}`
-    if (!form.phoneNumber.trim() || !PHONE_RE.test(phone)) errs.phoneNumber = 'Enter a valid contact number.'
-    if (!form.password || form.password.length < 8) errs.password = 'Password must be at least 8 characters.'
-    if (form.confirmPassword !== form.password) errs.confirmPassword = 'Passwords do not match.'
+    if (!form.phoneNumber.trim() || !PHONE_RE.test(phone)) errs.phoneNumber = 'Saisissez un numéro de contact valide.'
+    if (!form.password || form.password.length < 8) errs.password = 'Le mot de passe doit contenir au moins 8 caractères.'
+    if (form.confirmPassword !== form.password) errs.confirmPassword = 'Les mots de passe ne correspondent pas.'
     return errs
   }
 
@@ -60,22 +60,22 @@ export default function GuestRegisterForm({ onSubmit: submit, busy, serverError 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       <div>
-        <span className="eyebrow text-accent">Your details</span>
+        <span className="eyebrow text-accent">Vos informations</span>
         <div className="mt-3 grid gap-4 sm:grid-cols-2">
-          <Field label="First name" id="firstName" required value={form.firstName} onChange={set('firstName')} placeholder="Ada" error={errors.firstName} />
-          <Field label="Last name" id="lastName" required value={form.lastName} onChange={set('lastName')} placeholder="Lovelace" error={errors.lastName} />
+          <Field label="Prénom" id="firstName" required value={form.firstName} onChange={set('firstName')} placeholder="Ada" error={errors.firstName} />
+          <Field label="Nom" id="lastName" required value={form.lastName} onChange={set('lastName')} placeholder="Lovelace" error={errors.lastName} />
           <div className="sm:col-span-2">
-            <Field label="Email" id="email" type="email" autoComplete="email" required value={form.email} onChange={set('email')} placeholder="you@example.com" error={errors.email} />
+            <Field label="E-mail" id="email" type="email" autoComplete="email" required value={form.email} onChange={set('email')} placeholder="vous@exemple.com" error={errors.email} />
           </div>
           <div className="sm:col-span-2">
-            <span className="mb-1.5 block text-sm font-medium text-ink">Contact number</span>
+            <span className="mb-1.5 block text-sm font-medium text-ink">Numéro de contact</span>
             <div className="grid grid-cols-[minmax(0,10rem)_1fr] gap-2">
               <SearchableSelect
                 id="callingCode"
                 value={form.callingCode}
                 onChange={(v) => setForm((f) => ({ ...f, callingCode: v }))}
                 options={CODE_LABELS}
-                placeholder="Code"
+                placeholder="Indicatif"
                 className={FIELD_INPUT_CLASS}
               />
               <input
@@ -95,10 +95,10 @@ export default function GuestRegisterForm({ onSubmit: submit, busy, serverError 
       </div>
 
       <div>
-        <span className="eyebrow text-accent">Security</span>
+        <span className="eyebrow text-accent">Sécurité</span>
         <div className="mt-3 grid gap-4 sm:grid-cols-2">
           <Field
-            label="Password"
+            label="Mot de passe"
             id="password"
             type="password"
             autoComplete="new-password"
@@ -106,11 +106,11 @@ export default function GuestRegisterForm({ onSubmit: submit, busy, serverError 
             value={form.password}
             onChange={set('password')}
             placeholder="••••••••"
-            hint={!errors.password ? 'At least 8 characters.' : undefined}
+            hint={!errors.password ? 'Au moins 8 caractères.' : undefined}
             error={errors.password}
           />
           <Field
-            label="Confirm password"
+            label="Confirmer le mot de passe"
             id="confirmPassword"
             type="password"
             autoComplete="new-password"
@@ -134,10 +134,10 @@ export default function GuestRegisterForm({ onSubmit: submit, busy, serverError 
       <Button type="submit" variant="accent" size="lg" className="w-full" magnetic={false} disabled={busy || !termsAccepted}>
         {busy ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" /> Creating account…
+            <Loader2 className="h-4 w-4 animate-spin" /> Création du compte…
           </>
         ) : (
-          'Create account'
+          'Créer le compte'
         )}
       </Button>
     </form>

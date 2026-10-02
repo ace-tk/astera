@@ -15,7 +15,6 @@ import { useA11y } from '@/context/A11yContext'
 import { useCanonical } from '@/hooks/useCanonical'
 
 // Route-level code splitting keeps the landing bundle lean.
-const Landing = lazy(() => import('@/pages/Landing'))
 const BlogPost = lazy(() => import('@/pages/BlogPost'))
 const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
 const Boutique = lazy(() => import('@/pages/atoopv/Boutique'))
@@ -134,12 +133,14 @@ export default function App() {
                 homepage (Accueil) — untouched by the /atoopv route rename below. */}
             <Route path="/" element={<Accueil />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            {/* Route rename (requested): the Story/marketing page (Landing) — same
-                component, same content, same everything — now lives at /accueil
-                instead of /atoopv. /atoopv and every /atoopv/* sub-path redirect to
-                their new top-level equivalent, for old bookmarks/SEO/search results. */}
-            <Route path="/accueil" element={<Landing />} />
-            <Route path="/atoopv" element={<Navigate to="/accueil" replace />} />
+            {/* The old English "Story" demo page (Landing) used to live at /accueil
+                (after an earlier rename from /atoopv) — it's gone now (client-
+                reported bug: it had nothing to do with ATOOPV's offer, and the
+                "Story" nav item that led to it is removed from Navbar.jsx too).
+                Both /accueil and /atoopv (plus every /atoopv/* sub-path below)
+                now redirect straight to "/", for old bookmarks/SEO/search results. */}
+            <Route path="/accueil" element={<Navigate to="/" replace />} />
+            <Route path="/atoopv" element={<Navigate to="/" replace />} />
             <Route path="/boutique" element={<Boutique />} />
             <Route path="/atoopv/boutique" element={<Navigate to="/boutique" replace />} />
             <Route path="/tarification" element={<Tarification />} />
@@ -181,7 +182,7 @@ export default function App() {
             <Route path="/atoopv/ressources/:slug" element={<AtoopvRessourceRedirect />} />
             {/* Safety net: any other /atoopv/* URL not explicitly listed above (old query
                 variants, typos, anything missed) still lands somewhere real instead of 404ing. */}
-            <Route path="/atoopv/*" element={<Navigate to="/accueil" replace />} />
+            <Route path="/atoopv/*" element={<Navigate to="/" replace />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/drafting" element={<ServiceCategoryLayout />}>
               <Route index element={<ServiceArticle category="drafting" slug="nos-services-pv" />} />

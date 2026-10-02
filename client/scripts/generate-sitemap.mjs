@@ -58,7 +58,6 @@ const RESSOURCES_HUB_SLUG = 'guides-livres-blancs-cse'
 //   /login, /register, /forgot, /verify-email, /app/*  non-indexable / private.
 const STATIC_PAGES = [
   '/',
-  '/accueil',
   '/boutique',
   '/tarification',
   '/contact',
