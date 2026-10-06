@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Bell, BookmarkCheck, Clock, Heart, Home, LayoutGrid, PlayCircle, Search, ShoppingBag, Star, User, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import clsx from 'clsx'
@@ -20,9 +20,12 @@ const ACCENT_VAR = {
   orange: 'var(--orange)',
 }
 
-function bookById(id) {
-  return RESOURCE_LIBRARY_BOOKS.find((b) => b.id === id)
-}
+/** Carries the (CMS-merged) data to the sub-components; defaults are the built-in constants. */
+const LibraryDataContext = createContext({
+  categories: RESOURCE_CATEGORIES,
+  featured: RESOURCE_FEATURED,
+  recommendations: RESOURCE_RECOMMENDATIONS,
+})
 
 /** An original, in-app cover — colored header band + title/author — no
  * external artwork, reused at two sizes (shelf / featured). */
@@ -127,9 +130,10 @@ function TopSearch({ query, onQueryChange, cartCount, onCartClick }) {
 }
 
 function CategoryStrip({ active, onSelect }) {
+  const { categories } = useContext(LibraryDataContext)
   return (
     <div className="dt-no-scrollbar mt-5 flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Catégories de ressources">
-      {RESOURCE_CATEGORIES.map((cat) => {
+      {categories.map((cat) => {
         const isActive = active === cat.id
         return (
           <button
@@ -246,16 +250,17 @@ function QuickActionChip({ children, onClick }) {
 }
 
 function FeaturedSection({ selectedBook, isFavorite, onToggleFavorite, onOpenPreview, onSummarize, onRequest, onFilterCategory }) {
+  const { featured, recommendations } = useContext(LibraryDataContext)
   return (
     <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-[1.3fr_1fr]">
       <div className="flex flex-col gap-6 rounded-2xl border border-ink/8 bg-[#FBF8F2] p-6 sm:flex-row sm:items-center sm:p-7">
         <BookCover book={selectedBook} size="lg" />
         <div className="min-w-0">
           <TechnicalLabel dot={false} className="text-muted/60">
-            {RESOURCE_FEATURED.year} — Vous consultez
+            {featured.year} — Vous consultez
           </TechnicalLabel>
           <h4 className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink">{selectedBook.title}</h4>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">{RESOURCE_FEATURED.description}</p>
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">{featured.description}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             <QuickActionChip onClick={onOpenPreview}>Voir l’extrait</QuickActionChip>
             <QuickActionChip onClick={onSummarize}>Résumer</QuickActionChip>
@@ -272,7 +277,7 @@ function FeaturedSection({ selectedBook, isFavorite, onToggleFavorite, onOpenPre
       </div>
 
       <div className="flex flex-col gap-3">
-        {RESOURCE_RECOMMENDATIONS.map((rec) => (
+        {recommendations.map((rec) => (
           <RecommendationCard key={rec.id} rec={rec} onFilter={onFilterCategory} />
         ))}
       </div>
@@ -428,10 +433,18 @@ function Toast({ message }) {
  * it true to drop just that internal-lab label without touching the
  * chapter numeral or the "ATOOPV RESOURCE LIBRARY" title.
  */
-export default function ResourceLibrary({ hideEyebrow = false }) {
+export default function ResourceLibrary({
+  hideEyebrow = false,
+  categories = RESOURCE_CATEGORIES,
+  books = RESOURCE_LIBRARY_BOOKS,
+  featured = RESOURCE_FEATURED,
+  recommendations = RESOURCE_RECOMMENDATIONS,
+}) {
+  const bookById = (id) => books.find((b) => b.id === id)
+  const ctx = useMemo(() => ({ categories, featured, recommendations }), [categories, featured, recommendations])
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('tous')
-  const [selectedId, setSelectedId] = useState(RESOURCE_LIBRARY_BOOKS[0].id)
+  const [selectedId, setSelectedId] = useState(books[0].id)
   const [favorites, setFavorites] = useState(() => new Set())
   const [requested, setRequested] = useState(() => new Set())
   const [viewAll, setViewAll] = useState(false)
@@ -442,14 +455,14 @@ export default function ResourceLibrary({ hideEyebrow = false }) {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return RESOURCE_LIBRARY_BOOKS.filter((b) => {
+    return books.filter((b) => {
       const matchesCategory = activeCategory === 'tous' || b.categories.includes(activeCategory)
       const matchesQuery = !q || b.title.toLowerCase().includes(q)
       return matchesCategory && matchesQuery
     })
-  }, [activeCategory, query])
+  }, [books, activeCategory, query])
 
-  const selectedBook = bookById(selectedId) || RESOURCE_LIBRARY_BOOKS[0]
+  const selectedBook = bookById(selectedId) || books[0]
 
   const showToast = (message) => {
     setToast(message)
@@ -472,6 +485,7 @@ export default function ResourceLibrary({ hideEyebrow = false }) {
   }
 
   return (
+    <LibraryDataContext.Provider value={ctx}>
     <section id="experiment-13" className="relative border-t border-ink/10 bg-paper py-24 sm:py-32">
       <div className="shell">
         <ExperimentHeader index="13" eyebrow="EXPERIMENT / 13" hideEyebrow={hideEyebrow} titleLines={['ATOOPV RESOURCE', 'LIBRARY']} className="mb-14 sm:mb-20" />
@@ -527,5 +541,6 @@ export default function ResourceLibrary({ hideEyebrow = false }) {
       </AnimatePresence>
       <AnimatePresence>{toast && <Toast key={toast} message={toast} />}</AnimatePresence>
     </section>
+    </LibraryDataContext.Provider>
   )
 }

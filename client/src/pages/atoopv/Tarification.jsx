@@ -8,17 +8,8 @@ import PVSimulator from '@/components/atoopv/PVSimulator'
 import FAQSection from '@/components/services/FAQSection'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import {
-  TARIFICATION_HERO,
-  TARIFICATION_INTRO,
-  TARIFICATION_OPTIONS,
-  TARIFICATION_TIERS,
-  TARIFICATION_CALCULATOR,
-  TARIFICATION_WHY,
-  TARIFICATION_HOW,
-  TARIFICATION_FAQ,
-  TARIFICATION_CTA,
-} from '@/constants/tarificationHome'
+import { useSitePage } from '@/cms/useSitePage'
+import { resolveMediaUrl } from '@/cms/media'
 
 /**
  * Ported ATOOPV Tarification page — content extracted verbatim in French
@@ -28,7 +19,9 @@ import {
  * for AtoopvHero to match the rest of the ported ATOOPV site.
  */
 export default function Tarification() {
-  usePageMeta({ title: TARIFICATION_HERO.title, description: TARIFICATION_INTRO.blocks[0]?.text })
+  // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
+  const c = useSitePage('tarification')
+  usePageMeta({ title: c.hero.title, description: c.intro.text })
 
   return (
     <motion.main
@@ -46,38 +39,38 @@ export default function Tarification() {
           higher on the page, and the page heading now lives inside the
           card itself (see PVSimulator's own `title`) instead of floating
           above it. */}
-      <AtoopvHero badge={TARIFICATION_HERO.badge} hideTitle />
+      <AtoopvHero badge={c.hero.badge} hideTitle />
 
       {/* The interactive simulator needs the full shell width for its
           three-column console + live preview, so it sits outside the
           narrower max-w-3xl column the rest of this page's prose uses. */}
       <div className="shell pt-2 pb-14 sm:pt-4 sm:pb-16">
         <PVSimulator
-          title={TARIFICATION_HERO.title}
-          tiers={TARIFICATION_TIERS}
-          badge={TARIFICATION_HERO.badge}
-          intro={TARIFICATION_INTRO.blocks[0]?.text}
-          {...TARIFICATION_CALCULATOR}
+          title={c.hero.title}
+          tiers={c.tiers}
+          badge={c.hero.badge}
+          intro={c.intro.text}
+          {...c.calculator}
           color="royal"
         />
       </div>
 
       <div className="shell pb-14 sm:pb-16">
         <div className="mx-auto max-w-3xl space-y-14">
-          <RichTextSection eyebrow={TARIFICATION_OPTIONS.eyebrow} heading={TARIFICATION_OPTIONS.heading} blocks={TARIFICATION_OPTIONS.blocks} color="golden" />
-          <RichTextSection eyebrow={TARIFICATION_WHY.eyebrow} heading={TARIFICATION_WHY.heading} blocks={TARIFICATION_WHY.blocks} color="golden" />
-          <RichTextSection eyebrow={TARIFICATION_HOW.eyebrow} heading={TARIFICATION_HOW.heading} blocks={TARIFICATION_HOW.blocks} color="golden" />
-          <FAQSection eyebrow="Questions fréquentes" heading="Cliquez sur une question pour afficher la réponse" items={TARIFICATION_FAQ} />
+          <RichTextSection eyebrow={c.options.eyebrow} heading={c.options.heading} blocks={c.options.blocks} color="golden" />
+          <RichTextSection eyebrow={c.why.eyebrow} heading={c.why.heading} blocks={c.why.blocks} color="golden" />
+          <RichTextSection eyebrow={c.how.eyebrow} heading={c.how.heading} blocks={c.how.blocks} color="golden" />
+          <FAQSection eyebrow={c.faqSection.eyebrow} heading={c.faqSection.heading} items={c.faq} />
         </div>
       </div>
 
       <CTASection
-        {...TARIFICATION_CTA}
+        {...c.cta}
         visual={
           <div className="aspect-[4/3] overflow-hidden rounded-[1.4rem] border border-ink/8 sm:h-full sm:aspect-auto">
             <img
-              src="/atoopv-media/hero-salle-reunion.webp"
-              alt="Salle de réunion équipée, prête pour une séance de CSE"
+              src={resolveMediaUrl(c.ctaImage.src)}
+              alt={c.ctaImage.alt}
               className="h-full w-full object-cover"
             />
           </div>

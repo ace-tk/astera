@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { fetchCmsPage, fetchPagePreview } from '@/services/cms'
 import { CMS_ENABLED } from './config'
+import { useCmsNavigation } from './useNavigation'
 
 /** CMS page -> the exact object shape the bundled markdown loaders produce, so each
  * template's existing rendering code needs no changes. */
@@ -24,20 +25,35 @@ const isNotFound = (err) => err?.status === 404
 
 /**
  * Decides where an article page's content comes from:
- *   • bundled markdown  — every page that has not been migrated (no network at all)
- *   • the CMS           — migrated pages (`drivenSlugs`), brand-new CMS pages, and admin previews
+ *   • the CMS           — preview, brand-new CMS pages, every page in `drivenSlugs`, AND every page the
+ *                         live CMS index says is published (see below)
+ *   • bundled markdown  — only what the CMS does not have (no network at all for those)
+ *
+ * The published-page index (`/cms/navigation`, already fetched on every page for the menus, one cached
+ * request) is what keeps this from ever going stale again. Before, "is this page CMS-driven?" was a
+ * hand-maintained list; two client-reported bugs (2026-10-02, 2026-10-06) were pages that had been
+ * migrated and published in the CMS but nobody had added them to that list, so their edits never showed.
+ * Now a page that exists published in the CMS is used automatically; `drivenSlugs` stays only to keep
+ * the old rule that an UNPUBLISHED migrated page 404s instead of silently resurrecting its bundled copy.
+ *
+ * The index entry also supplies the address the page is actually STORED under (`storedPath`) — migrated
+ * Ressources articles are still stored at `/atoopv/ressources/<slug>`, not the current `/ressources/<slug>`.
  *
  * Returns { status: 'ready' | 'loading' | 'redirect' | 'missing', page?, redirectTo?, preview? }.
  */
-export function useCmsArticle({ path, section, slug, bundled, hub, drivenSlugs }) {
+export function useCmsArticle({ path, section, slug, bundled, hub, drivenSlugs, templateKey }) {
   const [search] = useSearchParams()
   const previewId = CMS_ENABLED && !hub ? search.get('preview') : null
 
-  const useCms = CMS_ENABLED && !hub && Boolean(previewId || !bundled || drivenSlugs.has(slug))
+  const { data: nav } = useCmsNavigation()
+  const published = (nav?.pages || []).find((p) => p.templateKey === templateKey && p.section === section && p.slug === slug)
+  const cmsPath = published?.storedPath || published?.path || path
+
+  const useCms = CMS_ENABLED && !hub && Boolean(previewId || !bundled || drivenSlugs.has(slug) || published)
 
   const query = useQuery({
-    queryKey: ['cms', 'article', previewId ? `preview:${previewId}` : 'live', path],
-    queryFn: () => (previewId ? fetchPagePreview(previewId).then((page) => ({ page })) : fetchCmsPage(path)),
+    queryKey: ['cms', 'article', previewId ? `preview:${previewId}` : 'live', cmsPath],
+    queryFn: () => (previewId ? fetchPagePreview(previewId).then((page) => ({ page })) : fetchCmsPage(cmsPath)),
     enabled: useCms,
     retry: false,
     staleTime: previewId ? 0 : 10_000,

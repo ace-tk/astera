@@ -22,6 +22,7 @@ import { cn } from '@/utils/cn'
 import AdminCmsFooterTab from './AdminCmsFooterTab'
 import AdminCmsHomeHeroTab from './AdminCmsHomeHeroTab'
 import AdminCmsLegalPagesTab from './AdminCmsLegalPagesTab'
+import AdminCmsSitePagesTab from './AdminCmsSitePagesTab'
 
 const LABEL = 'mb-1.5 block font-mono text-[10px] uppercase tracking-[0.16em] text-muted'
 const SECTION_LABELS = {
@@ -47,7 +48,7 @@ export default function AdminCmsMenus() {
       </p>
 
       <div role="tablist" aria-label="Menu areas" className="mt-6 inline-flex gap-1 rounded-lg border border-ink/10 bg-card p-1">
-        {[['menu', 'Main menu'], ['side', 'Side navigation'], ['footer', 'Footer'], ['home-hero', 'Homepage'], ['legal', 'Legal pages']].map(([id, label]) => (
+        {[['menu', 'Main menu'], ['side', 'Side navigation'], ['footer', 'Footer'], ['home-hero', 'Homepage'], ['legal', 'Legal pages'], ['site-pages', 'Site pages']].map(([id, label]) => (
           <button key={id} role="tab" aria-selected={tab === id} onClick={() => setTab(id)} className={cn('h-8 rounded-md px-3.5 text-sm font-medium', tab === id ? 'bg-ink text-paper' : 'text-ink/70 hover:text-ink')}>
             {label}
           </button>
@@ -55,7 +56,7 @@ export default function AdminCmsMenus() {
       </div>
 
       <div className="mt-6">
-        {tab === 'menu' ? <MainMenuTab /> : tab === 'side' ? <SideNavTab /> : tab === 'footer' ? <AdminCmsFooterTab /> : tab === 'home-hero' ? <AdminCmsHomeHeroTab /> : <AdminCmsLegalPagesTab />}
+        {tab === 'menu' ? <MainMenuTab /> : tab === 'side' ? <SideNavTab /> : tab === 'footer' ? <AdminCmsFooterTab /> : tab === 'home-hero' ? <AdminCmsHomeHeroTab /> : tab === 'site-pages' ? <AdminCmsSitePagesTab /> : <AdminCmsLegalPagesTab />}
       </div>
     </div>
   )

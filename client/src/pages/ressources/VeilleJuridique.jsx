@@ -5,6 +5,7 @@ import EditorialDivider from '@/components/atoopv/EditorialDivider'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { useSitePage } from '@/cms/useSitePage'
 import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getResource, excerpt, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
 import { RESSOURCES_NAV } from '@/constants/resourcesNav'
@@ -20,21 +21,27 @@ import { RESSOURCES_NAV } from '@/constants/resourcesNav'
  */
 export default function VeilleJuridique() {
   const navItems = useSectionNav('ressources', RESSOURCES_NAV)
+  // The page's own heading text follows its published CMS site page (defaults = the hardcoded text).
+  const { hero } = useSitePage('veille-juridique')
   // Articles labelled "Veille juridique" in the CMS join this listing after the built-in ones.
   const cmsArticles = useCmsPages({ section: 'ressources', tag: 'veille-juridique' })
 
+  // A built-in article that has been edited in the CMS shows its CMS title/summary here too.
+  const cmsBySlug = new Map(useCmsPages({ section: 'ressources' }).map((p) => [p.slug, p]))
+
   const items = VEILLE_JURIDIQUE_SLUGS.map((slug) => {
     const r = getResource(slug)
-    return { title: r.title, body: excerpt(r.body), to: `/ressources/${slug}`, cta: 'Lire →' }
+    const edited = cmsBySlug.get(slug)
+    return { title: edited?.title || r.title, body: edited?.excerpt || excerpt(r.body), to: `/ressources/${slug}`, cta: 'Lire →' }
   })
   const listed = new Set(items.map((i) => i.to))
   for (const p of cmsArticles) if (!listed.has(p.path)) items.push({ title: p.title, body: p.excerpt, to: p.path, cta: 'Lire →' })
 
-  usePageMeta({ title: 'Veille juridique CSE', description: 'Publications LinkedIn du président d’ALC SAS — jurisprudence sociale et actualité juridique pour les élus CSE.' })
+  usePageMeta({ title: hero.title, description: hero.lead })
 
   return (
     <>
-      <AtoopvHero badge="Ressources" title="Veille juridique CSE" lead="Publications LinkedIn du président d’ALC SAS — jurisprudence sociale et actualité juridique pour les élus CSE." />
+      <AtoopvHero badge={hero.badge} title={hero.title} lead={hero.lead} />
 
       <div className="relative">
         <EditorialGridBackground lines />

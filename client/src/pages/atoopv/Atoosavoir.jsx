@@ -18,26 +18,8 @@ import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
-import {
-  ATOOSAVOIR_HERO,
-  ATOOSAVOIR_TRUST_BADGES,
-  ATOOSAVOIR_CONSTAT,
-  ATOOSAVOIR_EXAMPLES,
-  ATOOSAVOIR_WHAT_IS,
-  ATOOSAVOIR_QUESTIONS,
-  ATOOSAVOIR_STEPS,
-  ATOOSAVOIR_FICHE_INTRO,
-  ATOOSAVOIR_FICHE_STATS,
-  ATOOSAVOIR_FICHE_TEASER,
-  ATOOSAVOIR_COMPARISON,
-  ATOOSAVOIR_PRICING,
-  ATOOSAVOIR_ANALYSIS,
-  ATOOSAVOIR_FAQ,
-  ATOOSAVOIR_BROCHURE,
-  ATOOSAVOIR_CTA,
-  ATOOSAVOIR_CONTACT,
-  ATOOSAVOIR_LEGAL,
-} from '@/constants/atoosavoirHome'
+import { useSitePage } from '@/cms/useSitePage'
+import { resolveMediaUrl } from '@/cms/media'
 
 /**
  * Ported ATOOPV atoosavoir page — content extracted verbatim in French from
@@ -49,7 +31,9 @@ import {
  * PricingCalculator).
  */
 export default function Atoosavoir() {
-  usePageMeta({ title: stripEmphasis(ATOOSAVOIR_HERO.title), description: ATOOSAVOIR_HERO.lead })
+  // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
+  const c = useSitePage('atoosavoir')
+  usePageMeta({ title: stripEmphasis(c.hero.title), description: c.hero.lead })
 
   return (
     <motion.main
@@ -62,36 +46,36 @@ export default function Atoosavoir() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoosavoirHero {...ATOOSAVOIR_HERO} trustBadges={ATOOSAVOIR_TRUST_BADGES} />
+      <AtoosavoirHero {...c.hero} image={{ ...c.hero.image, src: resolveMediaUrl(c.hero.image.src) }} trustBadges={c.trustBadges} />
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <EditorialGridBackground className="-z-10" />
         <div className="shell">
-          <AtoosavoirConstat {...ATOOSAVOIR_CONSTAT} />
+          <AtoosavoirConstat {...c.constat} />
         </div>
       </section>
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <EditorialGridBackground className="-z-10" />
         <div className="shell">
-          <AtoosavoirExamples {...ATOOSAVOIR_EXAMPLES} />
+          <AtoosavoirExamples {...c.examples} />
         </div>
       </section>
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_WHAT_IS} color="royal" />
+            <RichTextSection {...c.whatIs} color="royal" />
           </div>
           <div className="mt-10">
-            <ChipCloud heading={ATOOSAVOIR_QUESTIONS.heading} items={ATOOSAVOIR_QUESTIONS.items} />
+            <ChipCloud heading={c.questions.heading} items={c.questions.items} />
           </div>
         </div>
       </section>
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
-          <AtoosavoirProcessSteps eyebrow={ATOOSAVOIR_STEPS.eyebrow} heading={ATOOSAVOIR_STEPS.heading} items={ATOOSAVOIR_STEPS.blocks[0].items} />
+          <AtoosavoirProcessSteps eyebrow={c.steps.eyebrow} heading={c.steps.heading} items={c.steps.blocks[0].items} />
         </div>
       </section>
 
@@ -99,9 +83,9 @@ export default function Atoosavoir() {
         <div className="shell">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
             <div>
-              <RichTextSection {...ATOOSAVOIR_FICHE_INTRO} color="royal" />
+              <RichTextSection {...c.ficheIntro} color="royal" />
               <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
-                {ATOOSAVOIR_FICHE_STATS.map((s) => (
+                {c.ficheStats.map((s) => (
                   <div key={s.label}>
                     <div className="font-display text-2xl font-semibold tracking-tight">{s.value}</div>
                     <p className="text-xs text-muted">{s.label}</p>
@@ -111,11 +95,11 @@ export default function Atoosavoir() {
             </div>
             <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}>
               <FicheCard
-                {...ATOOSAVOIR_FICHE_TEASER}
+                {...c.ficheTeaser}
                 color="royal"
                 footer={
                   <Button as={Link} to="/atoosavoir/exemple" variant="soft" size="sm">
-                    Voir un exemple complet
+                    {c.ficheButton.label}
                   </Button>
                 }
               />
@@ -127,21 +111,21 @@ export default function Atoosavoir() {
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_COMPARISON} color="royal" />
+            <RichTextSection {...c.comparison} color="royal" />
           </div>
         </div>
       </section>
 
       <section id="tarifs" className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
-          <PricingTiers {...ATOOSAVOIR_PRICING} color="royal" />
+          <PricingTiers {...c.pricing} color="royal" />
         </div>
       </section>
 
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_ANALYSIS} color="royal" />
+            <RichTextSection {...c.analysis} color="royal" />
           </div>
         </div>
       </section>
@@ -149,7 +133,7 @@ export default function Atoosavoir() {
       <section className="relative border-t border-ink/8 py-10 sm:py-12">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <FAQSection eyebrow="Questions fréquentes" heading="FAQ" items={ATOOSAVOIR_FAQ} />
+            <FAQSection eyebrow={c.faqSection.eyebrow} heading={c.faqSection.heading} items={c.faq} />
           </div>
         </div>
       </section>
@@ -157,32 +141,32 @@ export default function Atoosavoir() {
       <section className="relative pb-10 sm:pb-12">
         <div className="shell">
           <Reveal className="mx-auto max-w-3xl rounded-3xl border border-ink/8 bg-card p-6 text-center shadow-soft transition-shadow duration-300 hover:shadow-lift sm:p-8">
-            <p className="font-display text-base font-medium tracking-tight">{ATOOSAVOIR_BROCHURE.label}</p>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{ATOOSAVOIR_BROCHURE.text}</p>
+            <p className="font-display text-base font-medium tracking-tight">{c.brochure.label}</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">{c.brochure.text}</p>
           </Reveal>
         </div>
       </section>
 
       <CTASection
-        eyebrow={ATOOSAVOIR_CTA.eyebrow}
-        heading={ATOOSAVOIR_CTA.heading}
-        body={ATOOSAVOIR_CTA.body}
-        primaryCta={ATOOSAVOIR_CTA.primaryCta}
-        secondaryCta={ATOOSAVOIR_CTA.secondaryCta}
+        eyebrow={c.cta.eyebrow}
+        heading={c.cta.heading}
+        body={c.cta.body}
+        primaryCta={c.cta.primaryCta}
+        secondaryCta={c.cta.secondaryCta}
         footer={
           <>
-            <a href={ATOOSAVOIR_CONTACT.phoneHref} className="link-underline">
-              {ATOOSAVOIR_CONTACT.phone}
+            <a href={c.contact.phoneHref} className="link-underline">
+              {c.contact.phone}
             </a>{' '}
             ·{' '}
-            <a href={ATOOSAVOIR_CONTACT.emailHref} className="link-underline">
-              {ATOOSAVOIR_CONTACT.email}
+            <a href={c.contact.emailHref} className="link-underline">
+              {c.contact.email}
             </a>
             <br />
             <span className="mt-3 block text-[0.7rem] leading-relaxed">
-              {ATOOSAVOIR_LEGAL}{' '}
+              {c.legal.text}{' '}
               <Link to="/atoosavoir/cgv" className="link-underline">
-                Conditions générales de vente
+                {c.legal.cgvLabel}
               </Link>
             </span>
           </>

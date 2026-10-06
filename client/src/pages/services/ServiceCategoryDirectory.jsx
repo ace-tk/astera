@@ -43,8 +43,14 @@ export default function ServiceCategoryDirectory({ category }) {
   usePageMeta({ title: copy.title, description: copy.lead })
 
   const builtIn = new Set(pages.map((p) => p.slug))
+  const cmsByslug = new Map(cmsPages.map((p) => [p.slug, p]))
   const items = [
-    ...pages.map((p) => ({ title: p.title, body: excerpt(p.body), to: `/services/${category}/${p.slug}`, cta: 'Lire →' })),
+    // A built-in page that has been migrated + edited in the CMS shows its CMS title/summary here too
+    // (the card used to keep the old bundled wording after the page itself had changed).
+    ...pages.map((p) => {
+      const edited = cmsByslug.get(p.slug)
+      return { title: edited?.title || p.title, body: edited?.excerpt || excerpt(p.body), to: `/services/${category}/${p.slug}`, cta: 'Lire →' }
+    }),
     ...cmsPages.filter((p) => !builtIn.has(p.slug)).map((p) => ({ title: p.title, body: p.excerpt, to: p.path, cta: 'Lire →' })),
   ]
   // Same alphabetical rule the built-in pages are already sorted by, so existing cards keep their order.

@@ -9,13 +9,7 @@ import RichTextSection from '@/components/services/RichTextSection'
 import CTASection from '@/components/services/CTASection'
 import Button from '@/components/ui/Button'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import {
-  ATOOSAVOIR_EXEMPLE_HERO,
-  ATOOSAVOIR_EXEMPLE_INTRO,
-  ATOOSAVOIR_EXEMPLE_CARD,
-  ATOOSAVOIR_EXEMPLE_CTA,
-  ATOOSAVOIR_CONTACT,
-} from '@/constants/atoosavoirHome'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV atoosavoir/exemple page — content extracted verbatim in
@@ -25,7 +19,9 @@ import {
  * full fictional example fiche, with a link out to the real PDF sample.
  */
 export default function AtoosavoirExemple() {
-  usePageMeta({ title: ATOOSAVOIR_EXEMPLE_HERO.title, description: ATOOSAVOIR_EXEMPLE_HERO.lead })
+  // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
+  const c = useSitePage('atoosavoir-exemple')
+  usePageMeta({ title: c.hero.title, description: c.hero.lead })
 
   return (
     <motion.main
@@ -38,12 +34,12 @@ export default function AtoosavoirExemple() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero {...ATOOSAVOIR_EXEMPLE_HERO} />
+      <AtoopvHero {...c.hero} />
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
-            <RichTextSection {...ATOOSAVOIR_EXEMPLE_INTRO} color="royal" />
+            <RichTextSection {...c.intro} color="royal" />
           </div>
         </div>
       </section>
@@ -52,29 +48,29 @@ export default function AtoosavoirExemple() {
         <div className="shell">
           <div className="mx-auto max-w-2xl">
             <FicheCard
-              {...ATOOSAVOIR_EXEMPLE_CARD}
+              {...c.card}
               color="royal"
               footer={
                 <div className="flex flex-col gap-3">
                   <Button
                     as="a"
-                    href={ATOOSAVOIR_EXEMPLE_CARD.downloadHref}
+                    href={c.card.downloadHref}
                     target="_blank"
                     rel="noreferrer"
                     variant="soft"
                     size="sm"
                     className="w-fit"
                   >
-                    <Download className="h-4 w-4" /> {ATOOSAVOIR_EXEMPLE_CARD.downloadLabel}
+                    <Download className="h-4 w-4" /> {c.card.downloadLabel}
                   </Button>
                   <p className="text-xs text-muted">
-                    Une question à traiter ?{' '}
-                    <a href={ATOOSAVOIR_CONTACT.emailHref} className="link-underline">
-                      {ATOOSAVOIR_CONTACT.email}
+                    {c.cardFooter.question}{' '}
+                    <a href={c.contact.emailHref} className="link-underline">
+                      {c.contact.email}
                     </a>{' '}
                     ·{' '}
-                    <a href={ATOOSAVOIR_CONTACT.phoneHref} className="link-underline">
-                      {ATOOSAVOIR_CONTACT.phone}
+                    <a href={c.contact.phoneHref} className="link-underline">
+                      {c.contact.phone}
                     </a>
                   </p>
                 </div>
@@ -84,7 +80,7 @@ export default function AtoosavoirExemple() {
         </div>
       </section>
 
-      <CTASection {...ATOOSAVOIR_EXEMPLE_CTA} />
+      <CTASection {...c.cta} />
       <AtoopvFooter />
     </motion.main>
   )

@@ -11,7 +11,8 @@ import { RESSOURCES_NAV } from '@/constants/resourcesNav'
 import { extractH2Sections } from '@/utils/markdownSections'
 import { useCmsArticle } from '@/cms/useCmsArticle'
 import CmsArticleGate from '@/cms/CmsArticleGate'
-import { CMS_DRIVEN_RESSOURCES } from '@/cms/config'
+import { useHubPage } from '@/cms/useHubPage'
+import { CMS_DRIVEN_RESSOURCES, ressourceCmsPath } from '@/cms/config'
 import { useSectionNav } from '@/cms/useNavigation'
 
 /**
@@ -32,16 +33,19 @@ import { useSectionNav } from '@/cms/useNavigation'
 export default function RessourceArticle({ slug: slugProp }) {
   const { slug: slugParam } = useParams()
   const slug = slugProp || slugParam
-  const bundled = getResource(slug)
+  // The Ressources landing page (guides & livres blancs) takes its text from its CMS site page, if published.
+  const bundled = useHubPage(slugProp ? slug : null, getResource(slug))
 
-  // Bundled markdown for every existing article; the CMS for new CMS articles and admin previews.
+  // Bundled markdown only as the fallback: migrated articles (CMS_DRIVEN_RESSOURCES) read the CMS first,
+  // under their legacy stored address (see ressourceCmsPath); new CMS articles and admin previews too.
   const source = useCmsArticle({
-    path: `/ressources/${slug}`,
+    path: ressourceCmsPath(slug),
     section: 'ressources',
     slug,
     bundled,
     hub: Boolean(slugProp),
     drivenSlugs: CMS_DRIVEN_RESSOURCES,
+    templateKey: 'ressources-article',
   })
 
   return (

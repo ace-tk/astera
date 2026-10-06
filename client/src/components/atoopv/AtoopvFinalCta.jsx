@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
-import { DEVIS_CTA_HREF } from '@/constants/content'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * Final conversion band immediately above the footer. Same visual tokens
@@ -19,6 +19,7 @@ import { DEVIS_CTA_HREF } from '@/constants/content'
  * mockup's own final-CTA text verbatim.
  */
 export default function AtoopvFinalCta() {
+  const { heading, contact, button } = useSitePage('accueil').finalCta
   return (
     <section className="relative py-14 sm:py-16">
       <div className="shell">
@@ -31,14 +32,14 @@ export default function AtoopvFinalCta() {
 
             <div className="relative">
               <h2 className="mx-auto max-w-xl font-display text-2xl font-medium leading-tight tracking-tight text-balance sm:text-3xl">
-                Donnez-nous votre prochain PV à rédiger, nous vous rendons un document que vos élus n&rsquo;auront pas à corriger.
+                {heading}
               </h2>
 
-              <p className="mt-4 text-sm text-muted">contact@atoopv.com · 04 12 10 06 06</p>
+              <p className="mt-4 text-sm text-muted">{contact}</p>
 
               <div className="mt-8 flex justify-center">
-                <Button as={Link} to={DEVIS_CTA_HREF} size="lg" variant="accent">
-                  Demander un devis
+                <Button as={Link} to={button.to} size="lg" variant="accent">
+                  {button.label}
                 </Button>
               </div>
             </div>

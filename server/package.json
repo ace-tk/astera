@@ -17,6 +17,7 @@
     "cms:legacy-slugs": "node src/cms/migrate/generateLegacySlugs.js",
     "cms:import-nav": "node src/cms/migrate/importNavigation.js",
     "cms:fixed-menus": "node src/cms/migrate/generateFixedMenus.js",
+    "cms:site-pages": "node src/cms/migrate/generateSitePageDefaults.js",
     "e2e:stack": "node scripts/e2e-stack.mjs"
   },
   "dependencies": {

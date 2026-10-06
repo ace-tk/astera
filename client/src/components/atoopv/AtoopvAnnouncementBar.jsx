@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { DEVIS_CTA_HREF } from '@/constants/content'
-import { ANNOUNCEMENT_MESSAGES } from '@/constants/atoopvHome'
+import { useSitePage } from '@/cms/useSitePage'
 import { useIsAtTop } from '@/hooks/useIsAtTop'
 import { cn } from '@/utils/cn'
 
@@ -21,6 +20,7 @@ const ROTATE_MS = 4200
  * permanently pinned above the content.
  */
 export default function AtoopvAnnouncementBar() {
+  const { announcements: ANNOUNCEMENT_MESSAGES, announcementBar: bar } = useSitePage('accueil')
   const [index, setIndex] = useState(0)
   const reduceMotion = useReducedMotion()
   const atTop = useIsAtTop()
@@ -31,7 +31,7 @@ export default function AtoopvAnnouncementBar() {
       setIndex((current) => (current + 1) % ANNOUNCEMENT_MESSAGES.length)
     }, ROTATE_MS)
     return () => window.clearInterval(timer)
-  }, [reduceMotion])
+  }, [reduceMotion, ANNOUNCEMENT_MESSAGES.length])
 
   return (
     <motion.div
@@ -58,14 +58,14 @@ export default function AtoopvAnnouncementBar() {
         </div>
 
         <div className="hidden shrink-0 items-center gap-3 sm:flex">
-          <a href="tel:+33412100606" className="text-xs font-medium text-ink/70 transition-colors hover:text-ink">
-            04 12 10 06 06
+          <a href={`tel:${bar.phone.replace(/[^\d+]/g, '').replace(/^0/, '+33')}`} className="text-xs font-medium text-ink/70 transition-colors hover:text-ink">
+            {bar.phone}
           </a>
           <Link
-            to={DEVIS_CTA_HREF}
+            to={bar.button.to}
             className="inline-flex items-center rounded-full bg-ink px-3 py-1 text-[11px] font-medium text-paper transition-colors hover:bg-royal"
           >
-            Demander un devis
+            {bar.button.label}
           </Link>
         </div>
       </div>

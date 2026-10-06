@@ -10,6 +10,7 @@ import { usePageMeta } from '@/hooks/usePageMeta'
 import { EMAIL_RE } from '@/utils/validators'
 import { api } from '@/services/api'
 import { cn } from '@/utils/cn'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * AtoopV "demande de démo" page. Every heading, paragraph, label, placeholder,
@@ -21,68 +22,6 @@ import { cn } from '@/utils/cn'
  * which validates again server-side and emails the team; the success message
  * is shown only after the server confirms the email was actually sent.
  */
-
-const HERO = {
-  kicker: null,
-  heading: ["Voyons ce que SIRUS ", 'peut faire ', 'sur l’une de vos séances.'],
-  lead:
-    'Demandez une démonstration personnalisée — nous vous présentons la chaîne de traitement sur un cas type proche de votre instance et répondons à vos questions sur l’intégration, la confidentialité et la qualité des projets de PV générés.',
-  micro: 'Réponse sous 48 heures ouvrées · Sans engagement.',
-}
-
-const SUCCESS_MESSAGE = 'Merci ! Votre demande a bien été envoyée. Nous vous répondons sous 48 heures ouvrées.'
-const CONNECTION_ERROR = 'Impossible d’envoyer votre demande pour le moment. Vérifiez votre connexion ou écrivez-nous à contact@atoopv.com.'
-
-const PRIVACY_NOTE = 'Vos données restent confidentielles · conformité RGPD · pas de tracking publicitaire.'
-
-// Every option list below defines a fixed set of dropdown values. Only the
-// example value shown in the design reference is guaranteed source content
-// (marked below); the remaining brackets in each list were authored to match
-// this app's own existing bracket notation (see constants/atoosavoirHome.js's
-// "< 50 salariés" / "50 – 149 salariés" style) so the new page reads as
-// part of the same product rather than introducing a new voice.
-const ROLE_OPTIONS = [
-  'Secrétaire',
-  'Secrétaire adjoint(e)',
-  'Trésorier(ère)',
-  'Trésorier(ère) adjoint(e)',
-  'Président(e) (employeur)',
-  'Membre élu titulaire',
-  'Membre élu suppléant',
-  'Membre de la CSSCT',
-  'Représentant syndical',
-  'Autre',
-]
-
-const COMPANY_SIZE_OPTIONS = [
-  'Moins de 11 salariés',
-  '11 — 49 salariés', // shown selected in the design reference
-  '50 — 149 salariés',
-  '150 — 299 salariés',
-  '300 — 499 salariés',
-  '500 salariés et plus',
-]
-
-const ELECTED_COUNT_OPTIONS = [
-  'Moins de 8', // shown selected in the design reference
-  '8 — 15',
-  '16 — 25',
-  'Plus de 25',
-]
-
-const MEETING_DURATION_OPTIONS = [
-  'Moins de 2 heures', // shown selected in the design reference
-  '2 — 4 heures',
-  'Plus de 4 heures',
-]
-
-const RECORDING_OPTIONS = [
-  'Oui — audio ou vidéo disponible', // shown selected in the design reference
-  'Non, pas encore',
-  'Je ne sais pas encore',
-]
-
-const FUNCTIONS = ROLE_OPTIONS
 
 const initialForm = {
   firstName: '',
@@ -134,7 +73,7 @@ function TextField({ label, required, error, id, ...props }) {
   )
 }
 
-function SelectField({ label, required, error, id, options, placeholder = 'Sélectionner…', ...props }) {
+function SelectField({ label, required, error, id, options, placeholder, ...props }) {
   const autoId = useId()
   const fieldId = id || autoId
   return (
@@ -173,10 +112,14 @@ function SectionHeading({ index, children }) {
 }
 
 export default function Contact() {
+  // Hardcoded content (constants/contactHome.js) is the default; whatever the admin published
+  // (Content → Menus → Site pages) is merged over it. Field names and validation stay here.
+  const { hero: HERO, sections, fields: F, options: OPT, messages: MSG, validation: V } = useSitePage('contact')
+
   // usePageMeta already appends " — ATOOPV" to every title — appending it here too produced
   // a duplicated "... — ATOOPV — ATOOPV" tab title.
   usePageMeta({
-    title: HERO.heading.join(''),
+    title: HERO.heading.map((h) => h.trim()).join(' '),
     description: HERO.lead,
   })
 
@@ -203,14 +146,14 @@ export default function Contact() {
 
   function validate() {
     const next = {}
-    if (!form.firstName.trim()) next.firstName = 'Le prénom est requis.'
-    if (!form.lastName.trim()) next.lastName = 'Le nom est requis.'
-    if (!form.role) next.role = 'Sélectionnez votre fonction.'
-    if (!form.company.trim()) next.company = "Le nom de l'entreprise est requis."
-    if (!form.email.trim()) next.email = "L'email professionnel est requis."
-    else if (!EMAIL_RE.test(form.email.trim())) next.email = 'Format email invalide.'
-    if (!form.phone.trim()) next.phone = 'Le téléphone est requis.'
-    else if (form.phone.replace(/\D/g, '').length < 8) next.phone = 'Numéro de téléphone invalide.'
+    if (!form.firstName.trim()) next.firstName = V.firstName
+    if (!form.lastName.trim()) next.lastName = V.lastName
+    if (!form.role) next.role = V.role
+    if (!form.company.trim()) next.company = V.company
+    if (!form.email.trim()) next.email = V.emailRequired
+    else if (!EMAIL_RE.test(form.email.trim())) next.email = V.emailInvalid
+    if (!form.phone.trim()) next.phone = V.phoneRequired
+    else if (form.phone.replace(/\D/g, '').length < 8) next.phone = V.phoneInvalid
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -228,7 +171,7 @@ export default function Contact() {
     } catch (err) {
       // The server re-validates: show its field errors next to the fields when it rejects the input.
       if (err.status === 400 && err.data?.fieldErrors) setErrors(err.data.fieldErrors)
-      setSubmitError(err.status ? err.message : CONNECTION_ERROR)
+      setSubmitError(err.status ? err.message : MSG.connectionError)
       setStatus('error')
     }
   }
@@ -254,9 +197,10 @@ export default function Contact() {
               </span>
 
               <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-[2.75rem]">
-                {HERO.heading[0]}
-                <span className="text-ink">{HERO.heading[1]}</span>
-                <span className="text-indigo-500">{HERO.heading[2]}</span>
+                {/* The three parts are joined with explicit spaces so an admin edit can't glue words together. */}
+                {HERO.heading[0].trim()}{' '}
+                <span className="text-ink">{HERO.heading[1].trim()}</span>{' '}
+                <span className="text-indigo-500">{HERO.heading[2].trim()}</span>
               </h1>
 
               <p className="mt-6 max-w-md text-[1.05rem] leading-relaxed text-muted">{HERO.lead}</p>
@@ -275,38 +219,38 @@ export default function Contact() {
             <div className="relative rounded-[2rem] border border-ink/8 bg-card/95 p-6 shadow-float backdrop-blur-xl sm:p-9">
               <form onSubmit={handleSubmit} noValidate className="space-y-9">
                 <div>
-                  <SectionHeading index={1}>Vos coordonnées</SectionHeading>
+                  <SectionHeading index={1}>{sections.contact}</SectionHeading>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <TextField
-                      label="Prénom"
+                      label={F.firstName.label}
                       required
-                      placeholder="Christine"
+                      placeholder={F.firstName.placeholder}
                       value={form.firstName}
                       onChange={set('firstName')}
                       error={errors.firstName}
                     />
                     <TextField
-                      label="Nom"
+                      label={F.lastName.label}
                       required
-                      placeholder="Lefèvre"
+                      placeholder={F.lastName.placeholder}
                       value={form.lastName}
                       onChange={set('lastName')}
                       error={errors.lastName}
                     />
                     <TextField
-                      label="Email professionnel"
+                      label={F.email.label}
                       required
                       type="email"
-                      placeholder="prenom@entreprise.fr"
+                      placeholder={F.email.placeholder}
                       value={form.email}
                       onChange={set('email')}
                       error={errors.email}
                     />
                     <TextField
-                      label="Téléphone"
+                      label={F.phone.label}
                       required
                       type="tel"
-                      placeholder="06 12 34 56 78"
+                      placeholder={F.phone.placeholder}
                       value={form.phone}
                       onChange={set('phone')}
                       error={errors.phone}
@@ -315,33 +259,36 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <SectionHeading index={2}>Votre CSE</SectionHeading>
+                  <SectionHeading index={2}>{sections.cse}</SectionHeading>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <SelectField
-                      label="Fonction au sein du CSE"
+                      label={F.role.label}
+                      placeholder={F.role.placeholder}
                       required
-                      options={FUNCTIONS}
+                      options={OPT.role}
                       value={form.role}
                       onChange={set('role')}
                       error={errors.role}
                     />
                     <TextField
-                      label="Entreprise"
+                      label={F.company.label}
                       required
-                      placeholder="Nom de votre entreprise"
+                      placeholder={F.company.placeholder}
                       value={form.company}
                       onChange={set('company')}
                       error={errors.company}
                     />
                     <SelectField
-                      label="Effectif de l'entreprise"
-                      options={COMPANY_SIZE_OPTIONS}
+                      label={F.companySize.label}
+                      placeholder={F.companySize.placeholder}
+                      options={OPT.companySize}
                       value={form.companySize}
                       onChange={set('companySize')}
                     />
                     <SelectField
-                      label="Nombre d'élus (titulaires + suppléants)"
-                      options={ELECTED_COUNT_OPTIONS}
+                      label={F.electedCount.label}
+                      placeholder={F.electedCount.placeholder}
+                      options={OPT.electedCount}
                       value={form.electedCount}
                       onChange={set('electedCount')}
                     />
@@ -349,28 +296,30 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <SectionHeading index={3}>Votre demande</SectionHeading>
+                  <SectionHeading index={3}>{sections.request}</SectionHeading>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <SelectField
-                      label="Durée moyenne d'une réunion"
-                      options={MEETING_DURATION_OPTIONS}
+                      label={F.meetingDuration.label}
+                      placeholder={F.meetingDuration.placeholder}
+                      options={OPT.meetingDuration}
                       value={form.meetingDuration}
                       onChange={set('meetingDuration')}
                     />
                     <SelectField
-                      label="Avez-vous déjà un enregistrement ?"
-                      options={RECORDING_OPTIONS}
+                      label={F.hasRecording.label}
+                      placeholder={F.hasRecording.placeholder}
+                      options={OPT.hasRecording}
                       value={form.hasRecording}
                       onChange={set('hasRecording')}
                     />
                   </div>
                   <div className="mt-4">
-                    <FieldLabel htmlFor="contact-message">Message (optionnel)</FieldLabel>
+                    <FieldLabel htmlFor="contact-message">{F.message.label}</FieldLabel>
                     <textarea
                       id="contact-message"
                       rows={4}
                       className={cn(inputClass(false), 'h-auto resize-none py-3 leading-relaxed')}
-                      placeholder="Type d'instance (CSE, CSSCT, CSEE…) · format souhaité · contexte particulier"
+                      placeholder={F.message.placeholder}
                       value={form.message}
                       onChange={set('message')}
                     />
@@ -393,12 +342,12 @@ export default function Contact() {
                     ) : (
                       <Send className="h-4 w-4" />
                     )}
-                    Envoyer la demande
+                    {MSG.submit}
                   </Button>
 
                   {status === 'success' && (
                     <p role="status" className="mt-4 text-center text-sm font-medium text-emerald">
-                      {SUCCESS_MESSAGE}
+                      {MSG.success}
                     </p>
                   )}
                   {status === 'error' && (
@@ -409,7 +358,7 @@ export default function Contact() {
 
                   <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-muted">
                     <ShieldCheck className="h-3.5 w-3.5 text-indigo-500/70" />
-                    {PRIVACY_NOTE}
+                    {MSG.privacy}
                   </p>
 
                   <div className="mt-6 border-t border-ink/8 pt-5">
@@ -418,7 +367,7 @@ export default function Contact() {
                       className="group flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-ink/70 transition-colors hover:bg-indigo-500/5 hover:text-indigo-600"
                     >
                       <Building2 className="h-4 w-4 text-indigo-500/70" />
-                      Créer un compte entreprise
+                      {MSG.companyAccount}
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </Link>
                   </div>

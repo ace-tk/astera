@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { resolveMediaUrl } from '@/cms/media'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 
@@ -57,7 +58,7 @@ export default function VideoSection({ eyebrow, heading, lead, video, cta }) {
               className="group mx-auto mt-6 max-w-3xl overflow-hidden rounded-2xl border border-ink/10 bg-black shadow-float transition-all duration-500 hover:border-royal/30 hover:shadow-lift"
             >
               <div className="transition-transform duration-500 ease-out group-hover:scale-[1.008]">
-                <video controls preload="metadata" poster={video.poster} className="block w-full">
+                <video controls preload="metadata" poster={resolveMediaUrl(video.poster)} className="block w-full">
                   <source src={video.src} type="video/mp4" />
                   Votre navigateur ne prend pas en charge la lecture de vidéos.
                 </video>

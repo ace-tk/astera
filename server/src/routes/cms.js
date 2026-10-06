@@ -10,6 +10,7 @@ import * as navCtl from '../controllers/cmsSectionNavController.js'
 import * as footerCtl from '../controllers/cmsFooterController.js'
 import * as homeHeroCtl from '../controllers/cmsHomeHeroController.js'
 import * as legalPagesCtl from '../controllers/cmsLegalPagesController.js'
+import * as sitePagesCtl from '../controllers/cmsSitePagesController.js'
 
 const router = Router()
 const adminOnly = [requireAuth, requireAdmin]
@@ -31,6 +32,7 @@ router.get('/cms/menus/:key', cms(menuCtl.publicMenu))
 router.get('/cms/footer', cms(footerCtl.publicFooter))
 router.get('/cms/home-hero', cms(homeHeroCtl.publicHomeHero))
 router.get('/cms/legal-pages', cms(legalPagesCtl.publicLegalPages))
+router.get('/cms/site-pages/:key', cms(sitePagesCtl.publicSitePage))
 router.get('/cms/navigation', cms(navCtl.publicNavigation))
 router.get('/media/:id/:filename', mediaCtl.serveMedia)
 
@@ -78,6 +80,13 @@ router.get('/admin/cms/legal-pages', ...adminOnly, cms(legalPagesCtl.getLegalPag
 router.patch('/admin/cms/legal-pages', ...adminOnly, cms(legalPagesCtl.saveLegalPagesDraft))
 router.post('/admin/cms/legal-pages/publish', ...adminOnly, cms(legalPagesCtl.publishLegalPages))
 router.post('/admin/cms/legal-pages/discard', ...adminOnly, cms(legalPagesCtl.discardLegalPagesDraft))
+
+/* ---------------- Admin: site pages (Tarification, À propos, Contact) ---------------- */
+router.get('/admin/cms/site-pages', ...adminOnly, cms(sitePagesCtl.listSitePages))
+router.get('/admin/cms/site-pages/:key', ...adminOnly, cms(sitePagesCtl.getSitePage))
+router.patch('/admin/cms/site-pages/:key', ...adminOnly, cms(sitePagesCtl.saveSitePageDraft))
+router.post('/admin/cms/site-pages/:key/publish', ...adminOnly, cms(sitePagesCtl.publishSitePage))
+router.post('/admin/cms/site-pages/:key/discard', ...adminOnly, cms(sitePagesCtl.discardSitePageDraft))
 
 /* ---------------- Admin: section navigation (side nav + previous/next order) ---------------- */
 router.get('/admin/cms/section-navs', ...adminOnly, cms(navCtl.listSectionNavs))

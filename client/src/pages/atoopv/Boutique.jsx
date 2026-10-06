@@ -5,6 +5,7 @@ import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
 import ResourceLibrary from '@/components/atoopv/boutique/ResourceLibrary'
 import ReportPageFlip from '@/components/atoopv/boutique/ReportPageFlip'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { useSitePage } from '@/cms/useSitePage'
 import '@/styles/boutique.css'
 
 /**
@@ -22,10 +23,8 @@ import '@/styles/boutique.css'
 export default function Boutique() {
   // usePageMeta already appends " — ATOOPV" to every title — passing it here too produced
   // a duplicated "Boutique | ATOOPV — ATOOPV" tab title.
-  usePageMeta({
-    title: 'Boutique',
-    description: 'Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE.',
-  })
+  const c = useSitePage('boutique')
+  usePageMeta({ title: c.meta.title, description: c.meta.description })
 
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="relative min-h-screen bg-paper">
@@ -33,8 +32,8 @@ export default function Boutique() {
       <Navbar />
 
       <div className="boutique-shop pt-24 sm:pt-28">
-        <ResourceLibrary hideEyebrow />
-        <ReportPageFlip hideEyebrow />
+        <ResourceLibrary hideEyebrow categories={c.categoryTabs} books={c.books} featured={c.featured} recommendations={c.recommendations} />
+        <ReportPageFlip hideEyebrow meta={c.reportMeta} pages={c.reportPages} />
       </div>
 
       <AtoopvFooter />

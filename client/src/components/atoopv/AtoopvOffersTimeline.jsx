@@ -7,7 +7,7 @@ import { cn } from '@/utils/cn'
 import Reveal from '@/components/ui/Reveal'
 import Button from '@/components/ui/Button'
 import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
-import { ATOOPV_OFFERS, COMPLIANCE_NAMES } from '@/constants/atoopvHome'
+import { useSitePage } from '@/cms/useSitePage'
 import { BLOG_ARTICLES } from '@/constants/blogArticles'
 
 const EASE = [0.16, 1, 0.3, 1]
@@ -90,12 +90,14 @@ function CarouselCard({ item, isActive, onSelect, registerRef }) {
  * watermark, progress bar) is preserved.
  */
 export default function AtoopvOffersTimeline() {
+  // Offer texts and the rail names follow the homepage's published CMS content (defaults = the hardcoded ones).
+  const { offers: ATOOPV_OFFERS, complianceNames: COMPLIANCE_NAMES } = useSitePage('accueil')
   const items = useMemo(
     () => [
       ...ATOOPV_OFFERS.items.map((item) => ({ id: item.title, topic: item.tag, title: item.title, excerpt: item.body })),
       ...BLOG_ARTICLES.map((a) => ({ id: a.id, topic: a.topic, title: a.title, excerpt: a.excerpt, meta: `${a.readingTime} · ${a.author}` })),
     ],
-    [],
+    [ATOOPV_OFFERS],
   )
 
   const [activeIndex, setActiveIndex] = useState(0)

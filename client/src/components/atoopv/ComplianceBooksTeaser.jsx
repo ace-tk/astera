@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, Sparkles } from 'lucide-react'
 import Reveal from '@/components/ui/Reveal'
 import { accent } from '@/utils/accent'
-import { COMPLIANCE_BOOKS_TEASER } from '@/constants/atoopvHome'
+import { useSitePage } from '@/cms/useSitePage'
 import { cn } from '@/utils/cn'
 
 /** Small corner ribbon flagging that the shop isn't live yet (shopHref is
@@ -56,7 +56,7 @@ function BookCover({ title, author, a }) {
  * link, since both CTAs point at the same destination today.
  */
 export default function ComplianceBooksTeaser() {
-  const data = COMPLIANCE_BOOKS_TEASER
+  const data = useSitePage('accueil').booksTeaser
   const [activeCategory, setActiveCategory] = useState(data.categories[0])
   const a = accent(data.featured.accent)
 

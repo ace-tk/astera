@@ -1,11 +1,11 @@
 import { useReducedMotion } from 'framer-motion'
-import { HOME_TICKER } from '@/constants/atoopvHome'
+import { useSitePage } from '@/cms/useSitePage'
 import { cn } from '@/utils/cn'
 
-function TickerRow({ ariaHidden = false }) {
+function TickerRow({ items, ariaHidden = false }) {
   return (
     <div className="flex shrink-0 items-center" aria-hidden={ariaHidden}>
-      {HOME_TICKER.map((item, i) => (
+      {items.map((item, i) => (
         <span key={`${item.label}-${i}`} className="flex items-center">
           {item.anchor ? (
             // Plain `#anchor` href on purpose: this ticker only ever renders
@@ -37,6 +37,7 @@ function TickerRow({ ariaHidden = false }) {
  */
 export default function AtoopvTicker() {
   const reduceMotion = useReducedMotion()
+  const items = useSitePage('accueil').ticker
 
   return (
     <div className="atoopv-ticker relative overflow-hidden border-y border-ink/8 bg-paper py-4">
@@ -46,8 +47,8 @@ export default function AtoopvTicker() {
           !reduceMotion && 'atoopv-ticker-track',
         )}
       >
-        <TickerRow />
-        {!reduceMotion && <TickerRow ariaHidden />}
+        <TickerRow items={items} />
+        {!reduceMotion && <TickerRow items={items} ariaHidden />}
       </div>
     </div>
   )

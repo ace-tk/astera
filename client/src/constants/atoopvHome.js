@@ -14,8 +14,8 @@
  * near the bottom; only the (more complete) second copy is represented here.
  */
 import { FileText, Shield, Mic, Handshake, GraduationCap, Calculator, Award, Lock } from 'lucide-react'
-import { INSTANCE_TYPES } from './pricing'
-import { TARIFICATION_TIERS } from './tarificationHome'
+import { INSTANCE_TYPES } from './pricing.js'
+import { TARIFICATION_TIERS } from './tarificationHome.js'
 
 /**
  * PLACEHOLDER CONTENT — NOT FINAL.

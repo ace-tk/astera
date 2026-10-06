@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { createContext, useContext, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import clsx from 'clsx'
@@ -7,7 +7,9 @@ import TechnicalLabel from '@/components/common/primitives/TechnicalLabel'
 import { REPORT_META, REPORT_PAGES } from '@/constants/boutique'
 
 const EASE = [0.16, 1, 0.3, 1]
-const LAST = REPORT_PAGES.length - 1
+
+/** Carries the (CMS-merged) report data to the sub-components; defaults are the built-in constants. */
+const ReportDataContext = createContext({ meta: REPORT_META, pages: REPORT_PAGES })
 const DRAG_RANGE = 220
 const THRESHOLD = 70
 
@@ -25,6 +27,7 @@ function CornerMarks() {
 }
 
 function PageChrome({ children }) {
+  const { meta: REPORT_META } = useContext(ReportDataContext)
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded-sm bg-card p-8 shadow-[0_1px_0_rgba(17,24,39,0.04),0_20px_50px_-20px_rgba(17,24,39,0.25)] sm:p-12">
       <div
@@ -46,6 +49,7 @@ function PageChrome({ children }) {
 }
 
 function PageBody({ page }) {
+  const { meta: REPORT_META, pages: REPORT_PAGES } = useContext(ReportDataContext)
   return (
     <motion.div key={page.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12, ease: EASE }} className="flex flex-1 flex-col">
       {page.kind === 'cover' ? (
@@ -173,6 +177,7 @@ function PageBody({ page }) {
 }
 
 function Minimap({ pageIndex, onJump }) {
+  const { pages: REPORT_PAGES } = useContext(ReportDataContext)
   return (
     <div className="flex items-center gap-1.5" role="group" aria-label="Aperçu des pages">
       {REPORT_PAGES.map((page, i) => (
@@ -194,6 +199,8 @@ function Minimap({ pageIndex, onJump }) {
 
 /** Interactive desktop/touch experience: real drag-driven paper physics. */
 function InteractiveFlip() {
+  const { pages: REPORT_PAGES } = useContext(ReportDataContext)
+  const LAST = REPORT_PAGES.length - 1
   const [pageIndex, setPageIndex] = useState(0)
   const dragX = useMotionValue(0)
   const busyRef = useRef(false)
@@ -387,6 +394,8 @@ function InteractiveFlip() {
 
 /** Reduced-motion fallback: instant crossfade, no rotation/perspective. */
 function StaticFlip() {
+  const { pages: REPORT_PAGES } = useContext(ReportDataContext)
+  const LAST = REPORT_PAGES.length - 1
   const [pageIndex, setPageIndex] = useState(0)
   const currentPage = REPORT_PAGES[pageIndex]
 
@@ -447,8 +456,9 @@ function StaticFlip() {
  * it true to drop just that internal-lab label without touching the
  * chapter numeral or the "THE PAPER IS TURNING." title.
  */
-export default function ReportPageFlip({ hideEyebrow = false }) {
+export default function ReportPageFlip({ hideEyebrow = false, meta = REPORT_META, pages = REPORT_PAGES }) {
   const reduceMotion = useReducedMotion()
+  const ctx = useMemo(() => ({ meta, pages }), [meta, pages])
 
   return (
     <section id="experiment-10" className="relative border-t border-ink/10 bg-paper py-24 sm:py-32">
@@ -463,7 +473,7 @@ export default function ReportPageFlip({ hideEyebrow = false }) {
           Un procès-verbal de démonstration, page par page — glissez un coin de page, ou utilisez les flèches du clavier.
         </p>
 
-        {reduceMotion ? <StaticFlip /> : <InteractiveFlip />}
+        <ReportDataContext.Provider value={ctx}>{reduceMotion ? <StaticFlip /> : <InteractiveFlip />}</ReportDataContext.Provider>
       </div>
     </section>
   )

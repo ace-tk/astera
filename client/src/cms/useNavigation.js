@@ -20,6 +20,29 @@ import { fromResolvedMenu, UTILITY_HREFS } from './navConvert'
 
 const SNAPSHOT_KEY = 'atoopv:cms-navigation:v1'
 
+const LEGACY_PREFIX = /^\/atoopv(?=\/|$)/
+
+/**
+ * The CMS still stores addresses from before the `/atoopv/…` → `/…` route rename (all 34 migrated Ressources
+ * articles live at `/atoopv/ressources/<slug>`; the live main menu links to them too). Left as-is, those
+ * addresses broke two things: the side navigation compares addresses to decide which built-in entries the CMS
+ * already covers, so every migrated article showed up TWICE; and every such link bounced through a redirect.
+ * Pure: rewrites every address string in the answer to the current route, and keeps a page's stored address as
+ * `storedPath` — the one the CMS must still be asked for (see useCmsArticle).
+ */
+export function normalizeNavigation(data) {
+  if (!data) return data
+  const walk = (v) => {
+    if (typeof v === 'string') return LEGACY_PREFIX.test(v) ? v.replace(LEGACY_PREFIX, '') || '/' : v
+    if (Array.isArray(v)) return v.map(walk)
+    if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]))
+    return v
+  }
+  const out = walk(data)
+  if (Array.isArray(data.pages)) out.pages = out.pages.map((p, i) => ({ ...p, storedPath: data.pages[i].path }))
+  return out
+}
+
 const readSnapshot = () => {
   try {
     return JSON.parse(window.localStorage.getItem(SNAPSHOT_KEY) || 'null') || undefined
@@ -47,6 +70,7 @@ export function useCmsNavigation() {
     enabled: CMS_ENABLED,
     retry: false,
     staleTime: 30_000,
+    select: normalizeNavigation,
     // The last answer paints instantly on a return visit; it is revalidated straight away.
     initialData: readSnapshot,
     initialDataUpdatedAt: 0,

@@ -1,0 +1,2260 @@
+{
+  "tarification": {
+    "label": "Tarification",
+    "group": "Pages",
+    "path": "/tarification",
+    "defaults": {
+      "hero": {
+        "badge": "Simulateur de prix",
+        "title": "Estimez votre budget PV"
+      },
+      "intro": {
+        "text": "Le simulateur prix PV CSE d’AtooPV vous permet d’estimer en 30 secondes le coût de rédaction de votre procès-verbal. Notre outil calcule le prix en fonction du nombre de participants, de la durée de la réunion et du niveau de complexité des débats. Obtenez une estimation immédiate et gratuite sans engagement."
+      },
+      "options": {
+        "eyebrow": "Paramètres du simulateur",
+        "heading": "Ce que couvre l’estimation",
+        "color": "golden",
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Type d’instance : CSE Ordinaire, CSE Extraordinaire, CSSCT, Autre IRP.",
+              "Mode d’intervention : Distanciel ou Présentiel.",
+              "Durée de la réunion : de 1h à 8h.",
+              "Nombre de points à l’ordre du jour : de 1 à 15."
+            ]
+          }
+        ]
+      },
+      "tiers": [
+        {
+          "id": "essentiel",
+          "name": "Essentiel",
+          "rate": 90,
+          "note": "Tranche 50 à 300 salariés",
+          "tagline": "Résumé décisionnel",
+          "features": [
+            "3 à 5 pages par heure",
+            "Décisions, votes et résultats",
+            "Rédaction à la troisième personne",
+            "Livraison sous 48 à 72h ouvrées"
+          ]
+        },
+        {
+          "id": "scope",
+          "name": "Scope",
+          "rate": 130,
+          "note": "Tranche 50 à 300 salariés",
+          "tagline": "Résumé enrichi",
+          "badge": "Le plus choisi",
+          "featured": true,
+          "features": [
+            "6 à 10 pages par heure",
+            "Échanges clés restitués avec attribution",
+            "Votes nominatifs détaillés",
+            "Déclarations syndicales restituées"
+          ]
+        },
+        {
+          "id": "premium",
+          "name": "Premium",
+          "rate": 150,
+          "note": "Tranche 50 à 300 salariés",
+          "tagline": "Verbatim intégral",
+          "features": [
+            "11 à 20 pages par heure",
+            "Restitution intégrale de chaque intervention",
+            "Valeur probante maximale",
+            "Idéal en contexte contentieux ou PSE"
+          ]
+        }
+      ],
+      "calculator": {
+        "disclaimer": "Estimation non contractuelle, hors taxes (+20% TVA) • Devis personnalisé gratuit sous 24h",
+        "cta": {
+          "label": "Demander un devis gratuit →",
+          "to": "/contact"
+        },
+        "labels": {
+          "format": "Format",
+          "duration": "Durée de la réunion",
+          "estimate": "Estimation indicative",
+          "currency": "HT",
+          "instance": "Instance",
+          "preview": "Aperçu de l’extrait"
+        }
+      },
+      "why": {
+        "eyebrow": "Pourquoi l’utiliser",
+        "heading": "Pourquoi utiliser le simulateur de prix AtooPV ?",
+        "color": "golden",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Notre simulateur de prix AtooPV a été conçu pour les secrétaires de CSE, trésoriers et élus qui souhaitent obtenir rapidement un ordre de grandeur du coût de rédaction de leurs procès-verbaux. Le tarif varie selon plusieurs paramètres : la durée de la réunion, le nombre de membres présents, la complexité des délibérations et le délai de livraison souhaité. Plutôt que d’attendre un devis traditionnel, le simulateur de prix AtooPV vous donne une estimation immédiate."
+          },
+          {
+            "type": "paragraph",
+            "text": "AtooPV propose une rédaction de PV en présentiel ou en distanciel, pour toutes les instances représentatives du personnel : CSE, CSSCT et autres IRP. Le format de livraison est adaptable — Word, PDF ou les deux. Si votre situation est particulière (réunion exceptionnelle, contentieux, procédure d’alerte), nous vous recommandons de nous contacter directement pour obtenir un devis personnalisé. Nous répondons sous 24h ouvrées à toute demande de devis."
+          }
+        ]
+      },
+      "how": {
+        "eyebrow": "Étape par étape",
+        "heading": "Comment obtenir votre devis avec le simulateur de prix ?",
+        "color": "golden",
+        "blocks": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              "Sélectionnez votre type d’instance (CSE, CSSCT ou IRP).",
+              "Indiquez la durée approximative de votre réunion.",
+              "Précisez le format souhaité (présentiel ou distanciel) et le délai de livraison.",
+              "Le simulateur calcule automatiquement une estimation tarifaire."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Ce tarif est indicatif — le devis définitif vous est communiqué après étude de votre demande."
+          }
+        ]
+      },
+      "faqSection": {
+        "eyebrow": "Questions fréquentes",
+        "heading": "Cliquez sur une question pour afficher la réponse"
+      },
+      "faq": [
+        {
+          "question": "Combien coûte la rédaction d’un procès-verbal de CSE ?",
+          "answer": "Le tarif dépend du format et de la durée de la réunion. ALC facture à l’heure de réunion : à partir de 90 € HT/h en Essentiel, 130 € HT/h en Scope et 150 € HT/h en Premium (tranche 50 à 300 salariés). Un devis personnalisé précise le montant selon votre situation. Rapporté au temps qu’un secrétaire passerait à rédiger seul, et au risque d’un PV contestable, l’externalisation se raisonne moins en coût qu’en sécurité."
+        },
+        {
+          "question": "Pourquoi facturer à l’heure de réunion plutôt qu’à la page ?",
+          "answer": "La durée de la séance détermine le volume d’échanges à restituer, donc le travail réel. Facturer à l’heure de réunion donne un prix connu avant la prestation. La facturation à la page, courante ailleurs, incite mécaniquement à allonger le document ; notre logique vous protège de cette dérive et rend le budget prévisible d’une réunion à l’autre."
+        },
+        {
+          "question": "L’externalisation du PV peut-elle être financée par le budget du CSE ?",
+          "answer": "La rédaction du PV peut entrer dans le budget de fonctionnement du CSE. Lorsque le recours au prestataire émane de l’employeur, ce dernier peut en supporter les frais. Les modalités de prise en charge se décident au sein du comité ; un vote en réunion et une mention au PV sécurisent la décision."
+        },
+        {
+          "question": "Y a-t-il un engagement de durée ?",
+          "answer": "Non. ALC intervient ponctuellement, pour une réunion isolée, ou de façon régulière selon vos besoins. Aucun abonnement contraignant : la récurrence se construit sur la qualité du service, réunion après réunion. Vous restez libre d’ajuster le format ou la fréquence à tout moment."
+        },
+        {
+          "question": "Les tarifs sont-ils indiqués hors taxes ?",
+          "answer": "Oui. Les prix sont exprimés en HT ; la TVA au taux de 20 % s’ajoute sur la facture. Le devis détaille le montant HT, la TVA et le total à régler, sans frais caché."
+        },
+        {
+          "question": "Comment obtenir un devis ?",
+          "answer": "Décrivez-nous votre réunion : type d’instance, durée, fréquence et format souhaité. Vous recevez un devis gratuit et personnalisé sous 24 heures. Vous pouvez aussi nous joindre au 04 12 10 06 06 ou à contact@atoopv.com."
+        }
+      ],
+      "cta": {
+        "eyebrow": "Passons à l’action",
+        "heading": "Prêt pour votre devis personnalisé ?",
+        "body": "Décrivez-nous votre réunion : type d’instance, durée, fréquence et format souhaité. Vous recevez un devis gratuit et personnalisé sous 24 heures.",
+        "primaryCta": {
+          "label": "Demander un devis gratuit",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Voir toutes nos ressources",
+          "to": "/ressources"
+        }
+      },
+      "ctaImage": {
+        "src": "/atoopv-media/hero-salle-reunion.webp",
+        "alt": "Salle de réunion équipée, prête pour une séance de CSE"
+      }
+    }
+  },
+  "a-propos": {
+    "label": "À propos",
+    "group": "Pages",
+    "path": "/a-propos",
+    "defaults": {
+      "hero": {
+        "badge": "À propos — AtooPV depuis 2017",
+        "title": "L’expertise du procès-verbal de CSE, *au service de vos instances*",
+        "lead": "AtooPV fait de la rédaction des procès-verbaux un métier à part entière : méthode rigoureuse, délais tenus, fidélité totale aux échanges. Pour des CSE de toutes tailles, partout en France.",
+        "primaryCta": {
+          "label": "Travaillons ensemble",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Nos services",
+          "to": "/services"
+        }
+      },
+      "mission": {
+        "eyebrow": "Notre raison d’être",
+        "heading": "Le document le plus sous-estimé du dialogue social",
+        "color": "royal",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Le procès-verbal engage l’instance, trace chaque décision et peut être produit devant le juge. Rédigé à la hâte par un élu déjà surchargé, livré en retard, parfois incomplet, il devient un risque au lieu d’une protection."
+          },
+          {
+            "type": "paragraph",
+            "text": "AtooPV est né de ce constat : faire du PV un acte professionnel, exigeant et stratégique, plutôt qu’une corvée expédiée en fin de réunion. Cette conviction guide chaque mission depuis 2017."
+          }
+        ]
+      },
+      "values": {
+        "eyebrow": "Nos valeurs",
+        "heading": "Quatre engagements, sur chaque PV",
+        "color": "royal",
+        "items": [
+          {
+            "icon": {},
+            "title": "Fidélité aux débats",
+            "body": "Retranscrire sans trahir. Chaque position, chaque nuance est rendue avec exactitude : nous restituons la réalité des échanges, sans la reformuler."
+          },
+          {
+            "icon": {},
+            "title": "Rigueur juridique",
+            "body": "Nos rédacteurs maîtrisent le droit des IRP. Chaque PV respecte les dispositions légales et la jurisprudence en vigueur."
+          },
+          {
+            "icon": {},
+            "title": "Confidentialité totale",
+            "body": "NDA systématique et espace de partage sécurisé. Les délibérations de votre instance ne sortent pas de votre instance."
+          },
+          {
+            "icon": {},
+            "title": "Indépendance",
+            "body": "Ni proche de la direction, ni proche des syndicats. Un seul mandat : la vérité des échanges."
+          }
+        ]
+      },
+      "approach": {
+        "eyebrow": "Notre approche",
+        "heading": "Une connaissance des deux côtés de la table",
+        "color": "royal",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "AtooPV s’appuie sur une expérience rare : avoir exercé des responsabilités côté direction comme côté représentation du personnel. Cette double lecture nourrit chaque procès-verbal d’une compréhension fine des enjeux, des tensions et des attentes de chacun."
+          },
+          {
+            "type": "paragraph",
+            "text": "Depuis 2017, ce sont des centaines de procès-verbaux rédigés, pour des CSE allant de la PME régionale au groupe coté au CAC 40 — avec la même promesse tenue à chaque fois : fidélité aux échanges, rigueur juridique, délais respectés."
+          }
+        ]
+      },
+      "founder": {
+        "eyebrow": "L’expertise derrière AtooPV",
+        "heading": "Alami Loine, fondateur d’ALC SAS",
+        "lead": "Un savoir-faire à la croisée du droit social, de l’économie et du terrain.",
+        "color": "royal",
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Formateur agréé en formation économique des membres du CSE — art. L.2315-63 CT (NDA 84740456974)",
+              "Master en économie, option politique et analyse économique",
+              "Auteur de *Debout dans l’entreprise — Faire de la loi un droit* (à paraître, septembre 2026)"
+            ]
+          }
+        ]
+      },
+      "sirus": {
+        "eyebrow": "Innovation 2026",
+        "heading": "SIRUS — la prochaine étape du PV de CSE",
+        "color": "royal",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Après neuf ans de terrain, l’expertise d’AtooPV prend une forme inédite : SIRUS, une technologie conçue pour transformer la production des procès-verbaux d’instances. Elle ne remplace pas l’expertise humaine, elle l’amplifie. Annonce officielle à venir."
+          }
+        ]
+      },
+      "cta": {
+        "eyebrow": "Travaillons ensemble",
+        "heading": "Confiez la rédaction de vos PV à AtooPV",
+        "body": "Libérez vos élus des contraintes administratives et sécurisez la conformité de vos procès-verbaux. Rédaction de PV, audiotypie et formations élus CSE : un seul partenaire pour votre instance.",
+        "primaryCta": {
+          "label": "Contactez-nous",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Voir nos services",
+          "to": "/services"
+        },
+        "footer": "04 12 10 06 06 · contact@atoopv.com · ALC SAS — SIREN 833 781 248"
+      }
+    }
+  },
+  "contact": {
+    "label": "Contact",
+    "group": "Pages",
+    "path": "/contact",
+    "defaults": {
+      "hero": {
+        "heading": [
+          "Voyons ce que SIRUS ",
+          "peut faire ",
+          "sur l’une de vos séances."
+        ],
+        "lead": "Demandez une démonstration personnalisée — nous vous présentons la chaîne de traitement sur un cas type proche de votre instance et répondons à vos questions sur l’intégration, la confidentialité et la qualité des projets de PV générés.",
+        "micro": "Réponse sous 48 heures ouvrées · Sans engagement."
+      },
+      "sections": {
+        "contact": "Vos coordonnées",
+        "cse": "Votre CSE",
+        "request": "Votre demande"
+      },
+      "fields": {
+        "firstName": {
+          "label": "Prénom",
+          "placeholder": "Christine"
+        },
+        "lastName": {
+          "label": "Nom",
+          "placeholder": "Lefèvre"
+        },
+        "email": {
+          "label": "Email professionnel",
+          "placeholder": "prenom@entreprise.fr"
+        },
+        "phone": {
+          "label": "Téléphone",
+          "placeholder": "06 12 34 56 78"
+        },
+        "role": {
+          "label": "Fonction au sein du CSE",
+          "placeholder": "Sélectionner…"
+        },
+        "company": {
+          "label": "Entreprise",
+          "placeholder": "Nom de votre entreprise"
+        },
+        "companySize": {
+          "label": "Effectif de l'entreprise",
+          "placeholder": "Sélectionner…"
+        },
+        "electedCount": {
+          "label": "Nombre d'élus (titulaires + suppléants)",
+          "placeholder": "Sélectionner…"
+        },
+        "meetingDuration": {
+          "label": "Durée moyenne d'une réunion",
+          "placeholder": "Sélectionner…"
+        },
+        "hasRecording": {
+          "label": "Avez-vous déjà un enregistrement ?",
+          "placeholder": "Sélectionner…"
+        },
+        "message": {
+          "label": "Message (optionnel)",
+          "placeholder": "Type d'instance (CSE, CSSCT, CSEE…) · format souhaité · contexte particulier"
+        }
+      },
+      "options": {
+        "role": [
+          "Secrétaire",
+          "Secrétaire adjoint(e)",
+          "Trésorier(ère)",
+          "Trésorier(ère) adjoint(e)",
+          "Président(e) (employeur)",
+          "Membre élu titulaire",
+          "Membre élu suppléant",
+          "Membre de la CSSCT",
+          "Représentant syndical",
+          "Autre"
+        ],
+        "companySize": [
+          "Moins de 11 salariés",
+          "11 — 49 salariés",
+          "50 — 149 salariés",
+          "150 — 299 salariés",
+          "300 — 499 salariés",
+          "500 salariés et plus"
+        ],
+        "electedCount": [
+          "Moins de 8",
+          "8 — 15",
+          "16 — 25",
+          "Plus de 25"
+        ],
+        "meetingDuration": [
+          "Moins de 2 heures",
+          "2 — 4 heures",
+          "Plus de 4 heures"
+        ],
+        "hasRecording": [
+          "Oui — audio ou vidéo disponible",
+          "Non, pas encore",
+          "Je ne sais pas encore"
+        ]
+      },
+      "messages": {
+        "submit": "Envoyer la demande",
+        "success": "Merci ! Votre demande a bien été envoyée. Nous vous répondons sous 48 heures ouvrées.",
+        "connectionError": "Impossible d’envoyer votre demande pour le moment. Vérifiez votre connexion ou écrivez-nous à contact@atoopv.com.",
+        "privacy": "Vos données restent confidentielles · conformité RGPD · pas de tracking publicitaire.",
+        "companyAccount": "Créer un compte entreprise"
+      },
+      "validation": {
+        "firstName": "Le prénom est requis.",
+        "lastName": "Le nom est requis.",
+        "role": "Sélectionnez votre fonction.",
+        "company": "Le nom de l'entreprise est requis.",
+        "emailRequired": "L'email professionnel est requis.",
+        "emailInvalid": "Format email invalide.",
+        "phoneRequired": "Le téléphone est requis.",
+        "phoneInvalid": "Numéro de téléphone invalide."
+      }
+    }
+  },
+  "accueil": {
+    "label": "Accueil",
+    "group": "Pages",
+    "path": "/",
+    "defaults": {
+      "announcements": [
+        "Nouveau : autodiagnostic gratuit de conformité CSE en 2 minutes.",
+        "Délai de livraison : 48 à 72h sur vos procès-verbaux.",
+        "Formation économique des élus du CSE — session Région AURA."
+      ],
+      "announcementBar": {
+        "phone": "04 12 10 06 06",
+        "button": {
+          "label": "Demander un devis",
+          "to": "/tarification"
+        }
+      },
+      "hero": {
+        "badge": "Agréé au titre de la formation économique des membres du CSE — Région AURA",
+        "title": "Vos PV de CSE, CSSCT et IRP rédigés par des *experts des instances représentatives du personnel*.",
+        "lead": "Depuis 2017, AtooPV accompagne les CSE, CSSCT et IRP dans la rédaction de leurs procès-verbaux. Nos experts interviennent en présentiel ou à distance pour produire des PV conformes, précis et opposables.",
+        "primaryCta": {
+          "label": "Demander un devis gratuit",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Simuler mon budget",
+          "to": "/contact"
+        },
+        "image": {
+          "src": "/atoopv-media/hero-salle-reunion.webp",
+          "alt": "Salle de réunion équipée, prête pour une séance de CSE"
+        }
+      },
+      "ticker": [
+        {
+          "label": "PROCÈS-VERBAL",
+          "anchor": "#expertise"
+        },
+        {
+          "label": "CSSCT",
+          "anchor": "#expertise"
+        },
+        {
+          "label": "RETRANSCRIPTION",
+          "anchor": "#expertise"
+        },
+        {
+          "label": "FORMATION DES ÉLUS",
+          "anchor": "#expertise"
+        },
+        {
+          "label": "VEILLE JURIDIQUE",
+          "anchor": "#veille"
+        },
+        {
+          "label": "CONFORMITÉ",
+          "anchor": "#garanties"
+        },
+        {
+          "label": "CSE · CSSCT · IRP",
+          "anchor": null
+        }
+      ],
+      "stats": [
+        {
+          "value": "48 h",
+          "label": "Projet de PV remis"
+        },
+        {
+          "value": "3 → 1",
+          "label": "Formats livrés, un seul facturé"
+        },
+        {
+          "value": "Incluse",
+          "label": "Newsletter aux salariés"
+        },
+        {
+          "value": "PME → CAC 40",
+          "label": "Instances suivies"
+        }
+      ],
+      "statsCaption": {
+        "text": "De la *PME aux groupes cotés au CAC 40* — formation finançable sur budget CSE (Art. L.2315-63 CT)"
+      },
+      "expertise": {
+        "eyebrow": "Nos expertises",
+        "heading": "Une expertise complète au service de vos instances",
+        "lead": "De la rédaction du premier PV à la formation de vos élus, AtooPV couvre l’intégralité du cycle de vie de votre CSE.",
+        "items": [
+          {
+            "icon": {},
+            "title": "Rédaction PV de CSE",
+            "body": "Procès-verbaux conformes au Code du travail, livrés sous 48 à 72h. Intervention en présentiel ou sur enregistrement fourni. Conformité Art. L.2315-34.",
+            "cta": {
+              "label": "Découvrir →",
+              "to": "/services"
+            }
+          },
+          {
+            "icon": {},
+            "title": "Rédaction PV CSSCT",
+            "body": "Comptes-rendus de réunions CSSCT avec maîtrise des enjeux santé-sécurité. Identification des risques, suivi des alertes, traçabilité des décisions.",
+            "cta": {
+              "label": "Découvrir →",
+              "to": "/services"
+            }
+          },
+          {
+            "icon": {},
+            "title": "Retranscription audio/vidéo",
+            "body": "Vos enregistrements transformés en verbatim structuré et exploitable. Idéal pour les réunions à distance ou les instances à fort volume d’échanges.",
+            "cta": {
+              "label": "Découvrir →",
+              "to": "/services"
+            }
+          },
+          {
+            "icon": {},
+            "title": "Assistance aux élus",
+            "body": "Accompagnement des secrétaires de CSE dans la préparation et la rédaction de leurs PV. Formulation juridique, structure des délibérations, relecture experte.",
+            "cta": {
+              "label": "Découvrir →",
+              "to": "/services"
+            }
+          },
+          {
+            "icon": {},
+            "title": "Formation des élus",
+            "body": "Organisme agréé au titre de la formation économique des membres du CSE — Région AURA. Formations finançables (art. L.2315-63 CT) : droit du travail, CSSCT, heures de délégation, lecture des comptes.",
+            "cta": {
+              "label": "Découvrir →",
+              "to": "/services"
+            }
+          },
+          {
+            "icon": {},
+            "eyebrow": "Simulation gratuite",
+            "title": "Estimez votre budget en 30 secondes",
+            "body": "Devis personnalisé sans engagement. Réponse sous 24h par un expert ALC SAS.",
+            "cta": {
+              "label": "Simuler mon budget →",
+              "to": "/simulateur"
+            },
+            "featured": true
+          }
+        ]
+      },
+      "instances": {
+        "eyebrow": "Nos instances",
+        "heading": "Toutes les instances, tous les formats.",
+        "lead": "Du CSE au conseil d'établissement, un accompagnement adapté à chaque instance.",
+        "items": [
+          {
+            "tag": "CSE",
+            "title": "Réunions ordinaires et extraordinaires",
+            "body": "Rédaction fidèle, dans le respect du délai légal et du règlement intérieur."
+          },
+          {
+            "tag": "CSSCT",
+            "title": "Santé, sécurité, conditions de travail",
+            "body": "Un PV technique et précis, qui retranscrit les échanges sans les déformer."
+          },
+          {
+            "tag": "CSEC",
+            "title": "Instances de coordination",
+            "body": "Restitution neutre des positions de chaque établissement."
+          },
+          {
+            "tag": "Formation",
+            "title": "Formation économique CSE",
+            "body": "Un accompagnement pédagogique pour les élus, en complément de la rédaction."
+          }
+        ]
+      },
+      "offers": {
+        "eyebrow": "Nos formats",
+        "heading": "Le niveau de restitution adapté à chaque réunion.",
+        "items": [
+          {
+            "tag": "90 € HT/h",
+            "title": "Essentiel",
+            "body": "Une synthèse fidèle, pour les réunions courtes et régulières."
+          },
+          {
+            "tag": "130 € HT/h",
+            "title": "Scope",
+            "body": "Une restitution structurée par point d'ordre du jour, générée par notre pipeline SIRUS — le niveau intermédiaire entre la synthèse Essentiel et le PV intégral Premium."
+          },
+          {
+            "tag": "150 € HT/h",
+            "title": "Premium",
+            "body": "Un PV intégral, rédigé par un expert, pour les réunions complexes ou à enjeux."
+          }
+        ]
+      },
+      "complianceNames": [
+        "CSE",
+        "CSEE",
+        "CSEC",
+        "CSSCT",
+        "CECO",
+        "QVCT"
+      ],
+      "orchestrated": {
+        "eyebrow": "Portail SIRUS",
+        "heading": [
+          "Suivez vos PV, du dépôt à la validation."
+        ],
+        "lead": "Déposez vos enregistrements, suivez l'avancement de la rédaction et validez chaque PV avant diffusion.",
+        "panels": [
+          {
+            "number": "DÉPÔT",
+            "title": "Un enregistrement, un clic",
+            "description": "Audio ou vidéo de votre réunion, déposé directement sur la plateforme.",
+            "accent": "royal"
+          },
+          {
+            "number": "TRAITEMENT",
+            "title": "Structuration automatisée",
+            "description": "SIRUS transcrit, identifie les intervenants et organise le PV par point d'ordre du jour.",
+            "accent": "coral"
+          },
+          {
+            "number": "VALIDATION",
+            "title": "Relecture avant diffusion",
+            "description": "Une relecture qualité intégrée, puis validation par votre secrétaire avant envoi.",
+            "accent": "golden"
+          },
+          {
+            "number": "",
+            "title": "The same session, three depths",
+            "description": "",
+            "accent": "emerald",
+            "points": [
+              {
+                "number": "01",
+                "title": "Full transcript",
+                "metric": "10 to 12 pages / hour of debate"
+              },
+              {
+                "number": "02",
+                "title": "Structured report",
+                "metric": "4 to 6 pages / hour of debate"
+              },
+              {
+                "number": "03",
+                "title": "Record of decisions",
+                "metric": "1 to 2 pages / hour of debate"
+              }
+            ]
+          }
+        ]
+      },
+      "conviction": {
+        "eyebrow": "Notre conviction",
+        "heading": "Un PV de CSE mal rédigé n'est jamais neutre. Il peut être contesté, réécrit, remis en cause en réunion suivante.",
+        "lead": "ALC retranscrit sans trahir depuis 2017. SIRUS industrialise cette exigence pour les réunions standardisées, sans jamais sacrifier la fidélité au débat.",
+        "stats": [
+          {
+            "value": "Depuis 2017",
+            "label": "Expertise ALC"
+          },
+          {
+            "value": "CSE · CSSCT · CSEC",
+            "label": "Instances couvertes"
+          },
+          {
+            "value": "Présentiel & distanciel",
+            "label": "Deux modes d’intervention"
+          }
+        ]
+      },
+      "howItWorks": {
+        "eyebrow": "Comment ça marche",
+        "heading": "Deux façons de travailler, un même niveau d'exigence.",
+        "tracks": [
+          {
+            "title": "Parcours ALC — rédaction humaine",
+            "steps": [
+              {
+                "title": "Prise de rendez-vous",
+                "description": "Réunion planifiée avec votre CSE."
+              },
+              {
+                "title": "Présence en réunion",
+                "description": "Physique ou visio, selon votre organisation."
+              },
+              {
+                "title": "Rédaction et relecture",
+                "description": "Par un expert ALC, dans le respect du débat réel."
+              },
+              {
+                "title": "Validation et livraison",
+                "description": "Dans le délai convenu avec votre secrétaire."
+              }
+            ]
+          },
+          {
+            "title": "Parcours SIRUS — génération assistée par IA",
+            "steps": [
+              {
+                "title": "Dépôt de l'enregistrement",
+                "description": "Audio ou vidéo de la réunion."
+              },
+              {
+                "title": "Traitement SIRUS",
+                "description": "Transcription et structuration automatisées."
+              },
+              {
+                "title": "Relecture qualité",
+                "description": "Contrôle avant diffusion."
+              },
+              {
+                "title": "Livraison et validation",
+                "description": "Par le secrétaire, avant approbation."
+              }
+            ]
+          }
+        ]
+      },
+      "guarantees": {
+        "eyebrow": "Pourquoi ATOOPV",
+        "heading": [
+          "Ce que nous garantissons, sur les deux offres."
+        ],
+        "stages": [
+          {
+            "number": "01",
+            "title": "Neutralité",
+            "description": "Un tiers extérieur, sans enjeu dans les débats."
+          },
+          {
+            "number": "02",
+            "title": "Fidélité",
+            "description": "L'art de retranscrire, sans trahir."
+          },
+          {
+            "number": "03",
+            "title": "Double expertise",
+            "description": "Rédaction humaine pour les réunions complexes, génération IA pour les réunions standardisées."
+          },
+          {
+            "number": "04",
+            "title": "Confidentialité",
+            "description": "Chaque enregistrement et chaque échange est traité de façon confidentielle, dans le cadre de l'engagement contractuel qui nous lie à votre CSE."
+          },
+          {
+            "number": "05",
+            "title": "Capacité d'absorption",
+            "description": "Une équipe dimensionnée pour suivre votre rythme de réunions, sans dégrader le délai de livraison."
+          },
+          {
+            "number": "06",
+            "title": "Accompagnement formation",
+            "description": "Passerelle vers la formation économique CSE, en complément de la rédaction."
+          }
+        ]
+      },
+      "process": {
+        "eyebrow": "Notre processus",
+        "heading": "De la réunion au PV validé — 3 étapes",
+        "lead": "Un processus éprouvé depuis 2017, au service de la conformité juridique de vos instances.",
+        "steps": [
+          {
+            "title": "Briefing et préparation",
+            "body": "Nous prenons connaissance de l’ordre du jour, des PV précédents et de la composition de l’instance. Aucun détail ne nous échappe."
+          },
+          {
+            "title": "Rédaction experte",
+            "body": "En séance ou sur enregistrement, nos rédacteurs (niveau master, filières économiques et sociales) produisent un PV fidèle, structuré et juridiquement opposable."
+          },
+          {
+            "title": "Livraison sous 48 à 72h",
+            "body": "Le PV finalisé vous est transmis dans les délais convenus. Corrections illimitées incluses jusqu’à validation définitive."
+          }
+        ]
+      },
+      "video": {
+        "eyebrow": "Découvrez AtooPV",
+        "heading": "Notre service de rédaction en vidéo",
+        "lead": "Une présentation courte de notre méthode et de nos garanties, filmée par l’équipe AtooPV.",
+        "video": {
+          "src": "https://atoopv.com/wp-content/uploads/2026/07/20260716_095703.mp4",
+          "poster": "/atoopv-media/video-poster.png"
+        },
+        "cta": {
+          "label": "Voir plus de vidéos sur notre chaîne YouTube →",
+          "to": "https://youtube.com/@laminutecse"
+        }
+      },
+      "veille": {
+        "eyebrow": "Veille juridique CSE",
+        "heading": "Publications LinkedIn d’ALC SAS",
+        "lead": "Arrêts de la Cour de cassation, réformes législatives, jurisprudence sociale : les publications du président d’ALC SAS décryptées pour les élus CSE et les DRH.",
+        "items": [
+          {
+            "title": "Arrêt maladie : durée légale et LFSS 2026",
+            "body": "Ce que change la loi de financement de la Sécurité sociale 2026 pour les employeurs et les CSE.",
+            "cta": "Lire l’article →",
+            "to": "/ressources/arret-maladie-duree-legale-lfss-2026-droits-salarie"
+          },
+          {
+            "title": "Congé payé vendredi après 37h : le calcul qui surprend",
+            "body": "Combien de jours de CP décomptés pour un vendredi posé après 37h lundi–jeudi ?",
+            "cta": "Lire l’article →",
+            "to": "/ressources/conge-paye-vendredi-37h-decompte-jours-ouvrables"
+          },
+          {
+            "title": "CP + heures sup : 3 bulletins, 3 résultats",
+            "body": "La règle du maintien de salaire et ses effets sur les bulletins de paie.",
+            "cta": "Lire l’article →",
+            "to": "/ressources/conges-payes-heures-supplementaires-calcul-bulletins-paie"
+          }
+        ],
+        "footerCta": {
+          "label": "⚖️ Voir toute la veille juridique CSE — 8 articles",
+          "to": "/ressources/veille-juridique-cse"
+        }
+      },
+      "devis": {
+        "eyebrow": "Devis qualifié — réponse sous 24h",
+        "heading": "Estimez votre besoin en 2 minutes",
+        "body": "Renseignez les caractéristiques de votre instance : nous revenons vers vous avec une proposition adaptée et un tarif clair.",
+        "primaryCta": {
+          "label": "Faire ma simulation",
+          "to": "/simulateur"
+        }
+      },
+      "quickDiagnostic": {
+        "eyebrow": "Diagnostic rapide",
+        "heading": "Quel accompagnement PV vous faut-il ?",
+        "subtitle": "Répondez à 4 questions : nous préparons votre demande de devis avec le bon niveau de service.",
+        "questions": [
+          {
+            "id": "instance",
+            "question": "Quel type d’instance représentez-vous ?",
+            "summaryLabel": "Type d’instance",
+            "options": [
+              {
+                "label": "CSE",
+                "value": "CSE"
+              },
+              {
+                "label": "CSEE",
+                "value": "CSEE"
+              },
+              {
+                "label": "CSEC",
+                "value": "CSEC"
+              },
+              {
+                "label": "CSSCT",
+                "value": "CSSCT"
+              },
+              {
+                "label": "CECO",
+                "value": "CECO"
+              },
+              {
+                "label": "QVCT",
+                "value": "QVCT"
+              }
+            ]
+          },
+          {
+            "id": "niveau",
+            "question": "De quel niveau de restitution avez-vous besoin ?",
+            "summaryLabel": "Besoin",
+            "options": [
+              {
+                "label": "Essentiel — Résumé décisionnel",
+                "value": "Essentiel (Résumé décisionnel)"
+              },
+              {
+                "label": "Scope — Résumé enrichi",
+                "value": "Scope (Résumé enrichi)"
+              },
+              {
+                "label": "Premium — Verbatim intégral",
+                "value": "Premium (Verbatim intégral)"
+              }
+            ]
+          },
+          {
+            "id": "enregistrement",
+            "question": "Avez-vous déjà un enregistrement de la réunion ?",
+            "summaryLabel": "Enregistrement disponible",
+            "options": [
+              {
+                "label": "Oui — audio ou vidéo disponible",
+                "value": "Oui — audio ou vidéo disponible"
+              },
+              {
+                "label": "Non, pas encore",
+                "value": "Non, pas encore"
+              },
+              {
+                "label": "Je ne sais pas encore",
+                "value": "Je ne sais pas encore"
+              }
+            ]
+          },
+          {
+            "id": "urgence",
+            "question": "Quelle est l’urgence de votre besoin ?",
+            "summaryLabel": "Urgence",
+            "options": [
+              {
+                "label": "Réunion imminente — sous 24 à 48h",
+                "value": "Réunion imminente — sous 24 à 48h"
+              },
+              {
+                "label": "Dans les prochaines semaines",
+                "value": "Dans les prochaines semaines"
+              },
+              {
+                "label": "Je me renseigne pour le moment",
+                "value": "Je me renseigne pour le moment"
+              }
+            ]
+          }
+        ]
+      },
+      "garanties": {
+        "eyebrow": "Reconnaissance & accréditations",
+        "heading": "Des garanties concrètes pour votre instance",
+        "items": [
+          {
+            "icon": {},
+            "title": "Agréé formation économique CSE",
+            "body": "Organisme de formation officiel — Région AURA. Formations finançables sur budget CSE (Art. L.2315-63 CT)."
+          },
+          {
+            "icon": {},
+            "title": "Rédacteurs niveau master",
+            "body": "100% des rédacteurs AtooPV sont titulaires d’un master dans les filières économiques et sociales."
+          },
+          {
+            "icon": {},
+            "title": "Confidentialité totale",
+            "body": "Données couvertes par NDA. Aucun contenu client n’est conservé au-delà de la livraison."
+          }
+        ]
+      },
+      "sectors": {
+        "eyebrow": "Secteurs accompagnés depuis 2017",
+        "heading": "Une expérience tous secteurs",
+        "items": [
+          "🏗 Bâtiment & BTP",
+          "🏨 Hôtellerie",
+          "🏠 Bailleur social",
+          "🏭 Industrie",
+          "📦 Logistique",
+          "🏥 Médico-social",
+          "🏦 Services financiers"
+        ]
+      },
+      "testimonials": {
+        "eyebrow": "Témoignages",
+        "heading": "Ce que disent nos clients",
+        "items": [
+          {
+            "quote": "La qualité des procès-verbaux produits par AtooPV est irréprochable. L’équipe s’intègre parfaitement à notre réunion, les élus peuvent se concentrer sur les débats. Un partenaire indispensable pour notre CSE.",
+            "name": "Sandra A.",
+            "role": "Secrétaire CSE — Secteur Hôtellerie, Annecy",
+            "color": "royal"
+          },
+          {
+            "quote": "AtooPV fournit exactement ce dont notre CSSCT a besoin pour travailler efficacement et disposer de documents opposables face à la direction. Rigueur, réactivité et vraie expertise juridique.",
+            "name": "Bruno C.",
+            "role": "Membre CSSCT — Secteur Industrie",
+            "color": "coral"
+          }
+        ]
+      },
+      "cta": {
+        "eyebrow": "Passons à l’action",
+        "heading": "Confiez-nous vos procès-verbaux dès aujourd’hui",
+        "body": "Devis gratuit sous 24h. Première livraison sous 48 à 72h. Aucun engagement.",
+        "primaryCta": {
+          "label": "Demander un devis gratuit",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Télécharger nos guides gratuits",
+          "to": "/ressources"
+        },
+        "legal": "ALC SAS — SIREN 833 781 248 — Lyon · Annecy · contact@atoopv.com · 04 12 10 06 06"
+      },
+      "resources": {
+        "eyebrow": "Ressources gratuites",
+        "heading": "Guides pratiques pour les élus du CSE",
+        "lead": "Des fiches pédagogiques et livres blancs rédigés par nos experts, accessibles gratuitement.",
+        "items": [
+          {
+            "badge": "Nouveau",
+            "title": "Comment lire un arrêt de la Cour de cassation",
+            "body": "Fiche pédagogique : structure, vocabulaire et méthode de lecture décryptés pour les élus.",
+            "cta": "Lire le guide →",
+            "to": "/ressources/comment-lire-arret-cour-de-cassation"
+          },
+          {
+            "badge": "7 guides",
+            "title": "Tous nos livres blancs CSE",
+            "body": "Suppléance, CSSCT, heures de délégation, budget, formation… 7 guides en téléchargement libre.",
+            "cta": "Voir tous les guides →",
+            "to": "/ressources/guides-livres-blancs-cse"
+          }
+        ]
+      },
+      "booksTeaser": {
+        "eyebrow": "RESSOURCES / 06",
+        "heading": [
+          "COMPLIANCE",
+          "BOOKS."
+        ],
+        "lead": "Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE.",
+        "categories": [
+          "Tous",
+          "CSE",
+          "Juridique",
+          "Finance",
+          "Santé",
+          "Management",
+          "Procès-verbal"
+        ],
+        "shopHref": "/boutique",
+        "featured": {
+          "category": "CSE",
+          "badge": "EN VEDETTE",
+          "title": "Guide pratique du CSE",
+          "author": "ATOOPV Éditions",
+          "description": "Le manuel de référence pour comprendre les attributions, le fonctionnement et les moyens du comité social et économique.",
+          "accent": "golden"
+        }
+      },
+      "faq": {
+        "eyebrow": "Questions fréquentes",
+        "note": "ALC informe, forme et rédige. Cette page n'est pas une consultation juridique et ne remplace pas l'avis d'un conseil.",
+        "items": [
+          {
+            "id": "definition-actucse",
+            "question": "Qu'est-ce que la newsletter ActuCSE ?",
+            "answer": "ActuCSE est une lettre d'information destinée aux salariés. Elle résume en deux à trois pages les décisions du comité, les activités sociales et culturelles et les actualités de l'entreprise, dans un format clair et lisible par tous. ALC en assure la rédaction et la mise en page. Un CSE qui communique régulièrement gagne en légitimité : l'information vaut autant que l'action quand il s'agit de mobiliser les salariés."
+          },
+          {
+            "id": "pv-vs-actucse",
+            "question": "Quelle différence entre le PV et la newsletter ActuCSE ?",
+            "answer": "Le PV est le document officiel et complet de la réunion, destiné aux élus et à l'employeur. ActuCSE en est une version courte et accessible, pensée pour informer l'ensemble des salariés sans les noyer sous le détail des débats. Les deux outils sont complémentaires : l'un fait foi, l'autre fait lien."
+          },
+          {
+            "id": "diffusion-resume",
+            "question": "Peut-on diffuser un résumé du PV aux salariés ?",
+            "answer": "Oui. Une fois le PV adopté, le comité peut le communiquer aux salariés sous forme intégrale ou sous forme de synthèse. ActuCSE remplit ce second rôle : elle valorise l'action du CSE tout en respectant la confidentialité des informations sensibles, qui restent hors du document diffusé."
+          },
+          {
+            "id": "delai-livraison",
+            "question": "Sous quel délai la newsletter est-elle livrée ?",
+            "answer": "Comptez sept à dix jours ouvrables lorsque ALC rédige le contenu. Si vous fournissez vous-même le rédactionnel, la mise en page est livrée sous 72 heures à compter de sa transmission."
+          }
+        ]
+      },
+      "finalCta": {
+        "heading": "Donnez-nous votre prochain PV à rédiger, nous vous rendons un document que vos élus n’auront pas à corriger.",
+        "contact": "contact@atoopv.com · 04 12 10 06 06",
+        "button": {
+          "label": "Demander un devis",
+          "to": "/tarification"
+        }
+      }
+    }
+  },
+  "atoosavoir": {
+    "label": "AtooSavoir",
+    "group": "Pages",
+    "path": "/atoosavoir",
+    "defaults": {
+      "hero": {
+        "badge": "Service de recherche documentaire — Élus de CSE",
+        "title": "Vous posez la question. Nous trouvons *la source*.",
+        "lead": "Recherche dans le Code du travail, la jurisprudence et les accords de branche. Fiche structurée, sourcée, livrée en 5 jours ouvrés. Exploitable en réunion.",
+        "primaryCta": {
+          "label": "Recevoir mon audit PV gratuit",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Voir les tarifs",
+          "to": "#tarifs"
+        },
+        "image": {
+          "src": "/atoopv-media/atoosavoir-hero.jpg",
+          "alt": "Bureau d’un juriste avec documents et statuette de la Justice"
+        }
+      },
+      "trustBadges": [
+        "9 ans d’expertise IRP",
+        "Formateur agréé",
+        "CAC 40 · PME → Groupes cotés"
+      ],
+      "constat": {
+        "eyebrow": "Le constat",
+        "heading": "Chaque mois, des centaines d’élus cherchent les mêmes réponses.",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Recherches juridiques interminables, sources contradictoires, Code du travail impénétrable. Les élus que nous formons déclarent y consacrer entre 2 et 5 heures par recherche. Vous pourriez le faire vous-même. Nous vous en déchargeons."
+          },
+          {
+            "type": "list",
+            "items": [
+              "Une jurisprudence qui se perd entre doctrine, blogs RH et forums syndicaux — sans certitude sur la version en vigueur.",
+              "Un article du Code du travail dont le numéro a changé en 2017, en 2020, ou la semaine dernière. Personne ne s’en aperçoit.",
+              "La convention collective dit le contraire de l’accord d’entreprise, qui dit le contraire de la note de service.",
+              "Le délai d’avis qui court — et toujours personne pour fournir une réponse sourcée avant l’échéance."
+            ]
+          }
+        ]
+      },
+      "examples": {
+        "eyebrow": "Le saviez-vous ?",
+        "heading": "Ce que le droit prévoit pour vous.",
+        "lead": "Trois questions que nos clients nous adressent — avec, pour chacune, la source officielle.",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Heures de délégation et temps de trajet",
+                "body": "Le temps passé en réunion du CSE convoquée par l’employeur ne s’impute pas sur le crédit d’heures et est rémunéré comme du temps de travail effectif (art. L2315-11 C. trav.). Le temps de trajet pour s’y rendre, pour la part excédant le trajet normal domicile-lieu de travail, doit également être rémunéré sans imputation sur les heures de délégation (jurisprudence constante ; CJUE, 10 sept. 2015, aff. C-266/14). Cette protection ne vaut que pour les réunions convoquées par l’employeur — le temps de trajet lié à une activité exercée à l’initiative de l’élu s’impute, lui, sur les heures de délégation (art. L2315-10 C. trav.)."
+              },
+              {
+                "title": "Transparence salariale : les leviers du droit",
+                "body": "Le CSE peut exiger que la BDESE contienne les rémunérations moyennes et médianes ventilées par sexe (art. R.2312-9 C. trav.). Indépendamment du CSE, un salarié qui s’estime victime d’une inégalité de traitement peut obtenir en justice la communication des bulletins de paie de collègues occupant des postes comparables, avec occultation des données personnelles non nécessaires à la comparaison (Cass. soc., 8 mars 2023, n° 21-12.492)."
+              },
+              {
+                "title": "Congés payés et heures supplémentaires — revirement",
+                "body": "Les jours de congés payés doivent désormais être pris en compte dans le calcul du seuil de déclenchement des heures supplémentaires hebdomadaires. Un salarié qui a posé un jour de congé dans la semaine conserve son droit aux majorations (Cass. soc., 10 sept. 2025, n° 23-14.455, FP-B+R)."
+              }
+            ]
+          }
+        ]
+      },
+      "whatIs": {
+        "eyebrow": "Notre service",
+        "heading": "atoosavoir, c’est quoi ?",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Un service de recherche documentaire en droit social, conçu pour les élus de CSE. Vous nous soumettez votre question — nous effectuons la recherche dans les sources officielles et vous livrons une fiche de réponse structurée, sourcée et exploitable."
+          },
+          {
+            "type": "callout",
+            "label": "Cadre légal",
+            "text": "atoosavoir est un service d’information documentaire au sens de l’article 66-1 de la loi n° 71-1130 du 31 décembre 1971. Il ne constitue ni une consultation juridique, ni un acte de conseil personnalisé. Les fiches livrées sont des supports d’information : elles doivent être adaptées à votre situation par votre conseil juridique avant toute décision engageante."
+          }
+        ]
+      },
+      "questions": {
+        "heading": "Exemples de questions traitées",
+        "items": [
+          "Reporter d’office les congés non posés à l’année suivante : dans quelles conditions ?",
+          "Convocation tardive du CSE : le délai de 3 jours est-il franc ou calendaire ?",
+          "Quelles données la BDESE doit-elle contenir pour une entreprise de moins de 300 salariés ?",
+          "Conditions de validité d’un vote du CSE par voie électronique ?"
+        ]
+      },
+      "steps": {
+        "eyebrow": "Mode d’emploi",
+        "heading": "Quatre étapes, 5 jours ouvrés.",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Vous posez votre question",
+                "body": "Par téléphone, email ou via votre espace dédié. Un message en quelques lignes suffit. Joignez les pièces utiles si vous en disposez."
+              },
+              {
+                "title": "Nous effectuons la recherche",
+                "body": "Dans le Code du travail, la jurisprudence, les accords de branche et la doctrine administrative. Toutes nos sources sont officielles et tracées : Légifrance, Cour de cassation, accords étendus, circulaires administratives."
+              },
+              {
+                "title": "Rédaction de votre fiche",
+                "body": "L’état du droit applicable à votre thématique, exposé de manière objective et sourcée. La fiche ne constitue pas un avis juridique personnalisé. Pour toute application à un cas d’espèce, consultez un avocat ou un expert mandaté par votre CSE."
+              },
+              {
+                "title": "Livraison",
+                "body": "Fiche structurée au format PDF : question, synthèse, sources citées, points d’attention, modèles de formulation utilisables en séance. Exploitable immédiatement. Délai : 5 jours ouvrés maximum."
+              }
+            ]
+          }
+        ]
+      },
+      "ficheIntro": {
+        "eyebrow": "Le livrable",
+        "heading": "À quoi ressemble une fiche ?",
+        "lead": "Format A4 PDF. Structure constante. Prête à être versée au dossier de séance.",
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "A — En-tête traçable — référence unique, date, marque atoosavoir",
+              "B — Question reformulée — périmètre cadré de la recherche",
+              "C — Synthèse opérationnelle — réponse en 2-3 lignes, exploitable immédiatement",
+              "D — Sources horodatées — Code, jurisprudence, accords, doctrine, datées",
+              "E — Points d’attention — zones grises, limites, renvois vers l’avocat si besoin"
+            ]
+          }
+        ]
+      },
+      "ficheStats": [
+        {
+          "value": "PDF",
+          "label": "format universel"
+        },
+        {
+          "value": "2–4",
+          "label": "pages selon complexité"
+        },
+        {
+          "value": "100 %",
+          "label": "sources tracées"
+        }
+      ],
+      "ficheTeaser": {
+        "eyebrow": "atoosavoir · Fiche n° 2026·041",
+        "title": "Délai de consultation du CSE",
+        "fields": [
+          {
+            "label": "Votre question",
+            "value": "Quel est le délai dont dispose le CSE pour rendre son avis lors d’une consultation, et que se passe-t-il si le comité ne se prononce pas ?"
+          },
+          {
+            "label": "Synthèse",
+            "value": "Le CSE dispose d’un mois (deux en cas d’expertise). À l’expiration du délai, le silence vaut avis négatif — l’employeur peut mettre en œuvre son projet."
+          },
+          {
+            "label": "Sources citées",
+            "value": "Art. L.2312-16 C. trav. · Art. R.2312-6 · Cass. soc., 27 mai 2020, n° 18-26.483"
+          },
+          {
+            "label": "Points d’attention",
+            "value": "Un simple courrier ne suspend pas le délai. Seule la saisine du tribunal judiciaire avant l’échéance le peut."
+          }
+        ]
+      },
+      "ficheButton": {
+        "label": "Voir un exemple complet"
+      },
+      "comparison": {
+        "eyebrow": "Pourquoi externaliser",
+        "heading": "Faire soi-même, ou déléguer la recherche ?",
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Temps par recherche — Vous, seul : 2 à 5 h · Avec atoosavoir : 0 h pour vous, 5 j ouvrés",
+              "Sources consultées — Vous, seul : Google, blogs, forums · Avec atoosavoir : Légifrance, Cass. soc., doctrine",
+              "Datation des textes — Vous, seul : à votre charge · Avec atoosavoir : vérifiée et tracée",
+              "Restitution — Vous, seul : notes manuscrites · Avec atoosavoir : fiche PDF structurée",
+              "Risque de contresens — Vous, seul : élevé sur textes techniques · Avec atoosavoir : maîtrisé, double lecture"
+            ]
+          }
+        ]
+      },
+      "pricing": {
+        "eyebrow": "Nos tarifs",
+        "heading": "Abonnement mensuel. Sans surprise.",
+        "tiers": [
+          {
+            "id": "lt50",
+            "segment": "< 50 salariés",
+            "price": "99 € HT",
+            "unit": "/ mois",
+            "features": [
+              "2 recherches incluses",
+              "Suppl. : 59 € HT / rech."
+            ]
+          },
+          {
+            "id": "50-149",
+            "segment": "50 – 149 salariés",
+            "price": "159 € HT",
+            "unit": "/ mois",
+            "features": [
+              "3 recherches incluses",
+              "Suppl. : 59 € HT / rech."
+            ]
+          },
+          {
+            "id": "150-499",
+            "segment": "150 – 499 salariés",
+            "price": "269 € HT",
+            "unit": "/ mois",
+            "features": [
+              "5 recherches incluses",
+              "Suppl. : 69 € HT / rech."
+            ]
+          },
+          {
+            "id": "500+",
+            "segment": "500 + salariés",
+            "price": "449 € HT",
+            "unit": "/ mois",
+            "features": [
+              "8 recherches incluses",
+              "Suppl. : 69 € HT / rech."
+            ]
+          }
+        ],
+        "note": "Engagement 12 mois · Facturation mensuelle · Résiliation simple en fin de période. Formule trimestrielle disponible (majoration 15 %). Imputation budgétaire : cette prestation s’impute sur le budget de fonctionnement (AEP) du CSE, conformément à l’article L2315-61 du Code du travail."
+      },
+      "analysis": {
+        "eyebrow": "En complément",
+        "heading": "Analyse de documents — à l’acte",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Au-delà de la recherche, nous analysons vos documents d’entreprise : conformité, zones d’attention, éléments exploitables en CSE."
+          },
+          {
+            "type": "list",
+            "items": [
+              "Accord d’entreprise — 290 – 490 € HT",
+              "Règlement intérieur · Charte — 190 – 290 € HT",
+              "Plan de sauvegarde de l’emploi — 490 – 790 € HT",
+              "BDESE — 390 – 590 € HT"
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Devis personnalisé selon volume et complexité du document."
+          }
+        ]
+      },
+      "faqSection": {
+        "eyebrow": "Questions fréquentes",
+        "heading": "FAQ"
+      },
+      "faq": [
+        {
+          "question": "Ma question dépasse le cadre documentaire ?",
+          "answer": "Nous vous orientons vers un avocat partenaire. atoosavoir n’est pas un service de conseil juridique."
+        },
+        {
+          "question": "Mes recherches non utilisées sont-elles reportées ?",
+          "answer": "Les recherches non utilisées sont reportables sur le mois suivant uniquement, dans la limite du nombre de recherches incluses dans votre formule mensuelle. Au-delà, elles ne sont pas conservées."
+        },
+        {
+          "question": "Combien de temps pour recevoir ma fiche ?",
+          "answer": "5 jours ouvrés maximum, à compter de la réception complète de votre demande."
+        },
+        {
+          "question": "Mes échanges sont-ils confidentiels ?",
+          "answer": "Vos échanges restent confidentiels. Les questions traitées peuvent être réutilisées sous forme anonymisée à des fins de publication et de recherche, sauf avis contraire de votre part."
+        }
+      ],
+      "brochure": {
+        "label": "Télécharger la plaquette commerciale",
+        "text": "Tarifs, exemples, mode d’emploi, CGV — tout le service atoosavoir en 10 pages."
+      },
+      "cta": {
+        "eyebrow": "Offre de découverte",
+        "heading": "Analyse de conformité gratuite de votre dernier PV.",
+        "body": "Envoyez-nous votre dernier procès-verbal de CSE. Nous vous retournons une fiche de corrections — points de conformité, zones d’attention, améliorations concrètes. Sans engagement.",
+        "primaryCta": {
+          "label": "Envoyer mon PV pour audit",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Voir toutes nos ressources",
+          "to": "/ressources"
+        }
+      },
+      "contact": {
+        "phone": "04 12 10 06 06",
+        "phoneHref": "tel:+33412100606",
+        "email": "contact@atoopv.com",
+        "emailHref": "mailto:contact@atoopv.com"
+      },
+      "legal": {
+        "text": "atoosavoir est un service d’information documentaire — il ne constitue pas une consultation juridique. Consultez un avocat avant toute décision engageante. ALC SAS au capital de 1 000 € — SIRET 833 781 248 00038 — RCS Lyon.",
+        "cgvLabel": "Conditions générales de vente"
+      }
+    }
+  },
+  "atoosavoir-exemple": {
+    "label": "AtooSavoir — Exemple",
+    "group": "Pages",
+    "path": "/atoosavoir/exemple",
+    "defaults": {
+      "hero": {
+        "badge": "Exemple de livrable",
+        "title": "À quoi ressemble une fiche atoosavoir ?",
+        "lead": "Cet exemple est fictif. Il illustre la structure, le niveau de sourçage et le format de livraison du service atoosavoir."
+      },
+      "intro": {
+        "eyebrow": "Fiche juridique CSE atoosavoir : exemple complet",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Découvrez un exemple de fiche juridique CSE atoosavoir, la base de données de référence pour les élus du Comité Social et Économique. Chaque fiche atoosavoir présente de manière structurée les règles du droit du travail applicables au CSE. Les élus peuvent ainsi rapidement trouver les informations juridiques dont ils ont besoin pour exercer leur mandat."
+          },
+          {
+            "type": "paragraph",
+            "text": "Chaque fiche juridique CSE atoosavoir couvre un thème précis du droit social : textes de loi, jurisprudence et conseils pratiques pour les élus, avec des exemples concrets et des modèles réutilisables."
+          }
+        ]
+      },
+      "card": {
+        "eyebrow": "FICHE N° 2026·T01 — EXEMPLE FICTIF",
+        "title": "Délai de consultation du CSE : que se passe-t-il si le comité ne se prononce pas ?",
+        "fields": [
+          {
+            "label": "Synthèse",
+            "value": "Le CSE dispose d’un mois (deux en cas d’expertise). À l’expiration du délai, le silence vaut avis négatif — l’employeur peut mettre en œuvre son projet."
+          },
+          {
+            "label": "Sources citées",
+            "value": "Art. L.2312-15 · L.2312-16 · R.2312-5 · R.2312-6 C. trav. — 6 arrêts Cass. soc. (2018–2025)"
+          },
+          {
+            "label": "Contenu",
+            "value": "Analyse complète · Tableau récapitulatif des délais · 6 arrêts commentés (faits, solution, portée pratique) · 7 points d’attention · 3 modèles de formulation · Extraits des textes applicables"
+          },
+          {
+            "label": "Format",
+            "value": "PDF · 9 pages · Structure constante · Sources horodatées · Prêt à verser au dossier de séance"
+          }
+        ],
+        "downloadHref": "https://atoopv.com/wp-content/uploads/2026/05/atoosavoir-%E2%80%94-Fiche-N%C2%B0-2026%C2%B7T01.pdf",
+        "downloadLabel": "Télécharger la fiche exemple (PDF)"
+      },
+      "cardFooter": {
+        "question": "Une question à traiter ?"
+      },
+      "cta": {
+        "eyebrow": "Une question similaire ?",
+        "heading": "Posez-la, nous menons la recherche.",
+        "body": "Décrivez votre situation, nous vous livrons une fiche structurée et sourcée sous 5 jours ouvrés.",
+        "primaryCta": {
+          "label": "Recevoir mon audit PV gratuit",
+          "to": "/contact"
+        },
+        "secondaryCta": {
+          "label": "Retour à atoosavoir",
+          "to": "/atoosavoir"
+        }
+      },
+      "contact": {
+        "phone": "04 12 10 06 06",
+        "phoneHref": "tel:+33412100606",
+        "email": "contact@atoopv.com",
+        "emailHref": "mailto:contact@atoopv.com"
+      }
+    }
+  },
+  "atoosavoir-cgv": {
+    "label": "AtooSavoir — CGV",
+    "group": "Pages",
+    "path": "/atoosavoir/cgv",
+    "defaults": {
+      "hero": {
+        "title": "Conditions générales de vente — atoosavoir",
+        "lead": "Les conditions générales de vente atoosavoir régissent votre accès au service de recherche documentaire en droit social d’AtooPV."
+      },
+      "backLink": {
+        "label": "Retour à atoosavoir"
+      },
+      "markdown": "Les **conditions générales de vente atoosavoir** régissent votre accès au service atoosavoir d’AtooPV. En effet, AtooPV édite ce service de recherche documentaire en droit social CSE. Par conséquent, l’utilisation du service implique l’acceptation des présentes **conditions générales de vente atoosavoir**. En outre, vous pouvez consulter notre [page de présentation atoosavoir](/atoosavoir/) et notre [politique de confidentialité](/politique-de-confidentialite/) pour plus d’informations.\n\nLe service atoosavoir vous fournit des fiches de recherche en droit social. Notamment, nous couvrons le Code du travail, la jurisprudence et les accords de branche. En effet, nos fiches sont rédigées par des experts du droit social CSE. Par ailleurs, nous livrons chaque fiche au format PDF sous 5 jours ouvrés. Cependant, des délais prioritaires sont disponibles sur demande. Enfin, ce service est destiné aux élus de CSE et à leurs conseils.\n\nVous trouverez ci-dessous les articles de nos **conditions générales de vente atoosavoir**. De plus, vous pouvez nous contacter pour toute question à l’adresse indiquée en bas de page. Ainsi, nos **conditions générales vente atoosavoir** vous garantissent une transparence totale sur les modalités d’accès au service. En résumé, l’abonnement atoosavoir vous donne accès à notre base documentaire en droit social, disponible depuis [notre page services](/services/).\n\n## Conditions générales de vente atoosavoir — Articles\n\n## CGV atoosavoir : ce que vous achetez\n\nPremièrement, vous achetez une fiche de recherche en droit social. Ainsi, nos experts analysent votre question. Ils rédigent une réponse claire. Elle cite les textes applicables. Ensuite, nous livrons le document en PDF. Vous le recevez sous 5 jours ouvrés. En effet, c’est notre engagement principal. Cependant, nous proposons aussi des délais prioritaires. Contactez-nous pour en savoir plus.\n\nDe plus, le service atoosavoir couvre de nombreux sujets. Par exemple, nous traitons des heures de délégation. Nous analysons aussi le budget du CSE. En outre, nous couvrons la protection des élus. Ainsi, vous obtenez des réponses précises. Toutefois, chaque fiche traite une seule question. Par conséquent, commandez une fiche par problématique. Enfin, nos prix sont transparents et fixes.\n\n## Comment passer commande sur atoosavoir\n\nPremièrement, vous choisissez votre question juridique. Ensuite, vous remplissez le formulaire en ligne. Ainsi, vous décrivez votre situation précise. De plus, vous joignez les documents utiles. En effet, cela nous aide à mieux répondre. Puis vous réglez par carte bancaire. Cependant, nous acceptons aussi les virements. Par conséquent, vous êtes libre de choisir votre mode de paiement. Toutefois, la commande n’est validée qu’après réception du paiement. Enfin, vous recevez un email de confirmation.\n\nEn outre, nous traitons votre commande rapidement. Premièrement, un expert la prend en charge dès réception. Ensuite, il analyse votre situation. De même, il recherche la jurisprudence applicable. Ainsi, il rédige votre fiche en quelques jours. Par ailleurs, il vérifie les sources avant livraison. Cependant, certaines questions complexes nécessitent plus de temps. Néanmoins, nous vous informons en cas de délai supplémentaire. En revanche, les fiches simples arrivent souvent plus tôt que prévu.\n\n## Garanties et remboursements CGV atoosavoir\n\nPremièrement, nous garantissons la qualité de chaque fiche. En effet, un expert senior vérifie chaque document. Ainsi, vous recevez une réponse fiable. De plus, nous citons les sources précisément. Par ailleurs, nous signalons les zones d’incertitude juridique. Cependant, une fiche ne remplace pas un conseil d’avocat. Toutefois, elle constitue une base de travail solide. Enfin, elle vous permet d’agir en connaissance de cause.\n\nEn outre, nous acceptons les demandes de correction. Par exemple, si votre question n’est pas bien comprise, signalez-le. Ainsi, nous ajustons notre analyse gratuitement. De même, si une information majeure change, prévenez-nous. Cependant, les modifications de périmètre constituent une nouvelle commande. Néanmoins, nous restons à votre disposition pour vous accompagner. En revanche, les fiches livrées conforme à la commande ne font pas l’objet de remboursement. Par conséquent, décrivez précisément votre situation au moment de la commande.\n\n## Protection de vos données CGV atoosavoir\n\nPremièrement, nous traitons vos données avec soin. En effet, nous respectons le RGPD strictement. Ainsi, vos informations restent confidentielles. De plus, nous ne les revendons jamais. Par ailleurs, elles ne servent qu’à traiter votre commande. Cependant, certaines données sont conservées à des fins légales. Toutefois, la durée est limitée au minimum légal. Enfin, vous pouvez exercer vos droits RGPD à tout moment.\n\nDe plus, vous avez le droit d’accéder à vos données. En outre, vous pouvez les rectifier. De même, vous pouvez demander leur suppression. Ainsi, envoyez votre demande par email à contact@atoopv.com. Premièrement, identifiez-vous clairement dans votre message. Ensuite, précisez votre demande. En effet, nous répondons sous 30 jours. Cependant, certains droits sont limités par la loi. Néanmoins, nous faisons notre possible pour satisfaire chaque demande. En revanche, les données nécessaires à la facturation sont conservées 10 ans.\n\n# CONDITIONS GÉNÉRALES DE VENTE\n\n**SERVICE DE RECHERCHE DOCUMENTAIRE ATOOSAVOIR**  \nALC SAS AU CAPITAL DE 1 000 € — SIRET 833 781 248 00038 — RCS LYON  \nEN VIGUEUR AU 1ER JUIN 2026\n\n### Article 1 — Objet et champ d’application\n\nLes présentes CGV régissent les prestations de recherche documentaire fournies par ALC SAS (l’Éditeur) aux Comités Sociaux et Économiques (le Client). Le Client reconnaît agir en tant que personne morale dotée de la personnalité civile au sens de l’article L2315-23 du Code du travail.\n\n### Article 2 — Nature du service\n\nConformément à l’article 66-1 de la loi n° 71-1130 du 31 décembre 1971, le service consiste exclusivement en la diffusion de renseignements et informations à caractère documentaire. L’Éditeur n’effectue aucun acte de conseil personnalisé ni de stratégie juridique. Les fiches livrées sont des synthèses de l’état du droit positif au jour de leur rédaction.\n\n### Article 3 — Obligations et responsabilité du Client\n\n3.1. Le Client est seul responsable de l’exactitude des faits exposés lors de sa demande.\n\n3.2. L’usage des modèles de formulation et des synthèses livrées relève de la seule responsabilité du Client. Ce dernier est expressément invité à valider toute décision engageante auprès d’un avocat ou d’un expert mandaté par le CSE.\n\n### Article 4 — Responsabilité de l’Éditeur\n\nL’Éditeur est tenu à une obligation de moyens dans l’exécution de ses prestations de recherche documentaire. Sa responsabilité ne peut être engagée qu’en cas de faute prouvée dans la réalisation de la recherche.\n\n### Article 5 — Durée et reconduction\n\nL’abonnement est conclu pour une durée de douze (12) mois. Il se renouvelle par tacite reconduction pour des périodes identiques. L’Éditeur s’engage à informer le Client par écrit, entre trois (3) mois et un (1) mois avant la fin de chaque période, de la possibilité de ne pas reconduire le contrat. À défaut d’information dans ce délai, le Client peut résilier à tout moment à compter de la date de reconduction, sans pénalité.\n\n### Article 6 — Facturation et paiement\n\n6.1. Les factures sont émises et transmises sous format électronique conformément aux dispositions en vigueur relatives à la facturation électronique entre professionnels. Les factures sont payables à réception.\n\n6.2. Tout retard de paiement entraîne de plein droit, sans qu’une mise en demeure soit nécessaire, l’application de pénalités de retard à un taux égal au taux directeur de refinancement de la Banque Centrale Européenne (REFI) majoré de dix (10) points de pourcentage, appliqué au montant TTC de la facture impa yée. Conformément à l’article L441-10 du Code de commerce, une indemnité forfaitaire de quarante (40) euros pour frais de recouvrement est due de plein droit en sus des pénalités. Lorsque les frais de recouvrement réellement engagés dépassent ce montant, ALC SAS peut demander une indemnisation complémentaire sur justificatifs.\n\n### Article 7 — Propriété intellectuelle\n\nLes fiches livrées sont protégées par le droit d’auteur. Le Client bénéficie d’un droit d’usage interne dans le cadre de l’exercice de son mandat CSE. Toute reproduction, diffusion ou communication à des tiers extérieurs au CSE est interdite sans accord écrit préalable de l’Éditeur. Le versement des fiches au dossier de séance du CSE et leur communication aux membres du comité sont expressément autorisés. Le Client s’interdit d’utiliser les fiches livrées et leur contenu dans le cadre du fonctionnement, de l’entraînement ou du développement de systèmes d’intelligence artificielle.\n\n### Article 8 — Confidentialité\n\nL’Éditeur s’engage à traiter de manière confidentielle l’ensemble des informations transmises par le Client dans le cadre de ses demandes. Les questions traitées peuvent être réutilisées sous forme anonymisée à des fins de publication et de recherche, sauf opposition expresse du Client notifiée par écrit.\n\n### Article 9 — Protection des données personnelles\n\nLes données personnelles collectées dans le cadre de la prestation (identité du signataire, coordonnées du référent CSE, contenu des demandes) sont traitées par ALC SAS aux seules fins d’exécution du contrat. Elles sont conservées pendant la durée du contrat et deux (2) ans après son terme. Le Client dispose d’un droit d’accès, de rectification, d’effacement et de portabilité de ses données en adressant sa demande à contact@atoopv.com. L’Éditeur s’engage à ne transmettre aucune donnée à des tiers, sauf obligation légale.\n\n### Article 10 — Force majeure\n\nAucune des parties ne pourra être tenue responsable d’un manquement à ses obligations contractuelles résultant d’un cas de force majeure au sens de l’article 1218 du Code civil.\n\n### Article 11 — Résiliation\n\nEn cas de manquement par l’une des Parties à l’une quelconque de ses obligations, l’autre Partie pourra la mettre en demeure d’y remédier par lettre recommandée avec accusé de réception. À défaut de régularisation dans un délai de trente (30) jours à compter de la réception de la mise en demeure, le contrat pourra être résilié de plein droit par la Partie lésée, sans préjudice de tout dommage et intérêt. En cas de non-paiement d’une facture dans un délai de soixante (60) jours à compter de son échéance, l’Éditeur pourra suspendre l’accès au service sans mise en demeure préalable, puis résilier le contrat dans les conditions ci-dessus.\n\n### Article 12 — Modification des conditions générales\n\nL’Éditeur se réserve le droit de modifier les présentes CGV. La version applicable est celle en vigueur au jour de la souscription ou, en cas de reconduction, celle en vigueur à la date de reconduction. Toute modification sera communiquée au Client par écrit au plus tard lors de l’envoi de l’avis prévu à l’article 5.\n\n### Article 13 — Loi applicable et juridiction compétente\n\nLes présentes CGV sont soumises au droit français. Tout litige relatif à leur interprétation ou leur exécution relève de la compétence exclusive du Tribunal de Commerce de Lyon.\n\nALC SAS au capital de 1 000 € — SIRET 833 781 248 00038 — RCS Lyon — [atoopv.com/atoosavoir](https://atoopv.com/atoosavoir)\n"
+    }
+  },
+  "autodiagnostic": {
+    "label": "Autodiagnostic",
+    "group": "Pages",
+    "path": "/autodiagnostic",
+    "defaults": {
+      "hero": {
+        "badge": "Autodiagnostic",
+        "title": "Autodiagnostic CSE conformité : évaluez votre comité",
+        "lead": "L’autodiagnostic CSE conformité d’AtooPV vous permet d’évaluer en quelques minutes si votre Comité Social et Économique respecte l’ensemble de ses obligations légales. Cet outil interactif analyse les grands domaines de conformité : représentation du personnel, PV de réunions, budget, activités sociales et culturelles."
+      },
+      "intro": {
+        "eyebrow": "Comment ça marche",
+        "heading": "Autodiagnostic CSE conformité : évaluez votre comité",
+        "color": "royal",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "En premier lieu, renseignez les informations de base sur votre CSE : taille de l’entreprise, nombre d’élus, fréquence des réunions. Ensuite, répondez aux questions sur vos pratiques actuelles en matière de rédaction de procès-verbaux, de gestion du budget et d’organisation des ASC. Notre autodiagnostic CSE conformité identifie les points critiques nécessitant une action immédiate. Cet outil ne remplace pas un conseil juridique professionnel. Utilisez ce diagnostic comme premier pas vers un CSE pleinement conforme et efficace."
+          },
+          {
+            "type": "paragraph",
+            "text": "Les domaines clés couverts par l’autodiagnostic CSE conformité incluent : la tenue des réunions plénières, la rédaction et diffusion des procès-verbaux dans les délais légaux, la gestion des budgets de fonctionnement et des ASC, la désignation des membres de la CSSCT, et l’exercice des droits des représentants du personnel. Chaque CSE étant unique, les recommandations sont adaptées à la taille de votre entreprise et à votre secteur d’activité."
+          }
+        ]
+      },
+      "why": {
+        "eyebrow": "Pourquoi le faire",
+        "heading": "Pourquoi réaliser un autodiagnostic CSE ?",
+        "color": "royal",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Un autodiagnostic CSE conformité est indispensable pour plusieurs raisons. Premièrement, les obligations légales du CSE sont nombreuses et évoluent régulièrement. Deuxièmement, un CSE non conforme s’expose à des risques juridiques importants pour l’employeur et les élus. Réalisez votre autodiagnostic CSE conformité maintenant et sécurisez votre mandat avec nos services AtooPV."
+          }
+        ]
+      },
+      "quiz": {
+        "badge": "10 questions · 3 minutes · Résultat immédiat",
+        "heading": "Autodiagnostic CSE — Votre comité est-il conforme ?",
+        "footer": "ALC SAS — Le droit social expliqué de manière accessible —",
+        "footerLink": {
+          "label": "atoopv.com",
+          "to": "https://atoopv.com"
+        },
+        "contactTo": "/contact",
+        "restartLabel": "Recommencer le diagnostic",
+        "questions": [
+          {
+            "question": "Les procès-verbaux de vos réunions CSE sont-ils rédigés et approuvés dans le délai légal ?",
+            "hint": "Art. L.2315-34 CT — Le PV est établi par le secrétaire dans un délai fixé par accord ou, à défaut, dans les 15 jours (3 jours en cas de PSE).",
+            "options": [
+              {
+                "label": "Oui, systématiquement dans les délais",
+                "score": 2
+              },
+              {
+                "label": "Parfois en retard ou en attente d’approbation",
+                "score": 1
+              },
+              {
+                "label": "Non, plusieurs PV sont en souffrance",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Les trois consultations récurrentes obligatoires sont-elles réalisées chaque année ?",
+            "hint": "Art. L.2312-17 CT — Orientations stratégiques, situation économique et financière, politique sociale et conditions de travail.",
+            "options": [
+              {
+                "label": "Oui, les trois sont réalisées et documentées",
+                "score": 2
+              },
+              {
+                "label": "Une ou deux sur trois seulement",
+                "score": 1
+              },
+              {
+                "label": "Non, ou je ne sais pas",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Les élus ont-ils un accès effectif à la BDESE ?",
+            "hint": "Art. L.2312-18 CT — La base de données économiques, sociales et environnementales doit être accessible en permanence aux membres du CSE.",
+            "options": [
+              {
+                "label": "Oui, accès permanent et contenu à jour",
+                "score": 2
+              },
+              {
+                "label": "Accès existant mais contenu incomplet ou obsolète",
+                "score": 1
+              },
+              {
+                "label": "Pas d’accès ou BDESE inexistante",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Les membres du CSE ont-ils suivi la formation santé, sécurité et conditions de travail (SSCT) ?",
+            "hint": "Art. L.2315-18 CT — Formation obligatoire pour tous les membres du CSE, titulaires et suppléants, quel que soit l’effectif.",
+            "options": [
+              {
+                "label": "Oui, tous les élus sont formés",
+                "score": 2
+              },
+              {
+                "label": "Certains élus seulement",
+                "score": 1
+              },
+              {
+                "label": "Non, ou formation non organisée",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Les membres titulaires ont-ils bénéficié de la formation économique ?",
+            "hint": "Art. L.2315-63 CT — Formation de 5 jours max pour les titulaires dans les entreprises d’au moins 50 salariés, renouvelée après 4 ans de mandat.",
+            "options": [
+              {
+                "label": "Oui, formation suivie pour l’ensemble des titulaires",
+                "score": 2
+              },
+              {
+                "label": "Partiellement — certains titulaires n’ont pas été formés",
+                "score": 1
+              },
+              {
+                "label": "Non, ou entreprise de moins de 50 salariés",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Le CSE dispose-t-il d’un règlement intérieur adopté ?",
+            "hint": "Art. L.2315-24 CT — Obligatoire dans les entreprises d’au moins 50 salariés. Il fixe les modalités de fonctionnement du comité.",
+            "options": [
+              {
+                "label": "Oui, adopté et connu des élus",
+                "score": 2
+              },
+              {
+                "label": "Existe mais pas mis à jour ou peu connu",
+                "score": 1
+              },
+              {
+                "label": "Non, pas de règlement intérieur",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Le budget de fonctionnement du CSE (0,20 % ou 0,22 %) est-il versé et utilisé ?",
+            "hint": "Art. L.2315-61 CT — Subvention de fonctionnement versée par l’employeur. Son utilisation doit être tracée dans les comptes du CSE.",
+            "options": [
+              {
+                "label": "Oui, versé régulièrement et comptes tenus",
+                "score": 2
+              },
+              {
+                "label": "Versé mais utilisation peu documentée",
+                "score": 1
+              },
+              {
+                "label": "Non versé ou confondu avec le budget ASC",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Les heures de délégation sont-elles utilisées et leur suivi assuré ?",
+            "hint": "Art. L.2315-7 CT — Crédit d’heures mensuel selon l’effectif. Mutualisation et report possibles dans la limite de 1,5 fois le crédit mensuel.",
+            "options": [
+              {
+                "label": "Oui, utilisées et suivi régulier",
+                "score": 2
+              },
+              {
+                "label": "Utilisées partiellement, pas de suivi formalisé",
+                "score": 1
+              },
+              {
+                "label": "Peu ou pas utilisées",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "L’ordre du jour est-il établi conjointement et transmis au moins 3 jours avant la réunion ?",
+            "hint": "Art. L.2315-29 CT — Élaboré conjointement par le président et le secrétaire. Communiqué aux membres au moins 3 jours avant la séance.",
+            "options": [
+              {
+                "label": "Oui, conjointement et dans les délais",
+                "score": 2
+              },
+              {
+                "label": "Transmis dans les délais mais rédigé unilatéralement",
+                "score": 1
+              },
+              {
+                "label": "Non, souvent hors délai ou imposé",
+                "score": 0
+              }
+            ]
+          },
+          {
+            "question": "Une CSSCT est-elle en place (si obligatoire) et se réunit-elle régulièrement ?",
+            "hint": "Art. L.2315-36 CT — Obligatoire dans les entreprises d’au moins 300 salariés et les établissements classés (Seveso, nucléaire, mines).",
+            "options": [
+              {
+                "label": "Oui, en place avec réunions régulières (ou non obligatoire dans notre cas)",
+                "score": 2
+              },
+              {
+                "label": "En place mais réunions irrégulières",
+                "score": 1
+              },
+              {
+                "label": "Non mise en place alors qu’elle est obligatoire",
+                "score": 0
+              }
+            ]
+          }
+        ],
+        "tiers": [
+          {
+            "min": 16,
+            "level": "green",
+            "color": "emerald",
+            "title": "Conformité satisfaisante",
+            "text": "Votre CSE respecte l’essentiel de ses obligations légales. Restent peut-être quelques points de vigilance à consolider."
+          },
+          {
+            "min": 10,
+            "level": "amber",
+            "color": "golden",
+            "title": "Axes d’amélioration identifiés",
+            "text": "Plusieurs obligations ne sont que partiellement remplies. Chaque point non traité est un risque juridique pour les élus comme pour l’employeur."
+          },
+          {
+            "min": 0,
+            "level": "red",
+            "color": "rose",
+            "title": "Alerte — accompagnement recommandé",
+            "text": "Des obligations fondamentales du CSE ne sont pas respectées. La situation expose les élus et l’employeur à des risques juridiques sérieux."
+          }
+        ],
+        "resultsCta": {
+          "heading": "Recevez votre fiche de recommandations personnalisée",
+          "body": "Nous vous envoyons par email une analyse détaillée avec les articles du Code du travail applicables et les actions correctives prioritaires.",
+          "submitLabel": "Recevoir ma fiche",
+          "submittedLabel": "✓ Demande envoyée",
+          "legalText": "Vos données sont utilisées uniquement pour l’envoi de la fiche.",
+          "legalLink": {
+            "label": "Politique de confidentialité",
+            "to": "https://atoopv.com/politique-de-confidentialite/"
+          }
+        }
+      },
+      "cta": {
+        "eyebrow": "Aller plus loin",
+        "heading": "Confiez la conformité de vos PV à AtooPV",
+        "body": "Découvrez notre service de rédaction de PV CSE, nos cas pratiques et nos formations élus CSE pour sécuriser durablement votre mandat.",
+        "primaryCta": {
+          "label": "Voir nos services",
+          "to": "/services"
+        },
+        "secondaryCta": {
+          "label": "Voir toutes nos ressources",
+          "to": "/ressources"
+        }
+      }
+    }
+  },
+  "boutique": {
+    "label": "Boutique",
+    "group": "Pages",
+    "path": "/boutique",
+    "defaults": {
+      "meta": {
+        "title": "Boutique",
+        "description": "Des guides pratiques pour comprendre, agir et maîtriser les enjeux du CSE."
+      },
+      "categoryTabs": [
+        {
+          "id": "tous",
+          "label": "Tous"
+        },
+        {
+          "id": "guides",
+          "label": "Guides"
+        },
+        {
+          "id": "actualites",
+          "label": "Actualités"
+        },
+        {
+          "id": "populaires",
+          "label": "Populaires"
+        },
+        {
+          "id": "modeles",
+          "label": "Modèles"
+        },
+        {
+          "id": "methodologie",
+          "label": "Méthodologie"
+        },
+        {
+          "id": "dialogue",
+          "label": "Dialogue social"
+        },
+        {
+          "id": "formation",
+          "label": "Formation"
+        },
+        {
+          "id": "fiches",
+          "label": "Fiches pratiques"
+        },
+        {
+          "id": "contentieux",
+          "label": "Contentieux"
+        }
+      ],
+      "books": [
+        {
+          "id": "guide-cse",
+          "title": "Guide du CSE",
+          "author": "ATOOPV Éditions",
+          "accent": "golden",
+          "categories": [
+            "guides",
+            "populaires"
+          ],
+          "excerpt": "Le CSE occupe une place centrale dans le dialogue social de l'entreprise. Ce guide retrace ses attributions économiques, sociales et culturelles."
+        },
+        {
+          "id": "tresorier-cse",
+          "title": "Trésorier du CSE",
+          "author": "ATOOPV Éditions",
+          "accent": "emerald",
+          "categories": [
+            "guides",
+            "modeles"
+          ],
+          "excerpt": "Budget de fonctionnement, budget ASC, obligations comptables : les bases indispensables à une gestion saine et transparente."
+        },
+        {
+          "id": "cssct-roles",
+          "title": "CSSCT — Rôles & Missions",
+          "author": "Marc Dubreuil",
+          "accent": "coral",
+          "categories": [
+            "fiches",
+            "formation"
+          ],
+          "excerpt": "De la mise en place de la commission à la conduite des enquêtes accident du travail, le périmètre complet de la CSSCT."
+        },
+        {
+          "id": "pv-efficace",
+          "title": "Procès-verbal efficace",
+          "author": "ATOOPV Éditions",
+          "accent": "royal",
+          "categories": [
+            "methodologie",
+            "modeles"
+          ],
+          "excerpt": "Rédiger un procès-verbal clair, complet et opposable, sous contrainte de temps : la méthode ATOOPV condensée."
+        },
+        {
+          "id": "referentiel-conformite",
+          "title": "Référentiel conformité",
+          "author": "ATOOPV Éditions",
+          "accent": "sky",
+          "categories": [
+            "contentieux",
+            "actualites"
+          ],
+          "excerpt": "Les obligations légales du CSE par thème, avec leurs textes de référence à jour et le risque en cas de non-conformité."
+        },
+        {
+          "id": "comprendre-cse",
+          "title": "Comprendre le CSE",
+          "author": "ATOOPV Éditions",
+          "accent": "purple",
+          "categories": [
+            "formation",
+            "dialogue"
+          ],
+          "excerpt": "Une introduction accessible au fonctionnement du CSE, pensée pour les élus qui découvrent leur mandat."
+        },
+        {
+          "id": "elections-pro",
+          "title": "Élections professionnelles",
+          "author": "ATOOPV Éditions",
+          "accent": "rose",
+          "categories": [
+            "guides",
+            "actualites"
+          ],
+          "excerpt": "Protocole d'accord préélectoral, collèges, calendrier : sécuriser chaque étape du scrutin du CSE."
+        },
+        {
+          "id": "negociation-collective",
+          "title": "Négociation collective",
+          "author": "ATOOPV Éditions",
+          "accent": "mint",
+          "categories": [
+            "dialogue",
+            "formation"
+          ],
+          "excerpt": "Préparer, mener et conclure une négociation avec la direction : méthode, postures et suivi de l’accord."
+        },
+        {
+          "id": "contentieux-prudhomal",
+          "title": "Contentieux prud’homal",
+          "author": "Marc Dubreuil",
+          "accent": "orange",
+          "categories": [
+            "contentieux",
+            "fiches"
+          ],
+          "excerpt": "Les étapes clés d’un contentieux prud’homal et le rôle que peut y jouer le CSE aux côtés du salarié."
+        }
+      ],
+      "featured": {
+        "year": "2026",
+        "heading": "Les ressources essentielles",
+        "description": "Les ressources les plus utiles pour comprendre, préparer et structurer vos réunions CSE.",
+        "cta": "Voir les ressources"
+      },
+      "recommendations": [
+        {
+          "id": "top-cse",
+          "title": "Top 50 ressources CSE",
+          "description": "Les documents les plus consultés.",
+          "filter": "populaires"
+        },
+        {
+          "id": "top-outils",
+          "title": "Top 50 outils",
+          "description": "Découvrez les outils les plus utiles.",
+          "filter": "modeles"
+        },
+        {
+          "id": "top-conformite",
+          "title": "Top 50 conformité",
+          "description": "Les ressources essentielles pour rester conforme.",
+          "filter": "contentieux"
+        }
+      ],
+      "reportMeta": {
+        "title": "PROCÈS-VERBAL",
+        "org": "CSE — Société Demo SAS",
+        "date": "3 septembre 2026",
+        "meetingType": "Réunion ordinaire",
+        "generatedBy": "Généré par ATOOPV"
+      },
+      "reportPages": [
+        {
+          "id": "cover",
+          "number": "01",
+          "title": "Couverture",
+          "kind": "cover"
+        },
+        {
+          "id": "resume",
+          "number": "02",
+          "title": "Résumé exécutif",
+          "kind": "text",
+          "body": [
+            "La réunion ordinaire du CSE s'est tenue le 3 septembre 2026, réunissant 9 participants sur 11 membres convoqués.",
+            "Trois décisions ont été adoptées, dont la validation du budget ASC du second semestre. Quatre actions ont été assignées avec des échéances sous 15 jours.",
+            "Un point de vigilance a été identifié concernant le délai de réponse fournisseur, reporté au suivi de la prochaine séance."
+          ]
+        },
+        {
+          "id": "participants",
+          "number": "03",
+          "title": "Participants",
+          "kind": "list",
+          "items": [
+            {
+              "name": "Président de séance",
+              "role": "Direction",
+              "status": "Présent"
+            },
+            {
+              "name": "Secrétaire du CSE",
+              "role": "Élu titulaire",
+              "status": "Présent"
+            },
+            {
+              "name": "Trésorier du CSE",
+              "role": "Élu titulaire",
+              "status": "Présent"
+            },
+            {
+              "name": "Élu titulaire — Collège cadres",
+              "role": "Élu titulaire",
+              "status": "Présent"
+            },
+            {
+              "name": "Élu suppléant",
+              "role": "Élu suppléant",
+              "status": "Excusé"
+            },
+            {
+              "name": "Représentant syndical",
+              "role": "RS",
+              "status": "Présent"
+            }
+          ]
+        },
+        {
+          "id": "decisions",
+          "number": "04",
+          "title": "Décisions",
+          "kind": "decisions",
+          "items": [
+            {
+              "text": "Budget ASC du second semestre approuvé.",
+              "tag": "BUDGET"
+            },
+            {
+              "text": "Reconduction du prestataire de médecine du travail pour 2027.",
+              "tag": "CONTRAT"
+            },
+            {
+              "text": "Calendrier des réunions du 1er trimestre 2027 validé.",
+              "tag": "ORGANISATION"
+            }
+          ]
+        },
+        {
+          "id": "actions",
+          "number": "05",
+          "title": "Actions & Responsables",
+          "kind": "actions",
+          "items": [
+            {
+              "text": "Relancer le fournisseur sur le retard de livraison.",
+              "owner": "Trésorier",
+              "due": "10 sept. 2026"
+            },
+            {
+              "text": "Diffuser le calendrier des réunions aux salariés.",
+              "owner": "Secrétaire",
+              "due": "12 sept. 2026"
+            },
+            {
+              "text": "Préparer le dossier de consultation économique T4.",
+              "owner": "Président",
+              "due": "20 sept. 2026"
+            },
+            {
+              "text": "Planifier la visite CSSCT de l’atelier B.",
+              "owner": "CSSCT",
+              "due": "25 sept. 2026"
+            }
+          ]
+        },
+        {
+          "id": "votes",
+          "number": "06",
+          "title": "Votes",
+          "kind": "votes",
+          "items": [
+            {
+              "subject": "Budget ASC du second semestre",
+              "pour": 7,
+              "contre": 0,
+              "abstention": 1
+            },
+            {
+              "subject": "Reconduction du prestataire médecine du travail",
+              "pour": 6,
+              "contre": 1,
+              "abstention": 1
+            },
+            {
+              "subject": "Calendrier des réunions 2027",
+              "pour": 8,
+              "contre": 0,
+              "abstention": 0
+            }
+          ]
+        },
+        {
+          "id": "suivi",
+          "number": "07",
+          "title": "Points à suivre",
+          "kind": "list",
+          "items": [
+            {
+              "name": "Délai de réponse du fournisseur",
+              "role": "Reporté",
+              "status": "En cours"
+            },
+            {
+              "name": "Retour de l’enquête CSSCT — atelier B",
+              "role": "Prévu T4",
+              "status": "En attente"
+            },
+            {
+              "name": "Bilan de la NAO 2026",
+              "role": "Séance suivante",
+              "status": "À planifier"
+            }
+          ]
+        },
+        {
+          "id": "annexes",
+          "number": "08",
+          "title": "Annexes / Signatures",
+          "kind": "signatures",
+          "items": [
+            {
+              "name": "Président de séance",
+              "role": "Direction"
+            },
+            {
+              "name": "Secrétaire du CSE",
+              "role": "Élu titulaire"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "veille-juridique": {
+    "label": "Veille juridique (listing)",
+    "group": "Pages",
+    "path": "/ressources/veille-juridique-cse",
+    "defaults": {
+      "hero": {
+        "badge": "Ressources",
+        "title": "Veille juridique CSE",
+        "lead": "Publications LinkedIn du président d’ALC SAS — jurisprudence sociale et actualité juridique pour les élus CSE."
+      }
+    }
+  },
+  "hub-services": {
+    "label": "Services",
+    "group": "Hub pages",
+    "path": "/services",
+    "defaults": {
+      "title": "Rédaction de PV, formation et communication CSE",
+      "badge": "Services",
+      "markdown": "🛡️ Tous nos services\n\n# Rédaction de PV, formation *et communication CSE*\n\nDepuis 2017, AtooPV couvre tous les besoins des élus : rédaction de procès-verbaux, formation économique, communication et accompagnement. Un seul partenaire pour votre instance.\n\n[Demander un devis gratuit](/contact/)[Voir tous les services](#services)\n\n2017\n\nAnnée de création\n\n48 à 72h\n\nDélai moyen de livraison\n\n3\n\nFormats de PV au choix\n\n15\n\nGuides juridiques publiés\n\nDe la **PME aux groupes cotés au CAC 40** — formation finançable sur budget CSE (Art. L.2315-63 CT)\n\nRédaction de PV\n\n## Rédaction PV de CSE & CSSCT\n\nDes procès-verbaux conformes, clairs et opposables pour vos réunions ordinaires et extraordinaires. Conformité art. L.2315-34. Présence en séance ou rédaction sur enregistrement, livraison J+2 à J+5.\n\n📋\n\n### Rédaction PV de CSE\n\nTrois formats : Essentiel, Scope, Premium. Réunions ordinaires, extraordinaires, d’urgence. Conformité art. L.2315-34.\n\n[Voir les tarifs →](/tarification/)\n\n🛡️\n\n### Rédaction PV de CSSCT\n\nComptes-rendus CSSCT avec maîtrise des enjeux santé, sécurité et conditions de travail.\n\n[Demander un devis →](/contact/)\n\n⚡\n\n### Rédaction à l’acte\n\nDevis gratuit sous 24h, mission en quelques jours. Idéal pour une première fois ou un remplacement.\n\n[Demander un devis →](/contact/)\n\n🏢\n\n### PV IRP & CSEC\n\nToutes vos instances couvertes : CSEC, CEE, conseils d’entreprise, IRP de branche.\n\n[Demander un devis →](/contact/)\n\nFormation & accompagnement\n\n## Formation et accompagnement des élus CSE\n\nOrganisme agréé au titre de la formation économique des membres du CSE (art. L.2315-63 CT). Formations finançables sur le budget de fonctionnement.\n\n📚\n\n### Formation élus CSE\n\nDroit du travail, CSSCT, QVCT, lecture des comptes. Présentiel ou distanciel. Agréé DREETS AURA.\n\n🤝\n\n### Assistance aux élus\n\nAccompagnement des secrétaires dans leur mission : ordres du jour, résolutions, délibérations.\n\n📢\n\n### Newsletter ActuCSE\n\nVos PV transformés en newsletter interne, lisible et engageante pour vos salariés.\n\nPourquoi AtooPV\n\n## Un partenaire reconnu depuis 2017\n\nSpécialiste de la rédaction de procès-verbaux et de l’accompagnement des CSE, AtooPV intervient sur toute la France, en présentiel comme à distance.\n\n✅\n\n### Création 2017\n\nALC SAS, expert IRP reconnu. Une expérience éprouvée au service des instances représentatives du personnel.\n\n⏱️\n\n### Livraison garantie\n\nDélai garanti J+2 à J+5. Option express disponible pour les urgences.\n\n🗺️\n\n### Toute la France\n\nIntervention en présentiel et à distance. Déplacement partout en France ou rédaction sur enregistrement.\n\n💬\n\n### Devis gratuit\n\nDevis sous 24h sans engagement. Tarification transparente à l’heure de réunion.\n\nRESSOURCES ET INFORMATIONS\n\n## En savoir plus sur AtooPV\n\nVous souhaitez mieux nous connaître ou approfondir un sujet ? Consultez notre page [À propos](/a-propos/), notre [FAQ](/faq/), nos [cas pratiques](/cas-pratiques/) ou nos [actualités](/actualites/). Découvrez aussi nos offres de [communication CSE](/communication-cse/) et de [communication ASC](/communication-asc/), ainsi que notre [modèle de PV CSE gratuit](/modele-pv-cse-gratuit/) à télécharger. Découvrez également notre [guide du comité](/guide-du-comite/), imprimé et personnalisé pour vos salariés. Pour naviguer plus facilement, consultez notre [plan du site](/plan-du-site/).\n\nPassons à l’action\n\n## Demandez votre devis services AtooPV\n\nExpert de la rédaction de PV CSE depuis 2017, intervention possible dès votre prochaine réunion. Réponse sous 24h, sans engagement.\n\n[Demander un devis gratuit](/contact/)[Voir les tarifs](/tarification/)\n\n04 12 10 06 06 · contact@atoopv.com · ALC SAS — SIREN 833 781 248\n"
+    }
+  },
+  "hub-nos-services-pv": {
+    "label": "Nos services PV",
+    "group": "Hub pages",
+    "path": "/services/drafting",
+    "defaults": {
+      "title": "Vos procès-verbaux de CSE, CSSCT & IRP rédigés par des experts",
+      "badge": "Services",
+      "markdown": "# Vos procès-verbaux de *CSE, CSSCT & IRP* rédigés par des experts\n\nALC prend en charge l’intégralité de la rédaction de vos procès-verbaux CSE et CSSCT. Fidélité des débats, conformité juridique, délais maîtrisés. Vous pouvez ainsi vous concentrer sur votre mandat.\n\n[Demander un devis gratuit](/contact/)\n\nCSE\n✦\nCSEC\n✦\nCSSCT\n✦\nQVCT\n✦\nCÉCO\n✦\nAssemblée Générale\n✦\nCSE\n✦\nCSEC\n✦\nCSSCT\n✦\nQVCT\n✦\nCÉCO\n✦\nAssemblée Générale\n✦\nCSE\n✦\nCSEC\n✦\nCSSCT\n✦\nQVCT\n✦\nCÉCO\n✦\nAssemblée Générale\n✦\n\n2017Année de création\n\n48 à 72hDélai moyen de livraison\n\n3Formats de PV au choix\n\n15Guides juridiques publiés\n\nLe défi du secrétaire de CSE\n\n## Pourquoi externaliser la rédaction de vos procès-verbaux CSE et CSSCT ?\n\n« Les délibérations des CSE sont consignées dans un procès-verbal établi par le secrétaire du comité. »\nArt. L.2315-34, [Code du travail](https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006072050/)\n\n### Un mandat, pas un métier\n\nLe secrétaire de CSE exerce ses fonctions en plus de son poste. Cependant, la rédaction d’un PV fidèle exige un temps dont il ne dispose pas.\n\n### Des enjeux juridiques réels\n\nLe PV engage ainsi le CSE. Une restitution approximative peut ainsi fragiliser les délibérations, les avis et les droits des salariés.\n\n### Confidentialité absolue\n\nDélibérations stratégiques, données sociales, restructurations : vos débats nécessitent un prestataire tenu par un engagement strict de confidentialité.\n\n### Expertise en droit social\n\nRestituer fidèlement un débat sur les PSE, la GPEC ou les NAO exige en effet une compréhension fine du droit du travail et des IRP.\n\nAinsi, externaliser avec ALC, c’est restituer au secrétaire sa mission première : **porter la voix des salariés.**\n\nNos formats de PV\n\n## Trois niveaux de restitution pour vos procès-verbaux CSE, un même engagement de qualité\n\nEn effet, chaque CSE a ses usages. ALC adapte ainsi le niveau de détail de la rédaction de vos procès-verbaux CSE et CSSCT à vos besoins réels : de la synthèse décisionnelle au verbatim intégral.\n\nEssentiel\n\nSynthèse décisionnelle\n\n* 3 à 5 pages par heure de réunion\n* Décisions, votes et résultats\n* Rédaction narrative à la 3ᵉ personne\n* Livraison sous 72 heures ouvrées\n\nIdéal pour\n\nNotamment les CSE à budget maîtrisé, les réunions courtes, l’affichage obligatoire.\n\nLe plus choisi\n\nScope\n\nSynthèse renforcée\n\n* 6 à 10 pages par heure de réunion\n* Échanges clés restitués avec attribution\n* Votes nominatifs détaillés\n* Déclarations syndicales restituées\n\nIdéal pour\n\nNotamment les CSE de 50 à 300 salariés, les consultations récurrentes, les CSSCT.\n\nPremium\n\nVerbatim intégral\n\n* 11 à 20 pages par heure de réunion\n* Restitution intégrale de chaque intervention\n* Valeur probante maximale\n* Idéal en contexte contentieux ou PSE\n\nIdéal pour\n\nNotamment les groupes +300 salariés, les restructurations, les consultations à forte charge juridique.\n\n**Tarification transparente, à l’heure.** Devis gratuit sous 24 heures — contactez-nous ainsi avec la durée et la nature de votre réunion.\n\nNotre processus\n\n## De votre réunion à votre procès-verbal CSE validé, en 4 étapes\n\nUn circuit clair, un interlocuteur unique, zéro surprise pour la rédaction de vos procès-verbaux CSE et CSSCT.\n\n1\n\n### Brief & devis\n\nVous nous transmettez d’abord l’ordre du jour et la durée prévue. Nous vous adressons ensuite un devis sous 24 heures.\n\n2\n\n### Captation\n\nEnsuite, présence physique du rédacteur ou enregistrement audio à distance — vous choisissez le mode adapté.\n\n3\n\n### Rédaction\n\nPuis, production du projet de PV dans le format convenu, avec livraison du draft sous 3 à 5 jours ouvrés.\n\n4\n\n### Validation\n\nEnfin, le secrétaire relit et demande d’éventuelles corrections, avant réception du document final en Word et PDF.\n\nNos engagements\n\n## Pourquoi les CSE et CSSCT choisissent ALC pour la rédaction de leurs PV\n\n### Confidentialité systématique\n\nChaque rédacteur signe un accord de confidentialité avant toute intervention. Vos délibérations restent ainsi strictement protégées.\n\n### Rédacteurs spécialisés\n\nNos intervenants sont notamment formés en droit social et droit du travail. Ils comprennent ainsi le vocabulaire, les enjeux et le cadre juridique de vos instances, pour une rédaction de procès-verbaux CSE et CSSCT fidèle et conforme.\n\n### Organisme de formation déclaré\n\nALC est en effet un organisme de formation déclaré (NDA 84740456974) qui forme les élus du personnel. Double compétence sur le marché : rédaction de PV et formation.\n\n### Réactivité garantie\n\nLivraison standard sous 72 heures ouvrées. Par ailleurs, une option express est disponible sur demande pour les situations urgentes.\n\nHabitat social\nHôtellerie & loisirs\nIndustrie\nBanque & assurance\nGrande distribution\nServices aux entreprises\nSanté & médico-social\n\nTémoignages\n\n## Ce que les CSE et CSSCT disent de nos procès-verbaux\n\nAinsi, des secrétaires de CSE nous font confiance, partout en France.\n\n★★★★★\n\nUn gain de temps considérable. Les PV sont fidèles aux échanges, bien structurés, et livrés dans les délais. Le secrétariat du CSE peut enfin se concentrer sur l’essentiel.\n\nSA\n\nSandra A.\n\nSecrétaire de CSE — Annecy\n\n★★★★★\n\nLa qualité de restitution est remarquable, y compris sur des sujets techniques comme les conditions de travail et les risques professionnels. Un partenaire fiable pour notre CSSCT.\n\nBC\n\nBruno C.\n\nMembre CSSCT\n\n## Votre prochain procès-verbal CSE, sans le stress\n\nDécrivez-nous votre prochaine réunion. Nous vous adressons alors un devis gratuit et personnalisé sous 24 heures.\n\n[Demander un devis gratuit](/contact/) \n [04 12 10 06 06](tel:+33412100606)\n\n[contact@atoopv.com](mailto:contact@atoopv.com) · ALC SAS — SIREN 833 781 248 — RCS Lyon\n\n## Recevez notre brochure complète\n\nFormats de PV, grille tarifaire, engagements qualité  \net modèle de délibération CSE prêt à l’emploi.\n\nService phare — Depuis 2017\n\nRédaction de  \nProcès-Verbaux\n\nCSE · CSSCT · IRP\n\nBrochure complète — 18 pages  \nFormats · Tarifs · Engagements\n\nVerba volant, scripta manent.\n\nALC SAS · SIREN 833 781 248 · RCS Lyon · Caluire-et-Cuire (69300)  \nLe droit social expliqué de manière accessible.\n\n📋 Cas pratiques — Ce que le PV vous évite\n\n* [Démission d’un élu : le PV qui documente les pressions peut qualifier le délit d’entrave](/demission-mandat-cse-elu-protection/)\n* [Mise à pied d’un élu CSE : le PV de consultation dans les délais, c’est la première ligne de défense](/mise-a-pied-conservatoire-elu-cse/)\n* [Réorganisation silencieuse : sans PV documentant les départs, le droit d’alerte n’a pas de base](/reorganisation-silencieuse-cse-demissions/)\n* [Surveillance des salariés : un PV attestant la consultation CSE vous protège face à la CNIL](/surveillance-salaries-cnil-cse/)\n\n📚 Ressources utiles pour votre CSE\n\n[💴 Simulateur de prix](/tarification/)\n[📄 Modèles de PV](/modeles-pv/)\n[📚 Guides & livres blancs gratuits](/livres-blancs/)\n[📋 Qu’est-ce qu’un PV de CSE ?](/proces-verbal/)\n[✅ Contenu obligatoire du PV](/pv-cse-contenu-obligatoire/)\n[⌛ Délais légaux de rédaction](/delai-redaction-pv-cse/)\n[💰 Combien coûte un PV ?](/tarif-redaction-pv-cse/)\n[🚀 Pourquoi externaliser ?](/externaliser-pv-cse/)\n\n### À explorer également\n\n* [→ Tous nos services](https://atoopv.com/services/)\n* [→ Nos livres blancs CSE](https://atoopv.com/livres-blancs/)\n* [→ Modèle PV CSE Premium](https://atoopv.com/modele-pv-cse-premium-integral/)\n* [→ Rédaction PV CSE Paris](https://atoopv.com/redaction-pv-cse-paris/)\n* [→ Rédaction PV CSE Lyon](https://atoopv.com/redaction-pv-cse-lyon/)\n* [→ Modèles de PV](https://atoopv.com/modeles-pv/)\n\n## Questions fréquentes\n\nCliquez sur une question pour afficher la réponse.\n\nQuelle est la valeur juridique du procès-verbal ?\n\nLe PV adopté fait ainsi foi des débats : il établit ce qui a été dit, décidé et promis en séance. Si la direction s’engage sur un point — un calendrier, une mesure, une réponse à une revendication — l’inscription au PV en fait une trace écrite opposable. Par ailleurs, en cas de litige ou de contrôle de l’inspection du travail, ce document peut être produit comme preuve du respect, ou du manquement, aux obligations d’information et de consultation.\n\nPourquoi la fidélité de la rédaction est-elle un enjeu juridique ?\n\nParce qu’un PV approuvé devient la mémoire officielle de la réunion. Une promesse de la direction mal retranscrite, une réserve d’un élu oubliée, un vote mal consigné, et c’est la position du comité qui s’affaiblit le jour où il faudra s’y référer. Un PV précis sécurise donc les élus ; un PV approximatif les expose. La rédaction n’est pas une formalité de mise en forme, c’est ce qui donne au document sa force.\n\nUne promesse de la direction inscrite au PV engage-t-elle l’employeur ?\n\nUn engagement de la direction consigné au procès-verbal et approuvé constituerait ainsi un élément de preuve de cet engagement. Si l’employeur revenait dessus, les élus pourraient s’appuyer sur le PV pour le lui rappeler, en réunion comme devant le juge. D’où l’intérêt de faire acter explicitement, et de vérifier que le PV restitue fidèlement les termes employés. Sur la portée exacte d’un engagement dans une situation donnée, un avocat reste l’interlocuteur compétent.\n\n### Autres questions sur la rédaction de vos procès-verbaux CSE et CSSCT\n\nLe procès-verbal de CSE est-il obligatoire ?\n\nOui. Dans les entreprises d’au moins cinquante salariés, chaque réunion du CSE donne lieu à un procès-verbal établi par le secrétaire (article L.2315-34). Ce document consigne notamment les délibérations et la décision motivée de l’employeur sur les propositions qui lui ont été soumises.\n\nComment un procès-verbal est-il approuvé ?\n\nLa loi n’encadre pas les modalités d’approbation : elles relèvent du règlement intérieur du CSE. En pratique, le projet est transmis aux membres, puis soumis à un vote lors de la réunion suivante. En cas de désaccord, le PV peut être approuvé avec réserves ou renvoyé pour correction. Tant qu’il n’est pas adopté, sa valeur probante reste fragile : d’où l’intérêt d’un projet fidèle dès le départ, qui limite les contestations.\n\nLe PV peut-il être diffusé aux salariés ?\n\nOui, une fois adopté. Le secrétaire peut alors l’afficher ou le diffuser dans l’entreprise selon les modalités prévues par le règlement intérieur du comité (article L.2315-35). Toutefois, les informations présentées comme confidentielles par l’employeur en sont retirées.\n\nCombien de temps faut-il conserver les procès-verbaux ?\n\nCependant, le Code du travail ne fixe pas de durée de conservation spécifique. Une conservation durable reste ainsi vivement recommandée : un engagement acté il y a deux ans peut redevenir décisif lors d’une négociation ou d’un contentieux. Ainsi, le PV garde la mémoire des décisions d’une mandature à l’autre, et cette mémoire n’a de valeur que si elle est intacte.\n"
+    }
+  },
+  "hub-communication-cse": {
+    "label": "Communication CSE",
+    "group": "Hub pages",
+    "path": "/services/communication",
+    "defaults": {
+      "fragmentsIntro": {
+        "eyebrow": "COMMUNICATION — DEPUIS 2017",
+        "titleLines": [
+          "DE LA RÉUNION",
+          "AUX SALARIÉS."
+        ],
+        "fragments": [
+          {
+            "role": "THÈME 01",
+            "text": "Quels contenus inclure dans votre newsletter CSE ?",
+            "tag": "CONTENU"
+          },
+          {
+            "role": "THÈME 02",
+            "text": "Newsletter ActuCSE",
+            "tag": "ACTUCSE"
+          },
+          {
+            "role": "THÈME 03",
+            "text": "Communication ASC",
+            "tag": "ASC"
+          },
+          {
+            "role": "THÈME 04",
+            "text": "Guide du comité",
+            "tag": "GUIDE"
+          }
+        ],
+        "groups": [
+          {
+            "label": "NEWSLETTER ACTUCSE"
+          },
+          {
+            "label": "ASC & GUIDE"
+          }
+        ],
+        "documentLabel": "FICHE COMMUNICATION",
+        "documentRows": [
+          {
+            "label": "Format",
+            "text": "PDF ou email HTML"
+          },
+          {
+            "label": "Délai (rédigé par ALC)",
+            "text": "7 à 10 jours ouvrés"
+          },
+          {
+            "label": "Délai (mise en page seule)",
+            "text": "72 heures"
+          },
+          {
+            "label": "Support",
+            "text": "Newsletter ActuCSE"
+          }
+        ],
+        "annotations": [
+          "Mise en page professionnelle",
+          "Rédaction mensuelle ou trimestrielle",
+          "Actualités sociales et juridiques",
+          "Format PDF ou email HTML"
+        ],
+        "documentMeta": "AtooPV / Communication CSE",
+        "statement": [
+          "L’un fait foi,",
+          "l’autre fait lien."
+        ]
+      },
+      "title": "Communication CSE",
+      "badge": "Services",
+      "markdown": "La communication CSE est un levier essentiel pour informer les salariés des activités du Comité Social et Économique. En effet, une communication efficace renforce le lien entre élus et salariés. Ainsi, via notre newsletter ActuCSE et notre service de communication ASC, vous pouvez entre les élus et les salariés tout en valorisant les actions du CSE en matière d’activités sociales et culturelles. Par conséquent, mettre en place une newsletter CSE ou une communication ASC structurée améliore significativement l’image et l’impact de votre comité.\n\nCOMMUNICATION — DEPUIS 2017\n\n# Communication de votre instance\n\nLa communication CSE est un levier essentiel pour informer les salariés des activités du Comité Social et Économique. En effet, une communication efficace renforce le lien entre élus et salariés. Ainsi, via notre newslet\n\n[Demander un devis gratuit →](/tarification/)\n[Tous nos services](/nos-services-pv/)\n\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\n\n2017\n\nAnnée de création\n\n48 à 72h\n\nDélai moyen de livraison\n\n3\n\nFormats de PV au choix\n\n15\n\nGuides juridiques publiés\n\nBONNES PRATIQUES\n\n## Communication CSE newsletter ASC : les bonnes pratiques\n\nEn premier lieu, définissez les objectifs de votre communication CSE newsletter ASC : informer sur les avantages salariés, communiquer sur les réunions plénières, présenter les actions culturelles.\n\n📋\n\n### Quels contenus inclure dans votre newsletter CSE ?\n\n⚖️\n\n### Newsletter ActuCSE\n\n🛡️\n\n### Communication ASC\n\n📅\n\n### Guide du comité\n\nPOURQUOI ATOOPV\n\n## POURQUOI ATOOPV\n\nAtooPV accompagne les CSE, CSSCT et IRP dans leur communication interne : newsletter salariés, valorisation des ASC, guides pratiques pour vos élus. Des outils clés en main pour renforcer le dialogue\n\n⚖️\n\nRédaction mensuelle ou trimestrielle\n\n🛡️\n\nActualités sociales et juridiques\n\n📅\n\nMise en page professionnelle\n\n🎓\n\nFormat PDF ou email HTML\n\n## Communication CSE newsletter ASC : les bonnes pratiques\n\nDécrivez-nous votre situation. Nous vous adressons un devis gratuit et personnalisé sous 24 heures.\n\n[Demander un devis gratuit →](/tarification/)\n[Découvrir tous nos services](/nos-services-pv/)\n\n04 12 10 06 06 · [contact@atoopv.com](mailto:contact@atoopv.com) · ALC SAS — SIREN 833 781 248\n\n## Questions fréquentes\n\nCliquez sur une question pour afficher la réponse.\n\nQu’est-ce que la newsletter ActuCSE ?\n\nActuCSE est une lettre d’information destinée aux salariés. Elle résume en deux à trois pages les décisions du comité, les activités sociales et culturelles et les actualités de l’entreprise, dans un format clair et lisible par tous. ALC en assure la rédaction et la mise en page. Un CSE qui communique régulièrement gagne en légitimité : l’information vaut autant que l’action quand il s’agit de mobiliser les salariés.\n\nQuelle différence entre le PV et la newsletter ActuCSE ?\n\nLe PV est le document officiel et complet de la réunion, destiné aux élus et à l’employeur. ActuCSE en est une version courte et accessible, pensée pour informer l’ensemble des salariés sans les noyer sous le détail des débats. Les deux outils sont complémentaires : l’un fait foi, l’autre fait lien.\n\nPeut-on diffuser un résumé du PV aux salariés ?\n\nOui. Une fois le PV adopté, le comité peut le communiquer aux salariés sous forme intégrale ou sous forme de synthèse. ActuCSE remplit ce second rôle : elle valorise l’action du CSE tout en respectant la confidentialité des informations sensibles, qui restent hors du document diffusé.\n\nSous quel délai la newsletter est-elle livrée ?\n\nComptez sept à dix jours ouvrables lorsque ALC rédige le contenu. Si vous fournissez vous-même le rédactionnel, la mise en page est livrée sous 72 heures à compter de sa transmission.\n"
+    }
+  },
+  "hub-formations-elus-cse-agree": {
+    "label": "Formations élus CSE agréées",
+    "group": "Hub pages",
+    "path": "/services/training",
+    "defaults": {
+      "title": "Formation élus CSE — Droit du travail, CSSCT, heures de délégation",
+      "badge": "Services",
+      "markdown": "Les formations élus CSE agréé est un droit fondamental prévu par le Code du travail. En effet, chaque élu du Comité Social et Économique peut bénéficier d’une formation dès le début de son mandat. Ainsi, ces formations CSE permettent aux élus de maîtriser leurs droits et leurs obligations. Par conséquent, un élu bien formé exerce un mandat plus efficace et mieux protégé.\n\n## Pourquoi suivre une formation CSE agréée ?\n\nAinsi, chaque formation répond aux exigences du Code du travail. Par conséquent, les élus titulaires bénéficient d’une formation économique approfondie. De plus, tous les élus, titulaires comme suppléants, ont accès à la formation santé-sécurité. En outre, ces formations peuvent se tenir en présentiel ou à distance selon vos contraintes. Notamment, notre organisme de formation est agréé et reconnu par les autorités compétentes. Enfin, un devis personnalisé vous est transmis sous 24 heures.\n\nEn premier lieu, la formation économique des membres titulaires du CSE dure cinq jours au maximum. En second lieu, la formation en santé-sécurité concerne l’ensemble des élus sans exception. Toutefois, les durées varient selon le mandat et la taille de l’établissement. Par ailleurs, ces formations se financent sur le budget de fonctionnement du CSE ou sur les fonds de l’employeur. Enfin, notre organisme agréé accompagne les élus tout au long de leur parcours de formation.\n\nPar exemple, la formation CSSCT prépare les élus aux inspections et aux analyses d’accidents. En revanche, la formation économique se concentre sur la lecture des bilans et comptes prévisionnels. Dès lors, chaque élu peut choisir la formation adaptée à ses responsabilités au sein du CSE. De plus, notre équipe vous conseille dans le choix du format et du calendrier le plus adapté.\n\nAinsi, les élus formés peuvent mieux défendre les intérêts des salariés. En conséquence, la qualité du dialogue social au sein de l’entreprise s’améliore sensiblement. Notamment, les membres de la CSSCT tirent un bénéfice direct de la formation santé-sécurité. Par conséquent, nous vous recommandons de planifier vos formations dès le début du mandat.\n\nFORMATIONS AGRÉÉES — DEPUIS 2017\n\n# Formation élus CSE — Droit du travail, CSSCT, heures de délégation\n\nLes formations élus CSE agréé est un droit fondamental prévu par le Code du travail. En effet, chaque élu du Comité Social et Économique peut bénéficier d’une formation dès le début de son mandat. Ainsi, ces formati\n\n[Demander un devis gratuit →](/tarification/)\n[Tous nos services](/nos-services-pv/)\n\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\n\n2017\n\nAnnée de création\n\n48 à 72h\n\nDélai moyen de livraison\n\n3\n\nFormats de PV au choix\n\n15\n\nGuides juridiques publiés\n\nNOTRE CATALOGUE\n\n## Formations élus CSE agréé : stages obligatoires et recommandés\n\nLes formations pour élus CSE couvrent plusieurs domaines essentiels. D’une part, la formation économique (5 jours) permet aux élus d’analyser la situation économique et financière de l’entreprise. D’a\n\n📋\n\n### Composition et attributions du CSE\n\n⚖️\n\n### Rôles du secrétaire, du trésorier, des élus\n\n🛡️\n\n### Heures de délégation : règles et bons usages\n\n📅\n\n### Ordre du jour, convocation, règles de majorité\n\nNOS FORMATIONS À LA CARTE\n\n## Des formations ciblées selon les besoins de vos élus\n\nEn complément du parcours agréé , AtooPV propose aussi des formations courtes sur des thématiques précises : [formation économique des élus du CSE (5 jours)](/formation-economique-elus-cse/), [rôle et missions du trésorier](/formation-cse-tresorier/), [droit social et rupture du contrat de travail](/formation-droit-social-contrat-travail/), et [communication professionnelle](/formation-pro-communication/).\n\nPOURQUOI CHOISIR ALC\n\n## Formations élus CSE agréé : notre catalogue complet\n\nAinsi, les formations élus CSE d’AtooPV permettent aux membres du Comité Social et Économique d’acquérir les compétences juridiques, économiques et managériales nécessaires à leur mandat.\n\n⚖️\n\nComposition et attributions du CSE\n\n🛡️\n\nRôles du secrétaire, du trésorier, des élus\n\n📅\n\n### Heures de délégation\n\nrègles et bons usages\n\n🎓\n\nOrdre du jour, convocation, règles de majorité\n\n## Formations élus CSE agréé : notre catalogue complet\n\nDécrivez-nous votre situation. Ainsi, nous vous adressons un devis gratuit et personnalisé sous 24 heures.\n\n[Demander un devis gratuit →](/tarification/)\n[Découvrir tous nos services](/nos-services-pv/)\n\n04 12 10 06 06 · [contact@atoopv.com](mailto:contact@atoopv.com) · ALC SAS — SIREN 833 781 248\n\n## Questions fréquentes\n\nCliquez sur une question pour afficher la réponse.\n\nLa formation des élus du CSE est-elle obligatoire ?\n\nOui, dans les entreprises d’au moins cinquante salariés. En effet, le Code du travail prévoit deux formations distinctes : la formation économique des membres titulaires (article L.2315-63) et la formation santé, sécurité et conditions de travail destinée à tous les élus (article L.2315-18). Ainsi, elles répondent à des objectifs, des durées et des modalités de financement différents : il ne faut pas les confondre.\n\nQui finance la formation des élus ?\n\nCela dépend de la formation. En effet, pour la formation économique, les frais pédagogiques sont pris en charge par le budget de fonctionnement du CSE, tandis que le temps passé est rémunéré par l’employeur comme du temps de travail (articles L.2315-63 et L.2315-16). En outre, pour la formation santé-sécurité, dans les entreprises d’au moins cinquante salariés, l’employeur prend en charge l’ensemble des frais.\n\nQuelle est la durée de ces formations ?\n\nEn effet, la formation économique dure au maximum cinq jours par mandat et peut être fractionnée (article L.2315-63). En outre, la formation santé-sécurité est de cinq jours lors du premier mandat ; en cas de renouvellement, elle serait de trois jours, portée à cinq pour les membres de la CSSCT dans les établissements d’au moins trois cents salariés.\n\n### Modalités pratiques des formations CSE\n\nQui peut dispenser ces formations ?\n\nEn pratique, la formation est exécutée par B3, organisme déclaré sous le NDA 84740456974, agréé pour la formation économique des membres du CSE (article L.2315-63, arrêté DREETS Auvergne-Rhône-Alpes). Par ailleurs, ALC SAS assure la relation commerciale et contractuelle. En outre, pour la formation santé-sécurité, la loi impose un organisme figurant sur la liste arrêtée par l’autorité administrative : vérifiez toujours cet agrément avant de vous engager.\n\nTitulaires, suppléants : qui a droit à quoi ?\n\nAinsi, la formation économique s’adresse aux membres titulaires du CSE. Également, la formation santé-sécurité concerne l’ensemble des élus, titulaires comme suppléants, dès le premier mandat. Ainsi, un suppléant peut donc être formé en santé-sécurité même s’il n’a pas accès, à ce titre, à la formation économique.\n\nLes formations se déroulent-elles en présentiel ou à distance ?\n\nEn pratique, les deux sont possibles, sur site dans vos locaux ou à distance, selon vos contraintes d’organisation. Ainsi, le format se définit avec vous lors de l’établissement du devis, en fonction du nombre de participants et des disponibilités des élus.\n"
+    }
+  },
+  "hub-tarif-redaction-pv-cse": {
+    "label": "Tarif rédaction PV CSE",
+    "group": "Hub pages",
+    "path": "/services/tarifs-infos",
+    "defaults": {
+      "title": "Tarif Rédaction PV CSE – Combien coûte un procès-verbal ?",
+      "badge": "Services",
+      "markdown": "Prix d’un procès-verbal de CSE externalisé, facteurs influençant le tarif, comparatif et grille tarifaire AtooPV. Tout pour budgétiser votre prestation de rédaction.\n\nTARIFS & INFOS — DEPUIS 2017\n\n# Tarif rédaction PV CSE :combien ça coûte ?\n\nPrix d’un procès-verbal de CSE externalisé, facteurs influençant le tarif, comparatif et grille tarifaire AtooPV. Tout pour budgétiser votre [prestation de rédaction](https://atoopv.com/redaction-pv-cse/).\n\n[Demander un devis gratuit →](/tarification/)\n[Tous nos services](/nos-services-pv/)\n\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\nCSE✦\nCSEC✦\nCSSCT✦\nQVCT✦\nCÉCO✦\nAssemblée Générale✦\n\n2017\n\nAnnée de création\n\n48 à 72h\n\nDélai moyen de livraison\n\n3\n\nFormats de PV au choix\n\n15\n\nGuides juridiques publiés\n\nTARIFICATION\n\n## Ce qui influence le tarif d’un PV CSE\n\nLe coût d’un procès-verbal de CSE externalisé dépend de plusieurs paramètres clés.\n\n📋\n\n### Durée de la réunion\n\n⚖️\n\n### Mode d’intervention\n\n🛡️\n\n### Fréquence\n\n📅\n\n### Taille du CSE\n\nPOURQUOI ATOOPV\n\n## POURQUOI ATOOPV\n\nPrix d’un procès-verbal de CSE externalisé, facteurs influençant le tarif, comparatif et grille tarifaire AtooPV. Tout pour budgétiser votre prestation de rédaction.\n\n⚖️\n\nTranscription complète\n\n🛡️\n\nLivraison sous 48h\n\n📅\n\n2 échanges inclus\n\n🎓\n\nFormat Word + PDF\n\n## Obtenez votre devis gratuit en 2 minutes\n\nDécrivez-nous votre situation. Nous vous adressons un devis gratuit et personnalisé sous 24 heures.\n\n[Demander un devis gratuit →](/tarification/)\n[Découvrir tous nos services](/nos-services-pv/)\n\n04 12 10 06 06 · [contact@atoopv.com](mailto:contact@atoopv.com) · ALC SAS — SIREN 833 781 248\n"
+    }
+  },
+  "hub-guides-livres-blancs-cse": {
+    "label": "Guides & livres blancs",
+    "group": "Hub pages",
+    "path": "/ressources",
+    "defaults": {
+      "title": "Guides juridiques CSE",
+      "badge": "Ressources",
+      "markdown": "Un PV mal rédigé ne se voit qu’au moment où il faut le produire devant un juge. C’est à ce moment-là qu’on découvre qu’une mention manque, qu’un délai n’a pas été respecté, qu’un vote a été mal décompté. Ces guides existent pour que cette découverte se fasse avant, pas pendant un contentieux. C’est justement l’objet de ce guide CSE réunions : sécuriser chaque étape du processus, de la convocation jusqu’à l’adoption définitive du procès-verbal.\n\n## 📘 Les Réunions du CSE — le guide complet\n\nConvocation, ordre du jour, votes, procès-verbal : c’est le cycle que traverse chaque réunion. C’est là que se nichent la plupart des irrégularités qu’on rencontre dans les PV traités. Ce guide de 31 pages reprend chaque étape avec les articles du Code du travail à jour, la jurisprudence qui s’y rattache, et des cas pratiques chiffrés — notamment sur le calcul des majorités, le point qui revient le plus souvent dans les questions qu’on nous pose.\n\n### ⚠️ Convocation, quorum et procès-verbal : les pièges à éviter\n\nLe Code du travail encadre le délai de transmission de l’ordre du jour, pas celui de la convocation elle-même : trois jours au moins avant la réunion, communément décomptés en jours ouvrables (art. L2315-30). En pratique, ce délai reste l’une des premières causes d’annulation d’une délibération quand il n’est pas respecté.\n\nAutre confusion fréquente, et plus lourde de conséquences : le CSE ne connaît pas de quorum. Le Code du travail n’en impose aucun, ni pour la validité d’une réunion ni pour celle d’un vote — la majorité se calcule sur les membres présents ayant voix délibérative (titulaires, ou suppléants remplaçant un titulaire absent), jamais sur l’effectif inscrit. Une résolution adoptée par le seul élu resté en séance après le départ des autres reste donc valable en droit. Nombre de PV mentionnent pourtant un « quorum atteint » ou « non atteint » qui n’a aucune existence légale.\n\n### 📝 Rédaction du procès-verbal : ce que couvre le guide\n\nNotre guide CSE réunions détaille également la rédaction du procès-verbal : les mentions obligatoires, les délais de transmission à l’employeur, et les formulations à éviter pour ne pas exposer le CSE à un risque contentieux. Pour aller plus loin sur le cadre légal, vous pouvez consulter directement le texte du Code du travail sur [Légifrance](https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006072050/).\n\nLes cas pratiques chiffrés inclus dans le guide permettent de vérifier, exemple à l’appui, le bon décompte d’une majorité — la difficulté concrète quand une réunion est houleuse et le vote serré.\n\n### ❓ Les questions les plus fréquentes\n\nConcrètement, les questions qui reviennent le plus souvent portent sur trois points : le report d’une réunion en l’absence d’élus, la contestation d’un vote pour vice de procédure, et le refus de signer un procès-verbal par un élu minoritaire. Le guide répond à chacune de ces situations avec la référence légale correspondante et un exemple de rédaction. Vous y trouverez également un rappel sur la répartition des voix entre titulaires et suppléants, un point technique qui prête souvent à confusion lors des scrutins serrés.\n\nFeuilletez-le directement ci-dessous.\n\n## 🔒 Cinq autres guides sont disponibles sur demande\n\nOn a préféré ne pas tout mettre en libre accès. Un guide qu’on demande, qu’on reçoit par email et qu’on lit, sert davantage qu’un PDF de plus dans un dossier de téléchargements jamais rouvert.\n\nVoici ce qui vous attend\n\nAtooPV — Guide juridique\n\nTitulaire\n\nSuppléant\n\nReport possible : 3 mois\n\n#### Les heures de délégation\n\nCe qui est dû, ce qui se reporte, ce qui se mutualise, et l’erreur de calcul la plus fréquente côté employeur.\n\nAtooPV — Guide juridique\n\nProtocole d’accord préélectoral ✓\n\nRépartition des sièges ✓\n\nDépouillement & PV ✓\n\n#### Les élections professionnelles\n\nDu protocole d’accord préélectoral au dépouillement, avec les motifs d’annulation les plus invoqués devant le tribunal judiciaire.\n\nAtooPV — Guide juridique\n\nConformité ASC\n\nPoints de vigilance : 4\n\n#### Le contrôle URSSAF\n\nPriorité aux activités sociales et culturelles : ce qui est vérifié en premier, et comment s’y préparer.\n\nAtooPV — Guide juridique\n\nAutorisation\n\n#### Le licenciement d’un élu\n\nLa procédure d’autorisation, les délais, et pourquoi l’inspection du travail refuse plus souvent qu’on ne le pense.\n\nAtooPV — Guide juridique\n\nFonct.\n\nASC\n\n#### Les ressources financières du CSE\n\nBudget de fonctionnement, budget ASC, ce qui peut légalement passer de l’un à l’autre.\n\nBesoin d’un accompagnement complet pour la rédaction de vos procès-verbaux ? Découvrez notre [offre de rédaction de PV CSE](https://atoopv.com/redaction-du-pv/).\n"
+    }
+  }
+}

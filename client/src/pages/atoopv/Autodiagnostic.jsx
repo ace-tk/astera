@@ -7,7 +7,7 @@ import DiagnosticQuiz from '@/components/atoopv/DiagnosticQuiz'
 import RichTextSection from '@/components/services/RichTextSection'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { AUTODIAGNOSTIC_HERO, AUTODIAGNOSTIC_INTRO, AUTODIAGNOSTIC_WHY, AUTODIAGNOSTIC_QUIZ, AUTODIAGNOSTIC_CTA } from '@/constants/autodiagnosticHome'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV Autodiagnostic page — content extracted verbatim in French
@@ -17,7 +17,10 @@ import { AUTODIAGNOSTIC_HERO, AUTODIAGNOSTIC_INTRO, AUTODIAGNOSTIC_WHY, AUTODIAG
  * everything else reuses AtoopvHero/RichTextSection/CTASection unmodified.
  */
 export default function Autodiagnostic() {
-  usePageMeta({ title: AUTODIAGNOSTIC_HERO.title, description: AUTODIAGNOSTIC_HERO.lead })
+  // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
+  // Quiz scoring (scores, result thresholds) is part of the design and is never taken from the CMS.
+  const c = useSitePage('autodiagnostic')
+  usePageMeta({ title: c.hero.title, description: c.hero.lead })
 
   return (
     <motion.main
@@ -30,22 +33,22 @@ export default function Autodiagnostic() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero badge={AUTODIAGNOSTIC_HERO.badge} title={AUTODIAGNOSTIC_HERO.title} lead={AUTODIAGNOSTIC_HERO.lead} />
+      <AtoopvHero badge={c.hero.badge} title={c.hero.title} lead={c.hero.lead} />
 
       <div className="shell py-14 sm:py-16">
         <div className="mx-auto max-w-3xl space-y-14">
-          <RichTextSection eyebrow={AUTODIAGNOSTIC_INTRO.eyebrow} heading={AUTODIAGNOSTIC_INTRO.heading} blocks={AUTODIAGNOSTIC_INTRO.blocks} color="royal" />
-          <RichTextSection eyebrow={AUTODIAGNOSTIC_WHY.eyebrow} heading={AUTODIAGNOSTIC_WHY.heading} blocks={AUTODIAGNOSTIC_WHY.blocks} color="royal" />
+          <RichTextSection eyebrow={c.intro.eyebrow} heading={c.intro.heading} blocks={c.intro.blocks} color="royal" />
+          <RichTextSection eyebrow={c.why.eyebrow} heading={c.why.heading} blocks={c.why.blocks} color="royal" />
         </div>
       </div>
 
       <div className="shell pb-14 sm:pb-16">
         <div className="mx-auto max-w-2xl">
-          <DiagnosticQuiz {...AUTODIAGNOSTIC_QUIZ} color="royal" />
+          <DiagnosticQuiz {...c.quiz} color="royal" />
         </div>
       </div>
 
-      <CTASection {...AUTODIAGNOSTIC_CTA} />
+      <CTASection {...c.cta} />
       <AtoopvFooter />
     </motion.main>
   )

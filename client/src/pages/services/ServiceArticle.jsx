@@ -16,6 +16,7 @@ import ServiceCategoryContent from '@/components/services/ServiceCategoryContent
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { useServicePage } from '@/cms/useServicePage'
 import CmsArticleGate from '@/cms/CmsArticleGate'
+import { useHubPage } from '@/cms/useHubPage'
 import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
@@ -96,7 +97,8 @@ const CARTE_MARKER = 'NOS FORMATIONS À LA CARTE'
 export default function ServiceArticle({ category, slug: slugProp }) {
   const { slug: slugParam } = useParams()
   const slug = slugProp || slugParam
-  const bundled = getServicePage(slug)
+  // Hub pages (the section landing pages) take their text from the CMS site page of the same name, if published.
+  const bundled = useHubPage(slugProp ? slug : null, getServicePage(slug))
 
   // Where the content comes from: the bundled markdown (every page that hasn't
   // been migrated — no network involved) or the CMS (migrated pages, brand-new

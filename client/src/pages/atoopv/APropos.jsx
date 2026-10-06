@@ -9,15 +9,7 @@ import { AProposNavSticky, AProposNavMobile } from '@/components/atoopv/AProposN
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
-import {
-  A_PROPOS_HERO,
-  A_PROPOS_MISSION,
-  A_PROPOS_VALUES,
-  A_PROPOS_APPROACH,
-  A_PROPOS_FOUNDER,
-  A_PROPOS_SIRUS,
-  A_PROPOS_CTA,
-} from '@/constants/aProposHome'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV À propos page — content extracted verbatim in French from
@@ -33,7 +25,10 @@ import {
 // Built in this .jsx page rather than the .js constants file since JSX
 // isn't set up to compile there.
 function CtaFooterWithContactLink({ footer }) {
-  const [phone, email, company] = footer.split(' · ')
+  const parts = footer.split(' · ')
+  // The admin can reword this line; only the exact "phone · email · company" shape gets the email link.
+  if (parts.length !== 3) return footer
+  const [phone, email, company] = parts
   return (
     <>
       {phone} ·{' '}
@@ -46,15 +41,11 @@ function CtaFooterWithContactLink({ footer }) {
 }
 
 export default function APropos() {
-  usePageMeta({ title: stripEmphasis(A_PROPOS_HERO.title), description: A_PROPOS_HERO.lead })
+  // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
+  const { hero, mission, values, approach, founder, sirus, cta } = useSitePage('a-propos')
+  usePageMeta({ title: stripEmphasis(hero.title), description: hero.lead })
 
-  const chapters = buildChapters({
-    mission: A_PROPOS_MISSION,
-    values: A_PROPOS_VALUES,
-    approach: A_PROPOS_APPROACH,
-    founder: A_PROPOS_FOUNDER,
-    sirus: A_PROPOS_SIRUS,
-  })
+  const chapters = buildChapters({ mission, values, approach, founder, sirus })
 
   return (
     <motion.main
@@ -74,20 +65,14 @@ export default function APropos() {
         <div className="shell">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_16rem] lg:gap-14 xl:grid-cols-[1fr_18rem]">
             <div>
-              <AProposHero {...A_PROPOS_HERO} />
+              <AProposHero {...hero} />
 
               <div className="mt-8">
                 <AProposNavMobile chapters={chapters} />
               </div>
 
               <div className="mt-16 sm:mt-20">
-                <AProposSections
-                  mission={A_PROPOS_MISSION}
-                  values={A_PROPOS_VALUES}
-                  approach={A_PROPOS_APPROACH}
-                  founder={A_PROPOS_FOUNDER}
-                  sirus={A_PROPOS_SIRUS}
-                />
+                <AProposSections mission={mission} values={values} approach={approach} founder={founder} sirus={sirus} />
               </div>
             </div>
 
@@ -98,7 +83,7 @@ export default function APropos() {
 
       {/* Untouched per the brief: same component, same props, same content —
           only the footer's plain-text email becomes a real link. */}
-      <CTASection {...A_PROPOS_CTA} footer={<CtaFooterWithContactLink footer={A_PROPOS_CTA.footer} />} />
+      <CTASection {...cta} footer={<CtaFooterWithContactLink footer={cta.footer} />} />
       <AtoopvFooter />
     </motion.main>
   )

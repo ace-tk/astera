@@ -1,4 +1,4 @@
-import { FORMATION_ECONOMIQUE_FRAGMENTS, COMMUNICATION_FRAGMENTS } from '@/constants/fragmentsIntros'
+import { FORMATION_ECONOMIQUE_FRAGMENTS, COMMUNICATION_FRAGMENTS } from '../constants/fragmentsIntros.js'
 
 /*
  * `FragmentsToDocument` (components/atoopv/FragmentsToDocument.jsx) is a purely decorative,

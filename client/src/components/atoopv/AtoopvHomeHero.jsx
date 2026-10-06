@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button'
 import HeroTextTrack from '@/components/atoopv/HeroTextTrack'
 import RoadmapCarousel from '@/components/atoopv/RoadmapCarousel'
 import { useSlideCarousel } from '@/hooks/useSlideCarousel'
-import { HOMEPAGE_ORCHESTRATED, NOTRE_CONVICTION } from '@/constants/atoopvHome'
+import { useSitePage } from '@/cms/useSitePage'
 
 const EASE = [0.16, 1, 0.3, 1]
 
@@ -224,6 +224,7 @@ function PinnedHero({ hero, heroSlides }) {
 export default function AtoopvHomeHero({ hero }) {
   const isDesktop = useIsDesktop(1024)
   const reduceMotion = useReducedMotion()
+  const { orchestrated: HOMEPAGE_ORCHESTRATED, conviction: NOTRE_CONVICTION } = useSitePage('accueil')
   const heroSlides = [
     hero,
     { badge: HOMEPAGE_ORCHESTRATED.eyebrow, title: HOMEPAGE_ORCHESTRATED.heading[0], lead: HOMEPAGE_ORCHESTRATED.lead },

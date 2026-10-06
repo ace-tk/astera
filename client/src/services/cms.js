@@ -27,6 +27,9 @@ export const fetchCmsFooter = () => withTimeout(api.get('/cms/footer')).then((r)
 export const fetchCmsHomeHero = () => withTimeout(api.get('/cms/home-hero')).then((r) => r.homeHero)
 export const fetchCmsLegalPages = () => withTimeout(api.get('/cms/legal-pages')).then((r) => r.legalPages)
 
+/** Resolves to a site page's LIVE content (Tarification, À propos, Contact), or null when it was never published. */
+export const fetchCmsSitePage = (key) => withTimeout(api.get(`/cms/site-pages/${key}`)).then((r) => r.content)
+
 /* ---------------------------------- admin ---------------------------------- */
 
 const A = '/admin/cms'
@@ -75,6 +78,11 @@ export const fetchAdminLegalPages = () => api.get(`${A}/legal-pages`).then((r) =
 export const saveAdminLegalPagesDraft = (content, rev) => api.patch(`${A}/legal-pages`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.legalPages)
 export const publishAdminLegalPages = () => api.post(`${A}/legal-pages/publish`).then((r) => r.legalPages)
 export const discardAdminLegalPages = () => api.post(`${A}/legal-pages/discard`).then((r) => r.legalPages)
+
+export const fetchAdminSitePage = (key) => api.get(`${A}/site-pages/${key}`).then((r) => r.sitePage)
+export const saveAdminSitePageDraft = (key, content, rev) => api.patch(`${A}/site-pages/${key}`, { content, ...(rev != null ? { rev } : {}) }).then((r) => r.sitePage)
+export const publishAdminSitePage = (key) => api.post(`${A}/site-pages/${key}/publish`).then((r) => r.sitePage)
+export const discardAdminSitePage = (key) => api.post(`${A}/site-pages/${key}/discard`).then((r) => r.sitePage)
 
 export const fetchSectionNavList = () => api.get(`${A}/section-navs`).then((r) => r.sections)
 export const fetchSectionNav = (section) => api.get(`${A}/section-navs/${section}`).then((r) => r.nav)

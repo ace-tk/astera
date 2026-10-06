@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
@@ -8,7 +9,7 @@ import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getAtoosavoirPage } from '@/services/atoosavoirContent'
-import { ATOOSAVOIR_CGV_HERO } from '@/constants/atoosavoirHome'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV atoosavoir/cgv page — the section's terms of sale, rendered
@@ -20,8 +21,11 @@ import { ATOOSAVOIR_CGV_HERO } from '@/constants/atoosavoirHome'
  */
 export default function AtoosavoirCgv() {
   const page = getAtoosavoirPage('atoosavoir-cgv')
+  // The bundled terms are the default; whatever the admin published (Content → Menus → Site pages) is merged over them.
+  const bundled = useMemo(() => (page ? { markdown: page.body } : undefined), [page])
+  const c = useSitePage('atoosavoir-cgv', bundled)
 
-  usePageMeta({ title: ATOOSAVOIR_CGV_HERO.title, description: ATOOSAVOIR_CGV_HERO.lead })
+  usePageMeta({ title: c.hero.title, description: c.hero.lead })
 
   return (
     <motion.main
@@ -34,15 +38,15 @@ export default function AtoosavoirCgv() {
       <AmbientBackground />
       <Navbar />
 
-      <AtoopvHero title={ATOOSAVOIR_CGV_HERO.title} lead={ATOOSAVOIR_CGV_HERO.lead} />
+      <AtoopvHero title={c.hero.title} lead={c.hero.lead} />
 
       <section className="relative py-14 sm:py-16">
         <div className="shell">
           <div className="mx-auto max-w-3xl">
             <Link to="/atoosavoir" className="inline-flex items-center gap-1.5 text-sm font-medium text-muted link-underline">
-              <ArrowLeft className="h-3.5 w-3.5" /> Retour à atoosavoir
+              <ArrowLeft className="h-3.5 w-3.5" /> {c.backLink.label}
             </Link>
-            <div className="mt-8">{page && <MarkdownArticle body={page.body} color="royal" />}</div>
+            <div className="mt-8">{page && <MarkdownArticle body={c.markdown} color="royal" />}</div>
           </div>
         </div>
       </section>

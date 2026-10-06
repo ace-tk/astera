@@ -9,6 +9,7 @@ import ServicesHomeIntro from '@/components/services/ServicesHomeIntro'
 import ServicesStatsStrip from '@/components/services/ServicesStatsStrip'
 import ServicesGroupSection from '@/components/services/ServicesGroupSection'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
+import { useHubPage } from '@/cms/useHubPage'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getServicePage, excerpt } from '@/services/servicesContent'
 import { resolveServiceHref } from '@/constants/servicesLinks'
@@ -34,7 +35,7 @@ function closingCta(cta) {
  * ever changes shape enough that the parser can't find its markers.
  */
 export default function Services() {
-  const page = getServicePage('services')
+  const page = useHubPage('services', getServicePage('services'))
   const parsed = page ? parseServicesHomeBody(page.body) : null
 
   usePageMeta({ title: page ? stripEmphasis(page.title) : 'Services', description: page ? excerpt(page.body, 160) : undefined })

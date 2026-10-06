@@ -50,5 +50,36 @@ export const CMS_DRIVEN_SLUGS = new Set([
 /** Emergency kill switch: build with VITE_CMS_SOURCE=bundled to ignore the CMS entirely. */
 export const CMS_ENABLED = import.meta.env.VITE_CMS_SOURCE !== 'bundled'
 
-/** Ressources Article pages that are driven by the CMS (none migrated yet; new CMS pages work without being listed). */
-export const CMS_DRIVEN_RESSOURCES = new Set()
+/**
+ * Ressources Article pages that are driven by the CMS — same switch as CMS_DRIVEN_SLUGS above.
+ *
+ * REPORTED BUG (2026-10-06): edits to Ressources/Blog articles were published in the CMS but never
+ * showed on the public site. Two causes, both fixed here and in RessourceArticle.jsx:
+ *   1. this set was empty, so these pages never asked the CMS at all;
+ *   2. all 34 migrated articles are stored in the CMS under their OLD address
+ *      `/atoopv/ressources/<slug>` (the route was later renamed to `/ressources/<slug>`, but the
+ *      stored documents were deliberately not rewritten), so even a lookup at the new address 404s.
+ * Slugs below are exactly the ressources-article pages published in the live CMS (GET /api/cms/index,
+ * 2026-10-06). A newly migrated article still needs adding here by hand.
+ */
+export const CMS_DRIVEN_RESSOURCES = new Set([
+  'actualite-sociale', 'arret-maladie-duree-legale-lfss-2026-droits-salarie',
+  'canicule-travail-decret-2025-482-obligations-employeur-cse', 'cas-pratiques',
+  'comment-lire-arret-cour-de-cassation', 'commissaire-de-justice-cse-constat-entrave',
+  'competences-elu-cse-mandat', 'compteur-cp-arret-maladie-verifications-avant-solder',
+  'conge-paye-vendredi-37h-decompte-jours-ouvrables', 'conges-payes-heures-supplementaires-calcul-bulletins-paie',
+  'demission-mandat-cse-elu-protection', 'droit-image-salarie-depart-jurisprudence-cour-cassation',
+  'droits-elus-cse-guide-juridique', 'grossesse-licenciement-nul-protection-salariee-cour-cassation-2026',
+  'harcelement-moral-methodes-gestion-cse', 'heures-supplementaires-annualisation-arret-maladie-calcul-cour-cassation',
+  'heures-supplementaires-conges-payes-calcul', 'histoire-cse-comite-entreprise-cnr-1943',
+  'jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse', 'la-minute-cse', 'mentions-obligatoires-pv',
+  'mise-a-pied-conservatoire-elu-cse', 'modele-pv-cse-premium-integral', 'modeles-pv', 'proces-verbal',
+  'reglement-interieur-fin-depot-greffe-mai-2026-loi-simplification', 'reorganisation-silencieuse-cse-demissions',
+  'signature-du-proces-verbal-de-reunion-du-cse', 'solde-de-tout-compte-signature', 'surveillance-salaries-cnil-cse',
+  'teletravail-impose-cse-droits-employeur', 'tickets-restaurant-teletravail-droit-teletravailleurs',
+  'veille-juridique-cse-8-25-juillet-2026', 'veille-sociale-cse-juin-2026',
+])
+
+/** CMS address of a Ressources article: migrated ones live under the legacy `/atoopv/ressources/…` path. */
+export const ressourceCmsPath = (slug) =>
+  CMS_DRIVEN_RESSOURCES.has(slug) ? `/atoopv/ressources/${slug}` : `/ressources/${slug}`

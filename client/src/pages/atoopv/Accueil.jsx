@@ -30,8 +30,7 @@ import CTASection from '@/components/services/CTASection'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis, renderEmphasis } from '@/utils/richText'
-import { ACCUEIL, ATOOPV_STATS, NOS_INSTANCES, HOMEPAGE_GUARANTEES } from '@/constants/atoopvHome'
-import { TARIFICATION_HERO, TARIFICATION_INTRO, TARIFICATION_TIERS, TARIFICATION_CALCULATOR } from '@/constants/tarificationHome'
+import { useSitePage } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV Accueil (home) page — content extracted verbatim in French
@@ -44,7 +43,15 @@ import { TARIFICATION_HERO, TARIFICATION_INTRO, TARIFICATION_TIERS, TARIFICATION
  * Contact) in later phases.
  */
 export default function Accueil() {
-  const { hero, statsCaption, expertise, process, video, veille, devis, quickDiagnostic, garanties, sectors, testimonials, cta, resources } = ACCUEIL
+  // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages → Accueil) is merged over it.
+  const c = useSitePage('accueil')
+  const { hero, expertise, process, video, veille, devis, quickDiagnostic, garanties, sectors, testimonials, cta, resources } = c
+  const ATOOPV_STATS = c.stats
+  const NOS_INSTANCES = c.instances
+  const statsCaption = c.statsCaption.text
+
+  // The homepage reuses the Tarification page's simulator, so it follows that page's published prices/text too.
+  const tarif = useSitePage('tarification')
 
   usePageMeta({ title: stripEmphasis(hero.title), description: hero.lead })
 
@@ -98,11 +105,11 @@ export default function Accueil() {
           timeline, without removing it from Tarification. */}
       <div className="shell pt-2 pb-14 sm:pt-4 sm:pb-16">
         <PVSimulator
-          title={TARIFICATION_HERO.title}
-          tiers={TARIFICATION_TIERS}
-          badge={TARIFICATION_HERO.badge}
-          intro={TARIFICATION_INTRO.blocks[0]?.text}
-          {...TARIFICATION_CALCULATOR}
+          title={tarif.hero.title}
+          tiers={tarif.tiers}
+          badge={tarif.hero.badge}
+          intro={tarif.intro.text}
+          {...tarif.calculator}
           color="royal"
         />
       </div>
@@ -114,13 +121,13 @@ export default function Accueil() {
           untouched — consolidating the two process sections is a content
           decision for later, not made here. Orchestrated Intelligence
           renders first, Process second (reversed from original order). */}
-      <OrchestratedIntelligence />
-      <NotreConviction />
-      <CommentCaMarche />
+      <OrchestratedIntelligence data={c.orchestrated} />
+      <NotreConviction data={c.conviction} />
+      <CommentCaMarche data={c.howItWorks} />
       {/* Same ProcessRecomposed component/animation, new data — "Ce que
           nous garantissons, sur les deux offres." replaces the original
           "Capturer la réunion → Livrer le PV" content at this position. */}
-      <ProcessRecomposed data={HOMEPAGE_GUARANTEES} />
+      <ProcessRecomposed data={c.guarantees} />
 
       <section className="relative py-10 sm:py-12">
         <div className="shell">
@@ -147,7 +154,7 @@ export default function Accueil() {
         heading={devis.heading}
         body={devis.body}
         primaryCta={devis.primaryCta}
-        visual={<PVPreviewDocument tier={TARIFICATION_TIERS[0]} instance="CSE" style="indirect" duration={2} color="royal" />}
+        visual={<PVPreviewDocument tier={tarif.tiers[0]} instance="CSE" style="indirect" duration={2} color="royal" />}
       />
 
       <QuickDiagnostic
@@ -194,7 +201,7 @@ export default function Accueil() {
       <ComplianceBooksTeaser />
 
       <AtoopvFinalCta />
-      <AtoopvFaqSection />
+      <AtoopvFaqSection data={c.faq} />
       <AtoopvFooter />
     </motion.main>
   )
