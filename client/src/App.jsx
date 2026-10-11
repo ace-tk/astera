@@ -141,6 +141,10 @@ export default function App() {
                 now redirect straight to "/", for old bookmarks/SEO/search results. */}
             <Route path="/accueil" element={<Navigate to="/" replace />} />
             <Route path="/atoopv" element={<Navigate to="/" replace />} />
+            {/* SEO redirect map: legacy URLs -> current ones. The real 301 is served by
+                .htaccess / vercel.json (a crawler needs the status code); this is only the
+                in-app fallback for a client-side navigation or a dev server. */}
+            <Route path="/redaction-pv-cse" element={<Navigate to="/services/drafting/redaction-pv-cse" replace />} />
             <Route path="/boutique" element={<Boutique />} />
             <Route path="/atoopv/boutique" element={<Navigate to="/boutique" replace />} />
             <Route path="/tarification" element={<Tarification />} />

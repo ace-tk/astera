@@ -34,6 +34,16 @@
       "source": "/accueil",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/redaction-pv-cse",
+      "destination": "/services/drafting/redaction-pv-cse",
+      "permanent": true
+    },
+    {
+      "source": "/redaction-pv-cse/",
+      "destination": "/services/drafting/redaction-pv-cse",
+      "permanent": true
     }
   ],
   "rewrites": [

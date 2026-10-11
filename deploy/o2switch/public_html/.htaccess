@@ -47,6 +47,12 @@ Options -MultiViews
   #     for anyone with an old bookmark/search result, same reasoning as 3c.
   RewriteRule ^accueil/?$ https://atoopv.com/ [R=301,L]
 
+  # 3e. SEO redirect map (legacy WordPress-era URLs -> current URLs; the SEO work
+  #     lives on the new addresses). One rule per old path, matching it with OR
+  #     without its trailing slash, target without trailing slash, real 301.
+  #     Keep these ABOVE the SPA fallback (4) or they are never reached.
+  RewriteRule ^redaction-pv-cse/?$ https://atoopv.com/services/drafting/redaction-pv-cse [R=301,L]
+
   # 4. Single-page-app fallback: real files/directories are served as-is; every other
   #    URL (e.g. /tarification, /app/admin) is handed to React Router.
   RewriteCond %{REQUEST_FILENAME} !-f
