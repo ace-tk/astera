@@ -1,7 +1,3 @@
-Quand un commissaire de justice assiste à une réunion CSE, le rapport de force bascule. Découvrez comment ce constat authentique constitue la preuve du délit d’entrave et oblige l’
-
-URSSAF
-
 Ce matin-là, la salle de réunion du CSE était prête. Café, paperasses, direction au complet. Ambiance habituelle. Sauf qu’à l’entrée, il y avait un inconnu. Costume sombre, mallette, regard professionnel. Un **commissaire de justice en réunion CSE** — l’ancien huissier de justice, depuis la réforme du 1er juillet 2022.
 
 Le CSE l’avait mandaté.

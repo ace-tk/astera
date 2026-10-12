@@ -8,10 +8,6 @@ CAS PRATIQUE · CSE
 
 # Télétravail imposé : ce que le CSE peut faire quand l’employeur décide seul
 
-Le télétravail imposé sans accord ni charte est irrégulier. Découvrez ce que le CSE peut exiger : consultation sur la charte, équipement, frais professionnels, droit à la déconnexi
-
-URSSAF
-
 Votre employeur vient d’imposer le télétravail à toute l’équipe. Pas d’accord signé. Pas de charte. Un mail un vendredi à 17h. Ce scénario n’a rien d’hypothétique — et le **télétravail imposé sans cadre juridique** met directement en jeu les prérogatives du CSE. La plupart des élus ne les utilisent pas encore.
 
 ## ⚖️ Le télétravail repose d’abord sur le volontariat

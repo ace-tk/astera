@@ -8,10 +8,6 @@ CAS PRATIQUE · CSE
 
 # Harcèlement moral : quand les méthodes de management suffisent, le CSE a les moyens d’agir
 
-Le harcèlement moral par méthodes de gestion est reconnu par la Cour de cassation même sans victime ciblée. Découvrez comment les élus du CSE peuvent documenter, alerter et agir gr
-
-URSSAF
-
 Le 10 décembre 2025, la chambre sociale de la Cour de cassation a confirmé une règle que les élus du CSE doivent connaître : le **harcèlement moral par méthodes de gestion** est reconnu sans qu’un salarié ait besoin de prouver qu’il était personnellement visé. Toutefois, cette jurisprudence ne dispense pas de documenter. Elle exige même plus de rigueur que jamais.
 
 ## ⚖️ Ce que la Cour de cassation a jugé le 10 décembre 2025
