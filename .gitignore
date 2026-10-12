@@ -26,3 +26,4 @@ deploy/o2switch/out/
 # SEO release artefacts (generated)
 client/atoopv-release.zip
 client/dist-seo-report.md
+client/live-seo-report.md
