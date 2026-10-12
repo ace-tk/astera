@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button'
 import Wordmark from '@/components/common/Wordmark'
 import { useFooterCms } from '@/cms/useFooter'
 import { resolveFooterLink } from '@/cms/footerLink'
+import ManageCookiesButton from '@/components/common/ManageCookiesButton'
 
 /**
  * Site-wide footer — reproduces the reference footer handoff (light
@@ -74,6 +75,9 @@ export default function AtoopvFooter() {
                   {links.map((link) => (
                     <FooterLink key={link.id} label={link.label} link={link.link} />
                   ))}
+                  {/* Permanent withdrawal / change-of-choice link (sits right after the legal links, "Cookies"
+                      included). A button, not a link: it opens the CookieYes preference centre. */}
+                  {isLast && <ManageCookiesButton className="block text-left text-[13.5px] text-muted transition-colors hover:text-ink" />}
                 </div>
               </div>
             )

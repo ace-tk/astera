@@ -2,6 +2,36 @@
 <html lang="fr" data-theme="light">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- ── Consent Mode + CookieYes + Google Ads — ORDER MATTERS (CookieYes, Basic Consent Mode):
+         (a) consent default (everything denied) → (b) CookieYes → (c) gtag.js.
+         Do not reorder, and do not paste these on the server: this file is the source of every build.
+         "Allow Google tags to fire before consent" is OFF in CookieYes on purpose: no Google Ads
+         request is made before the visitor accepts. ─────────────────────────────────────────── -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'denied',
+        personalization_storage: 'denied',
+        security_storage: 'granted',
+        wait_for_update: 2000
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
+    <!-- Start cookieyes banner -->
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/dbf303643272964cca02f6bf4b57e49a/script.js"></script>
+    <!-- End cookieyes banner -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-823981254"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'AW-823981254');
+    </script>
     <link rel="icon" type="image/png" href="/logo/icon-dark.png" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/png" href="/logo/icon-white.png" media="(prefers-color-scheme: dark)" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />

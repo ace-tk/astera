@@ -8,6 +8,7 @@ import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { useLegalPagesCms } from '@/cms/useLegalPages'
+import ManageCookiesButton from '@/components/common/ManageCookiesButton'
 
 // Route slug ("/mentions-legales") -> CMS content key (legalPagesContentSchema's
 // fixed object keys, server/src/cms/schemas.js). Kept as an explicit map rather
@@ -57,6 +58,14 @@ export default function LegalPage({ slug }) {
             </Link>
             <div className="mt-8">
               <MarkdownArticle body={page.body} color="royal" />
+              {slug === 'cookies' && (
+                <>
+                  {/* CookieYes fills this element with the automatic, always-current list of the site's cookies
+                      (it watches the page for empty `.cky-audit-table-element` containers). Keep it empty. */}
+                  <div className="cky-audit-table-element mt-10" />
+                  <ManageCookiesButton className="mt-8 rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-ink/[0.04]" />
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ import { GuestOnly, RequireAuth, RequireAdmin } from '@/components/auth/RouteGua
 import { useAuth } from '@/context/AuthContext'
 import { useA11y } from '@/context/A11yContext'
 import { useCanonical } from '@/hooks/useCanonical'
+import { useConsentTracking } from '@/hooks/useConsentTracking'
 
 // Route-level code splitting keeps the landing bundle lean.
 const BlogPost = lazy(() => import('@/pages/BlogPost'))
@@ -118,6 +119,7 @@ export default function App() {
   const { reduceMotion } = useA11y()
   // One self-referencing canonical + og:url per route, for every page automatically.
   useCanonical()
+  useConsentTracking()
   return (
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
       <ScrollToTop />

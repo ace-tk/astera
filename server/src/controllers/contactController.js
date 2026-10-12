@@ -114,6 +114,24 @@ function buildEmail(d) {
   }
 }
 
+// The visitor must get an answer within a bounded time even if the mail server accepts the connection and
+// then stalls (SMTP timeouts alone can add up to ~40 s across connect/greeting/socket). After this
+// deadline the request fails honestly with MAIL_TIMEOUT instead of leaving the form on "sending".
+const mailDeadlineMs = () => Number(process.env.CONTACT_MAIL_DEADLINE_MS) || 15_000
+
+async function sendWithDeadline(message) {
+  const ms = mailDeadlineMs()
+  let timer
+  const deadline = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new MailError('MAIL_TIMEOUT', `mail provider did not answer within ${ms} ms`)), ms)
+  })
+  try {
+    await Promise.race([sendMailStrict(message), deadline])
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 const UNAVAILABLE = {
   error: "L'envoi de votre demande est momentanément indisponible. Merci de réessayer plus tard ou de nous écrire directement à contact@atoopv.com.",
 }
@@ -130,12 +148,13 @@ export async function submitContact(req, res) {
   }
 
   try {
-    await sendMailStrict({ to: env.contactTo, ...buildEmail(parsed.data) })
+    await sendWithDeadline({ to: env.contactTo, ...buildEmail(parsed.data) })
   } catch (err) {
     // Log the cause server-side (no visitor data, no credentials); tell the visitor the truth.
     console.error(`[contact] delivery failed (${err instanceof MailError ? err.code : 'UNEXPECTED'}, provider=${env.mailProvider}): ${err.message}`)
     const unconfigured = err instanceof MailError && err.code === 'MAIL_UNAVAILABLE'
-    return res.status(unconfigured ? 503 : 502).json({ ...UNAVAILABLE, code: unconfigured ? 'MAIL_UNAVAILABLE' : 'MAIL_FAILED' })
+    const code = unconfigured ? 'MAIL_UNAVAILABLE' : err instanceof MailError && err.code === 'MAIL_TIMEOUT' ? 'MAIL_TIMEOUT' : 'MAIL_FAILED'
+    return res.status(unconfigured ? 503 : 502).json({ ...UNAVAILABLE, code })
   }
 
   res.status(200).json({ ok: true })

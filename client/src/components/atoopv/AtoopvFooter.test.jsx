@@ -31,6 +31,13 @@ describe('Public footer — CMS-driven with a safe hardcoded fallback', () => {
     expect(screen.queryByLabelText(/linkedin/i)).toBeNull()
   })
 
+  it('always shows the "Gérer les cookies" control next to the legal links (withdrawal at any time)', () => {
+    fetchCmsFooter.mockReturnValue(new Promise(() => {}))
+    renderFooter()
+    expect(screen.getByRole('button', { name: 'Gérer les cookies' })).toBeTruthy()
+    expect(screen.getByText('Cookies')).toBeTruthy()
+  })
+
   it('falls back to the same hardcoded content when the CMS request fails — never a broken/empty footer', async () => {
     fetchCmsFooter.mockRejectedValue(Object.assign(new Error('network down'), { status: 0 }))
     renderFooter()

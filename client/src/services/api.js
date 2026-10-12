@@ -21,7 +21,7 @@ export function onUnauthorized(fn) {
   return () => unauthorizedListeners.delete(fn)
 }
 
-async function request(path, { method = 'GET', body, token } = {}) {
+async function request(path, { method = 'GET', body, token, timeoutMs } = {}) {
   const bearer = token ?? authToken
   const isForm = typeof FormData !== 'undefined' && body instanceof FormData
   const res = await fetch(`${config.apiUrl}${path}`, {
@@ -32,6 +32,8 @@ async function request(path, { method = 'GET', body, token } = {}) {
       ...(bearer ? { Authorization: `Bearer ${bearer}` } : {}),
     },
     body: isForm ? body : body !== undefined ? JSON.stringify(body) : undefined,
+    // Opt-in: with `timeoutMs` the request is aborted (fetch rejects, no `status`) instead of hanging.
+    ...(timeoutMs ? { signal: AbortSignal.timeout(timeoutMs) } : {}),
   })
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {

@@ -11,6 +11,7 @@ import { EMAIL_RE } from '@/utils/validators'
 import { api } from '@/services/api'
 import { cn } from '@/utils/cn'
 import { useSitePage, seoMeta } from '@/cms/useSitePage'
+import { trackAdsConversion, ADS_CONVERSIONS } from '@/utils/consent'
 
 /**
  * AtoopV "demande de démo" page. Every heading, paragraph, label, placeholder,
@@ -161,10 +162,15 @@ export default function Contact() {
     setStatus('sending')
     setSubmitError('')
     try {
-      await api.post('/contact', Object.fromEntries(Object.entries(form).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])))
+      // 30 s at most: the server gives up on the mail provider well before (see contactController), and a
+      // form must never stay in "sending" forever — a timeout lands in the error branch below.
+      await api.post('/contact', Object.fromEntries(Object.entries(form).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])), { timeoutMs: 30_000 })
       setForm(initialForm)
       setErrors({})
       setStatus('success')
+      // Google Ads "quote request" conversion: ONLY here, after the API confirmed the message was sent —
+      // never on the button click — and only if the visitor accepted advertising cookies.
+      trackAdsConversion(ADS_CONVERSIONS.quoteRequest)
     } catch (err) {
       // The server re-validates: show its field errors next to the fields when it rejects the input.
       if (err.status === 400 && err.data?.fieldErrors) setErrors(err.data.fieldErrors)

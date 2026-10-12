@@ -205,3 +205,12 @@
     }
   }
 }
+
+/* Cookie consent (CookieYes) is for the public website: hidden in the client area, the back office and
+   the auth screens. useConsentTracking() sets the attribute on route changes. All CookieYes elements are
+   prefixed "cky-" / carry data-cky-tag. */
+html[data-consent-ui='off'] [class^='cky-'],
+html[data-consent-ui='off'] [class*=' cky-'],
+html[data-consent-ui='off'] [data-cky-tag] {
+  display: none !important;
+}
