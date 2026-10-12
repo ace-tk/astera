@@ -9,7 +9,7 @@ import { AProposNavSticky, AProposNavMobile } from '@/components/atoopv/AProposN
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV À propos page — content extracted verbatim in French from
@@ -42,8 +42,8 @@ function CtaFooterWithContactLink({ footer }) {
 
 export default function APropos() {
   // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
-  const { hero, mission, values, approach, founder, sirus, cta } = useSitePage('a-propos')
-  usePageMeta({ title: stripEmphasis(hero.title), description: hero.lead })
+  const { hero, mission, values, approach, founder, sirus, cta, seo } = useSitePage('a-propos')
+  usePageMeta(seoMeta({ seo }, { title: stripEmphasis(hero.title), description: hero.lead }))
 
   const chapters = buildChapters({ mission, values, approach, founder, sirus })
 

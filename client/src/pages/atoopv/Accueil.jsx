@@ -30,7 +30,7 @@ import CTASection from '@/components/services/CTASection'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis, renderEmphasis } from '@/utils/richText'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV Accueil (home) page — content extracted verbatim in French
@@ -53,7 +53,7 @@ export default function Accueil() {
   // The homepage reuses the Tarification page's simulator, so it follows that page's published prices/text too.
   const tarif = useSitePage('tarification')
 
-  usePageMeta({ title: stripEmphasis(hero.title), description: hero.lead })
+  usePageMeta(seoMeta(c, { title: stripEmphasis(hero.title), description: hero.lead }))
 
   return (
     <motion.main

@@ -49,6 +49,9 @@
     <loc>https://atoopv.com/ressources/veille-juridique-cse</loc>
   </url>
   <url>
+    <loc>https://atoopv.com/ressources/guides-livres-blancs-cse</loc>
+  </url>
+  <url>
     <loc>https://atoopv.com/services/drafting</loc>
   </url>
   <url>
@@ -68,9 +71,6 @@
   </url>
   <url>
     <loc>https://atoopv.com/services/drafting/redaction-pv-irp</loc>
-  </url>
-  <url>
-    <loc>https://atoopv.com/services/drafting/services</loc>
   </url>
   <url>
     <loc>https://atoopv.com/services/by-city</loc>
@@ -208,9 +208,6 @@
     <loc>https://atoopv.com/ressources/comment-lire-arret-cour-de-cassation</loc>
   </url>
   <url>
-    <loc>https://atoopv.com/ressources/commissaire-de-justice-cse-constat-entrave</loc>
-  </url>
-  <url>
     <loc>https://atoopv.com/ressources/competences-elu-cse-mandat</loc>
   </url>
   <url>
@@ -233,9 +230,6 @@
   </url>
   <url>
     <loc>https://atoopv.com/ressources/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026</loc>
-  </url>
-  <url>
-    <loc>https://atoopv.com/ressources/harcelement-moral-methodes-gestion-cse</loc>
   </url>
   <url>
     <loc>https://atoopv.com/ressources/heures-supplementaires-annualisation-arret-maladie-calcul-cour-cassation</loc>
@@ -281,9 +275,6 @@
   </url>
   <url>
     <loc>https://atoopv.com/ressources/surveillance-salaries-cnil-cse</loc>
-  </url>
-  <url>
-    <loc>https://atoopv.com/ressources/teletravail-impose-cse-droits-employeur</loc>
   </url>
   <url>
     <loc>https://atoopv.com/ressources/tickets-restaurant-teletravail-droit-teletravailleurs</loc>

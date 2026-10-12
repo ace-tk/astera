@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ImagePlus } from 'lucide-react'
 import MediaPicker from '@/components/cms/MediaPicker'
 import { resolveMediaUrl } from '@/cms/media'
-import { humanize, isEditableKey, isLeaf, isImageKey, isLinkKey, itemTitle } from '@/cms/siteContentTree'
+import { humanize, labelFor, isEditableKey, isLeaf, isImageKey, isLinkKey, itemTitle } from '@/cms/siteContentTree'
 import { cn } from '@/utils/cn'
 
 const LABEL = 'mb-1 block font-mono text-[10px] uppercase tracking-[0.14em] text-muted'
@@ -61,7 +61,8 @@ function Leaf({ label, value, path, name, onChange }) {
  */
 function Node({ name, value, path, depth, onChange }) {
   const label = humanize(name)
-  if (isLeaf(value)) return <Leaf label={label} value={value} path={path} name={name} onChange={(v) => onChange(path, v)} />
+  // a couple of fields are named by where they sit (the SEO title/description under "Search & sharing")
+  if (isLeaf(value)) return <Leaf label={path[0] === 'seo' && path.length === 2 ? labelFor(path) : label} value={value} path={path} name={name} onChange={(v) => onChange(path, v)} />
 
   const entries = (Array.isArray(value) ? value.map((v, i) => [i, v]) : Object.entries(value)).filter(([k, v]) => isEditableKey(k) && v !== null && typeof v !== 'function')
   if (entries.length === 0) return null
@@ -88,7 +89,10 @@ function Node({ name, value, path, depth, onChange }) {
   return (
     <details className="group rounded-lg border border-ink/10 bg-card">
       <summary className="cursor-pointer select-none px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] marker:text-muted">{label}</summary>
-      <div className="px-4 pb-4">{body}</div>
+      <div className="px-4 pb-4">
+        {name === 'seo' && <p className="mb-3 text-xs text-muted">Shown in Google results and when the page is shared. Leave a field empty to keep the title/description the page already derives from its own content.</p>}
+        {body}
+      </div>
     </details>
   )
 }

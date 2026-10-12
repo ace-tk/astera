@@ -14,6 +14,16 @@ import { SITE_PAGES } from './sitePageRegistry'
  */
 const NONE = {}
 
+/**
+ * Applies a site page's "Search & sharing" fields (Content → Menus → Site pages → Search & sharing):
+ * a non-empty SEO title / description replaces the one the page derives from its own content.
+ */
+export const seoMeta = (content, fallback) => ({
+  ...fallback,
+  title: content?.seo?.title || fallback.title,
+  description: content?.seo?.description || fallback.description,
+})
+
 export function useSitePage(key, bundled) {
   // `bundled`: values that live in a bundled markdown file (hub pages, CGV) — see `fileSource` in sitePageRegistry.js.
   const registered = SITE_PAGES[key]?.defaults ?? NONE

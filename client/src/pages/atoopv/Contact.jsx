@@ -10,7 +10,7 @@ import { usePageMeta } from '@/hooks/usePageMeta'
 import { EMAIL_RE } from '@/utils/validators'
 import { api } from '@/services/api'
 import { cn } from '@/utils/cn'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 
 /**
  * AtoopV "demande de démo" page. Every heading, paragraph, label, placeholder,
@@ -114,14 +114,11 @@ function SectionHeading({ index, children }) {
 export default function Contact() {
   // Hardcoded content (constants/contactHome.js) is the default; whatever the admin published
   // (Content → Menus → Site pages) is merged over it. Field names and validation stay here.
-  const { hero: HERO, sections, fields: F, options: OPT, messages: MSG, validation: V } = useSitePage('contact')
+  const { hero: HERO, sections, fields: F, options: OPT, messages: MSG, validation: V, seo } = useSitePage('contact')
 
   // usePageMeta already appends " — ATOOPV" to every title — appending it here too produced
   // a duplicated "... — ATOOPV — ATOOPV" tab title.
-  usePageMeta({
-    title: HERO.heading.map((h) => h.trim()).join(' '),
-    description: HERO.lead,
-  })
+  usePageMeta(seoMeta({ seo }, { title: HERO.heading.map((h) => h.trim()).join(' '), description: HERO.lead }))
 
   // Optional prefill from the homepage's quick questionnaire (QuickDiagnostic
   // -> /contact?source=diagnostic&message=...): only ever touches the

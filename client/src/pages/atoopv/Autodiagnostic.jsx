@@ -7,7 +7,7 @@ import DiagnosticQuiz from '@/components/atoopv/DiagnosticQuiz'
 import RichTextSection from '@/components/services/RichTextSection'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV Autodiagnostic page — content extracted verbatim in French
@@ -20,7 +20,7 @@ export default function Autodiagnostic() {
   // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
   // Quiz scoring (scores, result thresholds) is part of the design and is never taken from the CMS.
   const c = useSitePage('autodiagnostic')
-  usePageMeta({ title: c.hero.title, description: c.hero.lead })
+  usePageMeta(seoMeta(c, { title: c.hero.title, description: c.hero.lead }))
 
   return (
     <motion.main

@@ -8,7 +8,7 @@ import PVSimulator from '@/components/atoopv/PVSimulator'
 import FAQSection from '@/components/services/FAQSection'
 import CTASection from '@/components/services/CTASection'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 import { resolveMediaUrl } from '@/cms/media'
 
 /**
@@ -21,7 +21,7 @@ import { resolveMediaUrl } from '@/cms/media'
 export default function Tarification() {
   // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
   const c = useSitePage('tarification')
-  usePageMeta({ title: c.hero.title, description: c.intro.text })
+  usePageMeta(seoMeta(c, { title: c.hero.title, description: c.intro.text }))
 
   return (
     <motion.main
@@ -47,6 +47,7 @@ export default function Tarification() {
       <div className="shell pt-2 pb-14 sm:pt-4 sm:pb-16">
         <PVSimulator
           title={c.hero.title}
+          headingTag="h1"
           tiers={c.tiers}
           badge={c.hero.badge}
           intro={c.intro.text}

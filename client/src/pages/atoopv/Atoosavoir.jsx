@@ -18,7 +18,7 @@ import Button from '@/components/ui/Button'
 import Reveal from '@/components/ui/Reveal'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { stripEmphasis } from '@/utils/richText'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 import { resolveMediaUrl } from '@/cms/media'
 
 /**
@@ -33,7 +33,7 @@ import { resolveMediaUrl } from '@/cms/media'
 export default function Atoosavoir() {
   // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
   const c = useSitePage('atoosavoir')
-  usePageMeta({ title: stripEmphasis(c.hero.title), description: c.hero.lead })
+  usePageMeta(seoMeta(c, { title: stripEmphasis(c.hero.title), description: c.hero.lead }))
 
   return (
     <motion.main

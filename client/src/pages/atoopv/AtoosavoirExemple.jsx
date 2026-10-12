@@ -9,7 +9,7 @@ import RichTextSection from '@/components/services/RichTextSection'
 import CTASection from '@/components/services/CTASection'
 import Button from '@/components/ui/Button'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV atoosavoir/exemple page — content extracted verbatim in
@@ -21,7 +21,7 @@ import { useSitePage } from '@/cms/useSitePage'
 export default function AtoosavoirExemple() {
   // Hardcoded content is the default; whatever the admin published (Content → Menus → Site pages) is merged over it.
   const c = useSitePage('atoosavoir-exemple')
-  usePageMeta({ title: c.hero.title, description: c.hero.lead })
+  usePageMeta(seoMeta(c, { title: c.hero.title, description: c.hero.lead }))
 
   return (
     <motion.main

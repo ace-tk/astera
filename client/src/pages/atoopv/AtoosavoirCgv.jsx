@@ -9,7 +9,7 @@ import AtoopvHero from '@/components/atoopv/AtoopvHero'
 import MarkdownArticle from '@/components/atoopv/MarkdownArticle'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { getAtoosavoirPage } from '@/services/atoosavoirContent'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 
 /**
  * Ported ATOOPV atoosavoir/cgv page — the section's terms of sale, rendered
@@ -25,7 +25,7 @@ export default function AtoosavoirCgv() {
   const bundled = useMemo(() => (page ? { markdown: page.body } : undefined), [page])
   const c = useSitePage('atoosavoir-cgv', bundled)
 
-  usePageMeta({ title: c.hero.title, description: c.hero.lead })
+  usePageMeta(seoMeta(c, { title: c.hero.title, description: c.hero.lead }))
 
   return (
     <motion.main

@@ -300,3 +300,9 @@ export const SITE_PAGES = {
 }
 
 export const SITE_PAGE_KEYS = Object.keys(SITE_PAGES)
+
+// Every site page also carries the "Search & sharing" fields (SEO brief 2.7): an optional SEO title and
+// meta description. Empty = the page keeps the title/description it derives from its own content.
+for (const page of Object.values(SITE_PAGES)) {
+  page.defaults = { ...page.defaults, seo: { title: '', description: '' } }
+}

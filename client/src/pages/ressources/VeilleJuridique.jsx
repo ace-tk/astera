@@ -5,7 +5,7 @@ import EditorialDivider from '@/components/atoopv/EditorialDivider'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { useSitePage } from '@/cms/useSitePage'
+import { useSitePage, seoMeta } from '@/cms/useSitePage'
 import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getResource, excerpt, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
 import { RESSOURCES_NAV } from '@/constants/resourcesNav'
@@ -22,7 +22,7 @@ import { RESSOURCES_NAV } from '@/constants/resourcesNav'
 export default function VeilleJuridique() {
   const navItems = useSectionNav('ressources', RESSOURCES_NAV)
   // The page's own heading text follows its published CMS site page (defaults = the hardcoded text).
-  const { hero } = useSitePage('veille-juridique')
+  const { hero, seo } = useSitePage('veille-juridique')
   // Articles labelled "Veille juridique" in the CMS join this listing after the built-in ones.
   const cmsArticles = useCmsPages({ section: 'ressources', tag: 'veille-juridique' })
 
@@ -37,7 +37,7 @@ export default function VeilleJuridique() {
   const listed = new Set(items.map((i) => i.to))
   for (const p of cmsArticles) if (!listed.has(p.path)) items.push({ title: p.title, body: p.excerpt, to: p.path, cta: 'Lire →' })
 
-  usePageMeta({ title: hero.title, description: hero.lead })
+  usePageMeta(seoMeta({ seo }, { title: hero.title, description: hero.lead }))
 
   return (
     <>

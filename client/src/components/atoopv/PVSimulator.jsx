@@ -33,6 +33,7 @@ function stylesAllowedFor(tierId) {
  */
 export default function PVSimulator({
   title,
+  headingTag: Heading = 'h2',
   tiers,
   badge,
   intro,
@@ -75,9 +76,9 @@ export default function PVSimulator({
       <div className="overflow-hidden rounded-[2rem] border border-ink/8 bg-card shadow-soft">
         {title && (
           <div className="border-b border-ink/8 p-7 sm:p-8">
-            <h2 className="font-display text-2xl font-medium leading-tight tracking-tight text-balance text-ink sm:text-3xl">
+            <Heading className="font-display text-2xl font-medium leading-tight tracking-tight text-balance text-ink sm:text-3xl">
               {renderEmphasis(title)}
-            </h2>
+            </Heading>
           </div>
         )}
         <div className="grid lg:grid-cols-[0.9fr_2fr_1.15fr]">

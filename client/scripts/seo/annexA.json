@@ -1,0 +1,146 @@
+[
+ {
+  "url": "/pv-cse-contenu-obligatoire/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/actualite-sociale/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/redaction-pv-irp/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/tag/proces-verbal-cse/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/pv-cse-delit-entrave/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/modele-pv-cse-gratuit/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/redaction-pv-cse-saint-etienne/",
+  "coveredBy": "5.2 – 301"
+ },
+ {
+  "url": "/grossesse-licenciement-nul-protection-salariee-cour-cassation-2026/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/droit-image-salarie-depart-jurisprudence-cour-cassation/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/qui-redige-pv-cse/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/heures-supplementaires-annualisation-arret-maladie-calcul-cour-cassation/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/autodiagnostic/",
+  "coveredBy": "5.4 – 301 (trailing slash)"
+ },
+ {
+  "url": "/redaction-pv-cse-bordeaux/",
+  "coveredBy": "5.2 – 301"
+ },
+ {
+  "url": "/tag/frais-professionnels/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/canicule-travail-decret-2025-482-obligations-employeur-cse/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/tag/cse/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/reorganisation-silencieuse-cse-demissions/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/tag/protection-elus-cse/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/redaction-pv-csec/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/formation-cse-tresorier/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/formations-elus-cse-agree/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/la-minute-cse/",
+  "coveredBy": "5.3 – 301"
+ },
+ {
+  "url": "/newsletter-actucse/",
+  "coveredBy": "5.1 – 301"
+ },
+ {
+  "url": "/tag/consultation-cse/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/tag/mandat-cse/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/tag/delit-dentrave/",
+  "coveredBy": "5.3 – 301 (/tag/*)"
+ },
+ {
+  "url": "/a-propos/",
+  "coveredBy": "5.4 – 301 (trailing slash)"
+ },
+ {
+  "url": "/redaction-pv-cse-marseille/",
+  "coveredBy": "5.2 – 301"
+ },
+ {
+  "url": "/author/loine-alami/feed/",
+  "coveredBy": "5.4 – 410"
+ },
+ {
+  "url": "/contact",
+  "coveredBy": "New-site URL – must return 200 (see 2.4)"
+ },
+ {
+  "url": "/author/loine-alami/",
+  "coveredBy": "5.4 – 410"
+ },
+ {
+  "url": "/livres-blancs/",
+  "coveredBy": "5.4 – 301"
+ },
+ {
+  "url": "/autodiagnostic-cse/",
+  "coveredBy": "5.4 – 301"
+ },
+ {
+  "url": "/podcast-videos/",
+  "coveredBy": "5.4 – 410"
+ },
+ {
+  "url": "/wp-*.php",
+  "coveredBy": "5.4 – 410"
+ },
+ {
+  "url": "/* (generic pattern reported by Google)",
+  "coveredBy": "Non-existent – must return 404 (B)"
+ }
+]

@@ -38,7 +38,10 @@ export default function Services() {
   const page = useHubPage('services', getServicePage('services'))
   const parsed = page ? parseServicesHomeBody(page.body) : null
 
-  usePageMeta({ title: page ? stripEmphasis(page.title) : 'Services', description: page ? excerpt(page.body, 160) : undefined })
+  usePageMeta({
+    title: page?.seo?.title || (page ? stripEmphasis(page.title) : 'Services'),
+    description: page?.seo?.description || (page ? excerpt(page.body, 160) : undefined),
+  })
 
   return (
     <motion.main

@@ -22,3 +22,7 @@ deploy/o2switch/out/
 # see the file's own header comment). Ignored so a plain `git add .` can't
 # keep re-staging it onto main before that's deliberately done.
 .github/workflows/deploy-o2switch.yml
+
+# SEO release artefacts (generated)
+client/atoopv-release.zip
+client/dist-seo-report.md

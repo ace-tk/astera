@@ -27,10 +27,18 @@ const WORDS = {
   text: 'Text',
   body: 'Text',
   tiers: 'Price tiers',
+  seo: 'Search & sharing',
   placeholder: 'Placeholder (example shown in the empty field)',
   markdown: 'Page text (Markdown — **bold**, *italic*, ## headings, [text](link))',
   validation: 'Form error messages',
   messages: 'Form messages',
+}
+
+/** Label of a field given its full path — a few fields are named by where they sit. */
+export const labelFor = (path) => {
+  const key = path[path.length - 1]
+  if (path.length === 2 && path[0] === 'seo') return key === 'title' ? 'SEO title (shown in Google results)' : 'SEO description (meta description)'
+  return humanize(key)
 }
 
 export const humanize = (key) => {

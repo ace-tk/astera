@@ -6,7 +6,10 @@ import { SITE_PAGES } from '@/cms/sitePageRegistry'
 import { useSitePage } from '@/cms/useSitePage'
 import Boutique from '@/pages/atoopv/Boutique'
 
-vi.mock('@/cms/useSitePage', () => ({ useSitePage: vi.fn() }))
+vi.mock('@/cms/useSitePage', () => ({
+  useSitePage: vi.fn(),
+  seoMeta: (content, fallback) => ({ ...fallback, title: content?.seo?.title || fallback.title, description: content?.seo?.description || fallback.description }),
+}))
 vi.mock('@/components/landing/Navbar', () => ({ default: () => null }))
 vi.mock('@/components/landing/AmbientBackground', () => ({ default: () => null }))
 vi.mock('@/components/atoopv/AtoopvFooter', () => ({ default: () => null }))

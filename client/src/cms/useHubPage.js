@@ -15,6 +15,6 @@ export function useHubPage(slug, bundled) {
   const c = useSitePage(key, base)
   return useMemo(() => {
     if (!key || !bundled) return bundled
-    return { ...bundled, title: c.title, breadcrumb: c.badge, body: c.markdown, ...(c.fragmentsIntro ? { fragmentsIntro: c.fragmentsIntro } : {}) }
+    return { ...bundled, title: c.title, breadcrumb: c.badge, body: c.markdown, ...(c.seo?.title || c.seo?.description ? { seo: c.seo } : {}), ...(c.fragmentsIntro ? { fragmentsIntro: c.fragmentsIntro } : {}) }
   }, [key, bundled, c])
 }
