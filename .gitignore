@@ -27,3 +27,5 @@ deploy/o2switch/out/
 client/atoopv-release.zip
 client/dist-seo-report.md
 client/live-seo-report.md
+client/atoopv-staging.zip
+client/dist-staging/

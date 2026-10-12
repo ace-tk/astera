@@ -20,7 +20,8 @@
     "seo:htaccess": "node scripts/seo/generate-htaccess.mjs",
     "build:release": "npm run prebuild && vite build && node scripts/seo/prerender.mjs",
     "seo:verify": "node scripts/seo/verify-local.mjs --root dist --report dist-seo-report.md",
-    "release:pack": "npm run build:release && npm run seo:verify && node scripts/seo/pack-release.mjs"
+    "release:pack": "npm run build:release && npm run seo:verify && node scripts/seo/pack-release.mjs",
+    "release:stage": "SEO_ORIGIN= SEO_STRICT=1 npm run build:release && node scripts/seo/stage-pack.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.59.0",

@@ -83,7 +83,8 @@ for (const s of samples) {
   const title = (r.body.match(/<title>([^<]*)<\/title>/) || [])[1] || ''
   const canonical = (r.body.match(/<link rel="canonical" href="([^"]*)"/) || [])[1] || ''
   const h1 = (r.body.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1]?.replace(/<[^>]+>/g, '').trim() || ''
-  const expected = `${SITE}${s === '/' ? '/' : s}`
+  // The canonical always names the PRODUCTION host (a staging copy must not claim to be the original).
+  const expected = `https://atoopv.com${s === '/' ? '/' : s}`
   const ok = Boolean(title) && canonical === expected && Boolean(h1) && !(s !== '/' && title.startsWith('Rédaction de PV de CSE et de CSSCT par des spécialistes'))
   rawRows.push({ s, title, canonical, h1, ok })
 }
