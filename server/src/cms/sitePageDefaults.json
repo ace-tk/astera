@@ -564,7 +564,7 @@
             "body": "Devis personnalisé sans engagement. Réponse sous 24h par un expert ALC SAS.",
             "cta": {
               "label": "Simuler mon budget →",
-              "to": "/simulateur"
+              "to": "/tarification"
             },
             "featured": true
           }
@@ -848,7 +848,7 @@
         "body": "Renseignez les caractéristiques de votre instance : nous revenons vers vous avec une proposition adaptée et un tarif clair.",
         "primaryCta": {
           "label": "Faire ma simulation",
-          "to": "/simulateur"
+          "to": "/tarification"
         }
       },
       "quickDiagnostic": {

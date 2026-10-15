@@ -42,8 +42,8 @@ export function serviceRouteForSlug(rawSlug) {
 // sitemap), or a Ressources alias.
 const SECTION_MAP = {
   contact: '/contact',
-  tarification: '/simulateur',
-  'simulateur-de-prix': '/simulateur',
+  tarification: '/tarification',
+  'simulateur-de-prix': '/tarification',
   autodiagnostic: '/autodiagnostic',
   'autodiagnostic-cse': '/autodiagnostic',
   'a-propos': '/a-propos',

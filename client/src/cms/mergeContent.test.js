@@ -74,3 +74,16 @@ describe('siteContentTree helpers', () => {
     expect(itemTitle({ answer: 'x' }, 0)).toBe('Item 1')
   })
 })
+
+describe('mergeContent — links that moved are rewritten to their final address', () => {
+  it('rewrites /simulateur in a CMS-stored `to`/`href`, with or without a trailing slash, and nothing else', () => {
+    const d = { cta: { label: 'Simuler', to: '/tarification' }, other: { href: '/contact', text: '/simulateur' } }
+    const m = mergeContent(d, { cta: { label: 'Simuler', to: '/simulateur' }, other: { href: '/simulateur/', text: '/simulateur' } })
+    expect(m.cta.to).toBe('/tarification')
+    expect(m.other.href).toBe('/tarification')
+    expect(m.other.text).toBe('/simulateur') // only link fields are rewritten
+  })
+  it('leaves current links alone', () => {
+    expect(mergeContent({ to: '/contact' }, { to: '/a-propos' }).to).toBe('/a-propos')
+  })
+})

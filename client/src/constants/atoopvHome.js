@@ -297,7 +297,7 @@ export const ACCUEIL = {
         eyebrow: 'Simulation gratuite',
         title: 'Estimez votre budget en 30 secondes',
         body: 'Devis personnalisé sans engagement. Réponse sous 24h par un expert ALC SAS.',
-        cta: { label: 'Simuler mon budget →', to: '/simulateur' },
+        cta: { label: 'Simuler mon budget →', to: '/tarification' },
         featured: true,
       },
     ],
@@ -361,7 +361,7 @@ export const ACCUEIL = {
     eyebrow: 'Devis qualifié — réponse sous 24h',
     heading: 'Estimez votre besoin en 2 minutes',
     body: 'Renseignez les caractéristiques de votre instance : nous revenons vers vous avec une proposition adaptée et un tarif clair.',
-    primaryCta: { label: 'Faire ma simulation', to: '/simulateur' },
+    primaryCta: { label: 'Faire ma simulation', to: '/tarification' },
   },
   // Quick qualifying questionnaire — every option below is drawn from data
   // that already exists elsewhere (INSTANCE_TYPES, TARIFICATION_TIERS) so it

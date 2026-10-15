@@ -24,8 +24,8 @@ const ALIASES = {
 // Contact, Simulateur, Autodiagnostic, À propos, or atoosavoir.
 const SECTION_MAP = {
   contact: '/contact',
-  tarification: '/simulateur',
-  'simulateur-de-prix': '/simulateur',
+  tarification: '/tarification',
+  'simulateur-de-prix': '/tarification',
   autodiagnostic: '/autodiagnostic',
   'autodiagnostic-cse': '/autodiagnostic', // dead link on the live site itself (404) -- closest real destination
   'a-propos': '/a-propos',

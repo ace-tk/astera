@@ -165,6 +165,18 @@ fs.writeFileSync(
   fs.readFileSync(shellFile, 'utf8').replace(/\s*<link rel="canonical"[^>]*>/g, '').replace(/\s*<meta property="og:url"[^>]*>/g, ''),
 )
 
+/* ---- every page published in the CMS must have been pre-rendered, otherwise the server answers 404 for it ---- */
+try {
+  const api = (process.env.VITE_API_URL || 'https://api.atoopv.com/api').replace(/\/$/, '')
+  const res = await fetch(`${api}/cms/index`, { signal: AbortSignal.timeout(20000) })
+  if (res.ok) {
+    const { pages } = await res.json()
+    const known = new Set(routes)
+    const unknown = pages.filter((p) => !p.isHub && !known.has(p.path) && /^\/(services\/[a-z-]+|ressources)\/[a-z0-9-]+$/.test(p.path)).map((p) => p.path)
+    if (unknown.length) problems.push({ route: '(CMS vs release)', issues: unknown.map((u) => `published in the CMS but not pre-rendered (would answer 404): ${u}`) })
+  }
+} catch { /* the sitemap step already required the CMS in strict mode */ }
+
 /* ---- manifest + release .htaccess ---- */
 const manifest = routes.slice().sort()
 fs.writeFileSync(path.join(PRE, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`)

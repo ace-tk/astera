@@ -31,6 +31,17 @@ fs.writeFileSync(
   `${htaccess.trimEnd()}\n\n# STAGING: never index this copy of the site.\n<IfModule mod_headers.c>\n  Header always set X-Robots-Tag "noindex, nofollow, noarchive"\n</IfModule>\n`,
 )
 
+
+/** zip stores Unix modes: a source file that happens to be 0600 on the build machine would be unreadable by
+ *  the web server after extraction (404 on the live site). Normalise: files 0644, directories 0755. */
+function normalisePermissions(root) {
+  for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+    const p = path.join(root, entry.name)
+    if (entry.isDirectory()) { fs.chmodSync(p, 0o755); normalisePermissions(p) } else { fs.chmodSync(p, 0o644) }
+  }
+}
+
+normalisePermissions(out)
 const zip = path.join(clientRoot, 'atoopv-staging.zip')
 fs.rmSync(zip, { force: true })
 const r = spawnSync('zip', ['-qr', zip, '.', '-x', '.DS_Store'], { cwd: out, stdio: 'inherit' })

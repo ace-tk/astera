@@ -93,7 +93,7 @@ async function fetchPublishedPaths() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const { pages } = await res.json()
     if (!Array.isArray(pages)) throw new Error('unexpected response')
-    return new Set(pages.map((p) => p.path))
+    return { paths: new Set(pages.map((p) => p.path)), pages }
   } catch (err) {
     console.warn(`! sitemap: could not read the CMS index (${err.message})`)
     return null
@@ -123,7 +123,8 @@ async function loadDrivenSlugs() {
 function buildUrls({ published, driven }) {
   const urls = [...STATIC_PAGES]
   const skipped = []
-  const isLive = (urlPath, slug, drivenSet) => !published || !drivenSet.has(slug) || published.has(urlPath)
+  const addedFromCms = []
+  const isLive = (urlPath, slug, drivenSet) => !published || !drivenSet.has(slug) || published.paths.has(urlPath)
 
   for (const category of SERVICE_CATEGORIES) {
     urls.push(`/services/${category}`)
@@ -144,7 +145,20 @@ function buildUrls({ published, driven }) {
     urls.push(u)
   }
 
-  return { urls, skipped }
+  // Pages that exist ONLY in the CMS (no markdown file, e.g. /services/tarifs-infos/cgu): without this they would
+  // not be pre-rendered and the server would answer 404 for a page that is published and linked from the menu.
+  if (published) {
+    const have = new Set(urls)
+    for (const page of published.pages) {
+      const u = page.path
+      if (page.isHub || have.has(u) || SITEMAP_EXCLUDE.has(u)) continue
+      if (!/^\/(services\/[a-z-]+|ressources)\/[a-z0-9-]+$/.test(u)) continue
+      urls.push(u)
+      addedFromCms.push(u)
+    }
+  }
+
+  return { urls, skipped, addedFromCms }
 }
 
 function toXml(urls) {
@@ -166,7 +180,7 @@ if (!published && fs.existsSync(outPath)) {
   process.exit(0)
 }
 
-const { urls, skipped } = buildUrls({ published, driven: await loadDrivenSlugs() })
+const { urls, skipped, addedFromCms } = buildUrls({ published, driven: await loadDrivenSlugs() })
 const unique = new Set(urls)
 if (unique.size !== urls.length) {
   throw new Error(`generate-sitemap: duplicate URL(s) detected — refusing to write a sitemap with duplicates.`)
@@ -179,3 +193,4 @@ if (clash.length) throw new Error(`generate-sitemap: URL(s) listed that the serv
 fs.writeFileSync(outPath, toXml(urls))
 console.log(`✓ sitemap.xml written (${urls.length} URLs${published ? ', published pages only' : ', OFFLINE — CMS filter not applied'}) → ${path.relative(REPO_ROOT, outPath)}`)
 for (const [u, why] of skipped) console.log(`  – left out: ${u} (${why})`)
+for (const u of addedFromCms) console.log(`  + added from the CMS (no markdown file): ${u}`)

@@ -23,10 +23,19 @@ export const LOCKED_KEYS = new Set([
   'icon', 'anchor', 'score', 'level', 'min', 'accent', 'filter', 'categories',
 ])
 
+/**
+ * Internal links that moved: content saved in the CMS before the move (a CTA pointing at /simulateur) keeps
+ * the old address in the database. The server answers it with a 301, but an internal link must name the final
+ * URL (SEO brief, D) — so a `to`/`href` value is rewritten here, wherever it comes from.
+ */
+const LEGACY_LINKS = { '/simulateur': '/tarification', '/simulateur-de-prix': '/tarification' }
+const LINK_KEYS = new Set(['to', 'href'])
+const finalLink = (key, value) => (LINK_KEYS.has(key) && typeof value === 'string' ? (LEGACY_LINKS[value.replace(/\/$/, '')] ?? value) : value)
+
 export function mergeContent(defaults, override, key) {
   if (key && LOCKED_KEYS.has(key)) return defaults
   const t = typeof defaults
-  if (t === 'string') return typeof override === 'string' && override !== '' ? override : defaults
+  if (t === 'string') return finalLink(key, typeof override === 'string' && override !== '' ? override : defaults)
   if (t === 'number') return typeof override === 'number' && Number.isFinite(override) ? override : defaults
   if (t === 'boolean') return typeof override === 'boolean' ? override : defaults
   if (Array.isArray(defaults)) {
