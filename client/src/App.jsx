@@ -16,6 +16,12 @@ import { useCanonical } from '@/hooks/useCanonical'
 import { useConsentTracking } from '@/hooks/useConsentTracking'
 
 // Route-level code splitting keeps the landing bundle lean.
+const NdBusinessSetup = lazy(() => import('@/pages/admin/newdev/BusinessSetup'))
+const NdTeam = lazy(() => import('@/pages/admin/newdev/Team'))
+const NdMarketing = lazy(() => import('@/pages/admin/newdev/Marketing'))
+const NdResources = lazy(() => import('@/pages/admin/newdev/Resources'))
+const NdCommercial = lazy(() => import('@/pages/admin/newdev/Commercial'))
+const NdSirius = lazy(() => import('@/pages/admin/newdev/Sirius'))
 const BlogPost = lazy(() => import('@/pages/BlogPost'))
 const Accueil = lazy(() => import('@/pages/atoopv/Accueil'))
 const Boutique = lazy(() => import('@/pages/atoopv/Boutique'))
@@ -254,6 +260,13 @@ export default function App() {
                 <Route path="cms/menus" element={<AdminCmsMenus />} />
                 <Route path="cms/pages/new" element={<AdminCmsPageNew />} />
                 <Route path="cms/pages/:id" element={<AdminCmsPageEditor />} />
+                <Route path="new-development" element={<Navigate to="/app/admin/new-development/business-setup" replace />} />
+                <Route path="new-development/business-setup" element={<NdBusinessSetup />} />
+                <Route path="new-development/team" element={<NdTeam />} />
+                <Route path="new-development/marketing" element={<NdMarketing />} />
+                <Route path="new-development/resources" element={<NdResources />} />
+                <Route path="new-development/commercial" element={<NdCommercial />} />
+                <Route path="new-development/sirius" element={<NdSirius />} />
               </Route>
               <Route path="status" element={<Status />} />
               <Route path="about" element={<About />} />

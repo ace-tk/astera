@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   Workflow, FileText, UploadCloud, BarChart3, Settings2, Search, PanelLeftClose, PanelLeft, Sparkles,
   LayoutDashboard, LayoutGrid, Building2, Users, ArrowLeftRight, Inbox, FolderOpen, ChevronRight, Files, ListTree, FileCheck2, Newspaper,
+  Briefcase, Megaphone, BookOpen, Star,
 } from 'lucide-react'
 import ThemeSwitcher from '@/components/common/ThemeSwitcher'
 import SoundToggle from '@/components/common/SoundToggle'
@@ -77,6 +78,17 @@ const ADMIN_NAV_GROUPS = [
       { to: '/app/admin/cms/pages', label: 'Pages', icon: Files, active: 'text-purple' },
       { to: '/app/admin/cms/menus', label: 'Menus', icon: ListTree, active: 'text-purple' },
       { to: '/app/admin/blog', label: 'Blog', icon: Newspaper, active: 'text-purple' },
+    ],
+  },
+  {
+    label: 'New Development',
+    items: [
+      { to: '/app/admin/new-development/business-setup', label: 'Business Setup', icon: Building2, active: 'text-royal' },
+      { to: '/app/admin/new-development/team', label: 'Team', icon: Users, active: 'text-sky' },
+      { to: '/app/admin/new-development/marketing', label: 'Marketing', icon: Megaphone, active: 'text-coral' },
+      { to: '/app/admin/new-development/resources', label: 'Resources', icon: BookOpen, active: 'text-mint' },
+      { to: '/app/admin/new-development/commercial', label: 'Commercial', icon: Briefcase, active: 'text-golden' },
+      { to: '/app/admin/new-development/sirius', label: 'Sirius', icon: Star, active: 'text-purple' },
     ],
   },
   {
