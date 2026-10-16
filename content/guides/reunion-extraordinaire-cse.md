@@ -76,7 +76,7 @@ LE PV QUI EN DÉCOULE
 
 ### Le PV obéit aux mêmes exigences
 
-Une réunion extraordinaire produit un procès-verbal distinct, soumis aux mêmes règles de forme, de [délai](https://www.atoopv.com/delai-pv-cse/) et d’approbation qu’un PV ordinaire. L’enjeu y est souvent plus sensible — restructuration, contentieux, alerte. Raison de plus pour une rédaction rigoureuse.
+Une réunion extraordinaire produit un procès-verbal distinct, soumis aux mêmes règles de forme, de [délai](https://atoopv.com/services/tarifs-infos/delai-redaction-pv-cse) et d’approbation qu’un PV ordinaire. L’enjeu y est souvent plus sensible — restructuration, contentieux, alerte. Raison de plus pour une rédaction rigoureuse.
 
 > 💡 **Le saviez-vous ?** Une demande de réunion extraordinaire formulée par courrier ou courriel doit comporter la liste des questions à aborder. À défaut, l’employeur peut refuser de convoquer.
 

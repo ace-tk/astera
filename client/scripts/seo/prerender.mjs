@@ -15,6 +15,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
 import { buildHtaccess } from './htaccess.mjs'
+import { REDIRECTS } from './redirectMap.mjs'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const clientRoot = path.resolve(here, '../..')
@@ -171,7 +172,8 @@ try {
   const res = await fetch(`${api}/cms/index`, { signal: AbortSignal.timeout(20000) })
   if (res.ok) {
     const { pages } = await res.json()
-    const known = new Set(routes)
+    // a published page that was merged into another (301 in .htaccess) is not meant to be a valid URL any more
+    const known = new Set([...routes, ...REDIRECTS.flatMap((r) => r.from.map((f) => `/${f}`))])
     const unknown = pages.filter((p) => !p.isHub && !known.has(p.path) && /^\/(services\/[a-z-]+|ressources)\/[a-z0-9-]+$/.test(p.path)).map((p) => p.path)
     if (unknown.length) problems.push({ route: '(CMS vs release)', issues: unknown.map((u) => `published in the CMS but not pre-rendered (would answer 404): ${u}`) })
   }

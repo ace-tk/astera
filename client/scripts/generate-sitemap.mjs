@@ -80,7 +80,10 @@ const STATIC_PAGES = [
 
 // Pages that exist as a markdown file but must not be listed: exact duplicates of another page.
 //   drafting/services → same title/H1 as /services (SEO brief 2.6); 301-redirected to /services.
-const SITEMAP_EXCLUDE = new Set(['/services/drafting/services'])
+//   every legacy source of the redirect map (e.g. /services/guides/delai-pv-cse, merged into
+//   /services/tarifs-infos/delai-redaction-pv-cse): a URL that answers 301 must never be in the sitemap.
+const { REDIRECTS } = await import(pathToFileURL(path.join(CLIENT_ROOT, 'scripts/seo/redirectMap.mjs')).href)
+const SITEMAP_EXCLUDE = new Set(['/services/drafting/services', ...REDIRECTS.flatMap((r) => r.from.map((f) => `/${f}`))])
 
 /**
  * Fetches the live CMS index (public, published pages only). Returns a Set of published paths, or
@@ -132,7 +135,7 @@ function buildUrls({ published, driven }) {
     for (const slug of slugsIn(category)) {
       if (slug === hubSlug) continue
       const u = `/services/${category}/${slug}`
-      if (SITEMAP_EXCLUDE.has(u)) { skipped.push([u, 'duplicate of /services']); continue }
+      if (SITEMAP_EXCLUDE.has(u)) { skipped.push([u, 'merged or redirected — answers 301']); continue }
       if (!isLive(u, slug, driven.services)) { skipped.push([u, 'not published in the CMS']); continue }
       urls.push(u)
     }

@@ -14,6 +14,7 @@ import CmsArticleGate from '@/cms/CmsArticleGate'
 import { useHubPage } from '@/cms/useHubPage'
 import { CMS_DRIVEN_RESSOURCES, ressourceCmsPath } from '@/cms/config'
 import { useSectionNav } from '@/cms/useNavigation'
+import RelatedServices from '@/components/atoopv/RelatedServices'
 
 /**
  * Renders one extracted content/resources/<slug>.md file. A single dynamic
@@ -50,15 +51,29 @@ export default function RessourceArticle({ slug: slugProp }) {
 
   return (
     <CmsArticleGate source={source} missingTo="/ressources">
-      {(resource) => <RessourceArticleView resource={resource} />}
+      {(resource) => <RessourceArticleView resource={resource} slug={slug} />}
     </CmsArticleGate>
   )
 }
 
+const GUIDES_SLUG = 'guides-livres-blancs-cse'
+const GUIDES_META = {
+  title: 'Guides et livres blancs gratuits pour le CSE',
+  description:
+    'Téléchargez nos guides juridiques et livres blancs : réunions du CSE, rédaction du procès-verbal, droits des élus, cas pratiques et références au Code du travail.',
+}
+
 /** The Ressources Article design. Receives its content as `resource` (same shape from bundled markdown or the CMS). */
-function RessourceArticleView({ resource }) {
+function RessourceArticleView({ resource, slug }) {
   const navItems = useSectionNav('ressources', RESSOURCES_NAV)
-  usePageMeta({ title: resource.seo?.title || resource.title, description: resource.seo?.description })
+  // The guides page shares its source with the old /ressources landing page; it now has its own subject in the
+  // title and description (a title typed in the CMS wins, unless it is just the page heading again).
+  const own = slug === GUIDES_SLUG ? GUIDES_META : null
+  const customTitle = resource.seo?.title && resource.seo.title !== resource.title ? resource.seo.title : null
+  usePageMeta({
+    title: customTitle || own?.title || resource.title,
+    description: resource.seo?.description || own?.description,
+  })
 
   const sections = extractH2Sections(resource.body)
   const hasSections = sections.length >= 2
@@ -78,6 +93,7 @@ function RessourceArticleView({ resource }) {
           compact
         >
           <MarkdownArticle body={resource.body} color="royal" editorialNumbers={hasSections} />
+          <RelatedServices slug={slug} />
         </ServiceCategoryContent>
       </div>
     </>

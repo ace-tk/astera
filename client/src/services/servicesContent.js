@@ -12,6 +12,7 @@
  * /services/<category>/<slug>.
  */
 import { parseContentFile, excerpt } from '@/utils/contentMarkdown'
+import { isMergedAway } from '@/utils/mergedPages'
 
 const files = import.meta.glob('/../content/{drafting,by-city,tarifs-infos,guides,communication,training}/*.md', {
   query: '?raw',
@@ -30,7 +31,7 @@ export function getServicePage(slug) {
 }
 
 export function getServicePagesByCategory(category) {
-  return SERVICE_PAGES.filter((p) => p.category === category)
+  return SERVICE_PAGES.filter((p) => p.category === category && !isMergedAway(`/services/${category}/${p.slug}`))
 }
 
 /** The one page per category that stands in for that category's own "hub"

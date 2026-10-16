@@ -16,6 +16,7 @@ import { useCanonical } from '@/hooks/useCanonical'
 import { useConsentTracking } from '@/hooks/useConsentTracking'
 
 // Route-level code splitting keeps the landing bundle lean.
+const RessourcesHub = lazy(() => import('@/pages/ressources/RessourcesHub'))
 const NdBusinessSetup = lazy(() => import('@/pages/admin/newdev/BusinessSetup'))
 const NdTeam = lazy(() => import('@/pages/admin/newdev/Team'))
 const NdMarketing = lazy(() => import('@/pages/admin/newdev/Marketing'))
@@ -185,7 +186,7 @@ export default function App() {
             <Route path="/politique-de-confidentialite" element={<LegalPage slug="politique-de-confidentialite" />} />
             <Route path="/cookies" element={<LegalPage slug="cookies" />} />
             <Route path="/ressources" element={<ServiceCategoryLayout />}>
-              <Route index element={<RessourceArticle slug="guides-livres-blancs-cse" />} />
+              <Route index element={<RessourcesHub />} />
               <Route path="veille-juridique-cse" element={<VeilleJuridique />} />
               <Route path=":slug" element={<RessourceArticle />} />
             </Route>
@@ -210,6 +211,7 @@ export default function App() {
             </Route>
             <Route path="/services/guides" element={<ServiceCategoryLayout />}>
               <Route index element={<ServiceCategoryDirectory category="guides" />} />
+              <Route path="delai-pv-cse" element={<Navigate to="/services/tarifs-infos/delai-redaction-pv-cse" replace />} />
               <Route path=":slug" element={<ServiceArticle category="guides" />} />
             </Route>
             <Route path="/services/communication" element={<ServiceCategoryLayout />}>

@@ -4,6 +4,7 @@ import Navbar from '@/components/landing/Navbar'
 import AtoopvAnnouncementBar from '@/components/atoopv/AtoopvAnnouncementBar'
 import AtoopvScrollControl from '@/components/atoopv/AtoopvScrollControl'
 import AtoopvFooter from '@/components/atoopv/AtoopvFooter'
+import ServicePagesIndex from '@/components/services/ServicePagesIndex'
 import AtoopvFinalCta from '@/components/atoopv/AtoopvFinalCta'
 import Testimonials from '@/components/landing/sections/Testimonials'
 import AtoopvHomeHero from '@/components/atoopv/AtoopvHomeHero'
@@ -90,6 +91,15 @@ export default function Accueil() {
           <FeatureGrid eyebrow={expertise.eyebrow} heading={expertise.heading} lead={expertise.lead} items={expertise.items} color="sky" columns={3} />
         </div>
       </section>
+
+      {/* Plain links to the commercial pages (drafting, tarifs & infos, formations) so they are reachable from the
+          homepage without a menu or a script. */}
+      <ServicePagesIndex
+        id="nos-pages-cles"
+        categories={['drafting', 'tarifs-infos', 'training']}
+        eyebrow="Nos pages clés"
+        heading="Rédaction, tarifs et formations : accès direct"
+      />
 
       <InfoCardSection eyebrow={NOS_INSTANCES.eyebrow} heading={NOS_INSTANCES.heading} lead={NOS_INSTANCES.lead} items={NOS_INSTANCES.items} columns={4} />
 

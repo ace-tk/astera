@@ -191,7 +191,7 @@ export const ATOOPV_NAV = [
           heading: 'Le PV en pratique',
           items: [
             { label: 'Contenu obligatoire du PV', href: '/services/guides/pv-cse-contenu-obligatoire' },
-            { label: 'Délais, approbation, signature', href: '/services/guides/delai-pv-cse' },
+            { label: 'Délais, approbation, signature', href: '/services/tarifs-infos/delai-redaction-pv-cse' },
             { label: 'Synthétique ou intégral ?', href: '/services/guides/pv-cse-synthetique-ou-integral' },
             { label: 'Délit d’entrave & code du travail', href: '/services/guides/pv-cse-delit-entrave' },
           ],

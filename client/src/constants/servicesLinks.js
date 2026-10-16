@@ -11,11 +11,14 @@
  */
 import { SERVICE_PAGES_BY_SLUG, CATEGORY_HUB_SLUG } from '@/services/servicesContent'
 import { RESOURCES_BY_SLUG } from '@/services/resourcesContent'
+import { finalPath } from '@/utils/mergedPages'
 
 // A page reached under a second, older slug that redirects on the live site
 // (discovered while writing extract_services.py).
 const ALIASES = {
   'formations-elus-cse-esss': 'formations-elus-cse-agree',
+  // the two "délai" pages were merged — a link to the old one goes straight to the page that was kept
+  'delai-pv-cse': 'delai-redaction-pv-cse',
 }
 
 const HUB_SLUG_TO_CATEGORY = Object.fromEntries(Object.entries(CATEGORY_HUB_SLUG).map(([category, slug]) => [slug, category]))
@@ -32,7 +35,7 @@ export function serviceRouteForSlug(rawSlug) {
   if (slug === 'services') return '/services'
   if (HUB_SLUG_TO_CATEGORY[slug]) return `/services/${HUB_SLUG_TO_CATEGORY[slug]}`
   const page = SERVICE_PAGES_BY_SLUG.get(slug)
-  return page ? `/services/${page.category}/${slug}` : null
+  return page ? finalPath(`/services/${page.category}/${slug}`) : null
 }
 
 // Every other internal slug referenced from a Services page belongs to a

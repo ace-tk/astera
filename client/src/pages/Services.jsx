@@ -8,6 +8,7 @@ import CTASection from '@/components/services/CTASection'
 import ServicesHomeIntro from '@/components/services/ServicesHomeIntro'
 import ServicesStatsStrip from '@/components/services/ServicesStatsStrip'
 import ServicesGroupSection from '@/components/services/ServicesGroupSection'
+import ServicePagesIndex from '@/components/services/ServicePagesIndex'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import { useHubPage } from '@/cms/useHubPage'
 import { usePageMeta } from '@/hooks/usePageMeta'
@@ -108,6 +109,17 @@ export default function Services() {
             </div>
           </>
         ))}
+
+      {/* Outside the branches above on purpose: whichever way the page text is shaped (bundled or CMS), every
+          service page stays reachable from /services through a plain link (SEO fix list, item 8). */}
+      {page && (
+        <ServicePagesIndex
+          id="toutes-nos-pages"
+          eyebrow="Toutes nos pages"
+          heading="Retrouvez chacun de nos services"
+          lead="Rédaction, tarifs, guides pratiques, communication, formations et couverture par ville : toutes les pages de la rubrique Services."
+        />
+      )}
 
       <AtoopvFooter />
     </motion.main>

@@ -46,7 +46,7 @@ Options -MultiViews
   RewriteRule ^pv-cse-code-travail/?$ https://atoopv.com/services/tarifs-infos/pv-cse-code-travail [R=301,L]
   RewriteRule ^redacteur-pv-cse/?$ https://atoopv.com/services/tarifs-infos/redacteur-pv-cse [R=301,L]
   RewriteRule ^approbation-pv-cse/?$ https://atoopv.com/services/guides/approbation-pv-cse [R=301,L]
-  RewriteRule ^delai-pv-cse/?$ https://atoopv.com/services/guides/delai-pv-cse [R=301,L]
+  RewriteRule ^(delai-pv-cse|services/guides/delai-pv-cse)/?$ https://atoopv.com/services/tarifs-infos/delai-redaction-pv-cse [R=301,L]
   RewriteRule ^modele-pv-cse-gratuit/?$ https://atoopv.com/services/guides/modele-pv-cse-gratuit [R=301,L]
   RewriteRule ^reunion-extraordinaire-cse/?$ https://atoopv.com/services/guides/reunion-extraordinaire-cse [R=301,L]
   RewriteRule ^pv-cse-contenu-obligatoire/?$ https://atoopv.com/services/guides/pv-cse-contenu-obligatoire [R=301,L]
@@ -126,7 +126,7 @@ Options -MultiViews
   RewriteRule ^le-controle-urssaf-sur-les-comptes-du-cse/?$ https://atoopv.com/ressources/actualite-sociale [R=301,L]
   RewriteRule ^actualites/?$ https://atoopv.com/ressources/actualite-sociale [R=301,L]
   RewriteRule ^autodiagnostic-cse/?$ https://atoopv.com/autodiagnostic [R=301,L]
-  RewriteRule ^livres-blancs/?$ https://atoopv.com/ressources/guides-livres-blancs-cse [R=301,L]
+  RewriteRule ^(livres-blancs|livre-blanc-reunion-du-cse)/?$ https://atoopv.com/ressources/guides-livres-blancs-cse [R=301,L]
   # duplicate of /services (brief 2.6)
   RewriteRule ^services/drafting/services/?$ https://atoopv.com/services [R=301,L]
   RewriteRule ^accueil/?$ https://atoopv.com/ [R=301,L]

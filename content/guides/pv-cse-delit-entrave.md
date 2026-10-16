@@ -68,7 +68,7 @@ L’employeur, lui, ne participe pas à la rédaction. En effet, la Cour de cass
 
 ### Où se loge le risque d’entrave
 
-Le délit d’entrave au fonctionnement régulier du CSE est puni d’une amende de 7 500 € (art. L.2317-1 du Code du travail). Ainsi, c’est une infraction qui pèse sur l’employeur. Un [PV tardif](https://www.atoopv.com/delai-pv-cse/) imputable au secrétaire n’expose donc pas, à lui seul, l’employeur à l’entrave.
+Le délit d’entrave au fonctionnement régulier du CSE est puni d’une amende de 7 500 € (art. L.2317-1 du Code du travail). Ainsi, c’est une infraction qui pèse sur l’employeur. Un [PV tardif](https://atoopv.com/services/tarifs-infos/delai-redaction-pv-cse) imputable au secrétaire n’expose donc pas, à lui seul, l’employeur à l’entrave.
 
 En revanche, l’entrave peut être caractérisée quand l’employeur s’immisce dans le document ou en empêche l’existence : rédiger lui-même le PV, refuser d’inscrire son approbation à l’ordre du jour, désigner unilatéralement un tiers pour le rédiger. La frontière est là, et elle est nette.
 

@@ -4,6 +4,7 @@ import { fetchNavigation } from '@/services/cms'
 import { ATOOPV_NAV } from '@/constants/content'
 import { CMS_ENABLED } from './config'
 import { fromResolvedMenu, UTILITY_HREFS } from './navConvert'
+import { finalPath, isMergedAway } from '@/utils/mergedPages'
 
 /*
  * The website's navigation data, with the CMS sitting UNDERNEATH the existing UI.
@@ -33,13 +34,18 @@ const LEGACY_PREFIX = /^\/atoopv(?=\/|$)/
 export function normalizeNavigation(data) {
   if (!data) return data
   const walk = (v) => {
-    if (typeof v === 'string') return LEGACY_PREFIX.test(v) ? v.replace(LEGACY_PREFIX, '') || '/' : v
+    if (typeof v === 'string') return finalPath(LEGACY_PREFIX.test(v) ? v.replace(LEGACY_PREFIX, '') || '/' : v)
     if (Array.isArray(v)) return v.map(walk)
     if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]))
     return v
   }
   const out = walk(data)
-  if (Array.isArray(data.pages)) out.pages = out.pages.map((p, i) => ({ ...p, storedPath: data.pages[i].path }))
+  if (Array.isArray(data.pages)) {
+    // A page merged into another one (see utils/mergedPages) is not listed or linked any more, even if it is still published.
+    out.pages = out.pages
+      .map((p, i) => ({ ...p, storedPath: data.pages[i].path }))
+      .filter((_, i) => !isMergedAway(data.pages[i].path.replace(LEGACY_PREFIX, '') || '/'))
+  }
   return out
 }
 

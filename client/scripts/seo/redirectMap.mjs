@@ -30,7 +30,8 @@ export const REDIRECTS = [
   { from: ['pv-cse-code-travail'], to: '/services/tarifs-infos/pv-cse-code-travail' },
   { from: ['redacteur-pv-cse'], to: '/services/tarifs-infos/redacteur-pv-cse' },
   { from: ['approbation-pv-cse'], to: '/services/guides/approbation-pv-cse' },
-  { from: ['delai-pv-cse'], to: '/services/guides/delai-pv-cse' },
+  // The two "délai" pages were merged (client fix list 16 Oct, item 2): the tarifs-infos page is the one kept.
+  { from: ['delai-pv-cse', 'services/guides/delai-pv-cse'], to: '/services/tarifs-infos/delai-redaction-pv-cse' },
   { from: ['modele-pv-cse-gratuit'], to: '/services/guides/modele-pv-cse-gratuit' },
   { from: ['reunion-extraordinaire-cse'], to: '/services/guides/reunion-extraordinaire-cse' },
   { from: ['pv-cse-contenu-obligatoire'], to: '/services/guides/pv-cse-contenu-obligatoire' },
@@ -106,7 +107,7 @@ export const REDIRECTS = [
 
   /* ---- 5.4 + brief 2.6 + this site's own earlier renames ---- */
   { from: ['autodiagnostic-cse'], to: '/autodiagnostic' },
-  { from: ['livres-blancs'], to: '/ressources/guides-livres-blancs-cse' },
+  { from: ['livres-blancs', 'livre-blanc-reunion-du-cse'], to: '/ressources/guides-livres-blancs-cse' },
   { from: ['services/drafting/services'], to: '/services', note: 'duplicate of /services (brief 2.6)' },
   { from: ['accueil'], to: '/' },
 ]

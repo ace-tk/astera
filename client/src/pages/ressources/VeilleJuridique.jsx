@@ -9,6 +9,7 @@ import { useSitePage, seoMeta } from '@/cms/useSitePage'
 import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getResource, excerpt, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
 import { RESSOURCES_NAV } from '@/constants/resourcesNav'
+import RelatedServices from '@/components/atoopv/RelatedServices'
 
 /**
  * "Veille juridique CSE" hub. The live atoopv.com nav points this entry at
@@ -56,6 +57,7 @@ export default function VeilleJuridique() {
           <div>
             <EditorialDivider className="mb-8" />
             <ArticleGrid items={items} color="royal" columns={3} featureFirst />
+            <RelatedServices slug="veille-juridique-cse" />
           </div>
         </ServiceCategoryContent>
       </div>

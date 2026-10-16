@@ -62,7 +62,7 @@ Le procès-verbal n’est pas un compte rendu de réunion qu’on classe et qu�
 
 En principe, la rédaction du procès-verbal incombe au secrétaire du CSE (art. L.2315-34 et R.2315-25 du Code du travail). Ainsi, à défaut d’accord d’entreprise ou de stipulation du règlement intérieur, il dispose de quinze jours suivant la réunion pour établir et transmettre le projet à l’employeur et aux membres du comité. Toutefois, ce délai tombe à trois jours dans le cadre d’un projet de licenciement collectif pour motif économique (art. L.1233-30), et à un jour si l’entreprise est en redressement ou en liquidation judiciaire (art. D.2315-26).
 
-Ainsi, pour aller plus loin : [Délai du PV de CSE](https://www.atoopv.com/delai-pv-cse/)
+Ainsi, pour aller plus loin : [Délai du PV de CSE](https://atoopv.com/services/tarifs-infos/delai-redaction-pv-cse)
 
 📋
 
