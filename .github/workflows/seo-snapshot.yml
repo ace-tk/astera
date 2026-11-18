@@ -1,0 +1,116 @@
+name: SEO snapshot (pre-rendered pages, sitemap, .htaccess)
+
+# What crawlers receive is the pre-rendered HTML in public_html/_pre and sitemap.xml. They are built with a headless browser,
+# which shared hosting cannot run, so this workflow does it:
+#   * automatically a minute or two after every CMS publish / unpublish / remove / redirect change
+#     (the API sends a `repository_dispatch` event "cms-publish", see server/src/cms/snapshotHook.js)
+#   * every night at 03:17 UTC as a safety net
+#   * on demand (Actions → "SEO snapshot" → Run workflow). A manual run only BUILDS AND VERIFIES unless you tick "deploy".
+#
+# It builds the whole site from `main` (the release build: prerender + real-Apache verification) and uploads in this order, so a
+# crawler never sees a page that points to a missing file:  1. assets (added, never deleted: visitors with an old page still need
+# the old files)  2. _pre/ (replaced)  3. everything else  4. .htaccess last.
+#
+# Secrets (Settings → Secrets and variables → Actions, environment "production"): O2SWITCH_SSH_HOST, O2SWITCH_SSH_PORT,
+# O2SWITCH_SSH_USER, O2SWITCH_SSH_KEY, O2SWITCH_TARGET_DIR (e.g. /home/tenu7190/atoopv.com). Nothing is uploaded until they exist.
+# Setup steps: docs/AUTO-SNAPSHOT.md
+
+on:
+  repository_dispatch:
+    types: [cms-publish]
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: 'Upload the result to O2Switch (unticked = build and verify only)'
+        type: boolean
+        default: false
+
+# one run at a time; a change that arrives during a run waits for the next one (it then builds the newest content)
+concurrency:
+  group: seo-snapshot
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    name: Build, verify, upload
+    # The nightly run only starts once the repository variable SEO_SNAPSHOT_ENABLED is "true" (Settings -> Secrets and variables ->
+    # Actions -> Variables): until the SSH secrets exist it would only fail every night. CMS events and manual runs are always allowed.
+    if: github.event_name != 'schedule' || vars.SEO_SNAPSHOT_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: production
+    defaults:
+      run:
+        working-directory: client
+    env:
+      DEPLOY: ${{ github.event_name != 'workflow_dispatch' || inputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      # SEO_STRICT=1: if the CMS cannot be read the build STOPS instead of shipping a guess.
+      - name: Release build (prebuild, vite build, prerender)
+        env:
+          VITE_API_URL: https://api.atoopv.com/api
+          VITE_DEMO_MODE: 'false'
+          SEO_STRICT: '1'
+        run: npm run build:release
+
+      - name: Verify the .htaccess on a real Apache
+        run: npm run seo:verify
+
+      - name: Sanity checks on the output
+        run: |
+          set -euo pipefail
+          test "$(grep -c '<loc>' dist/sitemap.xml)" -ge 50
+          test -f dist/_pre/index.html && test -f dist/_pre/404.html && test -f dist/.htaccess
+          if grep -rlq "localhost:5050" dist; then echo "::error::dist still contains the dev API fallback"; exit 1; fi
+          echo "pre-rendered pages: $(find dist/_pre -name '*.html' | wc -l)"
+
+      - name: SSH
+        if: env.DEPLOY == 'true'
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
+
+      - name: Upload
+        if: env.DEPLOY == 'true'
+        env:
+          HOST: ${{ secrets.O2SWITCH_SSH_HOST }}
+          PORT: ${{ secrets.O2SWITCH_SSH_PORT }}
+          SSH_USER: ${{ secrets.O2SWITCH_SSH_USER }}
+          TARGET: ${{ secrets.O2SWITCH_TARGET_DIR }}
+        run: |
+          set -euo pipefail
+          : "${HOST:?missing O2SWITCH_SSH_HOST}" "${PORT:?missing O2SWITCH_SSH_PORT}" "${SSH_USER:?missing O2SWITCH_SSH_USER}" "${TARGET:?missing O2SWITCH_TARGET_DIR}"
+          mkdir -p ~/.ssh && ssh-keyscan -p "$PORT" "$HOST" >> ~/.ssh/known_hosts
+          SSH="ssh -p $PORT"
+          DEST="$SSH_USER@$HOST:$TARGET"
+          rsync -az -e "$SSH" dist/assets/ "$DEST/assets/"                                   # 1. assets: added only
+          rsync -az --delete -e "$SSH" dist/_pre/ "$DEST/_pre/"                              # 2. snapshots: replaced
+          rsync -az -e "$SSH" --exclude '_pre/' --exclude 'assets/' --exclude '.htaccess' dist/ "$DEST/"   # 3. index.html, sitemap.xml, fonts, images...
+          rsync -az -e "$SSH" dist/.htaccess "$DEST/.htaccess"                               # 4. rules last
+          echo "uploaded to $TARGET"
+
+      - name: Check the live site
+        if: env.DEPLOY == 'true'
+        run: |
+          set -euo pipefail
+          sleep 5
+          test "$(curl -s https://atoopv.com/sitemap.xml | grep -c '<loc>')" -ge 50
+          curl -sfI https://atoopv.com/ | head -1
