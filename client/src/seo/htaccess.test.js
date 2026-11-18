@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { buildHtaccess, CLIENT_RENDERED_AREAS } from '../../scripts/seo/htaccess.mjs'
 import { REDIRECTS, PREFIX_REDIRECTS, GONE } from '../../scripts/seo/redirectMap.mjs'
 import { seoMeta } from '@/cms/useSitePage'
+import { cleanRedirects } from '../../scripts/seo/cmsRedirects.mjs'
 
 const base = buildHtaccess({ mode: 'base' })
 const release = buildHtaccess({ mode: 'release' })
@@ -75,5 +76,28 @@ describe('seoMeta — "Search & sharing" fields of a site page', () => {
   it('uses a non-empty SEO title and/or description', () => {
     expect(seoMeta({ seo: { title: 'SEO', description: '' } }, fallback)).toEqual({ title: 'SEO', description: 'Derived description' })
     expect(seoMeta({ seo: { title: '', description: 'D' } }, fallback)).toEqual({ title: 'Derived title', description: 'D' })
+  })
+})
+
+describe('redirects managed in the CMS', () => {
+  const cms = [{ from: '/services/guides/contenu-pv-cse', to: '/services/guides/pv-cse-contenu-obligatoire' }, { from: '/old.page', to: '/new' }]
+  const out = buildHtaccess({ mode: 'release', cmsRedirects: cms })
+
+  it('become one-hop 301 rules with or without a trailing slash, special characters escaped', () => {
+    expect(out).toContain('RewriteRule ^services/guides/contenu-pv-cse/?$ https://atoopv.com/services/guides/pv-cse-contenu-obligatoire [R=301,L]')
+    expect(out).toContain('RewriteRule ^old\\.page/?$ https://atoopv.com/new [R=301,L]')
+  })
+  it('sit before the www/https rules and the pre-rendered whitelist', () => {
+    expect(out.indexOf('contenu-pv-cse/?$')).toBeLessThan(out.indexOf('# 3. www'))
+    expect(out.indexOf('contenu-pv-cse/?$')).toBeLessThan(out.indexOf('_pre/$1.html'))
+  })
+  it('add nothing when there are none, and skip a source that the map already redirects', () => {
+    expect(buildHtaccess({ mode: 'base' })).not.toContain('# 2a.')
+    const legacy = `/${REDIRECTS[0].from[0]}`
+    expect(buildHtaccess({ mode: 'base', cmsRedirects: [{ from: legacy, to: '/x' }] })).not.toContain('# 2a.')
+  })
+  it('cleanRedirects drops malformed rows, duplicates, self-redirects and the home page', () => {
+    const list = cleanRedirects([{ from: '/a', to: '/b' }, { from: '/a', to: '/c' }, { from: '/s', to: '/s' }, { from: '/', to: '/x' }, { from: 'https://evil.example', to: '/x' }, { from: '/sp ace', to: '/x' }, { from: '/ok', to: 'nope' }, null])
+    expect(list).toEqual([{ from: '/a', to: '/b' }])
   })
 })

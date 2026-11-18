@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { setCanonicalOverride } from './canonicalStore'
 
 const DEFAULT_TITLE = 'ATOOPV — From conversations to clarity.'
 
@@ -57,7 +58,14 @@ const upsertMetaDescription = (content) => upsertNamed('description', content)
  * per route, by useCanonical() (src/hooks/useCanonical.js) — every route gets
  * one automatically, with no per-page wiring required.
  */
-export function usePageMeta({ title, description, noindex = false, ogTitle, ogDescription }) {
+export function usePageMeta({ title, description, noindex = false, ogTitle, ogDescription, canonicalPath }) {
+  // `canonicalPath` (e.g. from the CMS "Canonical URL" field) replaces the self-referencing canonical for this page only.
+  useEffect(() => {
+    if (!canonicalPath) return undefined
+    setCanonicalOverride(canonicalPath)
+    return () => setCanonicalOverride(null)
+  }, [canonicalPath])
+
   useEffect(() => {
     const previousTitle = document.title
     document.title = title ? `${title} — ATOOPV` : DEFAULT_TITLE

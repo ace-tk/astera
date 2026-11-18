@@ -16,6 +16,8 @@ import { fileURLToPath } from 'node:url'
 import { chromium } from 'playwright'
 import { buildHtaccess } from './htaccess.mjs'
 import { REDIRECTS } from './redirectMap.mjs'
+import { loadCmsRedirects } from './cmsRedirects.mjs'
+import { fetchRetry } from './apiFetch.mjs'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const clientRoot = path.resolve(here, '../..')
@@ -29,10 +31,19 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/jav
 if (!fs.existsSync(path.join(DIST, 'index.html'))) { console.error('dist/index.html not found — run `vite build` first.'); process.exit(1) }
 fs.rmSync(PRE, { recursive: true, force: true })
 
-/* ---- routes = the sitemap (the SAME source the brief asks for) ---- */
-const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8')
-const routes = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname)
-if (!routes.length) { console.error('sitemap.xml lists no URL'); process.exit(1) }
+/* ---- routes = every URL that must exist (written next to the sitemap by generate-sitemap.mjs).
+        It is a superset of sitemap.xml: legal pages and pages hidden from search engines stay reachable. ---- */
+const routesFile = path.join(clientRoot, 'scripts', 'seo', 'generated', 'prerender-routes.json')
+let routeInfo
+if (fs.existsSync(routesFile)) {
+  routeInfo = new Map(JSON.parse(fs.readFileSync(routesFile, 'utf8')).routes.map((r) => [r.path, r]))
+} else {
+  console.warn('! scripts/seo/generated/prerender-routes.json not found: falling back to the sitemap (legal / noindex pages would NOT be pre-rendered)')
+  const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8')
+  routeInfo = new Map([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname).map((p) => [p, { path: p }]))
+}
+const routes = [...routeInfo.keys()]
+if (!routes.length) { console.error('no route to pre-render'); process.exit(1) }
 
 /* ---- throw-away static server (SPA fallback) ---- */
 const server = http.createServer((req, res) => {
@@ -49,7 +60,7 @@ const ORIGIN = `http://127.0.0.1:${server.address().port}`
 const apiCache = new Map()
 async function apiGet(url) {
   if (!apiCache.has(url)) {
-    apiCache.set(url, fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(20000) }).then(async (r) => ({ status: r.status, type: r.headers.get('content-type') || 'application/json', body: Buffer.from(await r.arrayBuffer()) })))
+    apiCache.set(url, fetchRetry(url, { headers: { Accept: 'application/json' } }).then(async (r) => ({ status: r.status, type: r.headers.get('content-type') || 'application/json', body: Buffer.from(await r.arrayBuffer()) })))
   }
   return apiCache.get(url)
 }
@@ -58,9 +69,10 @@ const browser = await chromium.launch()
 const results = []
 const problems = []
 
-async function renderRoute(route, { probe = false } = {}) {
+async function renderRoute(route, { waitCms = false } = {}) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' })
   const page = await ctx.newPage()
+  const served = new Set() // public API URLs already answered to this page
   await page.route('**/*', async (r) => {
     const req = r.request()
     const u = req.url()
@@ -69,6 +81,8 @@ async function renderRoute(route, { probe = false } = {}) {
       if (req.method() !== 'GET' || u.includes('socket.io')) return r.abort()
       try {
         const a = await apiGet(u)
+        // a CMS page request counts only when it answered with the PAGE (not with `{ redirect }` for a legacy address)
+        if (a.status === 200 && (!u.includes('/cms/pages?') || /^\s*\{\s*"page"/.test(a.body))) served.add(u)
         return r.fulfill({ status: a.status, body: a.body, headers: { 'content-type': a.type, 'access-control-allow-origin': '*' } })
       } catch {
         return r.abort()
@@ -80,6 +94,17 @@ async function renderRoute(route, { probe = false } = {}) {
   try {
     await page.goto(`${ORIGIN}${route}`, { waitUntil: 'load', timeout: 40000 })
     await page.waitForFunction(() => document.querySelector('h1') && document.querySelector('link[rel="canonical"]'), null, { timeout: 25000 })
+    if (waitCms) {
+      // A CMS page first shows the bundled markdown (and, for migrated Ressources, asks the CMS for its legacy address),
+      // then the real published content. Do not snapshot before the CMS has answered for THIS page's address.
+      // migrated Ressources articles are still stored under their legacy address /atoopv/ressources/<slug>
+      const wanted = [route, `/atoopv${route}`].map((p) => `/cms/pages?path=${encodeURIComponent(p)}`)
+      const t0 = Date.now()
+      while (![...served].some((u) => wanted.some((w) => u.endsWith(w)))) {
+        if (Date.now() - t0 > 25000) throw new Error(`the CMS content of ${route} never arrived`)
+        await new Promise((r) => setTimeout(r, 150))
+      }
+    }
     // let CMS content / lazy chunks / metadata effects land: wait for the DOM to stop changing
     await page.evaluate(
       () =>
@@ -100,6 +125,7 @@ async function renderRoute(route, { probe = false } = {}) {
         title: document.title,
         description: meta('meta[name="description"]'),
         canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
+        robots: meta('meta[name="robots"]'),
         ogUrl: meta('meta[property="og:url"]'),
         h1: document.querySelector('h1')?.textContent?.trim() || '',
         textLength: (document.getElementById('root')?.innerText || '').length,
@@ -119,13 +145,17 @@ async function worker() {
   while (queue.length) {
     const route = queue.shift()
     try {
-      const s = await renderRoute(route)
-      const expected = `${SITE}${route === '/' ? '/' : route}`
+      const info = routeInfo.get(route) || {}
+      const s = await renderRoute(route, { waitCms: Boolean(info.cms) })
+      const expected = `${SITE}${info.canonical || (route === '/' ? '/' : route)}`   // a CMS "Canonical URL" replaces the self-reference
       const issues = []
       if (!s.title) issues.push('empty <title>')
       if (!s.description) issues.push('empty meta description')
       if (s.canonical !== expected) issues.push(`canonical is ${s.canonical || '(none)'}, expected ${expected}`)
       if (s.ogUrl !== expected) issues.push(`og:url is ${s.ogUrl || '(none)'}`)
+      // "Hide from search engines" in the CMS must be in the HTML crawlers receive, and only there
+      if (info.noindex && !/noindex/i.test(s.robots)) issues.push('hidden from search engines in the CMS, but the snapshot has no <meta name="robots" content="noindex">')
+      if (!info.noindex && /noindex/i.test(s.robots)) issues.push(`the snapshot says "${s.robots}" but the CMS does not hide this page`)
       if (!s.h1) issues.push('no <h1>')
       if (s.textLength < 300) issues.push(`only ${s.textLength} characters of text`)
       if (route === '/') homeTitle = s.title
@@ -182,7 +212,8 @@ try {
 /* ---- manifest + release .htaccess ---- */
 const manifest = routes.slice().sort()
 fs.writeFileSync(path.join(PRE, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`)
-fs.writeFileSync(path.join(DIST, '.htaccess'), buildHtaccess({ mode: 'release', origin: process.env.SEO_ORIGIN ?? SITE }))
+const cmsRedirects = await loadCmsRedirects({ strict: true }) // a release must never silently drop the redirects editors added
+fs.writeFileSync(path.join(DIST, '.htaccess'), buildHtaccess({ mode: 'release', origin: process.env.SEO_ORIGIN ?? SITE, cmsRedirects }))
 
 console.log(`\n${results.length - problems.filter((p) => results.find((r) => r.route === p.route)).length}/${routes.length} routes pre-rendered cleanly`)
 if (problems.length) {

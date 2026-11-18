@@ -20,7 +20,7 @@ const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 export const CLIENT_RENDERED_AREAS = ['app', 'login', 'register', 'forgot', 'verify-email', 'blog']
 
-export function buildHtaccess({ mode = 'base', origin = 'https://atoopv.com' } = {}) {
+export function buildHtaccess({ mode = 'base', origin = 'https://atoopv.com', cmsRedirects = [] } = {}) {
   const to = (path) => `${origin}${path}`
   const lines = []
   const push = (...l) => lines.push(...l)
@@ -63,6 +63,14 @@ export function buildHtaccess({ mode = 'base', origin = 'https://atoopv.com' } =
     // Apache does not allow a trailing comment on a directive line — the note goes on its own line.
     if (r.note) push(`  # ${r.note}`)
     push(`  RewriteRule ^${alt}/?$ ${to(r.to)} [R=301,L]`)
+  }
+  // 2a. Redirects typed by editors in the CMS (page editor → Redirects). Same one-hop rule; a source that the map
+  // already handles is skipped.
+  const mapped = new Set(REDIRECTS.flatMap((r) => r.from.map((f) => `/${f}`)))
+  const fromCms = cmsRedirects.filter((r) => !mapped.has(r.from))
+  if (fromCms.length) {
+    push('', '  # 2a. Managed in the CMS (Admin → page → Redirects). Regenerated at every release.')
+    for (const r of fromCms) push(`  RewriteRule ^${esc(r.from.replace(/^\//, ''))}/?$ ${to(r.to)} [R=301,L]`)
   }
   push('', '  # 2b. Prefix redirects (WordPress taxonomy archives).')
   for (const p of PREFIX_REDIRECTS) {
@@ -130,6 +138,15 @@ export function buildHtaccess({ mode = 'base', origin = 'https://atoopv.com' } =
     '  # The HTML shells must never be cached, otherwise visitors keep an old build after a deploy.',
     '  <FilesMatch "\\.html$">',
     '    Header set Cache-Control "no-cache, must-revalidate"',
+    '  </FilesMatch>',
+    '  # Static files that are not content-hashed. /assets/* (hashed by Vite) has its own immutable rule in assets/.htaccess.',
+    '  # Self-hosted fonts are never replaced under the same name: one year.',
+    '  <FilesMatch "\\.(woff2?|ttf|otf)$">',
+    '    Header set Cache-Control "public, max-age=31536000, immutable"',
+    '  </FilesMatch>',
+    '  # Images copied from /public keep their name when they are replaced: one week.',
+    '  <FilesMatch "\\.(png|jpe?g|webp|avif|gif|svg|ico)$">',
+    '    Header set Cache-Control "public, max-age=604800"',
     '  </FilesMatch>',
     '  Header always set X-Content-Type-Options "nosniff"',
     '  Header always set Referrer-Policy "strict-origin-when-cross-origin"',

@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildHtaccess } from './htaccess.mjs'
+import { loadCmsRedirects } from './cmsRedirects.mjs'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const clientRoot = path.resolve(here, '../..')
@@ -14,7 +15,7 @@ if (process.env.SEO_ORIGIN !== undefined) {
   console.log('✓ SEO_ORIGIN is set — committed .htaccess files left untouched (non-production build)')
   process.exit(0)
 }
-const content = buildHtaccess({ mode: 'base', origin: 'https://atoopv.com' })
+const content = buildHtaccess({ mode: 'base', origin: 'https://atoopv.com', cmsRedirects: await loadCmsRedirects() })
 
 for (const target of [path.join(clientRoot, 'public/.htaccess'), path.join(repoRoot, 'deploy/o2switch/public_html/.htaccess')]) {
   fs.writeFileSync(target, content)

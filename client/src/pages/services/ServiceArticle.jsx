@@ -122,6 +122,9 @@ function ServiceArticleView({ category, slug, page }) {
   usePageMeta({
     title: page.seo?.title || (page ? stripEmphasis(page.title) : undefined),
     description: page.seo?.description || (page ? excerpt(page.body, 160) : undefined),
+    // CMS fields "Hide from search engines" and "Canonical URL"
+    noindex: Boolean(page.seo?.noindex),
+    canonicalPath: page.seo?.canonicalPath || undefined,
   })
 
   if (!page) return <Navigate to={`/services/${category}`} replace />

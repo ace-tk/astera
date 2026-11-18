@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import { useLocation } from 'react-router-dom'
 import { SITE_URL } from '@/config'
+import { getCanonicalOverride, subscribeCanonicalOverride } from './canonicalStore'
 
 function upsertLink(rel, href) {
   let tag = document.querySelector(`link[rel="${rel}"]`)
@@ -35,11 +36,13 @@ function upsertOgUrl(content) {
  */
 export function useCanonical() {
   const { pathname } = useLocation()
+  // A page may point its canonical at another URL (CMS field "Canonical URL"); see canonicalStore.js.
+  const override = useSyncExternalStore(subscribeCanonicalOverride, getCanonicalOverride, () => null)
 
   useEffect(() => {
-    const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
-    const href = `${SITE_URL}${path}`
+    const own = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+    const href = `${SITE_URL}${override || own}`
     upsertLink('canonical', href)
     upsertOgUrl(href)
-  }, [pathname])
+  }, [pathname, override])
 }

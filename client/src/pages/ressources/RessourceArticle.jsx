@@ -73,6 +73,9 @@ function RessourceArticleView({ resource, slug }) {
   usePageMeta({
     title: customTitle || own?.title || resource.title,
     description: resource.seo?.description || own?.description,
+    // CMS fields "Hide from search engines" and "Canonical URL"
+    noindex: Boolean(resource.seo?.noindex),
+    canonicalPath: resource.seo?.canonicalPath || undefined,
   })
 
   const sections = extractH2Sections(resource.body)

@@ -4,6 +4,13 @@
 // SEO audit fix — item 6 (sitemap must use https://atoopv.com, list only real
 // public/indexable URLs, and exclude duplicates/redirects/non-indexable routes).
 //
+// Two lists are written, on purpose:
+//   public/sitemap.xml                       what Google should index: indexable pages only, with <lastmod> (CMS "updatedAt").
+//                                            Left out: legal pages, pages hidden from search engines ("noindex" in the CMS),
+//                                            pages whose canonical points to another URL, redirected URLs.
+//   scripts/seo/generated/prerender-routes.json   every URL that must exist and be pre-rendered (legal and noindex pages
+//                                            included, they stay reachable). prerender.mjs and the release .htaccess use THIS.
+//
 // Every URL comes from a real, existing source: the app's own route structure
 // (App.jsx) for static pages, and the actual content/<category>/*.md filenames
 // for dynamic ones — exactly the same slugs servicesContent.js/resourcesContent.js
@@ -11,6 +18,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+
+import { normalizeCanonicalPath } from '../src/hooks/canonicalStore.js'
+import { fetchRetry } from './seo/apiFetch.mjs'
 
 const CLIENT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO_ROOT = path.resolve(CLIENT_ROOT, '..')
@@ -44,6 +54,9 @@ const SERVICE_CATEGORIES = ['drafting', 'by-city', 'tarifs-infos', 'guides', 'co
 // Same rule for Ressources: guides-livres-blancs-cse is the file served at the
 // bare /ressources URL (App.jsx's index route), not at its own slug URL.
 const RESSOURCES_HUB_SLUG = 'guides-livres-blancs-cse'
+
+// Legal texts: reachable and pre-rendered, but not search landing pages, so not in the sitemap (client request 17 Nov 2026).
+const LEGAL_PATHS = new Set(['/cgv', '/mentions-legales', '/politique-de-confidentialite', '/cookies', '/atoosavoir/cgv', '/services/tarifs-infos/cgu'])
 
 // Static ATOOPV pages that aren't backed by a content/<category>/<slug>.md file.
 // "/" is the real ATOOPV homepage (Accueil) since the page-content swap and is
@@ -90,15 +103,28 @@ const SITEMAP_EXCLUDE = new Set(['/services/drafting/services', ...REDIRECTS.fla
  * null if the CMS could not be reached — in which case the caller must not guess.
  */
 async function fetchPublishedPaths() {
-  const api = process.env.SITEMAP_API_URL || process.env.VITE_API_URL || envFileApiUrl() || 'https://api.atoopv.com/api'
+  const api = (process.env.SITEMAP_API_URL || process.env.VITE_API_URL || envFileApiUrl() || 'https://api.atoopv.com/api').replace(/\/$/, '')
   try {
-    const res = await fetch(`${api.replace(/\/$/, '')}/cms/index`, { signal: AbortSignal.timeout(15000) })
+    const res = await fetchRetry(`${api}/cms/index`)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const { pages } = await res.json()
     if (!Array.isArray(pages)) throw new Error('unexpected response')
-    return { paths: new Set(pages.map((p) => p.path)), pages }
+    // The index does not carry the SEO fields: read each published page (public, read-only GET) for noindex / canonical.
+    const info = new Map()
+    const queue = [...pages]
+    const worker = async () => {
+      while (queue.length) {
+        const p = queue.shift()
+        const r = await fetchRetry(`${api}/cms/pages?path=${encodeURIComponent(p.path)}`)
+        if (!r.ok) throw new Error(`page ${p.path}: HTTP ${r.status}`)
+        const { page } = await r.json()
+        info.set(p.path, { noindex: Boolean(page?.seo?.noindex), canonical: normalizeCanonicalPath(page?.seo?.canonicalPath), updatedAt: p.updatedAt || page?.updatedAt || null })
+      }
+    }
+    await Promise.all(Array.from({ length: 3 }, worker))
+    return { paths: new Set(pages.map((p) => p.path)), pages, info }
   } catch (err) {
-    console.warn(`! sitemap: could not read the CMS index (${err.message})`)
+    console.warn(`! sitemap: could not read the CMS (${err.message})`)
     return null
   }
 }
@@ -164,8 +190,8 @@ function buildUrls({ published, driven }) {
   return { urls, skipped, addedFromCms }
 }
 
-function toXml(urls) {
-  const lines = urls.map((u) => `  <url>\n    <loc>${SITE_URL}${u}</loc>\n  </url>`)
+function toXml(entries) {
+  const lines = entries.map((e) => `  <url>\n    <loc>${SITE_URL}${e.path}</loc>${e.lastmod ? `\n    <lastmod>${e.lastmod}</lastmod>` : ''}\n  </url>`)
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${lines.join('\n')}\n</urlset>\n`
 }
 
@@ -193,7 +219,32 @@ const redirected = new Set((await import('./seo/redirectMap.mjs')).REDIRECTS.fla
 const clash = urls.filter((u) => redirected.has(u))
 if (clash.length) throw new Error(`generate-sitemap: URL(s) listed that the server redirects away: ${clash.join(', ')}`)
 
-fs.writeFileSync(outPath, toXml(urls))
-console.log(`✓ sitemap.xml written (${urls.length} URLs${published ? ', published pages only' : ', OFFLINE — CMS filter not applied'}) → ${path.relative(REPO_ROOT, outPath)}`)
+// ---- which of the valid URLs belong in the sitemap
+const info = published?.info
+const sitemapEntries = []
+const notListed = []
+for (const u of urls) {
+  const i = info?.get(u)
+  if (LEGAL_PATHS.has(u)) { notListed.push([u, 'legal page']); continue }
+  if (i?.noindex) { notListed.push([u, 'hidden from search engines (noindex) in the CMS']); continue }
+  if (i?.canonical && i.canonical !== u) { notListed.push([u, `canonical points to ${i.canonical}`]); continue }
+  sitemapEntries.push({ path: u, lastmod: i?.updatedAt ? new Date(i.updatedAt).toISOString().slice(0, 10) : null })
+}
+
+// ---- every URL that must exist and be pre-rendered (a superset of the sitemap)
+const routes = urls
+  .map((u) => {
+    const i = info?.get(u)
+    return { path: u, ...(info?.has(u) ? { cms: true } : {}), ...(i?.canonical && i.canonical !== u ? { canonical: i.canonical } : {}), ...(i?.noindex ? { noindex: true } : {}) }
+  })
+  .sort((x, y) => x.path.localeCompare(y.path))
+const routesPath = path.join(CLIENT_ROOT, 'scripts', 'seo', 'generated', 'prerender-routes.json')
+fs.mkdirSync(path.dirname(routesPath), { recursive: true })
+fs.writeFileSync(routesPath, `${JSON.stringify({ generatedAt: new Date().toISOString(), routes }, null, 2)}\n`)
+
+fs.writeFileSync(outPath, toXml(sitemapEntries))
+console.log(`✓ sitemap.xml written (${sitemapEntries.length} URLs${published ? ', indexable published pages only' : ', OFFLINE — CMS filter not applied'}) → ${path.relative(REPO_ROOT, outPath)}`)
+console.log(`✓ prerender-routes.json written (${routes.length} routes, ${routes.length - sitemapEntries.length} not in the sitemap) → ${path.relative(REPO_ROOT, routesPath)}`)
+for (const [u, why] of notListed) console.log(`  – not in the sitemap: ${u} (${why})`)
 for (const [u, why] of skipped) console.log(`  – left out: ${u} (${why})`)
 for (const u of addedFromCms) console.log(`  + added from the CMS (no markdown file): ${u}`)
