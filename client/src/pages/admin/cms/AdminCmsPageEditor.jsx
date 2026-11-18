@@ -12,6 +12,7 @@ import RichTextEditor from '@/components/cms/RichTextEditor'
 import { FRAGMENTS_INTRO_BASE, editorialTextOf } from '@/cms/fragmentsIntroContainer'
 import { disassembleServiceArticle, assembleServiceArticle } from '@/cms/serviceArticleContainers'
 import StatusBadge from '@/components/cms/StatusBadge'
+import PageRedirects from '@/components/cms/PageRedirects'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import Button from '@/components/ui/Button'
 import { slugify } from '@/utils/slugify'
@@ -22,7 +23,7 @@ const fromPage = (page) => ({
   title: page.draft.title,
   slug: page.draft.slug,
   content: { ...page.draft.content },
-  seo: { title: page.draft.seo?.title || '', description: page.draft.seo?.description || '', noindex: Boolean(page.draft.seo?.noindex) },
+  seo: { title: page.draft.seo?.title || '', description: page.draft.seo?.description || '', canonicalPath: page.draft.seo?.canonicalPath || '', noindex: Boolean(page.draft.seo?.noindex) },
   nav: {
     navLabel: page.navLabel || '',
     showInNav: page.showInNav !== false,
@@ -644,11 +645,19 @@ export default function AdminCmsPageEditor() {
               <textarea value={form.seo.description} onChange={(e) => setSeo('description', e.target.value)} disabled={archived} maxLength={320} rows={3} className="input resize-none !rounded-md" placeholder="Defaults to the first paragraph" />
               <span className="mt-1 block text-right text-[11px] text-muted">{form.seo.description.length}/320</span>
             </label>
-            <label className="mt-2 flex items-center gap-2 text-sm">
+            <label className="mt-3 block">
+              <span className={LABEL}>Canonical URL</span>
+              <input value={form.seo.canonicalPath} onChange={(e) => setSeo('canonicalPath', e.target.value.trim())} disabled={archived} maxLength={200} className="input !rounded-md" placeholder="Leave empty: this page is its own canonical" />
+              {form.seo.canonicalPath && !form.seo.canonicalPath.startsWith('/') && <span className="mt-1 block text-[11px] text-red-600">Must start with / (for example /services/guides/pv-cse-contenu-obligatoire).</span>}
+              <span className="mt-1 block text-[11px] text-muted">Use it when another page is the one Google should keep for this topic. The page stays reachable; search engines are told which address counts. Pages with a canonical elsewhere are left out of the sitemap.</span>
+            </label>
+            <label className="mt-3 flex items-center gap-2 text-sm">
               <input type="checkbox" checked={form.seo.noindex} onChange={(e) => setSeo('noindex', e.target.checked)} disabled={archived} className="h-4 w-4 rounded border-ink/30" />
               Hide from search engines
             </label>
           </section>
+
+          <PageRedirects pagePath={page.path} disabled={archived} />
 
           <section className="rounded-lg border border-ink/10 bg-card p-4">
             <h2 className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]"><History className="h-3.5 w-3.5" /> History</h2>

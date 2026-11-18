@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Button from '@/components/ui/Button'
 import AmbientBackground from '@/components/landing/AmbientBackground'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { redirectFor, usePublicRedirects } from '@/cms/usePublicRedirects'
 
 const LINKS = [
   { to: '/services', label: 'Nos services', hint: 'Rédaction de PV, tarifs, guides, formations' },
@@ -11,11 +12,16 @@ const LINKS = [
 ]
 
 export default function NotFound() {
+  const { pathname } = useLocation()
+  const { data: redirects } = usePublicRedirects()
+  const moved = redirectFor(redirects, pathname)   // an address the editors redirected (CMS → Redirects)
   usePageMeta({
     title: 'Page introuvable',
     description: 'La page que vous cherchez n’existe pas ou a été déplacée. Retrouvez nos services, nos ressources ou contactez-nous.',
     noindex: true,
   })
+
+  if (moved) return <Navigate to={moved.to} replace />
 
   return (
     <main className="relative grid min-h-screen place-items-center bg-paper px-6 py-16 text-center">

@@ -1,7 +1,23 @@
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import dotenv from 'dotenv'
 import { z } from 'zod'
 
-dotenv.config()
+/**
+ * Secrets must not live in the web document root. Where the variables come from, in this order (a variable that is
+ * already set in the process environment always wins, dotenv never overrides it):
+ *   1. the file named by ENV_FILE (an absolute path, e.g. /home/<user>/secrets/astera-api.env)
+ *   2. ~/.astera-api.env in the account's home directory (never served by the web server)
+ *   3. ./.env in the working directory (local development)
+ * Each file that exists is read; the first one to define a variable decides it.
+ */
+export function envFileCandidates(env = process.env, home = os.homedir()) {
+  return [env.ENV_FILE, home ? path.join(home, '.astera-api.env') : null, path.resolve('.env')].filter(Boolean)
+}
+for (const file of envFileCandidates()) {
+  if (fs.existsSync(file)) dotenv.config({ path: file })
+}
 
 const isProd = (process.env.NODE_ENV || 'development') === 'production'
 const INSECURE_DEFAULT = 'dev-insecure-secret-change-me'

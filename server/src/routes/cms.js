@@ -11,9 +11,14 @@ import * as footerCtl from '../controllers/cmsFooterController.js'
 import * as homeHeroCtl from '../controllers/cmsHomeHeroController.js'
 import * as legalPagesCtl from '../controllers/cmsLegalPagesController.js'
 import * as sitePagesCtl from '../controllers/cmsSitePagesController.js'
+import * as redirectCtl from '../controllers/cmsRedirectController.js'
+import { snapshotMiddleware } from '../cms/snapshotHook.js'
 
 const router = Router()
 const adminOnly = [requireAuth, requireAdmin]
+
+// After any admin change that alters the public site, ask for a rebuild of the pre-rendered pages + sitemap (no-op unless configured).
+router.use('/admin/cms', snapshotMiddleware())
 
 const imageUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: MEDIA_MAX_BYTES, files: 1 } }).single('file')
 const uploadImage = (req, res, next) =>
@@ -34,7 +39,13 @@ router.get('/cms/home-hero', cms(homeHeroCtl.publicHomeHero))
 router.get('/cms/legal-pages', cms(legalPagesCtl.publicLegalPages))
 router.get('/cms/site-pages/:key', cms(sitePagesCtl.publicSitePage))
 router.get('/cms/navigation', cms(navCtl.publicNavigation))
+router.get('/cms/redirects', cms(redirectCtl.publicRedirects))
 router.get('/media/:id/:filename', mediaCtl.serveMedia)
+
+/* ---------------- Admin: 301 redirects ---------------- */
+router.get('/admin/cms/redirects', ...adminOnly, cms(redirectCtl.listRedirects))
+router.post('/admin/cms/redirects', ...adminOnly, cms(redirectCtl.createRedirect))
+router.delete('/admin/cms/redirects/:id', ...adminOnly, cms(redirectCtl.deleteRedirect))
 
 /* ---------------- Admin: templates (read-only — code-defined) ---------------- */
 router.get('/admin/cms/templates', ...adminOnly, cms(pageCtl.listTemplates))

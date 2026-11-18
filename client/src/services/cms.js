@@ -103,3 +103,12 @@ export function uploadMediaImage(file, alt = '') {
   body.append('file', file)
   return api.post(`${A}/media`, body).then((r) => r.media)
 }
+
+/* ------------------------------- 301 redirects ------------------------------ */
+
+/** Public: every redirect `{ from, to, status }` (read by the 404 screen). */
+export const fetchPublicRedirects = () => withTimeout(api.get('/cms/redirects')).then((r) => r.redirects)
+/** Admin: redirects, optionally only those pointing at one address. */
+export const fetchAdminRedirects = (to) => api.get(`${A}/redirects${to ? `?to=${encodeURIComponent(to)}` : ''}`).then((r) => r.redirects)
+export const createAdminRedirect = (from, to) => api.post(`${A}/redirects`, { from, to }).then((r) => r.redirect)
+export const deleteAdminRedirect = (id) => api.del(`${A}/redirects/${id}`).then((r) => r.redirect)
