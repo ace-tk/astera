@@ -54,23 +54,18 @@ The backend update (needed for step 5/6 to work) is the usual one: git fetch + r
 
 See `docs/AUTO-SNAPSHOT.md`.
 
-## P1 — api.atoopv.com answers 500 on unknown paths
+## P1 — api.atoopv.com answers 500 on unknown paths — DONE 18 Nov 2026
 
-Cause (seen from outside): paths under `/api/*` and `/` are answered by the Node app (JSON 404 / 200), but any other path — `/zzz`,
-`/index.html` — is answered by Apache with a 500. That is the single-page-app fallback of the website `.htaccess`
-(`RewriteRule ^ /index.html [L]`) that was copied into the API's document root, where there is no `index.html`.
+Cause: the API host's `.htaccess` held the website's single-page-app fallback (`RewriteRule ^ /index.html [L]`). There is no `index.html`
+on `api.atoopv.com`, so every path outside `/api` rewrote to itself in a loop and Apache answered 500.
+Fix (cPanel, 18 Nov): the two blocks "3b" (a website redirect) and "4" (the fallback) were removed from `~/api.atoopv.com/.htaccess`; the
+CloudLinux Passenger block, the HTTPS rule and the `/api` rule were left as they were. Backup of the old file:
+`/home/tenu7190/tmp/backup-api-docroot-htaccess-before-404-fix-20261118.txt`.
+Checked after: `/zz-unknown` and `/index.html` → 404 (JSON), `/robots.txt` 200, `/api/health` 200, `/api/cms/*` 200, http → https 301, CORS preflight 204.
 
-Fix (cPanel File Manager, the API's document root, hidden file `.htaccess`):
-* keep the `# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION` block untouched;
-* delete the website rules around it: every `RewriteRule`/`RewriteCond` that mentions `index.html`, the 301/410 rules, and the
-  `ErrorDocument` lines that point to a file;
-* add at the end:
-  ```
-  Options -MultiViews -Indexes
-  ErrorDocument 404 "Not found"
-  ```
-* check: `curl -i https://api.atoopv.com/zzz` → 404, `curl https://api.atoopv.com/api/health` → JSON, `https://api.atoopv.com/robots.txt` unchanged.
-(Do this after step 6 above, in the same session: the file contains the secrets until they are moved.)
+Note for the secrets item: that `.htaccess` contains NO secrets (checked). The variables (`MONGODB_URI`, `JWT_SECRET`, `SMTP_PASS`,
+`DEEPGRAM_API_KEY`, …) live in cPanel → Setup Node.js App → the API's environment list. They are not reachable from the web
+(`/.htaccess`, `/.env`, `/package.json` → 403/404, checked). Rotation and the move to `~/.astera-api.env` are still to be done.
 
 ## P1 — CMS: canonical URL + 301 redirects per page (done in code; needs backend + frontend deploy)
 
