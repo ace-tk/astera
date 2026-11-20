@@ -2,42 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://atoopv.com/</loc>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/boutique</loc>
+    <lastmod>2026-09-29</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/tarification</loc>
+    <lastmod>2026-09-29</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/contact</loc>
+    <lastmod>2026-10-06</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/a-propos</loc>
+    <lastmod>2026-09-29</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/autodiagnostic</loc>
+    <lastmod>2026-09-29</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/atoosavoir</loc>
+    <lastmod>2026-09-29</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/atoosavoir/exemple</loc>
+    <lastmod>2026-09-29</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services</loc>
+    <lastmod>2026-11-17</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/ressources</loc>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/ressources/veille-juridique-cse</loc>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/ressources/guides-livres-blancs-cse</loc>
+    <lastmod>2026-10-16</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/drafting</loc>
+    <lastmod>2026-10-08</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/drafting/externaliser-pv-cse</loc>
@@ -65,6 +78,7 @@
   </url>
   <url>
     <loc>https://atoopv.com/services/by-city</loc>
+    <lastmod>2026-11-17</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/by-city/redaction-pv-cse-annecy</loc>
@@ -112,6 +126,7 @@
   </url>
   <url>
     <loc>https://atoopv.com/services/tarifs-infos</loc>
+    <lastmod>2026-10-07</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/tarifs-infos/delai-redaction-pv-cse</loc>
@@ -127,6 +142,7 @@
   </url>
   <url>
     <loc>https://atoopv.com/services/guides</loc>
+    <lastmod>2026-10-08</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/guides/approbation-pv-cse</loc>
@@ -170,6 +186,7 @@
   </url>
   <url>
     <loc>https://atoopv.com/services/communication</loc>
+    <lastmod>2026-10-07</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/communication/communication-asc</loc>
@@ -185,6 +202,7 @@
   </url>
   <url>
     <loc>https://atoopv.com/services/training</loc>
+    <lastmod>2026-10-07</lastmod>
   </url>
   <url>
     <loc>https://atoopv.com/services/training/formation-cse-tresorier</loc>

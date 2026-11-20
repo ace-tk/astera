@@ -1,3 +1,4 @@
+import * as dates from '../cms/datesService.js'
 import { z } from 'zod'
 import * as sitePages from '../cms/sitePageService.js'
 import { CmsError } from '../cms/errors.js'
@@ -39,4 +40,10 @@ export const discardSitePageDraft = async (req, res) => {
 export const publicSitePage = async (req, res) => {
   res.set('Cache-Control', 'public, max-age=0, must-revalidate')
   res.json({ content: await sitePages.resolveLiveSitePage(req.params.key) })
+}
+
+/** Public: when the editable content was last published (read by the sitemap generator). */
+export const publicDates = async (req, res) => {
+  res.set('Cache-Control', 'public, max-age=60')
+  res.json(await dates.contentDates())
 }

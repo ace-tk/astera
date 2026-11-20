@@ -40,6 +40,7 @@ router.get('/cms/legal-pages', cms(legalPagesCtl.publicLegalPages))
 router.get('/cms/site-pages/:key', cms(sitePagesCtl.publicSitePage))
 router.get('/cms/navigation', cms(navCtl.publicNavigation))
 router.get('/cms/redirects', cms(redirectCtl.publicRedirects))
+router.get('/cms/dates', cms(sitePagesCtl.publicDates))
 router.get('/media/:id/:filename', mediaCtl.serveMedia)
 
 /* ---------------- Admin: 301 redirects ---------------- */

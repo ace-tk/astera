@@ -21,6 +21,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { normalizeCanonicalPath } from '../src/hooks/canonicalStore.js'
 import { fetchRetry } from './seo/apiFetch.mjs'
+import { resolveLastmods, gitDate, FALLBACK_SOURCES } from './seo/lastmod.mjs'
 
 const CLIENT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REPO_ROOT = path.resolve(CLIENT_ROOT, '..')
@@ -122,7 +123,14 @@ async function fetchPublishedPaths() {
       }
     }
     await Promise.all(Array.from({ length: 3 }, worker))
-    return { paths: new Set(pages.map((p) => p.path)), pages, info }
+    // when the editable non-article content was last published (home, Tarification, Contact, hubs ...); an API older than
+    // this endpoint answers 404: then those pages fall back to the date of the source file
+    let dates = {}
+    const dr = await fetchRetry(`${api}/cms/dates`)
+    if (dr.ok) dates = await dr.json()
+    else if (dr.status !== 404) throw new Error(`dates: HTTP ${dr.status}`)
+    else console.warn('! sitemap: the API has no /cms/dates yet (backend not updated): site pages use the date of their source file')
+    return { paths: new Set(pages.map((p) => p.path)), pages, info, dates }
   } catch (err) {
     console.warn(`! sitemap: could not read the CMS (${err.message})`)
     return null
@@ -170,6 +178,7 @@ function buildUrls({ published, driven }) {
   for (const slug of slugsIn('resources')) {
     if (slug === RESSOURCES_HUB_SLUG) continue
     const u = `/ressources/${slug}`
+    if (SITEMAP_EXCLUDE.has(u)) { skipped.push([u, 'merged or redirected — answers 301']); continue }
     if (!isLive(u, slug, driven.ressources)) { skipped.push([u, 'not published in the CMS']); continue }
     urls.push(u)
   }
@@ -221,14 +230,26 @@ if (clash.length) throw new Error(`generate-sitemap: URL(s) listed that the serv
 
 // ---- which of the valid URLs belong in the sitemap
 const info = published?.info
-const sitemapEntries = []
+const listed = []
 const notListed = []
 for (const u of urls) {
   const i = info?.get(u)
   if (LEGAL_PATHS.has(u)) { notListed.push([u, 'legal page']); continue }
   if (i?.noindex) { notListed.push([u, 'hidden from search engines (noindex) in the CMS']); continue }
   if (i?.canonical && i.canonical !== u) { notListed.push([u, `canonical points to ${i.canonical}`]); continue }
-  sitemapEntries.push({ path: u, lastmod: i?.updatedAt ? new Date(i.updatedAt).toISOString().slice(0, 10) : null })
+  listed.push(u)
+}
+// every listed URL gets a <lastmod> (see scripts/seo/lastmod.mjs for the rules)
+const cmsDates = new Map([...(info || new Map())].filter(([, v]) => v.updatedAt).map(([k, v]) => [k, v.updatedAt]))
+const lastmods = published
+  ? resolveLastmods({ urls: listed, cmsDates, dates: published.dates, fallback: (key) => (FALLBACK_SOURCES[key] ? gitDate(FALLBACK_SOURCES[key], REPO_ROOT) : null) })
+  : new Map()
+const sitemapEntries = listed.map((u) => ({ path: u, lastmod: lastmods.get(u) || null }))
+const undated = sitemapEntries.filter((e) => !e.lastmod).map((e) => e.path)
+if (published && undated.length) {
+  const msg = `generate-sitemap: no <lastmod> for ${undated.length} URL(s): ${undated.join(', ')}`
+  if (strict) { console.error(msg); process.exit(1) }
+  console.warn(`! ${msg}`)
 }
 
 // ---- every URL that must exist and be pre-rendered (a superset of the sitemap)
