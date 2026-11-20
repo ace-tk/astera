@@ -13,6 +13,7 @@ import { GuestOnly, RequireAuth, RequireAdmin } from '@/components/auth/RouteGua
 import { useAuth } from '@/context/AuthContext'
 import { useA11y } from '@/context/A11yContext'
 import { useCanonical } from '@/hooks/useCanonical'
+import { useJsonLdHead } from '@/hooks/useJsonLd'
 import { useConsentTracking } from '@/hooks/useConsentTracking'
 
 // Route-level code splitting keeps the landing bundle lean.
@@ -126,6 +127,7 @@ export default function App() {
   const { reduceMotion } = useA11y()
   // One self-referencing canonical + og:url per route, for every page automatically.
   useCanonical()
+  useJsonLdHead()
   useConsentTracking()
   return (
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>

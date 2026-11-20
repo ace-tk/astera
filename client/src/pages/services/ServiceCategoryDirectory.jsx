@@ -4,6 +4,7 @@ import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { usePageLd } from '@/seo/usePageLd'
 import { useSectionNav, useCmsPages } from '@/cms/useNavigation'
 import { getServicePagesByCategory, excerpt } from '@/services/servicesContent'
 import { CATEGORY_NAV, CATEGORY_NAV_LABEL, CATEGORY_COLOR, CATEGORY_LABEL } from '@/constants/servicesNav'
@@ -41,6 +42,7 @@ export default function ServiceCategoryDirectory({ category }) {
   const isPVCategory = category === 'by-city'
 
   usePageMeta({ title: copy.title, description: copy.lead })
+  usePageLd({ trail: [{ name: 'Services', path: '/services' }], current: CATEGORY_LABEL[category] })
 
   const builtIn = new Set(pages.map((p) => p.slug))
   const cmsByslug = new Map(cmsPages.map((p) => [p.slug, p]))

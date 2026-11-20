@@ -42,7 +42,8 @@ if (fs.existsSync(routesFile)) {
   const sitemap = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8')
   routeInfo = new Map([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname).map((p) => [p, { path: p }]))
 }
-const routes = [...routeInfo.keys()]
+const only = (process.env.PRERENDER_ONLY || '').split(',').filter(Boolean)   // debugging: PRERENDER_ONLY=/a,/b re-renders just these routes
+const routes = [...routeInfo.keys()].filter((r) => !only.length || only.includes(r))
 if (!routes.length) { console.error('no route to pre-render'); process.exit(1) }
 
 /* ---- throw-away static server (SPA fallback) ---- */
@@ -68,6 +69,7 @@ async function apiGet(url) {
 const browser = await chromium.launch()
 const results = []
 const problems = []
+const notes = []
 
 async function renderRoute(route, { waitCms = false } = {}) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' })
@@ -105,6 +107,8 @@ async function renderRoute(route, { waitCms = false } = {}) {
         await new Promise((r) => setTimeout(r, 150))
       }
     }
+    // an Article's structured data carries the CMS publication date: do not snapshot a page that still shows the bundled copy
+    if (waitCms && isArticleRoute(route)) await page.waitForFunction(() => /datePublished/.test(document.getElementById('atoopv-jsonld')?.textContent || ''), null, { timeout: 10000 }).catch(() => {})
     // let CMS content / lazy chunks / metadata effects land: wait for the DOM to stop changing
     await page.evaluate(
       () =>
@@ -127,6 +131,7 @@ async function renderRoute(route, { waitCms = false } = {}) {
         canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
         robots: meta('meta[name="robots"]'),
         ogUrl: meta('meta[property="og:url"]'),
+        jsonld: [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => s.textContent),
         h1: document.querySelector('h1')?.textContent?.trim() || '',
         textLength: (document.getElementById('root')?.innerText || '').length,
       }
@@ -135,6 +140,58 @@ async function renderRoute(route, { waitCms = false } = {}) {
   } finally {
     await ctx.close()
   }
+}
+
+
+/* ---- structured data (JSON-LD): what the snapshot must contain, page by page ---- */
+const isArticleRoute = (route) => /^\/services\/guides\/[^/]+$/.test(route) || (/^\/ressources\/[^/]+$/.test(route) && !RESSOURCE_HUBS.has(route.split('/')[2]))
+const RESSOURCE_HUBS = new Set(['guides-livres-blancs-cse', 'modeles-pv', 'cas-pratiques', 'actualite-sociale', 'jurisprudence-sociale-les-arrets-qui-comptent-pour-le-cse', 'comment-lire-arret-cour-de-cassation', 'la-minute-cse', 'veille-juridique-cse'])
+function checkJsonLd(route, scripts, canonical) {
+  const out = []
+  if (scripts.length !== 1) return [`${scripts.length} JSON-LD scripts in the snapshot, expected exactly one`]
+  let data
+  try { data = JSON.parse(scripts[0]) } catch { return ['JSON-LD is not valid JSON'] }
+  const g = data['@graph']
+  if (data['@context'] !== 'https://schema.org' || !Array.isArray(g)) return ['JSON-LD has no "@context" + "@graph"']
+  const of = (type) => g.filter((n) => n['@type'] === type)
+  const relative = []
+  ;(function walk(v, key) {
+    if (Array.isArray(v)) v.forEach((x) => walk(x, key))
+    else if (v && typeof v === 'object') Object.entries(v).forEach(([k, x]) => walk(x, k))
+    else if (typeof v === 'string' && ['url', 'item', '@id', 'image', 'logo', 'mainEntityOfPage'].includes(key) && !/^https:\/\//.test(v)) relative.push(v)
+  })(g)
+  if (relative.length) out.push(`JSON-LD has non-absolute URLs: ${relative.slice(0, 3).join(', ')}`)
+  if (g.some((n) => ['FAQPage', 'Course'].includes(n['@type']))) out.push('JSON-LD contains FAQPage/Course (not wanted)')
+  const crumbs = of('BreadcrumbList')
+  if (route === '/') {
+    if (crumbs.length) out.push('home has a BreadcrumbList (none wanted)')
+    if (!of('Organization').some((n) => n['@id'] === `${SITE}/#organization`)) out.push('home has no Organization with @id ' + `${SITE}/#organization`)
+    if (!of('ProfessionalService').length) out.push('home has no ProfessionalService')
+  } else {
+    if (crumbs.length !== 1) out.push(`${crumbs.length} BreadcrumbList nodes, expected 1`)
+    else {
+      const items = crumbs[0].itemListElement || []
+      if (!items.length || items.some((i, n) => i.position !== n + 1 || !i.name || !i.item)) out.push('BreadcrumbList items are incomplete')
+      else if (items[items.length - 1].item !== canonical) out.push(`last breadcrumb item is ${items[items.length - 1].item}, expected ${canonical}`)
+    }
+    if (route === '/contact' && !of('ProfessionalService').length) out.push('/contact has no ProfessionalService')
+    if (route !== '/contact' && of('ProfessionalService').length) out.push('ProfessionalService outside home and /contact')
+    if (of('Organization').some((n) => n.legalName)) out.push('full Organization outside the home page (only a reference by @id is wanted)')
+  }
+  const arts = of('Article')
+  if (isArticleRoute(route)) {
+    if (arts.length !== 1) out.push(`${arts.length} Article nodes, expected 1`)
+    else {
+      const a = arts[0]
+      if (!a.headline) out.push('Article without headline')
+      if (!a.description) out.push('Article without description')
+      if (!a.image) out.push('Article without image')
+      if (a.mainEntityOfPage?.['@id'] !== canonical) out.push(`Article mainEntityOfPage is ${a.mainEntityOfPage?.['@id']}, expected ${canonical}`)
+      if (a.author?.['@id'] !== `${SITE}/#organization` || a.publisher?.['@id'] !== `${SITE}/#organization`) out.push('Article author/publisher must reference the Organization by @id')
+      if (!a.datePublished) out.push('NOTE: Article without datePublished (this page is not in the CMS yet, so it has no publication date)')
+    }
+  } else if (arts.length) out.push('Article on a page that is not a guide/resource article')
+  return out
 }
 
 const fileFor = (route) => (route === '/' ? path.join(PRE, 'index.html') : path.join(PRE, `${route.replace(/^\//, '')}.html`))
@@ -156,6 +213,9 @@ async function worker() {
       // "Hide from search engines" in the CMS must be in the HTML crawlers receive, and only there
       if (info.noindex && !/noindex/i.test(s.robots)) issues.push('hidden from search engines in the CMS, but the snapshot has no <meta name="robots" content="noindex">')
       if (!info.noindex && /noindex/i.test(s.robots)) issues.push(`the snapshot says "${s.robots}" but the CMS does not hide this page`)
+      const ld = checkJsonLd(route, s.jsonld, expected)
+      issues.push(...ld.filter((m) => !m.startsWith('NOTE:')))
+      ld.filter((m) => m.startsWith('NOTE:')).forEach((m) => notes.push(`${route}: ${m.slice(5).trim()}`))
       if (!s.h1) issues.push('no <h1>')
       if (s.textLength < 300) issues.push(`only ${s.textLength} characters of text`)
       if (route === '/') homeTitle = s.title
@@ -179,6 +239,7 @@ try {
   const cleaned = nf.html
     .replace(/<link[^>]*rel="canonical"[^>]*>\s*/g, '')
     .replace(/<meta[^>]*property="og:url"[^>]*>\s*/g, '')
+    .replace(/<script[^>]*application\/ld\+json[^>]*>[\s\S]*?<\/script>\s*/g, '')
     .replace(new RegExp(NOT_FOUND_PROBE, 'g'), '')
   fs.writeFileSync(path.join(PRE, '404.html'), cleaned)
   process.stdout.write('✓ 404 screen\n')
@@ -216,6 +277,7 @@ const cmsRedirects = await loadCmsRedirects({ strict: true }) // a release must 
 fs.writeFileSync(path.join(DIST, '.htaccess'), buildHtaccess({ mode: 'release', origin: process.env.SEO_ORIGIN ?? SITE, cmsRedirects }))
 
 console.log(`\n${results.length - problems.filter((p) => results.find((r) => r.route === p.route)).length}/${routes.length} routes pre-rendered cleanly`)
+if (notes.length) console.log(`\nNOTES (not blocking):\n  ${notes.join('\n  ')}`)
 if (problems.length) {
   console.log('\nPROBLEMS:')
   for (const p of problems) console.log(`  ${p.route}\n    - ${p.issues.join('\n    - ')}`)

@@ -14,6 +14,7 @@ import FAQSection from '@/components/services/FAQSection'
 import EditorialGridBackground from '@/components/atoopv/EditorialGridBackground'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import { usePageMeta } from '@/hooks/usePageMeta'
+import { usePageLd } from '@/seo/usePageLd'
 import { useServicePage } from '@/cms/useServicePage'
 import CmsArticleGate from '@/cms/CmsArticleGate'
 import { useHubPage } from '@/cms/useHubPage'
@@ -119,12 +120,21 @@ function ServiceArticleView({ category, slug, page }) {
   const navItems = useSectionNav(category, CATEGORY_NAV[category])
   const cmsSectionPages = useCmsPages({ section: category })
 
+  const metaDescription = page.seo?.description || (page ? excerpt(page.body, 160) : undefined)
   usePageMeta({
     title: page.seo?.title || (page ? stripEmphasis(page.title) : undefined),
-    description: page.seo?.description || (page ? excerpt(page.body, 160) : undefined),
+    description: metaDescription,
     // CMS fields "Hide from search engines" and "Canonical URL"
     noindex: Boolean(page.seo?.noindex),
     canonicalPath: page.seo?.canonicalPath || undefined,
+  })
+  // Structured data: the breadcrumb is the one shown above the title (Services › category); the guides are also Articles.
+  const pageTitle = page ? stripEmphasis(page.title) : ''
+  usePageLd({
+    trail: [{ name: 'Services', path: '/services' }, { name: CATEGORY_LABEL[category], path: `/services/${category}` }],
+    current: pageTitle,
+    canonicalPath: page.seo?.canonicalPath,
+    article: category === 'guides' ? { headline: pageTitle, description: metaDescription, publishedAt: page.publishedAt, updatedAt: page.updatedAt } : null,
   })
 
   if (!page) return <Navigate to={`/services/${category}`} replace />

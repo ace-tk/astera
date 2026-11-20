@@ -16,6 +16,8 @@ function toLegacyPage(cmsPage, category) {
     category,
     sourceUrl: '',
     seo: cmsPage.seo,
+    publishedAt: cmsPage.publishedAt,
+    updatedAt: cmsPage.updatedAt,
     fromCms: true,
     preview: Boolean(cmsPage.preview),
   }

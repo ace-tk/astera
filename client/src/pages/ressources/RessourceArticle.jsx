@@ -6,8 +6,9 @@ import EditorialSectionRail from '@/components/atoopv/EditorialSectionRail'
 import ServiceCategoryContent from '@/components/services/ServiceCategoryContent'
 import EditorialCategoryNav from '@/components/atoopv/EditorialCategoryNav'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { getResource } from '@/services/resourcesContent'
-import { RESSOURCES_NAV } from '@/constants/resourcesNav'
+import { usePageLd } from '@/seo/usePageLd'
+import { getResource, excerpt } from '@/services/resourcesContent'
+import { RESSOURCES_NAV, RESSOURCES_HUB_SLUGS } from '@/constants/resourcesNav'
 import { extractH2Sections } from '@/utils/markdownSections'
 import { useCmsArticle } from '@/cms/useCmsArticle'
 import CmsArticleGate from '@/cms/CmsArticleGate'
@@ -70,12 +71,21 @@ function RessourceArticleView({ resource, slug }) {
   // title and description (a title typed in the CMS wins, unless it is just the page heading again).
   const own = slug === GUIDES_SLUG ? GUIDES_META : null
   const customTitle = resource.seo?.title && resource.seo.title !== resource.title ? resource.seo.title : null
+  const metaDescription = resource.seo?.description || own?.description || excerpt(resource.body, 160)
   usePageMeta({
     title: customTitle || own?.title || resource.title,
-    description: resource.seo?.description || own?.description,
+    description: metaDescription,
     // CMS fields "Hide from search engines" and "Canonical URL"
     noindex: Boolean(resource.seo?.noindex),
     canonicalPath: resource.seo?.canonicalPath || undefined,
+  })
+  // Structured data: "Ressources" is the label shown above the title. The hub pages (guides, modèles, cas pratiques…) are hubs, not Articles.
+  const headline = own?.title || resource.title
+  usePageLd({
+    trail: [{ name: 'Ressources', path: '/ressources' }],
+    current: headline,
+    canonicalPath: resource.seo?.canonicalPath,
+    article: RESSOURCES_HUB_SLUGS.has(slug) ? null : { headline, description: metaDescription, publishedAt: resource.publishedAt, updatedAt: resource.updatedAt },
   })
 
   const sections = extractH2Sections(resource.body)
