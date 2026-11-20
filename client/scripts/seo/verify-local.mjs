@@ -99,14 +99,24 @@ for (const p of ['a-propos', 'contact', 'tarification', 'autodiagnostic', 'atoos
 // query strings survive a redirect
 await check('query string kept', '/redaction-pv-cse/?utm_source=nl&utm_campaign=x', 301, `${ORIGIN}/services/drafting/redaction-pv-cse?utm_source=nl&utm_campaign=x`)
 // one hop even from http / www
-await check('one hop from http/www', '/proces-verbal/', 301, `${ORIGIN}/ressources/proces-verbal`, { host: 'www.atoopv.com', proto: 'http' })
+await check('one hop from http/www', '/proces-verbal/', 301, `${ORIGIN}/services/guides/proces-verbal-cse`, { host: 'www.atoopv.com', proto: 'http' })
 await check('one hop from http/www', '/redaction-pv-cse', 301, `${ORIGIN}/services/drafting/redaction-pv-cse`, { host: 'atoopv.com', proto: 'http' })
+// merged pages (client table of 19 Nov): each hidden address answers ONE 301 (never 302) to the kept page, also under /atoopv/
+for (const [from, to] of [
+  ['/services/guides/qui-redige-pv-cse', '/services/tarifs-infos/redacteur-pv-cse'],
+  ['/qui-redige-pv-cse/', '/services/tarifs-infos/redacteur-pv-cse'],
+  ['/contenu-pv-cse', '/services/guides/pv-cse-contenu-obligatoire'],
+  ['/services/guides/contenu-pv-cse/', '/services/guides/pv-cse-contenu-obligatoire'],
+  ['/ressources/mentions-obligatoires-pv', '/services/guides/pv-cse-contenu-obligatoire'],
+  ['/ressources/proces-verbal', '/services/guides/proces-verbal-cse'],
+  ['/atoopv/ressources/proces-verbal', '/services/guides/proces-verbal-cse'],
+]) await check('301 merged page, one hop', from, 301, `${ORIGIN}${to}`)
 // existing pre-migration renames
 await check('301 earlier renames', '/atoopv', 301, `${ORIGIN}/`)
 await check('301 earlier renames', '/atoopv/tarification', 301, `${ORIGIN}/tarification`)
-await check('301 earlier renames', '/atoopv/ressources/proces-verbal/', 301, `${ORIGIN}/ressources/proces-verbal`)
+await check('301 earlier renames', '/atoopv/ressources/proces-verbal/', 301, `${ORIGIN}/services/guides/proces-verbal-cse`)
 // real pages must NOT be touched
-for (const p of ['/', '/tarification', '/contact', '/a-propos', '/services', '/ressources', '/atoosavoir/exemple', '/services/drafting/redaction-pv-cse', '/ressources/proces-verbal', '/sitemap.xml', '/robots.txt', '/login', '/register', '/app', '/app/admin/cms/pages', '/blog/un-article-de-blog']) {
+for (const p of ['/', '/tarification', '/contact', '/a-propos', '/services', '/ressources', '/atoosavoir/exemple', '/services/drafting/redaction-pv-cse', '/services/guides/proces-verbal-cse', '/sitemap.xml', '/robots.txt', '/login', '/register', '/app', '/app/admin/cms/pages', '/blog/un-article-de-blog']) {
   await check('valid pages stay 200', p, 200)
 }
 // invented URLs: 404 in a release build; (SPA fallback in a base build answers 200 — a known limitation)

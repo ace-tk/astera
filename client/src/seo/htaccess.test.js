@@ -80,16 +80,16 @@ describe('seoMeta — "Search & sharing" fields of a site page', () => {
 })
 
 describe('redirects managed in the CMS', () => {
-  const cms = [{ from: '/services/guides/contenu-pv-cse', to: '/services/guides/pv-cse-contenu-obligatoire' }, { from: '/old.page', to: '/new' }]
+  const cms = [{ from: '/services/guides/ancien-guide', to: '/services/guides/pv-cse-contenu-obligatoire' }, { from: '/old.page', to: '/new' }]
   const out = buildHtaccess({ mode: 'release', cmsRedirects: cms })
 
   it('become one-hop 301 rules with or without a trailing slash, special characters escaped', () => {
-    expect(out).toContain('RewriteRule ^services/guides/contenu-pv-cse/?$ https://atoopv.com/services/guides/pv-cse-contenu-obligatoire [R=301,L]')
+    expect(out).toContain('RewriteRule ^services/guides/ancien-guide/?$ https://atoopv.com/services/guides/pv-cse-contenu-obligatoire [R=301,L]')
     expect(out).toContain('RewriteRule ^old\\.page/?$ https://atoopv.com/new [R=301,L]')
   })
   it('sit before the www/https rules and the pre-rendered whitelist', () => {
-    expect(out.indexOf('contenu-pv-cse/?$')).toBeLessThan(out.indexOf('# 3. www'))
-    expect(out.indexOf('contenu-pv-cse/?$')).toBeLessThan(out.indexOf('_pre/$1.html'))
+    expect(out.indexOf('ancien-guide/?$')).toBeLessThan(out.indexOf('# 3. www'))
+    expect(out.indexOf('ancien-guide/?$')).toBeLessThan(out.indexOf('_pre/$1.html'))
   })
   it('add nothing when there are none, and skip a source that the map already redirects', () => {
     expect(buildHtaccess({ mode: 'base' })).not.toContain('# 2a.')
@@ -99,5 +99,45 @@ describe('redirects managed in the CMS', () => {
   it('cleanRedirects drops malformed rows, duplicates, self-redirects and the home page', () => {
     const list = cleanRedirects([{ from: '/a', to: '/b' }, { from: '/a', to: '/c' }, { from: '/s', to: '/s' }, { from: '/', to: '/x' }, { from: 'https://evil.example', to: '/x' }, { from: '/sp ace', to: '/x' }, { from: '/ok', to: 'nope' }, null])
     expect(list).toEqual([{ from: '/a', to: '/b' }])
+  })
+})
+
+describe('merged pages — the client table of 19 Nov (one page = one address)', () => {
+  const rule = (path) => {
+    const row = REDIRECTS.find((r) => r.from.includes(path.replace(/^\//, '')))
+    return row ? row.to : undefined
+  }
+  const TABLE = {
+    '/services/guides/qui-redige-pv-cse': '/services/tarifs-infos/redacteur-pv-cse',
+    '/qui-redige-pv-cse': '/services/tarifs-infos/redacteur-pv-cse',
+    '/contenu-pv-cse': '/services/guides/pv-cse-contenu-obligatoire',
+    '/services/guides/contenu-pv-cse': '/services/guides/pv-cse-contenu-obligatoire',
+    '/ressources/mentions-obligatoires-pv': '/services/guides/pv-cse-contenu-obligatoire',
+    '/ressources/proces-verbal': '/services/guides/proces-verbal-cse',
+  }
+  it('redirects every address of the table to its kept page, in one hop', () => {
+    for (const [from, to] of Object.entries(TABLE)) expect(rule(from), from).toBe(to)
+  })
+  it('the old WordPress addresses of the two ressources go to the kept page too, not through the hidden one', () => {
+    expect(rule('/mentions-obligatoires-pv')).toBe('/services/guides/pv-cse-contenu-obligatoire')
+    expect(rule('/proces-verbal')).toBe('/services/guides/proces-verbal-cse')
+  })
+  it('the pre-rename /atoopv/ form of an app address is one hop as well (not rewritten and redirected again)', () => {
+    for (const [from, to] of Object.entries(TABLE)) {
+      if (!from.slice(1).includes('/')) continue
+      expect(base).toMatch(new RegExp(`RewriteRule \\^\\([^)]*atoopv/${from.slice(1).replace(/[/.]/g, '\\$&')}[^)]*\\)/\\?\\$ https://atoopv\\.com${to.replace(/[/.]/g, '\\$&')} \\[R=301,L\\]`))
+    }
+  })
+  it('every redirect of the site is a 301 (never a 302), and the kept pages are not redirected', () => {
+    // every flag that redirects: R, R=30x (R=404 is the "not found" rule, not a redirect)
+    const redirectLines = directives(release).filter((l) => /[[,]R(=30\d)?[,\]]/.test(l))
+    expect(redirectLines.length).toBeGreaterThan(50)
+    for (const l of redirectLines) expect(l, l).toMatch(/R=301/)
+    for (const kept of new Set(Object.values(TABLE))) expect(rule(kept), kept).toBeUndefined()
+  })
+  it('a CMS redirect that points at a merged page is rewritten to the kept page (no chain)', () => {
+    const out = buildHtaccess({ mode: 'release', cmsRedirects: [{ from: '/atoopv/x', to: '/ressources/proces-verbal' }] })
+    expect(out).toContain('https://atoopv.com/services/guides/proces-verbal-cse [R=301,L]')
+    expect(out).not.toContain('atoopv.com/ressources/proces-verbal [R')
   })
 })

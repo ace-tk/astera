@@ -9,6 +9,7 @@
  */
 import { RESOURCES_BY_SLUG, VEILLE_JURIDIQUE_SLUGS } from '@/services/resourcesContent'
 import { serviceRouteForSlug } from '@/constants/servicesLinks'
+import { finalPath } from '@/utils/mergedPages'
 
 // A handful of resource pages are linked under a second, older slug that
 // 301-redirects on the live site (discovered while writing extract_resources.py).
@@ -59,7 +60,7 @@ export function resolveResourceHref(rawHref) {
   if (slug === 'category/veille-juridique-cse') return { href: '/ressources/veille-juridique-cse', external: false }
 
   const resolvedSlug = ALIASES[slug] || slug
-  if (RESOURCES_BY_SLUG.has(resolvedSlug)) return { href: `/ressources/${resolvedSlug}`, external: false }
+  if (RESOURCES_BY_SLUG.has(resolvedSlug)) return { href: finalPath(`/ressources/${resolvedSlug}`), external: false }
   if (VEILLE_JURIDIQUE_SLUGS.includes(resolvedSlug)) return { href: `/ressources/${resolvedSlug}`, external: false }
 
   const serviceRoute = serviceRouteForSlug(slug)

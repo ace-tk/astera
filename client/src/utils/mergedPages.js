@@ -5,6 +5,11 @@
  */
 export const MERGED_PAGES = {
   '/services/guides/delai-pv-cse': '/services/tarifs-infos/delai-redaction-pv-cse',
+  // client table of 19 Nov: one page = one address
+  '/services/guides/qui-redige-pv-cse': '/services/tarifs-infos/redacteur-pv-cse',
+  '/services/guides/contenu-pv-cse': '/services/guides/pv-cse-contenu-obligatoire',
+  '/ressources/mentions-obligatoires-pv': '/services/guides/pv-cse-contenu-obligatoire',
+  '/ressources/proces-verbal': '/services/guides/proces-verbal-cse',
 }
 
 const strip = (p) => (typeof p === 'string' ? p.replace(/\/$/, '') : p)

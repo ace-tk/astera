@@ -9,6 +9,7 @@
  */
 
 import { parseContentFile } from '@/utils/contentMarkdown'
+import { isMergedAway } from '@/utils/mergedPages'
 
 const files = import.meta.glob('/../content/resources/*.md', {
   query: '?raw',
@@ -16,11 +17,15 @@ const files = import.meta.glob('/../content/resources/*.md', {
   eager: true,
 })
 
-export const RESOURCES = Object.entries(files)
+const ALL_RESOURCES = Object.entries(files)
   .map(([path, raw]) => parseContentFile(raw, path, 'Ressources'))
   .sort((a, b) => a.title.localeCompare(b.title, 'fr'))
 
-export const RESOURCES_BY_SLUG = new Map(RESOURCES.map((r) => [r.slug, r]))
+/** Every page that is listed or linked: a page merged into another one (utils/mergedPages) is not. */
+export const RESOURCES = ALL_RESOURCES.filter((r) => !isMergedAway(`/ressources/${r.slug}`))
+
+// the lookup keeps the merged pages: a link written with their old slug must still resolve (to the kept page, see resourcesLinks)
+export const RESOURCES_BY_SLUG = new Map(ALL_RESOURCES.map((r) => [r.slug, r]))
 
 export function getResource(slug) {
   return RESOURCES_BY_SLUG.get(slug)

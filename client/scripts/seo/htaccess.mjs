@@ -59,7 +59,10 @@ export function buildHtaccess({ mode = 'base', origin = 'https://atoopv.com', cm
     '  #    a single 301.',
   )
   for (const r of REDIRECTS) {
-    const alt = r.from.length > 1 ? `(${r.from.map(esc).join('|')})` : esc(r.from[0])
+    // An address of the app (services/…, ressources/…) also existed under the pre-rename prefix /atoopv/: without its own
+    // rule here, /atoopv/<path> would be rewritten to /<path> by the generic rule below and then redirected AGAIN (two hops).
+    const froms = r.from.flatMap((f) => (f.includes('/') ? [f, `atoopv/${f}`] : [f]))
+    const alt = froms.length > 1 ? `(${froms.map(esc).join('|')})` : esc(froms[0])
     // Apache does not allow a trailing comment on a directive line — the note goes on its own line.
     if (r.note) push(`  # ${r.note}`)
     push(`  RewriteRule ^${alt}/?$ ${to(r.to)} [R=301,L]`)
@@ -67,7 +70,9 @@ export function buildHtaccess({ mode = 'base', origin = 'https://atoopv.com', cm
   // 2a. Redirects typed by editors in the CMS (page editor → Redirects). Same one-hop rule; a source that the map
   // already handles is skipped.
   const mapped = new Set(REDIRECTS.flatMap((r) => r.from.map((f) => `/${f}`)))
-  const fromCms = cmsRedirects.filter((r) => !mapped.has(r.from))
+  // A CMS redirect whose target is itself redirected by the map (a page merged afterwards) goes straight to the final page.
+  const finalOf = new Map(REDIRECTS.flatMap((r) => r.from.map((f) => [`/${f}`, r.to])))
+  const fromCms = cmsRedirects.filter((r) => !mapped.has(r.from)).map((r) => ({ ...r, to: finalOf.get(r.to) || r.to }))
   if (fromCms.length) {
     push('', '  # 2a. Managed in the CMS (Admin → page → Redirects). Regenerated at every release.')
     for (const r of fromCms) push(`  RewriteRule ^${esc(r.from.replace(/^\//, ''))}/?$ ${to(r.to)} [R=301,L]`)

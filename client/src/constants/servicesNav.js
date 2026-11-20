@@ -40,13 +40,11 @@ export const TARIFS_INFOS_NAV = [
 
 export const GUIDES_NAV = [
   { label: 'Guides pratiques', to: '/services/guides', end: true },
-  { label: 'Qui rédige le PV CSE ?', to: '/services/guides/qui-redige-pv-cse' },
   { label: 'Approbation du PV CSE', to: '/services/guides/approbation-pv-cse' },
   { label: 'Contenu obligatoire du PV', to: '/services/guides/pv-cse-contenu-obligatoire' },
   { label: 'PV CSE – moins de 50 salariés', to: '/services/guides/pv-cse-moins-50-salaries' },
   { label: 'Modèle PV CSE gratuit', to: '/services/guides/modele-pv-cse-gratuit' },
   { label: 'Guide complet PV de CSE', to: '/services/guides/proces-verbal-cse' },
-  { label: 'Contenu du PV de CSE', to: '/services/guides/contenu-pv-cse' },
   { label: 'PV de CSE et délit d’entrave', to: '/services/guides/pv-cse-delit-entrave' },
   { label: 'BDESE et PV de CSE', to: '/services/guides/bdese-pv-cse' },
   { label: 'Information ou consultation CSE', to: '/services/guides/information-consultation-cse' },

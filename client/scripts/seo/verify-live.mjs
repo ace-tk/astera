@@ -76,7 +76,7 @@ await pool(targets, 6, async (t) => { await check('redirect targets answer 200',
 const sm = await (await fetch(`${SITE}/sitemap.xml`)).text()
 const urls = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname)
 await pool(urls, 6, async (u) => { await check('sitemap URL answers 200', u, 200) })
-const samples = ['/', '/tarification', '/services/drafting/redaction-pv-cse', '/ressources/proces-verbal', '/services/by-city/redaction-pv-cse-lyon']
+const samples = ['/', '/tarification', '/services/drafting/redaction-pv-cse', '/services/guides/proces-verbal-cse', '/services/by-city/redaction-pv-cse-lyon']
 const rawRows = []
 for (const s of samples) {
   const r = await get(s)
